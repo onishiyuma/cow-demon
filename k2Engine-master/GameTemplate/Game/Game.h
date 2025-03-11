@@ -14,6 +14,7 @@ public:
 	void Render(RenderContext& rc);
 
 private:
+	Player*m_player;
 	ModelRender m_modelRender;
 	Vector3 m_pos;
 };

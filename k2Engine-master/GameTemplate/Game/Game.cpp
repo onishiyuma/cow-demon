@@ -1,11 +1,12 @@
 #include "stdafx.h"
 #include "Game.h"
+#include "Player.h"
 
 
 bool Game::Start()
 {
-	m_modelRender.Init("Assets/modelData/unityChan.tkm");
-	
+	//プレイヤーオブジェクトの作成
+	m_player = NewGO<Player>(0,"player");
 	return true;
 }
 
