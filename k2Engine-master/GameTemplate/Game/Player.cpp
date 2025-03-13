@@ -2,7 +2,10 @@
 #include "Player.h"
 #include "Purification.h"
 
-
+namespace
+{
+	int CHARGE_INCREASE_AMOUNT = 3;//チャージ増加量。
+}
 
 bool Player::Start()
 {
@@ -10,9 +13,9 @@ bool Player::Start()
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	//キャラコンを初期化
-	m_characonRadius = 25.0f;
-	m_characonHeight = 75.0f;
-	m_characterController.Init(m_characonRadius, m_characonHeight, m_position);
+	m_charaConRadius = 25.0f;
+	m_charaConHeight = 75.0f;
+	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
 	m_position.Set(0.0f, 0.0f, 0.0f);
 	//プレイヤーのHPをセットする。
 	m_playerHP = 10;
@@ -114,6 +117,12 @@ void Player::NormalAttack()
 	{
 		MakePurification();
 	}
+}
+
+//スキル
+void Player::Skill()
+{
+
 }
 
 //発射するための準備。
