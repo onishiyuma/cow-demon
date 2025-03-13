@@ -15,5 +15,7 @@ public:
 	GameCamera* m_gameCamera;//カメラ。
 	Player* m_player;//プレイヤー。
 	Vector3 m_toCameraPos;//注視点から視点に向かうベクトル。
+	int m_nearClip = 1.0f;//ニアークリップ
+	int m_furClip = 10000.0f;//ファークリップ
 };
 

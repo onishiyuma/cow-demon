@@ -8,13 +8,13 @@ bool GameCamera::Start()
 {
 	//注視点から視点までのベクトルを設定。
 	m_toCameraPos.Set(1.0f, 125.0f, -60.0f);
-	//カメラ座標を取得。
+	//カメラの座標を取得する
 	//プレイヤーのインスタンスを探す。
 	m_player = FindGO<Player>("player");
 
-	//カメラのニアクリップとファークリップを
-	g_camera3D->SetNear(1.0f);
-	g_camera3D->SetFar(10000.0f);
+	//カメラのニアクリップとファークリップを設定する。
+	g_camera3D->SetNear(m_nearClip);
+	g_camera3D->SetFar(m_furClip);
 
 	return true;
 }
@@ -34,7 +34,7 @@ void GameCamera::Update()
 {
 	//注視点を計算する。
 	Vector3 target = m_player->m_position;
-	//プレイヤーの注視点。
+	//プレイヤ
 	target.y += 115.0f;
 
 	Vector3 toCameraPosOld = m_toCameraPos;
@@ -43,9 +43,9 @@ void GameCamera::Update()
 	float y = g_pad[0]->GetRStickYF();
 	//Y軸周りの回転
 	Quaternion qRot;
-	qRot.SetRotationDeg(Vector3::AxisY, 3.0f * x);
+	qRot.SetRotationDeg(Vector3::AxisY, 1.8f * x);
 	qRot.Apply(m_toCameraPos);
-	//X軸周りの回転
+	//X軸周りの回転。
 	Vector3 axisX;
 	axisX.Cross(Vector3::AxisY, m_toCameraPos);
 	axisX.Normalize();
@@ -56,15 +56,15 @@ void GameCamera::Update()
 	//正規化すると、ベクトルの大きさが１になる。
 	//大きさが１になるということは、ベクトルから強さがなくなり、方向のみの情報となるということ。
 	
-	//カメラの移動制御
+	//カメラの上限を設定
 	Vector3 toPosDir = m_toCameraPos;
 	toPosDir.Normalize();
-	if (toPosDir.y < -0.1f)
-	{
+	if (toPosDir.y < -0.1f) {
+		//カメラが上向きすぎ。
 		m_toCameraPos = toCameraPosOld;
 	}
-	if (toPosDir.y > 0.1f)
-	{
+	else if (toPosDir.y > 0.1f) {
+		//カメラが下向きすぎ。
 		m_toCameraPos = toCameraPosOld;
 	}
 
