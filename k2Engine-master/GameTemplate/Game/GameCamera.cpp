@@ -3,20 +3,11 @@
 #include "Player.h"
 
 
-GameCamera::GameCamera()
-{
-
-}
-
-GameCamera::~GameCamera()
-{
-	DeleteGO(this);
-}
 
 bool GameCamera::Start()
 {
 	//注視点から視点までのベクトルを設定。
-	m_toCameraPos.Set(1.0f, 125.0f, -250.0f);
+	m_toCameraPos.Set(1.0f, 125.0f, -60.0f);
 	//カメラ座標を取得。
 	//プレイヤーのインスタンスを探す。
 	m_player = FindGO<Player>("player");
@@ -27,6 +18,17 @@ bool GameCamera::Start()
 
 	return true;
 }
+
+GameCamera::GameCamera()
+{
+
+}
+
+GameCamera::~GameCamera()
+{
+	DeleteGO(this);
+}
+
 
 void GameCamera::Update()
 {
