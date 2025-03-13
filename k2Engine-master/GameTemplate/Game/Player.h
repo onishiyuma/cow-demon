@@ -16,6 +16,7 @@ public:
 	void Render(RenderContext& rc);
 	//通常攻撃
 	void NormalAttack();
+	void MakePurification();
 	//移動処理。
 	void Move();
 	//回転処理。
@@ -35,11 +36,13 @@ public:
 	ModelRender m_modelRender;//モデルレンダー。
 	CharacterController m_characterController;//キャラコン。
 	Quaternion m_rotation;//回転。
-
 	Vector3 m_position = Vector3::Zero;//座標。
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
 
 	int m_characonRadius = 0.0f;//キャラコンの半径。
+	int m_characonHeight = 0.0f;//キャラコンの半径。
+	int m_playerHP = 0;//プレイヤーのHP
+	
 };
 

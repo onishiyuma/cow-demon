@@ -1,23 +1,28 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Purification.h"
 
 
 
 bool Player::Start()
 {
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	//キャラコンを初期化
-	m_characterController.Init(23.0f, 75.0f, m_position);
 	m_characonRadius = 25.0f;
+	m_characonHeight = 75.0f;
+	m_characterController.Init(m_characonRadius, m_characonHeight, m_position);
 	m_position.Set(0.0f, 0.0f, 0.0f);
+	//プレイヤーのHPをセットする。
+	m_playerHP = 10;
 
 	return true;
 }
 
 Player::Player()
 {
-
+	
 }
 
 Player::~Player()
@@ -33,6 +38,8 @@ void Player::Update()
 	//回転処理。
 	Rotation();
 
+	//通常攻撃。
+	NormalAttack();
 
 	//モデルを更新する。
 	m_modelRender.Update();
@@ -100,10 +107,27 @@ void Player::Rotation()
 	m_rotation.Apply(m_forward);
 }
 
-//通常攻撃(遠距離)
+//通常攻撃(遠距離)。
 void Player::NormalAttack()
 {
+	if (g_pad[0]->IsTrigger(enButtonA))
+	{
+		MakePurification();
+	}
+}
 
+//発射するための準備。
+void Player::MakePurification()
+{
+	//作成。
+	Purification* purification = NewGO<Purification>(0);
+	Vector3 PurificationPos = m_position;
+	//座標を少し上げる。
+	PurificationPos.y += 70.0f;
+	//座標をセットする。
+	purification->SetPosition(PurificationPos);
+	purification->SetRotation(m_rotation);
+	purification->SetName("purification");
 }
 
 void Player::ManageState()
