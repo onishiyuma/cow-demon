@@ -11,7 +11,9 @@ bool Purification::Start()
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 
 	//カメラの前方向を取得。
-	m_direction = g_camera3D->GetForward();//カメラの前方向を取得する。
+	//m_direction = g_camera3D->GetForward();//カメラの前方向を取得する。
+
+	Vector3 direction=g_camera3D->GetAxisZ
 
 
 	//////移動速度を計算。//////
