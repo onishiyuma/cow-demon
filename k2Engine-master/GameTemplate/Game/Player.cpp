@@ -3,11 +3,6 @@
 
 
 
-namespace
-{
-	Vector3 MOVE_SPEED{ 0.0f,0.0f,0.0f };
-}
-
 bool Player::Start()
 {
 	//ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
@@ -16,6 +11,7 @@ bool Player::Start()
 	m_characterController.Init(23.0f, 75.0f, m_position);
 	m_characonRadius = 25.0f;
 	m_position.Set(0.0f, 0.0f, 0.0f);
+
 	return true;
 }
 
@@ -104,7 +100,13 @@ void Player::Rotation()
 	m_rotation.Apply(m_forward);
 }
 
-const void Player::ManageState()
+//’ÊíUŒ‚(‰“‹——£)
+void Player::NormalAttack()
+{
+
+}
+
+void Player::ManageState()
 {
 
 }

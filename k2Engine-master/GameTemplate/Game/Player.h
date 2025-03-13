@@ -1,6 +1,7 @@
 #pragma once
 
 
+
 class Player:public IGameObject
 {
 public:
@@ -13,13 +14,14 @@ public:
 	void Update();
 	//描画処理。
 	void Render(RenderContext& rc);
-
+	//通常攻撃
+	void NormalAttack();
 	//移動処理。
 	void Move();
 	//回転処理。
 	void Rotation();
 	//ステート管理
-	const void ManageState();
+	void ManageState();
 
 
 	//座標を取得する関数。
