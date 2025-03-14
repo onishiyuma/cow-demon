@@ -9,18 +9,7 @@ bool Purification::Start()
 {
 	//インスタンスアドレスを検索。
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
-
-	//カメラの前方向を取得。
-	//m_direction = g_camera3D->GetForward();//カメラの前方向を取得する。
-
-	Vector3 direction=g_camera3D->GetAxisZ
-
-
-	//////移動速度を計算。//////
-	m_moveSpeed = Vector3::AxisZ;
-	m_rotation.Apply(m_moveSpeed);
-	m_position += m_moveSpeed * 50.0f;
-	m_moveSpeed *= 2000.0f;
+	m_player = FindGO<Player>("player");
 
 	CreateCollision();
 
@@ -39,8 +28,26 @@ Purification::~Purification()
 
 void Purification::Update()
 {
+	//カメラの前方向を取得。
+	Matrix cameraMatrix = g_camera3D->GetCameraRotation();
+	m_direction = Vector3(cameraMatrix.m[2][0], cameraMatrix.m[2][1], cameraMatrix.m[2][2]);
+	m_direction.Normalize();
+
+	//キャラクターの回転を考慮する。
+	Quaternion rotation = m_player->GetRotation();
+	Vector3 foward = Vector3(0, 0, 1);//z方向
+	m_player->GetRotation().Apply(foward);
+	foward.Normalize();
+
+	//////移動速度を計算。//////
+	m_moveSpeed = m_direction;
+	m_rotation.Apply(m_moveSpeed);
+	m_position += m_moveSpeed;
+	m_moveSpeed *= m_purificationSpeed;
+
+
 	//座標を移動させる。
-	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 1.5f;
+	m_position+= m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 3.5f;
 
 	//コリジョンオブジェクトに座標を設定。
 	m_collisionObj->SetPosition(m_position);
@@ -48,18 +55,13 @@ void Purification::Update()
 	//タイマーを加算。
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
+
 	//タイマーが一定の秒数経過していたら。
 	if (m_timer >= 0.48f)
 	{
 		//自身を削除。
 		DeleteGO(this);
 	}
-}
-
-//カメラのベクトル。
-void Purification::CameraVector()
-{
-
 }
 
 //コリジョンオブジェクトの作成。
