@@ -52,7 +52,7 @@ void GameCamera::Update()
 	Vector3 axisX;
 	axisX.Cross(Vector3::AxisY, m_toCameraPos);
 	axisX.Normalize();
-	qRot.SetRotationDeg(axisX, 1.45f * y);
+	qRot.SetRotationDeg(axisX, 2.2f * y);
 	qRot.Apply(m_toCameraPos);
 
 	//‹“_‚ğŒvZ‚·‚éB
