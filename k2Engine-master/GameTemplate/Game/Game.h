@@ -8,6 +8,12 @@ class GameCamera;
 class Game : public IGameObject
 {
 public:
+	enum GameState
+	{
+		enInGame,//インゲーム。
+		enOutGame,//アウトゲーム。
+	};
+public:
 	Game();
 	~Game();
 
@@ -20,6 +26,7 @@ public:
 	Player*m_player;
 	ModelRender m_modelRender;
 	Vector3 m_pos;
+	GameState m_gameState = enOutGame;//アウトゲームにしておく
 private:
 };
 

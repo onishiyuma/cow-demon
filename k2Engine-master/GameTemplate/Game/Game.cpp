@@ -6,10 +6,14 @@
 
 bool Game::Start()
 {
-	//プレイヤーオブジェクトの作成
-	m_player = NewGO<Player>(0, "player");
-	//カメラオブジェクトの作成
-	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
+	//インゲームでなければ表示しない。
+	if (m_gameState != enInGame)
+	{
+		//プレイヤーオブジェクトの作成
+		m_player = NewGO<Player>(0, "player");
+		//カメラオブジェクトの作成
+		m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
+	}
 
 	return true;
 }
