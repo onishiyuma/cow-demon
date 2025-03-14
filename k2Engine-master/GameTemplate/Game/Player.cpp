@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "Purification.h"
 
+#include<time.h>
+
 namespace
 {
 	int CHARGE_INCREASE_AMOUNT = 3;//チャージ増加量。
@@ -18,7 +20,10 @@ bool Player::Start()
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
 	m_position.Set(0.0f, 0.0f, 0.0f);
 	//プレイヤーのHPをセットする。
-	m_playerHP = 10;
+	m_playerHP = 100;
+
+	//乱数を初期化。
+	srand((unsigned)time(NULL));
 
 	return true;
 }
@@ -43,6 +48,9 @@ void Player::Update()
 
 	//通常攻撃。
 	NormalAttack();
+
+	//スキル
+	Skill();
 
 	//モデルを更新する。
 	m_modelRender.Update();
@@ -116,13 +124,28 @@ void Player::NormalAttack()
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
 		MakePurification();
+		/*m_playerATK;
+		int ram = rand() % 100;
+		if (ram > 5)
+		{
+			m_playerATK * 2;
+		}*/
 	}
 }
 
 //スキル
 void Player::Skill()
 {
-
+	//チャージ量が100を超えていたら。
+	if (m_skillCharge >= 100)
+	{
+		//スキル発動。
+		if (g_pad[0]->IsTrigger(enButtonB))
+		{
+			//チャージ量をリセット。
+			m_skillCharge = 0;
+		}
+	}
 }
 
 //発射するための準備。

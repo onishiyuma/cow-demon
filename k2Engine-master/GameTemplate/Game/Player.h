@@ -32,6 +32,10 @@ public:
 		return m_position;
 	}
 
+	Quaternion GetRotation()const
+	{
+		return m_rotation;//回転を変えす。
+	}
 
 	//メンバ変数
 	ModelRender m_modelRender;//モデルレンダー。
@@ -44,5 +48,6 @@ public:
 	int m_charaConRadius = 0.0f;//キャラコンの半径。
 	int m_charaConHeight = 0.0f;//キャラコンの半径。
 	int m_playerHP = 0;//プレイヤーのHP。
+	const int m_playerATK = 5;//プレイヤーの攻撃力。
 	int m_skillCharge = 0;//スキルのチャージ。
 };
