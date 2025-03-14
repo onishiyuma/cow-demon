@@ -7,11 +7,22 @@
 bool Game::Start()
 {
 	//プレイヤーオブジェクトの作成
-	m_player = NewGO<Player>(0,"player");
+	m_player = NewGO<Player>(0, "player");
 	//カメラオブジェクトの作成
 	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
 
 	return true;
+}
+
+Game::Game()
+{
+
+}
+
+Game::~Game()
+{
+	DeleteGO(m_player);
+	DeleteGO(m_gameCamera);
 }
 
 void Game::Update()
