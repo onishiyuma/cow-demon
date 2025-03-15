@@ -124,11 +124,13 @@ void Player::NormalAttack()
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
 		MakePurification();
-		/*m_playerATK;
+
+		/*//‰ïS‚ÌÝ’èB
+		m_playerATK;
 		int ram = rand() % 100;
-		if (ram > 5)
+		if (ram > m_criticalRate)
 		{
-			m_playerATK * 2;
+			m_playerATK * m_cliticalDamage;
 		}*/
 	}
 }

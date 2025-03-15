@@ -44,10 +44,11 @@ public:
 	Vector3 m_position = Vector3::Zero;//座標。
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
-
 	int m_charaConRadius = 0.0f;//キャラコンの半径。
 	int m_charaConHeight = 0.0f;//キャラコンの半径。
 	int m_playerHP = 0;//プレイヤーのHP。
 	const int m_playerATK = 5;//プレイヤーの攻撃力。
+	const int m_criticalRate = 10;//会心率。
+	const int m_cliticalDamage = 2;//会心ダメ。
 	int m_skillCharge = 0;//スキルのチャージ。
 };
