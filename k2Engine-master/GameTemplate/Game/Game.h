@@ -3,18 +3,30 @@
 #include "Level3DRender/LevelRender.h"
 
 class Player;
+class GameCamera;
 
 class Game : public IGameObject
 {
 public:
-	Game() {}
-	~Game() {}
+	enum GameState
+	{
+		enInGame,//インゲーム。
+		enOutGame,//アウトゲーム。
+	};
+public:
+	Game();
+	~Game();
+
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
 
-private:
+
+	GameCamera* m_gameCamera;
+	Player*m_player;
 	ModelRender m_modelRender;
 	Vector3 m_pos;
+	GameState m_gameState = enOutGame;//アウトゲームにしておく
+private:
 };
 
