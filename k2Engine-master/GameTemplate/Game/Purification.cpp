@@ -36,7 +36,8 @@ void Purification::Update()
 	//キャラクターの回転を考慮する。
 	Quaternion rotation = m_player->GetRotation();
 	Vector3 foward = Vector3(0, 0, 1);//z方向
-	m_player->GetRotation().Apply(foward);
+	//m_player->GetRotation().Apply(foward);
+	rotation.Apply(foward);
 	foward.Normalize();
 
 	//////移動速度を計算。//////
@@ -47,7 +48,7 @@ void Purification::Update()
 
 
 	//座標を移動させる。
-	m_position+= m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 3.5f;
+	m_position+= m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
 
 	//コリジョンオブジェクトに座標を設定。
 	m_collisionObj->SetPosition(m_position);
@@ -74,7 +75,7 @@ void Purification::CreateCollision()
 	m_collisionObj = NewGO<CollisionObject>(0);
 
 	//箱状のコリジョンを作成。
-	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 45.0f,45.0f,45.0f});
+	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 65.0f,65.0f,65.0f});
 
 	//コリジョンの名前。
 	m_collisionObj->SetName("purification");
