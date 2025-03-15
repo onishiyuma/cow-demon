@@ -12,12 +12,12 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="BackGround.cpp" />
+=======
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Purification.cpp" />
-    <ClCompile Include="Title.cpp" />
-    <ClCompile Include="GameOver.cpp" />
-    <ClCompile Include="GameClear.cpp" />
+>>>>>>> 051255b5bf71988df732898a9a3963910432c402
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -25,11 +25,11 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
+<<<<<<< HEAD
+    <ClInclude Include="BackGround.h" />
+=======
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Purification.h" />
-    <ClInclude Include="Title.h" />
-    <ClInclude Include="GameOver.h" />
-    <ClInclude Include="GameClear.h" />
+>>>>>>> 051255b5bf71988df732898a9a3963910432c402
   </ItemGroup>
 </Project>

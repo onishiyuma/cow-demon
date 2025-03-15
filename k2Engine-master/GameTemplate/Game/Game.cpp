@@ -1,40 +1,31 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Player.h"
-#include "GameCamera.h"
+#include "BackGround.h"
 
 
 bool Game::Start()
 {
-	//インゲームでなければ表示しない。
-	if (m_gameState != enInGame)
-	{
-		//プレイヤーオブジェクトの作成
-		m_player = NewGO<Player>(0, "player");
-		//カメラオブジェクトの作成
-		m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
-	}
+	//プレイヤーオブジェクトの作成
+	m_player = NewGO<Player>(0,"player");
 
+	//ステージオブジェクトの作成
+	m_backGround = NewGO<BackGround>(0);
 	return true;
 }
 
-Game::Game()
-{
-
-}
-
-Game::~Game()
-{
-	DeleteGO(m_player);
-	DeleteGO(m_gameCamera);
-}
+//Game::~Game()
+//{
+//
+//}
 
 void Game::Update()
 {
-	
+	// g_renderingEngine->DisableRaytracing();
+	m_modelRender.Update();
 }
 
 void Game::Render(RenderContext& rc)
 {
-	
+	m_modelRender.Draw(rc);
 }

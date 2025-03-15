@@ -1,36 +1,27 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "Purification.h"
 
-#include<time.h>
+
 
 namespace
 {
-	int CHARGE_INCREASE_AMOUNT = 3;//チャージ増加量。
+	Vector3 MOVE_SPEED{ 0.0f,0.0f,0.0f };
 }
 
 bool Player::Start()
 {
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	//キャラコンを初期化
-	m_charaConRadius = 25.0f;
-	m_charaConHeight = 75.0f;
-	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
+	m_characterController.Init(23.0f, 75.0f, m_position);
+	m_characonRadius = 25.0f;
 	m_position.Set(0.0f, 0.0f, 0.0f);
-	//プレイヤーのHPをセットする。
-	m_playerHP = 100;
-
-	//乱数を初期化。
-	srand((unsigned)time(NULL));
-
 	return true;
 }
 
 Player::Player()
 {
-	
+
 }
 
 Player::~Player()
@@ -46,11 +37,6 @@ void Player::Update()
 	//回転処理。
 	Rotation();
 
-	//通常攻撃。
-	NormalAttack();
-
-	//スキル
-	Skill();
 
 	//モデルを更新する。
 	m_modelRender.Update();
@@ -118,51 +104,7 @@ void Player::Rotation()
 	m_rotation.Apply(m_forward);
 }
 
-//通常攻撃(遠距離)。
-void Player::NormalAttack()
-{
-	if (g_pad[0]->IsTrigger(enButtonA))
-	{
-		MakePurification();
-		/*m_playerATK;
-		int ram = rand() % 100;
-		if (ram > 5)
-		{
-			m_playerATK * 2;
-		}*/
-	}
-}
-
-//スキル
-void Player::Skill()
-{
-	//チャージ量が100を超えていたら。
-	if (m_skillCharge >= 100)
-	{
-		//スキル発動。
-		if (g_pad[0]->IsTrigger(enButtonB))
-		{
-			//チャージ量をリセット。
-			m_skillCharge = 0;
-		}
-	}
-}
-
-//発射するための準備。
-void Player::MakePurification()
-{
-	//作成。
-	Purification* purification = NewGO<Purification>(0);
-	Vector3 PurificationPos = m_position;
-	//座標を少し上げる。
-	PurificationPos.y += 70.0f;
-	//座標をセットする。
-	purification->SetPosition(PurificationPos);
-	purification->SetRotation(m_rotation);
-	purification->SetName("purification");
-}
-
-void Player::ManageState()
+const void Player::ManageState()
 {
 
 }
