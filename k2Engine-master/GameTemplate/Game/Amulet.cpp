@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "Purification.h"
+#include "Amulet.h"
 #include "Player.h"
-#include "GameCamera.h"
 #include "collision/CollisionObject.h"
+#include "GameCamera.h"
 
 
-bool Purification::Start()
+bool Amulet::Start()
 {
 	//インスタンスアドレスを検索。
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
@@ -19,28 +19,29 @@ bool Purification::Start()
 	m_direction.Normalize();
 
 	//移動速度を計算。
-	m_moveSpeed = m_direction * m_purificationSpeed;
+	m_moveSpeed = m_direction * m_amuletSpeed;
 
 	return true;
 }
 
-Purification::Purification()
+Amulet::Amulet()
 {
 
 }
 
-Purification::~Purification()
+Amulet::~Amulet()
 {
 	DeleteGO(m_collisionObj);
 }
 
-void Purification::Update()
+void Amulet::Update()
 {
 	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
 	m_collisionObj->SetPosition(m_position);
 
-	//タイマーが一定の秒数経過していたら。
+	//タイマーを加算。
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
+	//タイマーが一定の秒数経過していたら。
 	if (m_deleteTimer >= 0.48f)
 	{
 		//自身を削除。
@@ -48,8 +49,7 @@ void Purification::Update()
 	}
 }
 
-//コリジョンオブジェクトの作成。
-void Purification::CreateCollision()
+void Amulet::CreateCollision()
 {
 	//カメラの現在位置を取得。（視点位置）
 	Vector3 cameraPosition = g_camera3D->GetPosition();
@@ -58,7 +58,7 @@ void Purification::CreateCollision()
 	m_collisionObj = NewGO<CollisionObject>(0);
 
 	//箱状のコリジョンを作成。
-	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 100.0f,100.0f,100.0f});
+	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 100.0f,100.0f,100.0f });
 
 	//コリジョンの名前。
 	m_collisionObj->SetName("purification");

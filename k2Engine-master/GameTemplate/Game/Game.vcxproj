@@ -223,6 +223,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Amulet.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameClear.cpp" />
@@ -239,6 +240,7 @@
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Amulet.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameClear.h" />

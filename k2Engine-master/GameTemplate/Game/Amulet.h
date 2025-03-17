@@ -3,42 +3,42 @@
 class Player;
 class GameCamera;
 
-
-//通常攻撃クラス。
-class Purification:public IGameObject
+//御札クラス・
+class Amulet:public IGameObject
 {
 public:
-	Purification();
-	~Purification();
+	Amulet();
+	~Amulet();
 	void Update();
 	bool Start();
 	//コリジョンの作成。
 	void CreateCollision();
 
-	//座標をセット。
+	//座標をセットする。
 	void SetPosition(const Vector3& position)
 	{
 		m_position = position;
 	}
 
-	//座標を取得。
+	//座標を取得する。
 	const Vector3& GetPosition()const
 	{
 		return m_position;
 	}
 
-	//移動方向。
+	//移動方向
 	void SetVelocity(const Vector3& velocity)
 	{
 		m_velocity = velocity;
 	}
-	//回転をセット。
+
+	//回転をセットする。
 	void SetRotation(const Quaternion& rotation)
 	{
 		m_rotation = rotation;
 	}
 
-	
+
 
 	//メンバ変数。
 	Player* m_player;//プレイヤー。
@@ -52,6 +52,8 @@ public:
 	Vector3 m_scale = Vector3::One;//大きさ。(等倍)
 	Vector3 m_moveVec;//移動するベクトル。
 	Quaternion m_rotation;//回転。
-	const float m_purificationSpeed = 2000.0f;//お祓いの移動速度。
+	const float m_amuletSpeed= 2000.0f;//御札の移動速度。
 	float m_deleteTimer = 0.0f;//削除を管理するタイマー。
+
 };
+

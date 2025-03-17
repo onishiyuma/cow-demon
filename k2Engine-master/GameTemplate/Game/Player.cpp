@@ -1,13 +1,16 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Purification.h"
+#include "Amulet.h"
 
 #include<time.h>
 
+//定数を設定する場所
 namespace
 {
 	int CHARGE_INCREASE_AMOUNT = 3;//チャージ増加量。
 }
+
 
 bool Player::Start()
 {
@@ -15,8 +18,6 @@ bool Player::Start()
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	//キャラコンを初期化
-	m_charaConRadius = 25.0f;
-	m_charaConHeight = 75.0f;
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
 	m_position.Set(0.0f, 0.0f, 0.0f);
 	//プレイヤーのHPをセットする。
@@ -43,8 +44,15 @@ void Player::Update()
 	//移動処理。
 	Move();
 
-	//回転処理。
-	Rotation();
+	/*//灯籠に火が灯っていれば攻撃できる。
+	if (m_enemyIsCanAttack != false)
+	{
+		//通常攻撃。
+		NormalAttack();
+
+		//スキル
+		Skill();
+	}*/
 
 	//通常攻撃。
 	NormalAttack();
@@ -95,61 +103,61 @@ void Player::Move()
 	m_modelRender.SetPosition(m_position);
 }
 
-void Player::Rotation()
-{
-	if (fabsf(m_moveSpeed.x) < 0.001 && fabsf(m_moveSpeed.z) < 0.001)
-	{
-		//m_moveSpeed.xとm_moveSpeed.zの絶対値がともに0.001以下ということは
-	    //このフレームではキャラは移動していないので旋回する必要はない。
-		return;
-	}
-	//atan2はtanθの値を角度(ラジアン単位)に変換してくれる関数。
-    //m_moveSpeed.x / m_moveSpeed.zの結果はtanθになる。
-	// //atan2を使用して、角度を求めている。
-	// //これが回転角度になる。
-	float angle = atan2(-m_moveSpeed.x, m_moveSpeed.z);
-	//atanが返してくる角度はラジアン単位なので
-	// //SetRotationDegではなくSetRotationを使用する。
-	m_rotation.SetRotationY(-angle);
-
-	//回転を設定する。
-	m_modelRender.SetRotation(m_rotation);
-	m_forward = Vector3::AxisZ;
-	m_rotation.Apply(m_forward);
-}
-
-//通常攻撃(遠距離)。
+//通常攻撃。
 void Player::NormalAttack()
 {
-	if (g_pad[0]->IsTrigger(enButtonA))
+	//クールタイムを減らす。
+	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
+
+	if (g_pad[0]->IsTrigger(enButtonRB2)&&m_attackCoolDown<=0.0f)
 	{
-		MakePurification();
-		/*m_playerATK;
+		//通常攻撃の作成用関数。
+		MakeNormalAttack();
+		//クールタイムの設定。
+		m_attackCoolDown = 0.38f;
+
+		//会心の設定。
+		m_playerATK;
 		int ram = rand() % 100;
-		if (ram > 5)
+		if (ram > m_criticalRate)
 		{
-			m_playerATK * 2;
-		}*/
+			//クリティカルダメージ。
+			m_criticalATK=m_playerATK * m_cliticalDamage;
+			//スキルを使うため
+			m_skillCharge += CHARGE_INCREASE_AMOUNT;
+		}
+		else
+		{
+			//通常ダメージ。
+			m_normalATK=m_playerATK;
+		}
 	}
 }
 
-//スキル
+//スキル。
 void Player::Skill()
 {
+
 	//チャージ量が100を超えていたら。
 	if (m_skillCharge >= 100)
 	{
 		//スキル発動。
-		if (g_pad[0]->IsTrigger(enButtonB))
+		if (g_pad[0]->IsTrigger(enButtonLB2))
 		{
+			//スキルの作成用関数。
+			MakeSkill();
+
+			//スキルのダメージ。
+			m_skillATK = m_playerATK * m_playerATKMagnification;
+
 			//チャージ量をリセット。
 			m_skillCharge = 0;
 		}
 	}
 }
 
-//発射するための準備。
-void Player::MakePurification()
+//通常攻撃作成
+void Player::MakeNormalAttack()
 {
 	//作成。
 	Purification* purification = NewGO<Purification>(0);
@@ -158,8 +166,19 @@ void Player::MakePurification()
 	PurificationPos.y += 70.0f;
 	//座標をセットする。
 	purification->SetPosition(PurificationPos);
-	purification->SetRotation(m_rotation);
 	purification->SetName("purification");
+}
+
+//スキルの作成。
+void Player::MakeSkill()
+{
+	Amulet* amulet = NewGO<Amulet>(0);
+	Vector3 AmuletPos = m_position;
+	//座標を少し下げる。
+	AmuletPos.y += 70.0f;
+	//座標をセットする。
+	amulet->SetPosition(AmuletPos);
+	amulet->SetName("amulet");
 }
 
 void Player::ManageState()
