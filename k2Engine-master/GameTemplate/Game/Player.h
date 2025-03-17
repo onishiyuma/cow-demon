@@ -16,12 +16,14 @@ public:
 	void Render(RenderContext& rc);
 	//通常攻撃
 	void NormalAttack();
+	//スキル。
 	void Skill();
-	void MakePurification();
+	//通常攻撃の作成。
+	void MakeNormalAttack();
+	//スキルの作成。
+	void MakeSkill();
 	//移動処理。
 	void Move();
-	//回転処理。
-	void Rotation();
 	//ステート管理
 	void ManageState();
 
@@ -32,23 +34,23 @@ public:
 		return m_position;
 	}
 
-	Quaternion GetRotation()const
-	{
-		return m_rotation;//回転を変えす。
-	}
-
 	//メンバ変数
 	ModelRender m_modelRender;//モデルレンダー。
 	CharacterController m_characterController;//キャラコン。
-	Quaternion m_rotation;//回転。
 	Vector3 m_position = Vector3::Zero;//座標。
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
-	int m_charaConRadius = 0.0f;//キャラコンの半径。
-	int m_charaConHeight = 0.0f;//キャラコンの半径。
-	int m_playerHP = 0;//プレイヤーのHP。
+	const int m_charaConRadius = 25.0f;//キャラコンの半径。
+	const int m_charaConHeight = 75.0f;//キャラコンの高さ。
 	const int m_playerATK = 5;//プレイヤーの攻撃力。
+	const int m_playerATKMagnification=5;//攻撃の倍率を上げる。
 	const int m_criticalRate = 10;//会心率。
 	const int m_cliticalDamage = 2;//会心ダメ。
+	float m_attackCoolDown = 0.0f;//クールダウン用の変数。
+	int m_playerHP = 0;//プレイヤーのHP。
 	int m_skillCharge = 0;//スキルのチャージ。
+	int m_normalATK=0;//通常攻撃ダメージ。
+	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
+	int m_skillATK=0;//スキルダメージ。
+	bool m_enemyIsCanAttack=false;//敵を攻撃できるか？
 };
