@@ -7,18 +7,18 @@
 
 bool Amulet::Start()
 {
-	//ƒCƒ“ƒXƒ^ƒ“ƒXƒAƒhƒŒƒX‚ğŒŸõB
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ¤œç´¢ã€‚
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_player = FindGO<Player>("player");
 
 	CreateCollision();
 
-	//ƒJƒƒ‰‚Ì‘O•ûŒü‚ğæ“¾B
+	//ã‚«ãƒ¡ãƒ©ã®è¡Œåˆ—ã‚’å‰æ–¹å‘ã«ä»£å…¥ã€‚
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();
 	m_direction = Vector3(cameraMatrix.m[2][0], cameraMatrix.m[2][1], cameraMatrix.m[2][2]);
 	m_direction.Normalize();
 
-	//ˆÚ“®‘¬“x‚ğŒvZB
+	//ç§»å‹•é€Ÿåº¦ã‚’è¨ˆç®—ã€‚
 	m_moveSpeed = m_direction * m_amuletSpeed;
 
 	return true;
@@ -39,30 +39,30 @@ void Amulet::Update()
 	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
 	m_collisionObj->SetPosition(m_position);
 
-	//ƒ^ƒCƒ}[‚ğ‰ÁZB
+	//ã‚¿ã‚¤ãƒãƒ¼ã‚’åŠ ç®—ã€‚
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
-	//ƒ^ƒCƒ}[‚ªˆê’è‚Ì•b”Œo‰ß‚µ‚Ä‚¢‚½‚çB
+	//ã‚¿ã‚¤ãƒãƒ¼ãŒä¸€å®šã®ç§’æ•°çµŒéã—ã¦ã„ãŸã‚‰ã€‚
 	if (m_deleteTimer >= 0.48f)
 	{
-		//©g‚ğíœB
+		//è‡ªèº«ã‚’å‰Šé™¤ã€‚
 		DeleteGO(this);
 	}
 }
 
 void Amulet::CreateCollision()
 {
-	//ƒJƒƒ‰‚ÌŒ»İˆÊ’u‚ğæ“¾Bi‹“_ˆÊ’uj
+	//ã‚«ãƒ¡ãƒ©ã®ç¾åœ¨ä½ç½®ã‚’å–å¾—ã€‚ï¼ˆè¦–ç‚¹ä½ç½®ï¼‰
 	Vector3 cameraPosition = g_camera3D->GetPosition();
 
-	//ƒRƒŠƒWƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚Ìì¬B
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆã€‚
 	m_collisionObj = NewGO<CollisionObject>(0);
 
-	//” ó‚ÌƒRƒŠƒWƒ‡ƒ“‚ğì¬B
+	//ç®±çŠ¶ã®ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆã€‚
 	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 100.0f,100.0f,100.0f });
 
-	//ƒRƒŠƒWƒ‡ƒ“‚Ì–¼‘OB
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®åå‰ã€‚
 	m_collisionObj->SetName("purification");
 
-	//ƒIƒuƒWƒFƒNƒg‚ªŸè‚Éíœ‚³‚ê‚È‚¢‚æ‚¤‚ÉB
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‹æ‰‹ã«å‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã€‚
 	m_collisionObj->SetIsEnableAutoDelete(false);
 }
