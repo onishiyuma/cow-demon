@@ -5,52 +5,54 @@
 class Player:public IGameObject
 {
 public:
-	//ƒƒ“ƒoŠÖ”B
+	//ãƒ¡ãƒ³ãƒé–¢æ•°ã€‚
 	Player();
 	~Player();
 
 	bool Start();
-	//XVˆ—B
+	//æ›´æ–°å‡¦ç†ã€‚
 	void Update();
-	//•`‰æˆ—B
+	//æç”»å‡¦ç†ã€‚
 	void Render(RenderContext& rc);
-	//’ÊíUŒ‚
+	//é€šå¸¸æ”»æ’ƒ
 	void NormalAttack();
-	//ƒXƒLƒ‹B
+	//ã‚¹ã‚­ãƒ«ã€‚
 	void Skill();
-	//’ÊíUŒ‚‚Ìì¬B
+	//é€šå¸¸æ”»æ’ƒã®ä½œæˆã€‚
 	void MakeNormalAttack();
-	//ƒXƒLƒ‹‚Ìì¬B
+	//ã‚¹ã‚­ãƒ«ã®ä½œæˆã€‚
 	void MakeSkill();
-	//ˆÚ“®ˆ—B
+        //æœˆè© ã®åŠ è­·ã®ä½œæˆã€‚
+        void MakeTukuyomiProtection();
+	//ç§»å‹•å‡¦ç†ã€‚
 	void Move();
-	//ƒXƒe[ƒgŠÇ—
+	//ã‚¹ãƒ†ãƒ¼ãƒˆç®¡ç†
 	void ManageState();
 
 
-	//À•W‚ğæ“¾‚·‚éŠÖ”B
+	//åº§æ¨™ã‚’å–å¾—ã™ã‚‹é–¢æ•°ã€‚
 	const Vector3& GetPosition()const
 	{
 		return m_position;
 	}
 
-	//ƒƒ“ƒo•Ï”
-	ModelRender m_modelRender;//ƒ‚ƒfƒ‹ƒŒƒ“ƒ_[B
-	CharacterController m_characterController;//ƒLƒƒƒ‰ƒRƒ“B
-	Vector3 m_position = Vector3::Zero;//À•WB
-	Vector3 m_forward = Vector3::AxisZ;//‘O•ûŒü
-	Vector3 m_moveSpeed;//ˆÚ“®‘¬“xB
-	const int m_charaConRadius = 25.0f;//ƒLƒƒƒ‰ƒRƒ“‚Ì”¼ŒaB
-	const int m_charaConHeight = 75.0f;//ƒLƒƒƒ‰ƒRƒ“‚Ì‚‚³B
-	const int m_playerATK = 5;//ƒvƒŒƒCƒ„[‚ÌUŒ‚—ÍB
-	const int m_playerATKMagnification=5;//UŒ‚‚Ì”{—¦‚ğã‚°‚éB
-	const int m_criticalRate = 10;//‰ïS—¦B
-	const int m_cliticalDamage = 2;//‰ïSƒ_ƒB
-	float m_attackCoolDown = 0.0f;//ƒN[ƒ‹ƒ_ƒEƒ“—p‚Ì•Ï”B
-	int m_playerHP = 0;//ƒvƒŒƒCƒ„[‚ÌHPB
-	int m_skillCharge = 0;//ƒXƒLƒ‹‚Ìƒ`ƒƒ[ƒWB
-	int m_normalATK=0;//’ÊíUŒ‚ƒ_ƒ[ƒWB
-	int m_criticalATK = 0;//ƒNƒŠƒeƒBƒJƒ‹‚ğl—¶‚µ‚½UŒ‚B
-	int m_skillATK=0;//ƒXƒLƒ‹ƒ_ƒ[ƒWB
-	bool m_enemyIsCanAttack=false;//“G‚ğUŒ‚‚Å‚«‚é‚©H
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°
+	ModelRender m_modelRender;//ãƒ¢ãƒ‡ãƒ«ãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
+	CharacterController m_characterController;//ã‚­ãƒ£ãƒ©ã‚³ãƒ³ã€‚
+	Vector3 m_position = Vector3::Zero;//åº§æ¨™ã€‚
+	Vector3 m_forward = Vector3::AxisZ;//å‰æ–¹å‘
+	Vector3 m_moveSpeed;//ç§»å‹•é€Ÿåº¦ã€‚
+	const int m_charaConRadius = 25.0f;//ã‚­ãƒ£ãƒ©ã‚³ãƒ³ã®åŠå¾„ã€‚
+	const int m_charaConHeight = 75.0f;//ã‚­ãƒ£ãƒ©ã‚³ãƒ³ã®é«˜ã•ã€‚
+	const int m_playerATK = 5;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ”»æ’ƒåŠ›ã€‚
+	const int m_playerATKMagnification=5;//æ”»æ’ƒã®å€ç‡ã‚’ä¸Šã’ã‚‹ã€‚
+	const int m_criticalRate = 10;//ä¼šå¿ƒç‡ã€‚
+	const int m_cliticalDamage = 2;//ä¼šå¿ƒãƒ€ãƒ¡ã€‚
+	float m_attackCoolDown = 0.0f;//ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ç”¨ã®å¤‰æ•°ã€‚
+	int m_playerHP = 0;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®HPã€‚
+	int m_skillCharge = 0;//ã‚¹ã‚­ãƒ«ã®ãƒãƒ£ãƒ¼ã‚¸ã€‚
+	int m_normalATK=0;//é€šå¸¸æ”»æ’ƒãƒ€ãƒ¡ãƒ¼ã‚¸ã€‚
+	int m_criticalATK = 0;//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚’è€ƒæ…®ã—ãŸæ”»æ’ƒã€‚
+	int m_skillATK=0;//ã‚¹ã‚­ãƒ«ãƒ€ãƒ¡ãƒ¼ã‚¸ã€‚
+	bool m_enemyIsCanAttack=false;//æ•µã‚’æ”»æ’ƒã§ãã‚‹ã‹ï¼Ÿ
 };
