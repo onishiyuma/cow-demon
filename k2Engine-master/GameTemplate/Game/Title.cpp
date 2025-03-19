@@ -7,6 +7,7 @@ bool Title::Start()
 {
 	//タイトルの画像を読み込む。
 	m_spriteRender.Init("Assets/sprite/Title.DDS", 1920.0f, 1080.0f);
+
 	//ゲーム外にする。
 	m_game->enOutGame;
 
