@@ -239,6 +239,7 @@
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="TukuyomiBlessing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -252,6 +253,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="TukuyomiBlessing.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

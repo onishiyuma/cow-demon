@@ -18,12 +18,14 @@ public:
 	void NormalAttack();
 	//スキル。
 	void Skill();
+	//月読の加護。
+	void SkillTukuyomiBlessing();
 	//通常攻撃の作成。
 	void MakeNormalAttack();
 	//スキルの作成。
 	void MakeSkill();
-        //月詠の加護の作成。
-        void MakeTukuyomiProtection();
+    //月詠の加護の作成。
+    void MakeTukuyomiBlessing();
 	//移動処理。
 	void Move();
 	//ステート管理
@@ -45,14 +47,17 @@ public:
 	const int m_charaConRadius = 25.0f;//キャラコンの半径。
 	const int m_charaConHeight = 75.0f;//キャラコンの高さ。
 	const int m_playerATK = 5;//プレイヤーの攻撃力。
-	const int m_playerATKMagnification=5;//攻撃の倍率を上げる。
+	const int m_skillMagnification=5;//攻撃の倍率を上げる。
+	const int m_TukuyomiMagnification = 7;//月読の加護の倍率を設定。
 	const int m_criticalRate = 10;//会心率。
 	const int m_cliticalDamage = 2;//会心ダメ。
-	float m_attackCoolDown = 0.0f;//クールダウン用の変数。
+	float m_attackCoolDown = 0.0f;//攻撃のクールダウン。
+	float m_tukuyomiBlessingCoolDown = 0.0f;//月読の加護のクールダウン。
 	int m_playerHP = 0;//プレイヤーのHP。
 	int m_skillCharge = 0;//スキルのチャージ。
 	int m_normalATK=0;//通常攻撃ダメージ。
 	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
-	int m_skillATK=0;//スキルダメージ。
+	int m_skillATK=0;//スキル総ダメージ。
+	int m_TukuyomiATK;//月読の加護の総ダメージ。
 	bool m_enemyIsCanAttack=false;//敵を攻撃できるか？
 };

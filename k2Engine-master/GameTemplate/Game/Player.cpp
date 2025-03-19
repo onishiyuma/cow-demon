@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Purification.h"
 #include "Amulet.h"
+#include "TukuyomiBlessing.h"
 
 #include<time.h>
 
@@ -52,13 +53,20 @@ void Player::Update()
 
 		//スキル
 		Skill();
+
+		//月読の加護。
+	    TukuyomiBlessing();
 	}*/
 
 	//通常攻撃。
 	NormalAttack();
 
-	//スキル
+	//スキル。
 	Skill();
+
+	//月読の加護。
+	SkillTukuyomiBlessing();
+
 
 	//モデルを更新する。
 	m_modelRender.Update();
@@ -117,7 +125,6 @@ void Player::NormalAttack()
 		m_attackCoolDown = 0.38f;
 
 		//会心の設定。
-		m_playerATK;
 		int ram = rand() % 100;
 		if (ram > m_criticalRate)
 		{
@@ -137,22 +144,40 @@ void Player::NormalAttack()
 //スキル。
 void Player::Skill()
 {
-
 	//チャージ量が100を超えていたら。
 	if (m_skillCharge >= 100)
 	{
 		//スキル発動。
 		if (g_pad[0]->IsTrigger(enButtonLB2))
 		{
-			//スキルの作成用関数。
+			//スキルの作成用関数を呼び出す。
 			MakeSkill();
 
 			//スキルのダメージ。
-			m_skillATK = m_playerATK * m_playerATKMagnification;
+			m_skillATK = m_playerATK * m_skillMagnification;
 
 			//チャージ量をリセット。
 			m_skillCharge = 0;
 		}
+	}
+}
+
+//月読の加護
+void Player::SkillTukuyomiBlessing()
+{
+	//クールタイムを減らす。
+	m_tukuyomiBlessingCoolDown -= g_gameTime->GetFrameDeltaTime();
+
+	if (g_pad[0]->IsPress(enButtonX) && m_tukuyomiBlessingCoolDown <= 0.0f)
+	{
+		//月読の加護作成用関数を呼び出す。
+		MakeTukuyomiBlessing();
+		//クールタイムの設定。
+		m_tukuyomiBlessingCoolDown = 40.0f;
+
+		//月読の加護のダメージ。
+		m_TukuyomiATK = m_playerATK * m_TukuyomiMagnification;
+
 	}
 }
 
@@ -166,6 +191,7 @@ void Player::MakeNormalAttack()
 	PurificationPos.y += 70.0f;
 	//座標をセットする。
 	purification->SetPosition(PurificationPos);
+	//名前をつける。
 	purification->SetName("purification");
 }
 
@@ -178,7 +204,19 @@ void Player::MakeSkill()
 	AmuletPos.y += 70.0f;
 	//座標をセットする。
 	amulet->SetPosition(AmuletPos);
+	//名前をつける。
 	amulet->SetName("amulet");
+}
+
+//月読の加護の作成関数。
+void Player::MakeTukuyomiBlessing()
+{
+	TukuyomiBlessing* tukuyomiBlessing = NewGO<TukuyomiBlessing>(0);
+	Vector3 TukuyomoBlessingPos = m_position;
+	//座標をセットする。
+	tukuyomiBlessing->SetPosition(TukuyomoBlessingPos);
+	//名前をつける。
+	tukuyomiBlessing->SetName("tukuyomiBlessing");
 }
 
 void Player::ManageState()

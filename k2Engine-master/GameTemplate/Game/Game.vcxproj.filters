@@ -19,7 +19,10 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="Amulet.cpp" />
+sakai/TukuyomiBlessing
+    <ClCompile Include="TukuyomiBlessing.cpp" />
     <ClCompile Include="BackGround.cpp" />
+ main
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -34,10 +37,13 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="GameClear.h" />
     <ClInclude Include="Amulet.h" />
+ sakai/TukuyomiBlessing
+    <ClInclude Include="TukuyomiBlessing.h" />
     <ClInclude Include="BackGround.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
     <None Include="dxil.dll" />
+ main
   </ItemGroup>
 </Project>

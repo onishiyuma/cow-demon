@@ -34,7 +34,7 @@ Amulet::~Amulet()
 	DeleteGO(m_collisionObj);
 }
 
-void Amulet::Update()
+void Amulet::Update()	
 {
 	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
 	m_collisionObj->SetPosition(m_position);
