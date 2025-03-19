@@ -97,6 +97,18 @@ void Player::Move()
 	//移動速度にスティックの入力量を加算する。
 	m_moveSpeed += right + forward;
 
+	if (m_characterController.IsOnGround())
+	{
+		//重力をなくす。
+		m_moveSpeed.y = 0.0f;
+	}
+	//地面についていなければ。
+	else
+	{
+		//重力を発生させる。
+		m_moveSpeed.y -= m_gravity;
+	}
+
 	//キャラコンを使って座標を移動させる。
 	m_position = m_characterController.Execute(m_moveSpeed, 1.0f / 60.0f);
 	//フレームごとに座標を移動させる。
@@ -133,6 +145,7 @@ void Player::NormalAttack()
 			//スキルを使うため
 			m_skillCharge += CHARGE_INCREASE_AMOUNT;
 		}
+		//非会心。
 		else
 		{
 			//通常ダメージ。
@@ -219,6 +232,7 @@ void Player::MakeTukuyomiBlessing()
 	tukuyomiBlessing->SetName("tukuyomiBlessing");
 }
 
+//プレイヤーの管理。
 void Player::ManageState()
 {
 
