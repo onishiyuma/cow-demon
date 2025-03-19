@@ -44,6 +44,7 @@ public:
 	Vector3 m_position = Vector3::Zero;//座標。
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
+	const float m_gravity = 10.5f;//重力を発生させる。
 	const int m_charaConRadius = 25.0f;//キャラコンの半径。
 	const int m_charaConHeight = 75.0f;//キャラコンの高さ。
 	const int m_playerATK = 5;//プレイヤーの攻撃力。
@@ -59,5 +60,5 @@ public:
 	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
 	int m_skillATK=0;//スキル総ダメージ。
 	int m_TukuyomiATK;//月読の加護の総ダメージ。
-	bool m_enemyIsCanAttack=false;//敵を攻撃できるか？
+	bool m_enemyIsCanAttack=false;//敵を攻撃できるか？7。
 };
