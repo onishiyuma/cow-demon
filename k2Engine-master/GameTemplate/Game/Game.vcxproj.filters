@@ -19,6 +19,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="Amulet.cpp" />
+    <ClCompile Include="BackGround.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -33,5 +34,10 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="GameClear.h" />
     <ClInclude Include="Amulet.h" />
+    <ClInclude Include="BackGround.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dxcompiler.dll" />
+    <None Include="dxil.dll" />
   </ItemGroup>
 </Project>
