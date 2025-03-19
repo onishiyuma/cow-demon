@@ -4,6 +4,7 @@
 
 class Player;
 class GameCamera;
+class BackGround;
 
 class Game : public IGameObject
 {
@@ -21,7 +22,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-
+	BackGround* m_backGround;
 	GameCamera* m_gameCamera;
 	Player*m_player;
 	ModelRender m_modelRender;

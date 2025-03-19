@@ -15,7 +15,7 @@ namespace
 
 bool Player::Start()
 {
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	//ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	//ƒLƒƒƒ‰ƒRƒ“‚ğ‰Šú‰»
