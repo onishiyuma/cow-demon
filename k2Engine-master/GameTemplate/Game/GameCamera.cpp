@@ -34,8 +34,8 @@ void GameCamera::Update()
 {
 	//注視点を計算する。
 	Vector3 target = m_player->m_position;
-	//プレイヤ
-	target.y += 115.0f;
+	//プレイヤの注視点を設定。
+	target.y += 90.0f;
 
 	Vector3 toCameraPosOld = m_toCameraPos;
 
@@ -56,7 +56,7 @@ void GameCamera::Update()
 	qRot.Apply(m_toCameraPos);
 
 	//視点を計算する。
-	Vector3 pos = target + m_toCameraPos;
+	Vector3 pos = target+m_toCameraPos/m_half;
 
 	//メインカメラに注視点と視点を設定する。
 	g_camera3D->SetTarget(target);
