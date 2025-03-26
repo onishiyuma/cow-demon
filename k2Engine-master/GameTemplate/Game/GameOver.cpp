@@ -27,7 +27,7 @@ void GameOver::Update()
 	if (g_pad[0]->IsPressAnyKey())
 	{
 		//ƒQ[ƒ€ŠO‚É‚·‚éB
-		m_game->enOutGame;
+		//m_game->enOutGame;
 		NewGO<Title>(0, "title");
 
 		DeleteGO(this);
@@ -36,5 +36,5 @@ void GameOver::Update()
 
 void GameOver::Render(RenderContext& rc)
 {
-
+	m_spriteRender.Draw(rc);
 }

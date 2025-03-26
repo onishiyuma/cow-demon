@@ -13,7 +13,7 @@ bool Amulet::Start()
 
 	CreateCollision();
 
-	//カメラの行列を前方向に代入。
+	//カメラ行列を前方向に代入。
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();
 	m_direction = Vector3(cameraMatrix.m[2][0], cameraMatrix.m[2][1], cameraMatrix.m[2][2]);
 	m_direction.Normalize();
