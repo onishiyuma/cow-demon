@@ -1,6 +1,6 @@
 #pragma once
 
-
+class Shimenawa;
 
 class Player:public IGameObject
 {
@@ -20,12 +20,16 @@ public:
 	void Skill();
 	//月読の加護。
 	void SkillTukuyomiBlessing();
+	//しめ縄。
+	void ItemShimenawa();
 	//通常攻撃の作成。
 	void MakeNormalAttack();
 	//スキルの作成。
 	void MakeSkill();
     //月詠の加護の作成。
     void MakeTukuyomiBlessing();
+	//しめ縄の作成。
+	void MakeShimenawa();
 	//移動処理。
 	void Move();
 	//ステート管理
@@ -38,12 +42,19 @@ public:
 		return m_position;
 	}
 
+	const Quaternion& GetRotation()const
+	{
+		return m_rotation;
+	}
+
 	//メンバ変数
+	Shimenawa*m_shimenawa;//しめ縄
 	ModelRender m_modelRender;//モデルレンダー。
 	CharacterController m_characterController;//キャラコン。
 	Vector3 m_position = Vector3::Zero;//座標。
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
+	Quaternion m_rotation;
 	const float m_gravity = 10.5f;//重力を発生させる。
 	const int m_charaConRadius = 25.0f;//キャラコンの半径。
 	const int m_charaConHeight = 75.0f;//キャラコンの高さ。
@@ -61,4 +72,5 @@ public:
 	int m_skillATK=0;//スキル総ダメージ。
 	int m_TukuyomiATK;//月読の加護の総ダメージ。
 	bool m_enemyIsCanAttack=false;//敵を攻撃できるか？7。
+	float m_shimenawaGetTime=0.0f;//しめ縄を時間で取得する。
 };

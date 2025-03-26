@@ -3,6 +3,9 @@
 #include "Purification.h"
 #include "Amulet.h"
 #include "TukuyomiBlessing.h"
+#include "Shimenawa.h"
+#include "GameOver.h"
+#include "Shimenawa.h"
 
 #include<time.h>
 
@@ -58,6 +61,8 @@ void Player::Update()
 	    TukuyomiBlessing();
 	}*/
 
+
+	////////////////////////////ここは削除する/////////////////////////
 	//通常攻撃。
 	NormalAttack();
 
@@ -66,6 +71,14 @@ void Player::Update()
 
 	//月読の加護。
 	SkillTukuyomiBlessing();
+	/////////////////////////////////////////////////////////////////
+
+	//呪いの抵抗が0を下回っていたら。
+	if (m_playerHP<=0)
+	{
+		NewGO<GameOver>(0, "gameover");
+		DeleteGO(this);
+	}
 
 
 	//モデルを更新する。
@@ -136,6 +149,9 @@ void Player::NormalAttack()
 		//クールタイムの設定。
 		m_attackCoolDown = 0.38f;
 
+		//呪いの抵抗の侵食値を増やしていく。
+		m_playerHP -= 1;
+
 		//会心の設定。
 		int ram = rand() % 100;
 		if (ram > m_criticalRate)
@@ -175,7 +191,7 @@ void Player::Skill()
 	}
 }
 
-//月読の加護
+//月読の加護。
 void Player::SkillTukuyomiBlessing()
 {
 	//クールタイムを減らす。
@@ -191,6 +207,28 @@ void Player::SkillTukuyomiBlessing()
 		//月読の加護のダメージ。
 		m_TukuyomiATK = m_playerATK * m_TukuyomiMagnification;
 
+	}
+}
+
+//しめ縄。(アイテム)
+void Player::ItemShimenawa()
+{
+	//取得までの時間を減らしていく。
+	m_shimenawaGetTime += g_gameTime->GetFrameDeltaTime();
+
+	if (g_pad[0]->IsPress(enButtonY)&&m_shimenawaGetTime>=0.0f)
+	{
+		//座標をセットする。
+		m_shimenawa->SetPosition(this->m_position);
+		
+		//タイマーをリセット。
+		m_shimenawaGetTime = 10.0f;
+	}
+
+	//しめ縄が設置されていなければ更新をする。
+	if (m_shimenawa->currentShimenawa != nullptr)
+	{
+		m_shimenawa->currentShimenawa->Update();
 	}
 }
 
@@ -241,5 +279,5 @@ void Player::ManageState()
 void Player::Render(RenderContext&renderContext)
 {
 	//モデルを表示する。
-	m_modelRender.Draw(renderContext);
+	//m_modelRender.Draw(renderContext);
 }
