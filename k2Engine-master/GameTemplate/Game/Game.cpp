@@ -39,7 +39,7 @@ Game::~Game()
 
 void Game::Update()
 {
-	
+
 }
 
 void Game::Render(RenderContext& rc)

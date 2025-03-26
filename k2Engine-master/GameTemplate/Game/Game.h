@@ -22,6 +22,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+	/////////////////////////*‰Šú‰»‚Í•K‚¸‚µ‚Ä‚­‚¾‚³‚¢B/////////////////////
 	BackGround* m_backGround;
 	GameCamera* m_gameCamera;
 	Player*m_player;
