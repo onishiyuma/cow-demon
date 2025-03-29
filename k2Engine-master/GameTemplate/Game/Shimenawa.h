@@ -27,7 +27,7 @@ public:
 	ModelRender m_modelRender;//モデルレンダー。
 	bool m_isCollected = false;//取得状態。
 	bool m_isPlaced = false;//設置状態。
-	float collectTimer = 0.0f;
+	//float collectTimer = 0.0f;
 	float placeTimer = 0.0f;
 	Vector3 m_position;//座標。
 	const float collectTimer = 5.0f;//5秒で取得。

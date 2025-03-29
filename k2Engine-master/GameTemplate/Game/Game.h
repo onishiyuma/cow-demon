@@ -5,14 +5,15 @@
 class Player;
 class GameCamera;
 class BackGround;
+class Enemy;
 
 class Game : public IGameObject
 {
 public:
 	enum GameState
 	{
-		enInGame,//ƒCƒ“ƒQ[ƒ€B
-		enOutGame,//ƒAƒEƒgƒQ[ƒ€B
+		enInGame,//ï¿½Cï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½B
+		enOutGame,//ï¿½Aï¿½Eï¿½gï¿½Qï¿½[ï¿½ï¿½ï¿½B
 	};
 public:
 	Game();
@@ -22,13 +23,13 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	/////////////////////////*‰Šú‰»‚Í•K‚¸‚µ‚Ä‚­‚¾‚³‚¢B/////////////////////
 	BackGround* m_backGround;
 	GameCamera* m_gameCamera;
 	Player*m_player;
+	Enemy* m_enemy;
 	ModelRender m_modelRender;
 	Vector3 m_pos;
-	GameState m_gameState = enOutGame;//ƒAƒEƒgƒQ[ƒ€‚É‚µ‚Ä‚¨‚­
+	GameState m_gameState = enOutGame;//ï¿½Aï¿½Eï¿½gï¿½Qï¿½[ï¿½ï¿½ï¿½É‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 private:
 };
 

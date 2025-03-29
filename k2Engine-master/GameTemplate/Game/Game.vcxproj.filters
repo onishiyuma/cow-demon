@@ -1,49 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="system">
-      <UniqueIdentifier>{22dd8095-74f9-46df-81a1-36675a040b1f}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="system\system.cpp">
-      <Filter>system</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Purification.cpp" />
-    <ClCompile Include="Title.cpp" />
-    <ClCompile Include="GameOver.cpp" />
-    <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="Amulet.cpp" />
-sakai/TukuyomiBlessing
-    <ClCompile Include="TukuyomiBlessing.cpp" />
     <ClCompile Include="BackGround.cpp" />
- main
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="GameClear.cpp" />
+    <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Purification.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="TukuyomiBlessing.cpp" />
+    <ClCompile Include="Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="system\system.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Purification.h" />
-    <ClInclude Include="Title.h" />
-    <ClInclude Include="GameOver.h" />
-    <ClInclude Include="GameClear.h" />
     <ClInclude Include="Amulet.h" />
- sakai/TukuyomiBlessing
-    <ClInclude Include="TukuyomiBlessing.h" />
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="GameClear.h" />
+    <ClInclude Include="GameOver.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Purification.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="system\system.h" />
+    <ClInclude Include="Title.h" />
+    <ClInclude Include="TukuyomiBlessing.h" />
+    <ClInclude Include="Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
     <None Include="dxil.dll" />
- main
   </ItemGroup>
 </Project>
