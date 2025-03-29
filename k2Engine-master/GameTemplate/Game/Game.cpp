@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Game.h"
+#include "Enemy.h"
 #include "Player.h"
 #include "GameCamera.h"
 #include "BackGround.h"
@@ -7,16 +8,18 @@
 
 bool Game::Start()
 {
-	//ƒCƒ“ƒQ[ƒ€‚Å‚È‚¯‚ê‚Î•\¦‚µ‚È‚¢B
+	//ï¿½Cï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î•\ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½B
 	if (m_gameState != enInGame)
 	{
-		//ƒvƒŒƒCƒ„[ƒIƒuƒWƒFƒNƒg‚Ìì¬
+		//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìì¬
 		m_player = NewGO<Player>(0, "player");
-		//ƒJƒƒ‰ƒIƒuƒWƒFƒNƒg‚Ìì¬
+		//ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìì¬
 		m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
-		//ƒXƒe[ƒWƒIƒuƒWƒFƒNƒg‚Ìì¬
+		//ï¿½Xï¿½eï¿½[ï¿½Wï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìì¬
 		m_backGround = NewGO<BackGround>(0);
-		//‹ó‚Ì”wŒiì¬
+		//ï¿½Gï¿½lï¿½~ï¿½[ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìì¬
+		m_enemy = NewGO<Enemy>(0,"enemy");
+		//ï¿½ï¿½Ì”wï¿½iï¿½ì¬
 		SkyCube* skyCube = NewGO<SkyCube>(0);
 		skyCube->SetType(enSkyCubeType_NightToon);
 		skyCube->SetScale(1000.0f);
@@ -35,11 +38,12 @@ Game::~Game()
 {
 	DeleteGO(m_player);
 	DeleteGO(m_gameCamera);
+	DeleteGO(m_enemy);
 }
 
 void Game::Update()
 {
-
+	
 }
 
 void Game::Render(RenderContext& rc)
