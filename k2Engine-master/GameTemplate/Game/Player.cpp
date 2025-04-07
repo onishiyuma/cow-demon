@@ -48,6 +48,7 @@ void Player::Update()
 	//移動処理。
 	Move();
 
+	/////////////////////コメントアウト解除を忘れずに/////////////////////////////
 	/*//灯籠に火が灯っていれば攻撃できる。
 	if (m_enemyIsCanAttack != false)
 	{
@@ -60,6 +61,7 @@ void Player::Update()
 		//月読の加護。
 	    TukuyomiBlessing();
 	}*/
+	////////////////////////////////////////////////////////////////////////////
 
 
 	////////////////////////////ここは削除する/////////////////////////
@@ -142,14 +144,14 @@ void Player::NormalAttack()
 	//クールタイムを減らす。
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonRB2)&&m_attackCoolDown<=0.0f)
+	if (g_pad[0]->IsTrigger(enButtonA)&&m_attackCoolDown<=0.0f)
 	{
 		//通常攻撃の作成用関数。
 		MakeNormalAttack();
 		//クールタイムの設定。
 		m_attackCoolDown = 0.38f;
 
-		//呪いの抵抗の侵食値を増やしていく。
+		//呪いの抵抗の侵食値を減らしていく。
 		m_playerHP -= 1;
 
 		//会心の設定。
@@ -173,11 +175,8 @@ void Player::NormalAttack()
 //スキル。
 void Player::Skill()
 {
-	//チャージ量が100を超えていたら。
-	if (m_skillCharge >= 100)
-	{
 		//スキル発動。
-		if (g_pad[0]->IsTrigger(enButtonLB2))
+		if (g_pad[0]->IsTrigger(enButtonB)&&m_skillCharge >= 50)
 		{
 			//スキルの作成用関数を呼び出す。
 			MakeSkill();
@@ -188,7 +187,6 @@ void Player::Skill()
 			//チャージ量をリセット。
 			m_skillCharge = 0;
 		}
-	}
 }
 
 //月読の加護。
@@ -197,7 +195,7 @@ void Player::SkillTukuyomiBlessing()
 	//クールタイムを減らす。
 	m_tukuyomiBlessingCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsPress(enButtonX) && m_tukuyomiBlessingCoolDown <= 0.0f)
+	if (g_pad[0]->IsTrigger(enButtonX) && m_tukuyomiBlessingCoolDown <= 0.0f)
 	{
 		//月読の加護作成用関数を呼び出す。
 		MakeTukuyomiBlessing();
@@ -213,29 +211,23 @@ void Player::SkillTukuyomiBlessing()
 //しめ縄。(アイテム)
 void Player::ItemShimenawa()
 {
-	//取得までの時間を減らしていく。
+	//取得までの時間を増加。
 	m_shimenawaGetTime += g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsPress(enButtonY)&&m_shimenawaGetTime>=0.0f)
+	if (g_pad[0]->IsTrigger(enButtonY)&&m_shimenawaGetTime>=5.0f)
 	{
-		//座標をセットする。
+		//しめ縄を設置。
 		m_shimenawa->SetPosition(this->m_position);
 		
 		//タイマーをリセット。
-		m_shimenawaGetTime = 10.0f;
-	}
-
-	//しめ縄が設置されていなければ更新をする。
-	if (m_shimenawa->currentShimenawa != nullptr)
-	{
-		m_shimenawa->currentShimenawa->Update();
+		m_shimenawaGetTime = 0.0f;
 	}
 }
 
 //通常攻撃作成
 void Player::MakeNormalAttack()
 {
-	//作成。
+	//インスタンスを作成。
 	Purification* purification = NewGO<Purification>(0);
 	Vector3 PurificationPos = m_position;
 	//座標を少し上げる。
@@ -249,6 +241,7 @@ void Player::MakeNormalAttack()
 //スキルの作成。
 void Player::MakeSkill()
 {
+	//インスタンスを作成。
 	Amulet* amulet = NewGO<Amulet>(0);
 	Vector3 AmuletPos = m_position;
 	//座標を少し下げる。
@@ -262,12 +255,24 @@ void Player::MakeSkill()
 //月読の加護の作成関数。
 void Player::MakeTukuyomiBlessing()
 {
+	//インスタンスを作成。
 	TukuyomiBlessing* tukuyomiBlessing = NewGO<TukuyomiBlessing>(0);
 	Vector3 TukuyomoBlessingPos = m_position;
 	//座標をセットする。
 	tukuyomiBlessing->SetPosition(TukuyomoBlessingPos);
 	//名前をつける。
 	tukuyomiBlessing->SetName("tukuyomiBlessing");
+}
+
+void Player::MakeShimenawa()
+{
+	//インスタンスを作成。
+	Shimenawa* shimenawa = NewGO<Shimenawa>(0);
+	Vector3 ShimenawaPos = m_position;
+	//座標をセットする。
+	shimenawa->SetPosition(ShimenawaPos);
+	//名前をつける。
+	shimenawa->SetName("shimenawa");
 }
 
 //プレイヤーの管理。
