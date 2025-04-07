@@ -15,6 +15,8 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="TukuyomiBlessing.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="CrossHair.cpp" />
+    <ClCompile Include="Shimenawa.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -30,6 +32,8 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="TukuyomiBlessing.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="CrossHair.h" />
+    <ClInclude Include="Shimenawa.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

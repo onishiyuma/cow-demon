@@ -48,7 +48,7 @@ public:
 	}
 
 	//メンバ変数
-	Shimenawa*m_shimenawa;//しめ縄
+	Shimenawa* m_shimenawa;//しめ縄。
 	ModelRender m_modelRender;//モデルレンダー。
 	CharacterController m_characterController;//キャラコン。
 	Vector3 m_position = Vector3::Zero;//座標。

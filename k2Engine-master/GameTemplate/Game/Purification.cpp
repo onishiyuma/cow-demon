@@ -11,7 +11,11 @@ bool Purification::Start()
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_player = FindGO<Player>("player");
 
+	//エフェクトをロードする。
+	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/black.efkefc");
+
 	CreateCollision();
+	CreateEffect();
 
 	//カメラの前方向を取得。
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();
@@ -32,19 +36,29 @@ Purification::Purification()
 Purification::~Purification()
 {
 	DeleteGO(m_collisionObj);
+	DeleteGO(m_effectEmitter);
 }
 
 void Purification::Update()
 {
+	//座標を移動させる。
 	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
+	if (m_effectEmitter->GetEffect() != nullptr)
+	{
+		m_effectEmitter->SetPosition(m_position);
+	}
+
 	m_collisionObj->SetPosition(m_position);
 
-	//タイマーが一定の秒数経過していたら。
+	//タイマーを加算する。
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
+	//タイマーが一定の秒数経過していたら。
 	if (m_deleteTimer >= 0.48f)
 	{
 		//自身を削除。
 		DeleteGO(this);
+		//エフェクトを停止する。
+		m_effectEmitter->Stop();
 	}
 }
 
@@ -65,4 +79,14 @@ void Purification::CreateCollision()
 
 	//オブジェクトが勝手に削除されないように。
 	m_collisionObj->SetIsEnableAutoDelete(false);
+}
+
+void Purification::CreateEffect()
+{
+	m_effectEmitter = NewGO<EffectEmitter>(0);
+	m_effectEmitter->Init(0);
+	m_effectEmitter->SetScale({ 55.0f,55.0f,55.0f });
+	//エフェクトの座標をセットする。
+	m_effectEmitter->SetPosition(m_position);
+	m_effectEmitter->Play();
 }

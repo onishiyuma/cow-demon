@@ -11,7 +11,8 @@ bool Amulet::Start()
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_player = FindGO<Player>("player");
 
-	CreateCollision();
+	//エフェクトをロードする。
+	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/hit.efk");
 
 	//カメラ行列を前方向に代入。
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();
@@ -20,6 +21,12 @@ bool Amulet::Start()
 
 	//移動速度を計算。
 	m_moveSpeed = m_direction * m_amuletSpeed;
+
+	//コリジョンを作成。
+	CreateCollision();
+
+	//エフェクトを作成。
+	CreateEffect();
 
 	return true;
 }
@@ -32,11 +39,20 @@ Amulet::Amulet()
 Amulet::~Amulet()
 {
 	DeleteGO(m_collisionObj);
+	DeleteGO(m_effectEmitter);
 }
 
 void Amulet::Update()	
 {
+	//座標を移動させる。
 	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
+
+	if (m_effectEmitter->GetEffect() != nullptr)
+	{
+		m_effectEmitter->SetPosition(m_position);
+	}
+
+	//コリジョンオブジェクトに座標を設定する。
 	m_collisionObj->SetPosition(m_position);
 
 	//タイマーを加算。
@@ -46,6 +62,8 @@ void Amulet::Update()
 	{
 		//自身を削除。
 		DeleteGO(this);
+		//エフェクトの再生を停止。
+		m_effectEmitter->Stop();
 	}
 }
 
@@ -65,4 +83,15 @@ void Amulet::CreateCollision()
 
 	//オブジェクトが勝手に削除されないように。
 	m_collisionObj->SetIsEnableAutoDelete(false);
+}
+
+void Amulet::CreateEffect()
+{
+	m_effectEmitter = NewGO<EffectEmitter>(0);
+	m_effectEmitter->Init(0);
+	//エフェクトの大きさを設定する。
+	m_effectEmitter->SetScale({ 55.0f,55.0f,55.0f });
+	//エフェクトの座標をセットする。
+	m_effectEmitter->SetPosition(m_position);
+	m_effectEmitter->Play();
 }

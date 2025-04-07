@@ -95,6 +95,12 @@ namespace nsK2EngineLow {
 		{
 			return m_effect.IsPlay();
 		}
+
+		Effect* GetEffect()
+		{
+			return&m_effect;
+		}
+
 	private:
 		Effect m_effect;					//エフェクト。
 	};
