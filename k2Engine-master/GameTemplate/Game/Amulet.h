@@ -2,6 +2,7 @@
 
 class Player;
 class GameCamera;
+#include"graphics/effect/EffectEmitter.h"
 
 //御札クラス・
 class Amulet:public IGameObject
@@ -13,6 +14,8 @@ public:
 	bool Start();
 	//コリジョンの作成。
 	void CreateCollision();
+	//エフェクトの作成。
+	void CreateEffect();
 
 	//座標をセットする。
 	void SetPosition(const Vector3& position)
@@ -44,6 +47,7 @@ public:
 	Player* m_player;//プレイヤー。
 	GameCamera* m_gameCamera;//カメラ。
 	CollisionObject* m_collisionObj;//コリジョンオブジェクト。
+	EffectEmitter* m_effectEmitter;//エフェクト
 	Vector3 m_toCameraPos;//注視点から視点に向かうベクトル。
 	Vector3 m_velocity;//速度。
 	Vector3 m_position;//座標。
@@ -54,6 +58,5 @@ public:
 	Quaternion m_rotation;//回転。
 	const float m_amuletSpeed= 2000.0f;//御札の移動速度。
 	float m_deleteTimer = 0.0f;//削除を管理するタイマー。
-
 };
 
