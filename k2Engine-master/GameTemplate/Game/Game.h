@@ -6,6 +6,8 @@ class Player;
 class GameCamera;
 class BackGround;
 class Enemy;
+class CrossHair;
+class Shimenawa;
 
 class Game : public IGameObject
 {
@@ -23,13 +25,16 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	BackGround* m_backGround;
-	GameCamera* m_gameCamera;
-	Player*m_player;
-	Enemy* m_enemy;
-	ModelRender m_modelRender;
-	Vector3 m_pos;
+	BackGround* m_backGround;//背景。
+	GameCamera* m_gameCamera;//ゲームカメラ。
+	Player*m_player;//プレイヤー。
+	Enemy* m_enemy;//敵。
+	CrossHair*m_crossHair;//クロスヘアー。
+	ModelRender m_modelRender;//モデルレンダー。
+	Shimenawa* m_shimenawa;//しめ縄。
+	Vector3 m_pos;//座標。
 	GameState m_gameState = enOutGame;//�A�E�g�Q�[���ɂ��Ă���
+	SpriteRender m_spriteRender;//スプライトレンダー。
 private:
 };
 
