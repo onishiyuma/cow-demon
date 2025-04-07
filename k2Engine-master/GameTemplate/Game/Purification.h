@@ -1,5 +1,5 @@
 #pragma once
-
+#include "graphics/effect/EffectEmitter.h"
 class Player;
 class GameCamera;
 
@@ -14,6 +14,8 @@ public:
 	bool Start();
 	//コリジョンの作成。
 	void CreateCollision();
+	//エフェクトの作成。
+	void CreateEffect();
 
 	//座標をセット。
 	void SetPosition(const Vector3& position)
@@ -44,6 +46,7 @@ public:
 	Player* m_player;//プレイヤー。
 	GameCamera* m_gameCamera;//カメラ。
 	CollisionObject* m_collisionObj;//コリジョンオブジェクト。
+	EffectEmitter* m_effectEmitter;//エフェクト。
 	Vector3 m_toCameraPos;//注視点から視点に向かうベクトル。
 	Vector3 m_velocity;//速度。
 	Vector3 m_position;//座標。
