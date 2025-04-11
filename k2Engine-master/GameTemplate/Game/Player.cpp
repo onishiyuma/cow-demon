@@ -22,10 +22,12 @@ bool Player::Start()
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	//キャラコンを初期化
+	m_position.Set(70.0f, 50.0f, -1300.0f);
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
-	m_position.Set(0.0f, 0.0f, 0.0f);
 	//プレイヤーのHPをセットする。
 	m_playerHP = 100;
+
+	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 
 	//乱数を初期化。
 	srand((unsigned)time(NULL));
@@ -50,7 +52,7 @@ void Player::Update()
 
 	/////////////////////コメントアウト解除を忘れずに/////////////////////////////
 	/*//灯籠に火が灯っていれば攻撃できる。
-	if (m_enemyIsCanAttack != false)
+	if (m_enemyIsCanAttack != true)
 	{
 		//通常攻撃。
 		NormalAttack();
@@ -60,6 +62,9 @@ void Player::Update()
 
 		//月読の加護。
 	    TukuyomiBlessing();
+
+		//しめ縄。
+	    ItemShimenawa();
 	}*/
 	////////////////////////////////////////////////////////////////////////////
 
@@ -73,6 +78,9 @@ void Player::Update()
 
 	//月読の加護。
 	SkillTukuyomiBlessing();
+
+	//しめ縄。
+	ItemShimenawa();
 	/////////////////////////////////////////////////////////////////
 
 	//呪いの抵抗が0を下回っていたら。
@@ -128,6 +136,7 @@ void Player::Move()
 	m_position = m_characterController.Execute(m_moveSpeed, 1.0f / 60.0f);
 	//フレームごとに座標を移動させる。
 	m_position = m_characterController.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+
 	//キャラコンが地面に付いていたら。
 	if (m_characterController.IsOnGround())
 	{
@@ -148,6 +157,7 @@ void Player::NormalAttack()
 	{
 		//通常攻撃の作成用関数。
 		MakeNormalAttack();
+
 		//クールタイムの設定。
 		m_attackCoolDown = 0.38f;
 
@@ -160,6 +170,7 @@ void Player::NormalAttack()
 		{
 			//クリティカルダメージ。
 			m_criticalATK=m_playerATK * m_cliticalDamage;
+
 			//スキルを使うため
 			m_skillCharge += CHARGE_INCREASE_AMOUNT;
 		}
@@ -199,12 +210,12 @@ void Player::SkillTukuyomiBlessing()
 	{
 		//月読の加護作成用関数を呼び出す。
 		MakeTukuyomiBlessing();
-		//クールタイムの設定。
+
+		//クールタイムの設定。 
 		m_tukuyomiBlessingCoolDown = 40.0f;
 
 		//月読の加護のダメージ。
 		m_TukuyomiATK = m_playerATK * m_TukuyomiMagnification;
-
 	}
 }
 
@@ -213,16 +224,31 @@ void Player::ItemShimenawa()
 {
 	//取得までの時間を増加。
 	m_shimenawaGetTime += g_gameTime->GetFrameDeltaTime();
+	//しめ縄を設置できる時間。
+	const float collectTime = 5.0f;
+	const float playerHeightOffset = 1.0f;
 
-	if (g_pad[0]->IsTrigger(enButtonY)&&m_shimenawaGetTime>=5.0f)
+	if (g_pad[0]->IsTrigger(enButtonY)&&m_shimenawaGetTime>=collectTime)
 	{
+		//しめ縄作成用関数を呼び出す。
+		MakeShimenawa();
+
+		//プレイヤーの位置を取得。
+		m_placePosition = this->m_position;
+		m_placePosition.y -= playerHeightOffset;
+
 		//しめ縄を設置。
-		m_shimenawa->SetPosition(this->m_position);
-		
+		m_shimenawa->SetPosition(m_placePosition);
+
 		//タイマーをリセット。
 		m_shimenawaGetTime = 0.0f;
 	}
 }
+
+
+
+////////////////ここから先は作成用関数////////////////////////////////////
+
 
 //通常攻撃作成
 void Player::MakeNormalAttack()
@@ -257,6 +283,7 @@ void Player::MakeTukuyomiBlessing()
 {
 	//インスタンスを作成。
 	TukuyomiBlessing* tukuyomiBlessing = NewGO<TukuyomiBlessing>(0);
+	//座標を設定。
 	Vector3 TukuyomoBlessingPos = m_position;
 	//座標をセットする。
 	tukuyomiBlessing->SetPosition(TukuyomoBlessingPos);
@@ -264,21 +291,39 @@ void Player::MakeTukuyomiBlessing()
 	tukuyomiBlessing->SetName("tukuyomiBlessing");
 }
 
+
+//しめ縄の作成。
 void Player::MakeShimenawa()
 {
 	//インスタンスを作成。
 	Shimenawa* shimenawa = NewGO<Shimenawa>(0);
+	if (!m_shimenawa)
+	{
+		return;
+	}
+	m_shimenawa = shimenawa;
+
+	//現在の座標を取得。
 	Vector3 ShimenawaPos = m_position;
-	//座標をセットする。
-	shimenawa->SetPosition(ShimenawaPos);
+	//y座標を地面に固定。
+	ShimenawaPos.y = 0.0f;
+	m_shimenawa->SetPosition(ShimenawaPos);
+
 	//名前をつける。
 	shimenawa->SetName("shimenawa");
 }
 
+////////////////////////////////終わり///////////////////////////////////////////////
+ 
 //プレイヤーの管理。
 void Player::ManageState()
 {
 
+}
+
+void Player::ResetShimenawa()
+{
+	m_shimenawa = nullptr;
 }
 
 void Player::Render(RenderContext&renderContext)
