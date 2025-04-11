@@ -231,6 +231,7 @@
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Purification.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -241,6 +242,7 @@
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="TukuyomiBlessing.cpp" />
+    <ClCompile Include="UIScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -250,12 +252,14 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameClear.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Purification.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="TukuyomiBlessing.h" />
+    <ClInclude Include="UIScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
