@@ -5,6 +5,7 @@
 bool Shimenawa::Start()
 {
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	//m_position.Set(0.0f, 50.0f, 0.0f);
 
 	//プレイヤーのインスタンスを検索する。
 	m_player = FindGO<Player>("player");
@@ -19,59 +20,44 @@ Shimenawa::Shimenawa()
 
 Shimenawa::~Shimenawa()
 {
-
+	DeleteGO(this);
 }
 
 void Shimenawa::Update()
 {
-	m_timer = g_gameTime->GetFrameDeltaTime();
+		m_elapsedTime += g_gameTime->GetFrameDeltaTime();
 
-	//取得処理。
-	if (!m_isCollected)
-	{
-		m_collectTimer += m_timer;
-		if (m_collectTimer >= m_collectTime)
-		{
-			m_isCollected = true;
-		}
-	}
-
-	//設置後の時間管理。
-	if (m_isPlaced)
-	{
-		m_elapsedTime += m_timer;
 		if (m_elapsedTime >= m_placeDuration)
 		{
 			Destroy();
 		}
-	}
 }
 
 void Shimenawa::Place(Vector3 playerPosition)
 {
-	if (m_isCollected && !m_isPlaced)
-	{
-		m_isPlaced = true;
-		m_isCollected = false;
-		m_position = m_player->m_position;
-		m_elapsedTime = 0.0f;//取得時間をリセット。
-	}
+	m_position = playerPosition;
+	//m_position = m_player->GetPosition();
+	m_elapsedTime = 0.0f;
 }
 
 //しめ縄の削除処理
 void Shimenawa::Destroy()
 {
+	if (m_player)
+	{
+		m_player->ResetShimenawa();
+	}
+
 	m_isPlaced = false;
 	m_elapsedTime = 0.0f;
+
+	DeleteGO(this);
 
 }
 
 void Shimenawa::Render(RenderContext& rc)
 {
-	if (!m_isPlaced)return;
-	{
-		m_modelRender.Draw(rc);
-	}
+	m_position=m_player->GetPosition();
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.Draw(rc);
 }
-
-
