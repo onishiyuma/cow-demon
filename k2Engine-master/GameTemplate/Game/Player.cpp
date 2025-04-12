@@ -18,7 +18,7 @@ namespace
 
 bool Player::Start()
 {
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	//キャラコンを初期化
@@ -224,21 +224,11 @@ void Player::ItemShimenawa()
 {
 	//取得までの時間を増加。
 	m_shimenawaGetTime += g_gameTime->GetFrameDeltaTime();
-	//しめ縄を設置できる時間。
-	const float collectTime = 5.0f;
-	const float playerHeightOffset = 1.0f;
 
-	if (g_pad[0]->IsTrigger(enButtonY)&&m_shimenawaGetTime>=collectTime)
+	if (g_pad[0]->IsTrigger(enButtonY)&&m_shimenawaGetTime>=m_collectTime)
 	{
 		//しめ縄作成用関数を呼び出す。
 		MakeShimenawa();
-
-		//プレイヤーの位置を取得。
-		m_placePosition = this->m_position;
-		m_placePosition.y -= playerHeightOffset;
-
-		//しめ縄を設置。
-		m_shimenawa->SetPosition(m_placePosition);
 
 		//タイマーをリセット。
 		m_shimenawaGetTime = 0.0f;
@@ -255,6 +245,7 @@ void Player::MakeNormalAttack()
 {
 	//インスタンスを作成。
 	Purification* purification = NewGO<Purification>(0);
+	//座標を設定。
 	Vector3 PurificationPos = m_position;
 	//座標を少し上げる。
 	PurificationPos.y += 70.0f;
@@ -269,6 +260,7 @@ void Player::MakeSkill()
 {
 	//インスタンスを作成。
 	Amulet* amulet = NewGO<Amulet>(0);
+	//座標を設定。
 	Vector3 AmuletPos = m_position;
 	//座標を少し下げる。
 	AmuletPos.y += 70.0f;
@@ -284,9 +276,9 @@ void Player::MakeTukuyomiBlessing()
 	//インスタンスを作成。
 	TukuyomiBlessing* tukuyomiBlessing = NewGO<TukuyomiBlessing>(0);
 	//座標を設定。
-	Vector3 TukuyomoBlessingPos = m_position;
+	Vector3 TukuyomiBlessingPos = m_position;
 	//座標をセットする。
-	tukuyomiBlessing->SetPosition(TukuyomoBlessingPos);
+	tukuyomiBlessing->SetPosition(TukuyomiBlessingPos);
 	//名前をつける。
 	tukuyomiBlessing->SetName("tukuyomiBlessing");
 }
@@ -297,18 +289,10 @@ void Player::MakeShimenawa()
 {
 	//インスタンスを作成。
 	Shimenawa* shimenawa = NewGO<Shimenawa>(0);
-	if (!m_shimenawa)
-	{
-		return;
-	}
-	m_shimenawa = shimenawa;
-
-	//現在の座標を取得。
+	//座標を設定。
 	Vector3 ShimenawaPos = m_position;
-	//y座標を地面に固定。
-	ShimenawaPos.y = 0.0f;
-	m_shimenawa->SetPosition(ShimenawaPos);
-
+	//座標をセットする。
+	shimenawa->SetPosition(ShimenawaPos);
 	//名前をつける。
 	shimenawa->SetName("shimenawa");
 }
@@ -319,11 +303,6 @@ void Player::MakeShimenawa()
 void Player::ManageState()
 {
 
-}
-
-void Player::ResetShimenawa()
-{
-	m_shimenawa = nullptr;
 }
 
 void Player::Render(RenderContext&renderContext)
