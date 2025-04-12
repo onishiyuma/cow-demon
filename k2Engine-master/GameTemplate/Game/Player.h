@@ -57,7 +57,7 @@ public:
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
 	FontRender m_fontRender;//フォントレンダー。
-	const float m_collectTime = 5.0f;//しめ縄を設置できる時間。
+	const float m_collectTime = 15.0f;//しめ縄を設置できる時間。
 	const float m_gravity = 10.5f;//重力を発生させる。
 	const int m_charaConRadius = 25.0f;//キャラコンの半径。
 	const int m_charaConHeight = 75.0f;//キャラコンの高さ。
