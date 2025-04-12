@@ -47,6 +47,13 @@ namespace nsK2EngineLow {
 		{
 			m_effect.SetPosition(position);
 		}
+
+		//現在の座標を取得し続ける。
+		void RealTimeSetPosition(Vector3& position)
+		{
+			m_effect.SetPosition(position);
+		}
+
 		/// <summary>
 		/// 座標を取得。
 		/// </summary>
