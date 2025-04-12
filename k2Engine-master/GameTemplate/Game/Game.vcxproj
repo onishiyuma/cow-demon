@@ -225,7 +225,6 @@
   <ItemGroup>
     <ClCompile Include="Amulet.cpp" />
     <ClCompile Include="BackGround.cpp" />
-    <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -248,7 +247,6 @@
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
     <ClInclude Include="BackGround.h" />
-    <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
