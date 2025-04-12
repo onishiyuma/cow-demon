@@ -34,8 +34,6 @@ public:
 	void Move();
 	//ステート管理
 	void ManageState();
-	//しめ縄リセット用関数。
-	void ResetShimenawa();
 
 
 	//座標を取得する関数。
@@ -44,10 +42,12 @@ public:
 		return m_position;
 	}
 
-	const Quaternion& GetRotation()const
+	//座標を設定する関数
+	void SetPosition(Vector3 position)
 	{
-		return m_rotation;
+		m_position = position;
 	}
+
 
 	//メンバ変数
 	Shimenawa* m_shimenawa;//しめ縄。
@@ -56,8 +56,8 @@ public:
 	Vector3 m_position = Vector3::Zero;//座標。
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
-	Vector3 m_placePosition;//設置位置。
-	Quaternion m_rotation;//ローテンション。
+	FontRender m_fontRender;//フォントレンダー。
+	const float m_collectTime = 5.0f;//しめ縄を設置できる時間。
 	const float m_gravity = 10.5f;//重力を発生させる。
 	const int m_charaConRadius = 25.0f;//キャラコンの半径。
 	const int m_charaConHeight = 75.0f;//キャラコンの高さ。
@@ -69,11 +69,13 @@ public:
 	float m_attackCoolDown = 0.0f;//攻撃のクールダウン。
 	float m_tukuyomiBlessingCoolDown = 0.0f;//月読の加護のクールダウン。
 	float m_shimenawaGetTime = 0.0f;//しめ縄を時間で取得する。
+	float m_deleteTimer=0.0f;//削除までの時間。
+	bool m_deleteFlag=false;//削除するか。
+	bool m_enemyIsCanAttack = false;//敵を攻撃できるか？。
 	int m_playerHP = 0;//プレイヤーのHP。
 	int m_skillCharge = 0;//スキルのチャージ。
 	int m_normalATK=0;//通常攻撃ダメージ。
 	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
 	int m_skillATK=0;//スキル総ダメージ。
 	int m_TukuyomiATK=0;//月読の加護の総ダメージ。
-	bool m_enemyIsCanAttack=false;//敵を攻撃できるか？7。
 };

@@ -58,7 +58,7 @@ void GameCamera::Update()
 	//視点を計算する。
 	Vector3 pos = target+m_toCameraPos/m_half;
 
-	//メインカメラに注視点と視点を設定する。
+	//メインカメラに注視点と座標を設定する。
 	g_camera3D->SetTarget(target);
 	g_camera3D->SetPosition(pos);
 

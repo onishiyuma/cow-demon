@@ -14,9 +14,6 @@ bool Purification::Start()
 	//エフェクトをロードする。
 	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/black.efkefc");
 
-	CreateCollision();
-	CreateEffect();
-
 	//カメラの前方向を取得。
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();
 	m_direction = Vector3(cameraMatrix.m[2][0], cameraMatrix.m[2][1], cameraMatrix.m[2][2]);
@@ -24,6 +21,11 @@ bool Purification::Start()
 
 	//移動速度を計算。
 	m_moveSpeed = m_direction * m_purificationSpeed;
+
+	//コリジョンの作成。
+	CreateCollision();
+	//エフェクトの作成。
+	CreateEffect();
 
 	return true;
 }
@@ -45,9 +47,10 @@ void Purification::Update()
 	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
 	if (m_effectEmitter->GetEffect() != nullptr)
 	{
+		//エフェクトに座標を設定。
 		m_effectEmitter->SetPosition(m_position);
 	}
-
+	//コリジョンオブジェクトに座標を設定する。
 	m_collisionObj->SetPosition(m_position);
 
 	//タイマーを加算する。
