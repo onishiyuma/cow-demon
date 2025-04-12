@@ -64,6 +64,7 @@ void TukuyomiBlessing::Move()
 	m_effectEmitter->SetPosition(centerPosition);
 }
 
+//コリジョンの作成。
 void TukuyomiBlessing::CreateCollision()
 {
 	//コリジョンを作成

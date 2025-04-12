@@ -44,6 +44,6 @@ public:
 	ModelRender m_modelRender;//モデルレンダー。
 	Vector3 m_position;//座標。
 	float m_deleteTimer = 0.0f;//削除までの時間。
-	const float m_duration=10.0f;//継続時間。
+	const float m_duration=5.0f;//継続時間。
 	Vector3 m_placePosition;//設置座標。
 };
