@@ -9,13 +9,6 @@
 
 #include<time.h>
 
-//定数を設定する場所
-namespace
-{
-	int CHARGE_INCREASE_AMOUNT = 3;//チャージ増加量。
-}
-
-
 bool Player::Start()
 {
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
@@ -28,9 +21,6 @@ bool Player::Start()
 	m_playerHP = 100;
 
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
-
-	//乱数を初期化。
-	srand((unsigned)time(NULL));
 
 	return true;
 }
@@ -153,51 +143,51 @@ void Player::NormalAttack()
 	//クールタイムを減らす。
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonA)&&m_attackCoolDown<=0.0f)
+	/////////////////デバック用///////////////////////////////////
+	/*if (g_pad[0]->IsTrigger(enButtonA) && m_attackCoolDown <= 0.0f)
 	{
-		//通常攻撃の作成用関数。
-		MakeNormalAttack();
-
 		//クールタイムの設定。
 		m_attackCoolDown = 0.38f;
+		//通常攻撃の作成用関数。
+		MakeNormalAttack();
+	}*/
+	///////////////////////////////////////////////////////////////
 
-		//呪いの抵抗の侵食値を減らしていく。
-		m_playerHP -= 1;
 
-		//会心の設定。
-		int ram = rand() % 100;
-		if (ram > m_criticalRate)
-		{
-			//クリティカルダメージ。
-			m_criticalATK=m_playerATK * m_cliticalDamage;
-
-			//スキルを使うため
-			m_skillCharge += CHARGE_INCREASE_AMOUNT;
-		}
-		//非会心。
-		else
-		{
-			//通常ダメージ。
-			m_normalATK=m_playerATK;
-		}
+	////////////////正式なボタン配置///////////////////////
+	if (g_pad[0]->IsTrigger(enButtonRB2) && m_attackCoolDown <= 0.0f)
+	{
+		//クールタイムの設定。
+		m_attackCoolDown = 0.38f;
+		//通常攻撃の作成用関数。
+		MakeNormalAttack();
 	}
 }
 
 //スキル。
 void Player::Skill()
 {
-		//スキル発動。
-		if (g_pad[0]->IsTrigger(enButtonB)&&m_skillCharge >= 50)
-		{
-			//スキルの作成用関数を呼び出す。
-			MakeSkill();
-
-			//スキルのダメージ。
-			m_skillATK = m_playerATK * m_skillMagnification;
-
-			//チャージ量をリセット。
+	////////////////デバック用///////////////////////////////////
+	//スキル発動。
+	/*if (g_pad[0]->IsTrigger(enButtonB) && m_skillCharge >= 50)
+	{
+		//スキルの作成用関数を呼び出す。
+		MakeSkill();
+		//チャージ量をリセット。
 			m_skillCharge = 0;
-		}
+	}*/
+	///////////////////////////////////////////////////////////////
+
+
+	////////////////正式なボタン配置///////////////////////
+	//スキル発動。
+	if (g_pad[0]->IsTrigger(enButtonLB1) && m_skillCharge >= 50)
+	{
+		//スキルの作成用関数を呼び出す。
+		MakeSkill();
+		//チャージ量をリセット。
+		m_skillCharge = 0;
+	}
 }
 
 //月読の加護。
@@ -210,12 +200,8 @@ void Player::SkillTukuyomiBlessing()
 	{
 		//月読の加護作成用関数を呼び出す。
 		MakeTukuyomiBlessing();
-
 		//クールタイムの設定。 
 		m_tukuyomiBlessingCoolDown = 40.0f;
-
-		//月読の加護のダメージ。
-		m_TukuyomiATK = m_playerATK * m_TukuyomiMagnification;
 	}
 }
 
@@ -229,7 +215,6 @@ void Player::ItemShimenawa()
 	{
 		//しめ縄作成用関数を呼び出す。
 		MakeShimenawa();
-
 		//タイマーをリセット。
 		m_shimenawaGetTime = 0.0f;
 	}
