@@ -271,25 +271,30 @@ void Enemy::Collision()
 		//コリジョンとキャラが衝突する。
 		if (collision->IsHit(m_charaCon))
 		{
-			if (!m_isStopped)
-			{
-				//停止処理
-				m_isStopped = true;
-				m_stopTimer = 5.0f;
-				m_moveSpeed = { 0.0f,0.0f,0.0f };
-			}
+			//停止
+			m_isStopped = true;
 			break;
-			//停止中の処理。
-			if (m_isStopped)
-			{
-				m_stopTimer -= g_gameTime->GetFrameDeltaTime();
+		}
+		//停止させる準備。
+		if (!m_isStopped)
+		{
+			//動きを止める。
+			m_moveSpeed = m_stopMove;
+			//アニメーションも止める。
+			m_enemyState=enEnemyState_Idle;
+			//時間をリセット。
+			m_stopTimer = 5.0f;
+		}
+		//停止中の処理。
+		else if (m_isStopped)
+		{
+			m_stopTimer -= g_gameTime->GetFrameDeltaTime();
 
-				if (m_stopTimer <= 0.0f)
-				{
-					m_isStopped = false;
-				}
+			if (m_stopTimer <= 0.0f)
+			{
+				m_isStopped = false;
+				return;
 			}
-			return;
 		}
 	}
 

@@ -23,7 +23,6 @@
     <ClCompile Include="UIStone.cpp" />
     <ClCompile Include="DebugScene.cpp" />
     <ClCompile Include="SpriteCollection.cpp" />
-    <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="UIcurseBar.cpp" />
     <ClCompile Include="UIheal.cpp" />
@@ -31,6 +30,7 @@
     <ClCompile Include="UISimenawa.cpp" />
     <ClCompile Include="UIskill.cpp" />
     <ClCompile Include="UItukuyomi.cpp" />
+    <ClCompile Include="RingBell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -54,7 +54,6 @@
     <ClInclude Include="UIStone.h" />
     <ClInclude Include="DebugScene.h" />
     <ClInclude Include="SpriteCollection.h" />
-    <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="UIcurseBar.h" />
     <ClInclude Include="UIheal.h" />
@@ -63,6 +62,7 @@
     <ClInclude Include="UISimenawa.h" />
     <ClInclude Include="UIskill.h" />
     <ClInclude Include="UItukuyomi.h" />
+    <ClInclude Include="RingBell.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

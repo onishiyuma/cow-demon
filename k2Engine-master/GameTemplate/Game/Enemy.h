@@ -103,6 +103,7 @@ private:
 	Vector3 m_position;
 	Vector3 m_forward = Vector3::AxisZ;
 	Vector3 m_moveSpeed;
+	const Vector3 m_stopMove = Vector3::Zero;
 	Vector3 m_scale;
 	Quaternion m_rotation;
 	CharacterController m_charaCon;

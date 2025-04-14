@@ -38,12 +38,6 @@ void TukuyomiBlessing::Update()
 	DeleteTime();
 }
 
-//UŒ‚‚Å‚«‚é”ÍˆÍB
-void TukuyomiBlessing::Distance()
-{
-	//for(auto&)
-}
-
 //Œp‘±ŠÔB
 void TukuyomiBlessing::DeleteTime()
 {
