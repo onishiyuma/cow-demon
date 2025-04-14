@@ -11,7 +11,7 @@
 
 bool Player::Start()
 {
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	//キャラコンを初期化
