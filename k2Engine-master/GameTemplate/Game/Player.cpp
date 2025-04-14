@@ -144,7 +144,7 @@ void Player::NormalAttack()
 	//クールタイムを減らす。
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonA)&&m_attackCoolDown<=0.0f)
+	if (g_pad[0]->IsTrigger(enButtonRB1)&&m_attackCoolDown<=0.0f)
 	{
 		//通常攻撃の作成用関数。
 		MakeNormalAttack();

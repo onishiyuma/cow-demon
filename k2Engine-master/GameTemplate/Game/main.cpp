@@ -6,7 +6,7 @@
 
 #include "Game.h"
 #include "Title.h"
-
+#include "DebugScene.h"
 
 
 void ReportLiveObjects()
@@ -37,7 +37,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//タイトルクラスのオブジェクトを作成。
 	NewGO<Title>(0, "title");
 
-	//NewGO<Game>(0, "game");
+	// NewGO< DebugScene>(0);
+	// NewGO<Game>(0, "game");
 
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！

@@ -55,9 +55,9 @@ public:
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
 	Quaternion m_rotation;
-	const float m_gravity = 10.5f;//重力を発生させる。
-	const int m_charaConRadius = 25.0f;//キャラコンの半径。
-	const int m_charaConHeight = 75.0f;//キャラコンの高さ。
+	float m_gravity = 10.5f;//重力を発生させる。
+	float m_charaConRadius = 25.0f;//キャラコンの半径。
+	float m_charaConHeight = 75.0f;//キャラコンの高さ。
 	const int m_playerATK = 5;//プレイヤーの攻撃力。
 	const int m_skillMagnification=5;//攻撃の倍率を上げる。
 	const int m_TukuyomiMagnification = 7;//月読の加護の倍率を設定。
@@ -73,4 +73,5 @@ public:
 	int m_TukuyomiATK;//月読の加護の総ダメージ。
 	bool m_enemyIsCanAttack=false;//敵を攻撃できるか？7。
 	float m_shimenawaGetTime=0.0f;//しめ縄を時間で取得する。
+	int m_stoneCount = 0; //火打石のアイテムカウント
 };

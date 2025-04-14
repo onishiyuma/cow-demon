@@ -8,6 +8,11 @@ class BackGround;
 class Enemy;
 class CrossHair;
 class Shimenawa;
+class Stone;
+class UIStone;
+class Lantern;
+class LanternAttack;
+
 
 class Game : public IGameObject
 {
@@ -32,9 +37,15 @@ public:
 	CrossHair*m_crossHair;//クロスヘアー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Shimenawa* m_shimenawa;//しめ縄。
+	Stone* m_stone; //火打石
+	Stone* m_stone1; //火打石
+	UIStone* m_uiStone; //火打石の数
+	Lantern* m_lantern; //灯籠
+	LanternAttack* m_lanternAttack; //攻撃用灯籠
 	Vector3 m_pos;//座標。
 	GameState m_gameState = enOutGame;//�A�E�g�Q�[���ɂ��Ă���
 	SpriteRender m_spriteRender;//スプライトレンダー。
-private:
+	bool m_lanternAction = false; 
+
 };
 

@@ -226,40 +226,52 @@
     <ClCompile Include="Amulet.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="CrossHair.cpp" />
+    <ClCompile Include="DebugScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="Lantern.cpp" />
+    <ClCompile Include="LanternAttack.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Purification.cpp" />
     <ClCompile Include="Shimenawa.cpp" />
+    <ClCompile Include="SpriteCollection.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Stone.cpp" />
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="TukuyomiBlessing.cpp" />
+    <ClCompile Include="UIStone.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="CrossHair.h" />
+    <ClInclude Include="DebugScene.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameClear.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="Lantern.h" />
+    <ClInclude Include="LanternAttack.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Purification.h" />
     <ClInclude Include="Shimenawa.h" />
+    <ClInclude Include="SpriteCollection.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Stone.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="TukuyomiBlessing.h" />
+    <ClInclude Include="UIStone.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
