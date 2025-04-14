@@ -9,6 +9,13 @@
 #include<time.h>
 #include<stdlib.h>
 
+//定数を設定する場所
+namespace
+{
+	int CHARGE_INCREASE_AMOUNT = 3;//チャージ増加量。
+}
+
+
 Enemy::Enemy()
 {
 
@@ -161,8 +168,28 @@ void Enemy::Collision()
 			//コリジョンとキャラコンが衝突したら
 			if (collision->IsHit(m_charaCon))
 			{
-				//HPを減らす
-				m_hp -= 5;
+				//呪いの抵抗の侵食値を減らしていく。
+				m_player->m_playerHP -= 1;
+				//会心の設定。
+				int ram = rand() % 100;
+				if (ram > m_player->m_criticalRate)
+				{
+					//クリティカルダメージ。
+					m_player->m_criticalATK = m_player->m_playerATK * m_player->m_cliticalDamage;
+					//敵のHPを減らす。
+					m_hp -= m_player->m_criticalATK;
+					//スキルを使うため
+					m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
+				}
+				//非会心。
+				else
+				{
+					//通常ダメージ。
+					m_player->m_normalATK = m_player->m_playerATK;
+					//敵のHPを減らす。
+					m_hp -= m_player->m_normalATK;
+				}
+
 				//HPが0になったら
 				m_enemyState = enEnemyState_Down;
 			}
@@ -174,25 +201,93 @@ void Enemy::Collision()
 		}
 	}
 
-	//プレイヤーのスキル用のコリジョンを取得する
-	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("amulet");
-	//for文で配列を回す
+	{
+		//プレイヤーのスキル用のコリジョンを取得する
+		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("amulet");
+		//for文で配列を回す
+		for (auto collision : collisions)
+		{
+			//コリジョンとキャラコンが衝突する
+			if (collision->IsHit(m_charaCon))
+			{
+				//スキルのダメージ。
+				m_player->m_skillATK = m_player->m_playerATK * m_player->m_skillMagnification;
+				//敵のHPを減らす。
+				m_hp -= m_player->m_skillATK;
+
+				//HPが0になったら
+				if (m_hp < 0)
+				{
+					//ダウンステートに遷移する
+					m_enemyState = enEnemyState_Down;
+				}
+
+				else {
+					//被ダメージステートに遷移する
+					m_enemyState = enEnemyState_Damage;
+				}
+				return;
+			}
+		}
+	}
+	
+	{
+		//プレイヤーの月読の加護用のコリジョンを取得する。
+		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Tukuyomi");
+		//for文で配列を回す。
+		for (auto collision : collisions)
+		{
+			//コリジョンとキャラが衝突する。
+			if (collision->IsHit(m_charaCon))
+			{
+				//月読の加護のダメージ。
+				m_player->m_tukuyomiATK = m_player->m_playerATK * m_player->m_TukuyomiMagnification;
+				//敵のHPを減らす。
+				m_hp -= m_player->m_tukuyomiATK;
+
+				//HPが0になったら
+				if (m_hp < 0)
+				{
+					//ダウンステートに遷移する。
+					m_enemyState = enEnemyState_Down;
+				}
+
+				else
+				{
+					//被ダメージステートに遷移する。
+					m_enemyState = enEnemyState_Damage;
+				}
+				return;
+			}
+		}
+	}
+	
+
+	//プレイヤーのしめ縄用のコリジョンを取得する。
+	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Shimenawa");
+	//for文で配列を回す。
 	for (auto collision : collisions)
 	{
-		//コリジョンとキャラコンが衝突する
+		//コリジョンとキャラが衝突する。
 		if (collision->IsHit(m_charaCon))
 		{
-			m_hp -= 10;
-			//HPが0になったら
-			if (m_hp < 0)
+			if (!m_isStopped)
 			{
-				//ダウンステートに遷移する
-				m_enemyState = enEnemyState_Down;
+				//停止処理
+				m_isStopped = true;
+				m_stopTimer = 5.0f;
+				m_moveSpeed = { 0.0f,0.0f,0.0f };
 			}
+			break;
+			//停止中の処理。
+			if (m_isStopped)
+			{
+				m_stopTimer -= g_gameTime->GetFrameDeltaTime();
 
-			else {
-				//被ダメージステートに遷移する
-				m_enemyState = enEnemyState_Damage;
+				if (m_stopTimer <= 0.0f)
+				{
+					m_isStopped = false;
+				}
 			}
 			return;
 		}

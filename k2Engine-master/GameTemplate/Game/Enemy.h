@@ -112,5 +112,7 @@ private:
 	float m_idleTimer = 0.0f;
 	int m_isUnderAttack = false;
 	int m_FangBoneId = -1;
+	float m_stopTimer=0.0f;//拘束時間。
+	bool m_isStopped = false;//動きを止めるフラグ。
 };
 
