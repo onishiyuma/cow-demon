@@ -49,9 +49,9 @@ void Amulet::Update()
 
 	if (m_effectEmitter->GetEffect() != nullptr)
 	{
+		//エフェクトに座標を設定。
 		m_effectEmitter->SetPosition(m_position);
 	}
-
 	//コリジョンオブジェクトに座標を設定する。
 	m_collisionObj->SetPosition(m_position);
 

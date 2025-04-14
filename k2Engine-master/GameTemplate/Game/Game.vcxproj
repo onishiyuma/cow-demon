@@ -235,6 +235,7 @@
     <ClCompile Include="Lantern.cpp" />
     <ClCompile Include="LanternAttack.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Purification.cpp" />
     <ClCompile Include="Shimenawa.cpp" />
@@ -249,6 +250,12 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="TukuyomiBlessing.cpp" />
     <ClCompile Include="UIStone.cpp" />
+    <ClCompile Include="UIcurseBar.cpp" />
+    <ClCompile Include="UIheal.cpp" />
+    <ClCompile Include="UIropeGauge.cpp" />
+    <ClCompile Include="UISimenawa.cpp" />
+    <ClCompile Include="UIskill.cpp" />
+    <ClCompile Include="UItukuyomi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -262,6 +269,7 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Lantern.h" />
     <ClInclude Include="LanternAttack.h" />
+    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Purification.h" />
     <ClInclude Include="Shimenawa.h" />
@@ -272,6 +280,13 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="TukuyomiBlessing.h" />
     <ClInclude Include="UIStone.h" />
+    <ClInclude Include="UIcurseBar.h" />
+    <ClInclude Include="UIheal.h" />
+    <ClInclude Include="UIropeGauge.h" />
+    <ClInclude Include="UIScreen.h" />
+    <ClInclude Include="UISimenawa.h" />
+    <ClInclude Include="UIskill.h" />
+    <ClInclude Include="UItukuyomi.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

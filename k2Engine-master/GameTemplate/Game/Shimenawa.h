@@ -10,15 +10,24 @@ public:
 
 	bool Start();
 	void Update();
-	void Destroy();
+	//コリジョンの作成。
+	void CreateCollision();
+	//削除時間。
+	void DeleteTime();
+	//設置する関数。
+	void Put();
 	void Render(RenderContext& rc);
 
-	void Place(Vector3 playerPosition);
+	//しめ縄リセット用関数。
+	void ResetShimenawa()
+	{
+		m_shimenawa = nullptr;
+	}
 
 	//座標をセット。
 	void SetPosition(const Vector3& position)
 	{
-		m_position;
+		m_position=position;
 	}
 
 	//座標を取得。
@@ -29,15 +38,12 @@ public:
 
 
 	//メンバ変数。
+	CollisionObject* m_collisionObject;//コリジョンオブジェクト。
+	Shimenawa* m_shimenawa;//しめ縄。
 	Player* m_player;//プレイヤー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Vector3 m_position;//座標。
-	bool m_isCollected = false;//取得状態。
-	bool m_isPlaced = false;//設置状態。
-	float m_collectTimer = 0.0f;//取得タイマー。
-	float m_elapsedTime = 0.0f;//経過時間。
-	const float m_collectTime = 5.0f;//取得時間。
-	const float m_placeDuration = 10.0f;//継続時間。
-	float m_timer;
-
+	float m_deleteTimer = 0.0f;//削除までの時間。
+	const float m_duration=5.0f;//継続時間。
+	Vector3 m_placePosition;//設置座標。
 };

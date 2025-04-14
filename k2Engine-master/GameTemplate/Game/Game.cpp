@@ -10,6 +10,12 @@
 #include "Lantern.h"
 #include "LanternAttack.h"
 #include "DebugScene.h"
+#include "MiniMap.h"
+#include "UItukuyomi.h"
+#include "UIskill.h";
+#include "UISimenawa.h";
+#include "UIcurseBar.h";
+#include "UIheal.h";
 
 
 bool Game::Start()
@@ -49,6 +55,17 @@ bool Game::Start()
 		//�X�e�[�W�I�u�W�F�N�g�̍쐬
 		m_backGround = NewGO<BackGround>(0);
 		
+		m_uitukuyomi = NewGO<UItukuyomi>(0,"uitukuyomi");
+		//スキルUI
+		m_uiskill = NewGO<UIskill>(0, "uiskill");
+		//しめ縄UI
+		m_uisimenaw = NewGO<UISimenaw>(0, "m_uisimenawa");
+		//ミニマップ
+		m_miniMap = NewGO<MiniMap>(0,"minimap");
+		//呪ゲージ
+		m_uicursebar = NewGO<UIcurseBar>(0, "m_uicursebar");
+		//回復
+		m_uiheal = NewGO <UIheal>(0, "uiheal");
 		//��̔w�i�쐬
 		SkyCube* skyCube = NewGO<SkyCube>(0);
 		skyCube->SetType(enSkyCubeType_NightToon);
@@ -71,6 +88,12 @@ Game::~Game()
 	DeleteGO(m_backGround);
 	DeleteGO(m_crossHair);
 	DeleteGO(m_stone);
+	DeleteGO(m_uitukuyomi);
+	DeleteGO(m_uiskill);
+	DeleteGO(m_uisimenaw);
+	DeleteGO(m_uicursebar);
+	DeleteGO(m_uiheal);
+	DeleteGO(m_miniMap);
 }
 
 void Game::Update()

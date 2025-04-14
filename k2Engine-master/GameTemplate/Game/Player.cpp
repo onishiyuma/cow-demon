@@ -9,26 +9,18 @@
 
 #include<time.h>
 
-//’è”‚ğİ’è‚·‚éêŠ
-namespace
-{
-	int CHARGE_INCREASE_AMOUNT = 3;//ƒ`ƒƒ[ƒW‘‰Á—ÊB
-}
-
-
 bool Player::Start()
 {
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
-	//ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
+	//ãƒ¢ãƒ‡ãƒ«ã‚’èª­ã¿è¾¼ã‚€
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
-	//ƒLƒƒƒ‰ƒRƒ“‚ğ‰Šú‰»
+	//ã‚­ãƒ£ãƒ©ã‚³ãƒ³ã‚’åˆæœŸåŒ–
+	m_position.Set(70.0f, 50.0f, -1300.0f);
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
-	m_position.Set(0.0f, 0.0f, 0.0f);
-	//ƒvƒŒƒCƒ„[‚ÌHP‚ğƒZƒbƒg‚·‚éB
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®HPã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 	m_playerHP = 100;
 
-	//—”‚ğ‰Šú‰»B
-	srand((unsigned)time(NULL));
+	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 
 	return true;
 }
@@ -45,37 +37,43 @@ Player::~Player()
 
 void Player::Update()
 {
-	//ˆÚ“®ˆ—B
+	//ç§»å‹•å‡¦ç†ã€‚
 	Move();
 
-	/////////////////////ƒRƒƒ“ƒgƒAƒEƒg‰ğœ‚ğ–Y‚ê‚¸‚É/////////////////////////////
-	/*//“”âÄ‚É‰Î‚ª“”‚Á‚Ä‚¢‚ê‚ÎUŒ‚‚Å‚«‚éB
-	if (m_enemyIsCanAttack != false)
+	/////////////////////ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆè§£é™¤ã‚’å¿˜ã‚Œãšã«/////////////////////////////
+	/*//ç¯ç± ã«ç«ãŒç¯ã£ã¦ã„ã‚Œã°æ”»æ’ƒã§ãã‚‹ã€‚
+	if (m_enemyIsCanAttack != true)
 	{
-		//’ÊíUŒ‚B
+		//é€šå¸¸æ”»æ’ƒã€‚
 		NormalAttack();
 
-		//ƒXƒLƒ‹
+		//ã‚¹ã‚­ãƒ«
 		Skill();
 
-		//Œ“Ç‚Ì‰ÁŒìB
+		//æœˆèª­ã®åŠ è­·ã€‚
 	    TukuyomiBlessing();
+
+		//ã—ã‚ç¸„ã€‚
+	    ItemShimenawa();
 	}*/
 	////////////////////////////////////////////////////////////////////////////
 
 
-	////////////////////////////‚±‚±‚Ííœ‚·‚é/////////////////////////
-	//’ÊíUŒ‚B
+	////////////////////////////ã“ã“ã¯å‰Šé™¤ã™ã‚‹/////////////////////////
+	//é€šå¸¸æ”»æ’ƒã€‚
 	NormalAttack();
 
-	//ƒXƒLƒ‹B
+	//ã‚¹ã‚­ãƒ«ã€‚
 	Skill();
 
-	//Œ“Ç‚Ì‰ÁŒìB
+	//æœˆèª­ã®åŠ è­·ã€‚
 	SkillTukuyomiBlessing();
+
+	//ã—ã‚ç¸„ã€‚
+	ItemShimenawa();
 	/////////////////////////////////////////////////////////////////
 
-	//ô‚¢‚Ì’ïR‚ª0‚ğ‰º‰ñ‚Á‚Ä‚¢‚½‚çB
+	//å‘ªã„ã®æŠµæŠ—ãŒ0ã‚’ä¸‹å›ã£ã¦ã„ãŸã‚‰ã€‚
 	if (m_playerHP<=0)
 	{
 		NewGO<GameOver>(0, "gameover");
@@ -83,199 +81,211 @@ void Player::Update()
 	}
 
 
-	//ƒ‚ƒfƒ‹‚ğXV‚·‚éB
+	//ãƒ¢ãƒ‡ãƒ«ã‚’æ›´æ–°ã™ã‚‹ã€‚
 	m_modelRender.Update();
 }
 
 void Player::Move()
 {
-	//x‚ÌˆÚ“®‘¬“x‚ğ0.0f‚É‚·‚éB
+	//xã®ç§»å‹•é€Ÿåº¦ã‚’0.0fã«ã™ã‚‹ã€‚
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
 
-	//¶ƒXƒeƒBƒbƒN‚Ì“ü—Í—Ê‚ğæ“¾
+	//å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å…¥åŠ›é‡ã‚’å–å¾—
 	Vector3 stikL;
 	stikL.x = g_pad[0]->GetLStickXF();
 	stikL.y = g_pad[0]->GetLStickYF();
 
-	//ƒJƒƒ‰‚Ì‘O•ûŒü‚Æ‰E•ûŒü‚ÌƒxƒNƒgƒ‹‚ğ‚Á‚Ä‚­‚éB
+	//ã‚«ãƒ¡ãƒ©ã®å‰æ–¹å‘ã¨å³æ–¹å‘ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’æŒã£ã¦ãã‚‹ã€‚
 	Vector3 forward = g_camera3D->GetForward();
 	Vector3 right = g_camera3D->GetRight();
-	//y•ûŒü‚É‚ÍˆÚ“®‚ğ‚³‚¹‚È‚¢B
+	//yæ–¹å‘ã«ã¯ç§»å‹•ã‚’ã•ã›ãªã„ã€‚
 	forward.y = 0.0f;
 	right.y = 0.0f;
 
-	//¶ƒXƒeƒBƒbƒN‚Ì“ü—Í—Ê‚ğæZ‚·‚é
+	//å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å…¥åŠ›é‡ã‚’ä¹—ç®—ã™ã‚‹
 	right *= stikL.x * 250.0f;
 	forward *= stikL.y * 250.0f;
 
-	//ˆÚ“®‘¬“x‚ÉƒXƒeƒBƒbƒN‚Ì“ü—Í—Ê‚ğ‰ÁZ‚·‚éB
+	//ç§»å‹•é€Ÿåº¦ã«ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å…¥åŠ›é‡ã‚’åŠ ç®—ã™ã‚‹ã€‚
 	m_moveSpeed += right + forward;
 
 	if (m_characterController.IsOnGround())
 	{
-		//d—Í‚ğ‚È‚­‚·B
+		//é‡åŠ›ã‚’ãªãã™ã€‚
 		m_moveSpeed.y = 0.0f;
 	}
-	//’n–Ê‚É‚Â‚¢‚Ä‚¢‚È‚¯‚ê‚ÎB
+	//åœ°é¢ã«ã¤ã„ã¦ã„ãªã‘ã‚Œã°ã€‚
 	else
 	{
-		//d—Í‚ğ”­¶‚³‚¹‚éB
+		//é‡åŠ›ã‚’ç™ºç”Ÿã•ã›ã‚‹ã€‚
 		m_moveSpeed.y -= m_gravity;
 	}
 
-	//ƒLƒƒƒ‰ƒRƒ“‚ğg‚Á‚ÄÀ•W‚ğˆÚ“®‚³‚¹‚éB
+	//ã‚­ãƒ£ãƒ©ã‚³ãƒ³ã‚’ä½¿ã£ã¦åº§æ¨™ã‚’ç§»å‹•ã•ã›ã‚‹ã€‚
 	m_position = m_characterController.Execute(m_moveSpeed, 1.0f / 60.0f);
-	//ƒtƒŒ[ƒ€‚²‚Æ‚ÉÀ•W‚ğˆÚ“®‚³‚¹‚éB
+	//ãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨ã«åº§æ¨™ã‚’ç§»å‹•ã•ã›ã‚‹ã€‚
 	m_position = m_characterController.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
-	//ƒLƒƒƒ‰ƒRƒ“‚ª’n–Ê‚É•t‚¢‚Ä‚¢‚½‚çB
+
+	//ã‚­ãƒ£ãƒ©ã‚³ãƒ³ãŒåœ°é¢ã«ä»˜ã„ã¦ã„ãŸã‚‰ã€‚
 	if (m_characterController.IsOnGround())
 	{
 		m_moveSpeed.y = 0.0f;
 	}
 
-	//ƒ‚ƒfƒ‹‚ÌÀ•W‚ğƒZƒbƒg‚·‚é
+	//ãƒ¢ãƒ‡ãƒ«ã®åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	m_modelRender.SetPosition(m_position);
 }
 
-//’ÊíUŒ‚B
+//é€šå¸¸æ”»æ’ƒã€‚
 void Player::NormalAttack()
 {
-	//ƒN[ƒ‹ƒ^ƒCƒ€‚ğŒ¸‚ç‚·B
+	//ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ã‚’æ¸›ã‚‰ã™ã€‚
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
 	if (g_pad[0]->IsTrigger(enButtonRB1)&&m_attackCoolDown<=0.0f)
+	/////////////////ãƒ‡ãƒãƒƒã‚¯ç”¨///////////////////////////////////
+	/*if (g_pad[0]->IsTrigger(enButtonA) && m_attackCoolDown <= 0.0f)
 	{
-		//’ÊíUŒ‚‚Ìì¬—pŠÖ”B
-		MakeNormalAttack();
-		//ƒN[ƒ‹ƒ^ƒCƒ€‚Ìİ’èB
+		//ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ã®è¨­å®šã€‚
 		m_attackCoolDown = 0.38f;
+		//é€šå¸¸æ”»æ’ƒã®ä½œæˆç”¨é–¢æ•°ã€‚
+		MakeNormalAttack();
+	}*/
+	///////////////////////////////////////////////////////////////
 
-		//ô‚¢‚Ì’ïR‚ÌNH’l‚ğŒ¸‚ç‚µ‚Ä‚¢‚­B
-		m_playerHP -= 1;
 
-		//‰ïS‚Ìİ’èB
-		int ram = rand() % 100;
-		if (ram > m_criticalRate)
-		{
-			//ƒNƒŠƒeƒBƒJƒ‹ƒ_ƒ[ƒWB
-			m_criticalATK=m_playerATK * m_cliticalDamage;
-			//ƒXƒLƒ‹‚ğg‚¤‚½‚ß
-			m_skillCharge += CHARGE_INCREASE_AMOUNT;
-		}
-		//”ñ‰ïSB
-		else
-		{
-			//’Êíƒ_ƒ[ƒWB
-			m_normalATK=m_playerATK;
-		}
+	////////////////æ­£å¼ãªãƒœã‚¿ãƒ³é…ç½®///////////////////////
+	if (g_pad[0]->IsTrigger(enButtonRB2) && m_attackCoolDown <= 0.0f)
+	{
+		//ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ã®è¨­å®šã€‚
+		m_attackCoolDown = 0.38f;
+		//é€šå¸¸æ”»æ’ƒã®ä½œæˆç”¨é–¢æ•°ã€‚
+		MakeNormalAttack();
 	}
 }
 
-//ƒXƒLƒ‹B
+//ã‚¹ã‚­ãƒ«ã€‚
 void Player::Skill()
 {
-		//ƒXƒLƒ‹”­“®B
-		if (g_pad[0]->IsTrigger(enButtonB)&&m_skillCharge >= 50)
-		{
-			//ƒXƒLƒ‹‚Ìì¬—pŠÖ”‚ğŒÄ‚Ño‚·B
-			MakeSkill();
-
-			//ƒXƒLƒ‹‚Ìƒ_ƒ[ƒWB
-			m_skillATK = m_playerATK * m_skillMagnification;
-
-			//ƒ`ƒƒ[ƒW—Ê‚ğƒŠƒZƒbƒgB
+	////////////////ãƒ‡ãƒãƒƒã‚¯ç”¨///////////////////////////////////
+	//ã‚¹ã‚­ãƒ«ç™ºå‹•ã€‚
+	/*if (g_pad[0]->IsTrigger(enButtonB) && m_skillCharge >= 50)
+	{
+		//ã‚¹ã‚­ãƒ«ã®ä½œæˆç”¨é–¢æ•°ã‚’å‘¼ã³å‡ºã™ã€‚
+		MakeSkill();
+		//ãƒãƒ£ãƒ¼ã‚¸é‡ã‚’ãƒªã‚»ãƒƒãƒˆã€‚
 			m_skillCharge = 0;
-		}
+	}*/
+	///////////////////////////////////////////////////////////////
+
+
+	////////////////æ­£å¼ãªãƒœã‚¿ãƒ³é…ç½®///////////////////////
+	//ã‚¹ã‚­ãƒ«ç™ºå‹•ã€‚
+	if (g_pad[0]->IsTrigger(enButtonLB1) && m_skillCharge >= 50)
+	{
+		//ã‚¹ã‚­ãƒ«ã®ä½œæˆç”¨é–¢æ•°ã‚’å‘¼ã³å‡ºã™ã€‚
+		MakeSkill();
+		//ãƒãƒ£ãƒ¼ã‚¸é‡ã‚’ãƒªã‚»ãƒƒãƒˆã€‚
+		m_skillCharge = 0;
+	}
 }
 
-//Œ“Ç‚Ì‰ÁŒìB
+//æœˆèª­ã®åŠ è­·ã€‚
 void Player::SkillTukuyomiBlessing()
 {
-	//ƒN[ƒ‹ƒ^ƒCƒ€‚ğŒ¸‚ç‚·B
+	//ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ã‚’æ¸›ã‚‰ã™ã€‚
 	m_tukuyomiBlessingCoolDown -= g_gameTime->GetFrameDeltaTime();
 
 	if (g_pad[0]->IsTrigger(enButtonX) && m_tukuyomiBlessingCoolDown <= 0.0f)
 	{
-		//Œ“Ç‚Ì‰ÁŒìì¬—pŠÖ”‚ğŒÄ‚Ño‚·B
+		//æœˆèª­ã®åŠ è­·ä½œæˆç”¨é–¢æ•°ã‚’å‘¼ã³å‡ºã™ã€‚
 		MakeTukuyomiBlessing();
-		//ƒN[ƒ‹ƒ^ƒCƒ€‚Ìİ’èB
+		//ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ã®è¨­å®šã€‚ 
 		m_tukuyomiBlessingCoolDown = 40.0f;
-
-		//Œ“Ç‚Ì‰ÁŒì‚Ìƒ_ƒ[ƒWB
-		m_TukuyomiATK = m_playerATK * m_TukuyomiMagnification;
-
 	}
 }
 
-//‚µ‚ß“êB(ƒAƒCƒeƒ€)
+//ã—ã‚ç¸„ã€‚(ã‚¢ã‚¤ãƒ†ãƒ )
 void Player::ItemShimenawa()
 {
-	//æ“¾‚Ü‚Å‚ÌŠÔ‚ğ‘‰ÁB
+	//å–å¾—ã¾ã§ã®æ™‚é–“ã‚’å¢—åŠ ã€‚
 	m_shimenawaGetTime += g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonY)&&m_shimenawaGetTime>=5.0f)
+	if (g_pad[0]->IsTrigger(enButtonY)&&m_shimenawaGetTime>=m_collectTime)
 	{
-		//‚µ‚ß“ê‚ğİ’uB
-		m_shimenawa->SetPosition(this->m_position);
-		
-		//ƒ^ƒCƒ}[‚ğƒŠƒZƒbƒgB
+		//ã—ã‚ç¸„ä½œæˆç”¨é–¢æ•°ã‚’å‘¼ã³å‡ºã™ã€‚
+		MakeShimenawa();
+		//ã‚¿ã‚¤ãƒãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆã€‚
 		m_shimenawaGetTime = 0.0f;
 	}
 }
 
-//’ÊíUŒ‚ì¬
+
+
+////////////////ã“ã“ã‹ã‚‰å…ˆã¯ä½œæˆç”¨é–¢æ•°////////////////////////////////////
+
+
+//é€šå¸¸æ”»æ’ƒä½œæˆ
 void Player::MakeNormalAttack()
 {
-	//ƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬B
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã€‚
 	Purification* purification = NewGO<Purification>(0);
+	//åº§æ¨™ã‚’è¨­å®šã€‚
 	Vector3 PurificationPos = m_position;
-	//À•W‚ğ­‚µã‚°‚éB
+	//åº§æ¨™ã‚’å°‘ã—ä¸Šã’ã‚‹ã€‚
 	PurificationPos.y += 70.0f;
-	//À•W‚ğƒZƒbƒg‚·‚éB
+	//åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 	purification->SetPosition(PurificationPos);
-	//–¼‘O‚ğ‚Â‚¯‚éB
+	//åå‰ã‚’ã¤ã‘ã‚‹ã€‚
 	purification->SetName("purification");
 }
 
-//ƒXƒLƒ‹‚Ìì¬B
+//ã‚¹ã‚­ãƒ«ã®ä½œæˆã€‚
 void Player::MakeSkill()
 {
-	//ƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬B
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã€‚
 	Amulet* amulet = NewGO<Amulet>(0);
+	//åº§æ¨™ã‚’è¨­å®šã€‚
 	Vector3 AmuletPos = m_position;
-	//À•W‚ğ­‚µ‰º‚°‚éB
+	//åº§æ¨™ã‚’å°‘ã—ä¸‹ã’ã‚‹ã€‚
 	AmuletPos.y += 70.0f;
-	//À•W‚ğƒZƒbƒg‚·‚éB
+	//åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 	amulet->SetPosition(AmuletPos);
-	//–¼‘O‚ğ‚Â‚¯‚éB
+	//åå‰ã‚’ã¤ã‘ã‚‹ã€‚
 	amulet->SetName("amulet");
 }
 
-//Œ“Ç‚Ì‰ÁŒì‚Ìì¬ŠÖ”B
+//æœˆèª­ã®åŠ è­·ã®ä½œæˆé–¢æ•°ã€‚
 void Player::MakeTukuyomiBlessing()
 {
-	//ƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬B
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã€‚
 	TukuyomiBlessing* tukuyomiBlessing = NewGO<TukuyomiBlessing>(0);
-	Vector3 TukuyomoBlessingPos = m_position;
-	//À•W‚ğƒZƒbƒg‚·‚éB
-	tukuyomiBlessing->SetPosition(TukuyomoBlessingPos);
-	//–¼‘O‚ğ‚Â‚¯‚éB
+	//åº§æ¨™ã‚’è¨­å®šã€‚
+	Vector3 TukuyomiBlessingPos = m_position;
+	//åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
+	tukuyomiBlessing->SetPosition(TukuyomiBlessingPos);
+	//åå‰ã‚’ã¤ã‘ã‚‹ã€‚
 	tukuyomiBlessing->SetName("tukuyomiBlessing");
 }
 
+
+//ã—ã‚ç¸„ã®ä½œæˆã€‚
 void Player::MakeShimenawa()
 {
-	//ƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬B
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã€‚
 	Shimenawa* shimenawa = NewGO<Shimenawa>(0);
+	//åº§æ¨™ã‚’è¨­å®šã€‚
 	Vector3 ShimenawaPos = m_position;
-	//À•W‚ğƒZƒbƒg‚·‚éB
+	//åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 	shimenawa->SetPosition(ShimenawaPos);
-	//–¼‘O‚ğ‚Â‚¯‚éB
+	//åå‰ã‚’ã¤ã‘ã‚‹ã€‚
 	shimenawa->SetName("shimenawa");
 }
 
-//ƒvƒŒƒCƒ„[‚ÌŠÇ—B
+////////////////////////////////çµ‚ã‚ã‚Š///////////////////////////////////////////////
+ 
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç®¡ç†ã€‚
 void Player::ManageState()
 {
 
@@ -283,6 +293,6 @@ void Player::ManageState()
 
 void Player::Render(RenderContext&renderContext)
 {
-	//ƒ‚ƒfƒ‹‚ğ•\¦‚·‚éB
+	//ãƒ¢ãƒ‡ãƒ«ã‚’è¡¨ç¤ºã™ã‚‹ã€‚
 	//m_modelRender.Draw(renderContext);
 }

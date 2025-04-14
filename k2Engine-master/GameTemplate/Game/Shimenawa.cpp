@@ -1,13 +1,20 @@
 #include "stdafx.h"
 #include "Shimenawa.h"
 #include "Player.h"
+#include "collision/collisionObject.h"
 
 bool Shimenawa::Start()
 {
+	//モデルを読み込む。
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 
 	//プレイヤーのインスタンスを検索する。
 	m_player = FindGO<Player>("player");
+
+	//座標を取得。
+	m_position = m_player->GetPosition();
+
+	CreateCollision();
 
 	return true;
 }
@@ -19,59 +26,50 @@ Shimenawa::Shimenawa()
 
 Shimenawa::~Shimenawa()
 {
-
+	DeleteGO(m_collisionObject);
 }
 
 void Shimenawa::Update()
 {
-	m_timer = g_gameTime->GetFrameDeltaTime();
-
-	//取得処理。
-	if (!m_isCollected)
-	{
-		m_collectTimer += m_timer;
-		if (m_collectTimer >= m_collectTime)
-		{
-			m_isCollected = true;
-		}
-	}
-
-	//設置後の時間管理。
-	if (m_isPlaced)
-	{
-		m_elapsedTime += m_timer;
-		if (m_elapsedTime >= m_placeDuration)
-		{
-			Destroy();
-		}
-	}
+	//設置。
+	Put();
+	//削除までの時間。
+	DeleteTime();
 }
 
-void Shimenawa::Place(Vector3 playerPosition)
+//設置する関数
+void Shimenawa::Put()
 {
-	if (m_isCollected && !m_isPlaced)
-	{
-		m_isPlaced = true;
-		m_isCollected = false;
-		m_position = m_player->m_position;
-		m_elapsedTime = 0.0f;//取得時間をリセット。
-	}
+	m_placePosition = m_player->GetPosition();
+	m_collisionObject->SetPosition(m_position);
+	m_collisionObject->Update();
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.Update();
 }
 
-//しめ縄の削除処理
-void Shimenawa::Destroy()
+//コリジョンを作成。
+void Shimenawa::CreateCollision()
 {
-	m_isPlaced = false;
-	m_elapsedTime = 0.0f;
+	m_collisionObject = NewGO<CollisionObject>(0);
+	//箱状のコリジョンを作成。
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { 500.0f,1.0f,500.0f });
+	//名前を付ける。
+	m_collisionObject->SetName("Shimenawa");;
+	//オブジェクトが削除されないようにする。
+	m_collisionObject->SetIsEnableAutoDelete(false);
+}
 
+void Shimenawa::DeleteTime()
+{
+	m_deleteTimer+= g_gameTime->GetFrameDeltaTime();
+
+	if (m_deleteTimer >= m_duration)
+	{
+		DeleteGO(this);
+	}
 }
 
 void Shimenawa::Render(RenderContext& rc)
 {
-	if (!m_isPlaced)return;
-	{
-		m_modelRender.Draw(rc);
-	}
+	m_modelRender.Draw(rc);
 }
-
-

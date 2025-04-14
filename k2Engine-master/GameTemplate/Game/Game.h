@@ -13,6 +13,12 @@ class UIStone;
 class Lantern;
 class LanternAttack;
 
+class UItukuyomi;
+class UIskill;
+class UISimenaw;
+class UIcurseBar;
+class UIheal;
+class MiniMap;
 
 class Game : public IGameObject
 {
@@ -42,6 +48,12 @@ public:
 	UIStone* m_uiStone; //火打石の数
 	Lantern* m_lantern; //灯籠
 	LanternAttack* m_lanternAttack; //攻撃用灯籠
+	UItukuyomi* m_uitukuyomi;
+	UIskill* m_uiskill;
+	UISimenaw* m_uisimenaw;
+	MiniMap* m_miniMap;
+	UIcurseBar* m_uicursebar;
+	UIheal* m_uiheal;
 	Vector3 m_pos;//座標。
 	GameState m_gameState = enOutGame;//�A�E�g�Q�[���ɂ��Ă���
 	SpriteRender m_spriteRender;//スプライトレンダー。
