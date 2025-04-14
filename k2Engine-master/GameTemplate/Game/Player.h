@@ -74,8 +74,8 @@ public:
 	bool m_enemyIsCanAttack = false;//敵を攻撃できるか？。
 	int m_playerHP = 0;//プレイヤーのHP。
 	int m_skillCharge = 0;//スキルのチャージ。
-	int m_normalATK=0;//通常攻撃ダメージ。
+	int m_normalATK = 0;//通常攻撃ダメージ。
 	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
-	int m_skillATK=0;//スキル総ダメージ。
-	int m_TukuyomiATK=0;//月読の加護の総ダメージ。
+	int m_skillATK = 0;//スキル総ダメージ。
+	int m_tukuyomiATK = 0;//月読の加護の総ダメージ。
 };
