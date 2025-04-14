@@ -17,6 +17,12 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="Shimenawa.cpp" />
+    <ClCompile Include="Stone.cpp" />
+    <ClCompile Include="Lantern.cpp" />
+    <ClCompile Include="LanternAttack.cpp" />
+    <ClCompile Include="UIStone.cpp" />
+    <ClCompile Include="DebugScene.cpp" />
+    <ClCompile Include="SpriteCollection.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="UIcurseBar.cpp" />
@@ -42,6 +48,12 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="Shimenawa.h" />
+    <ClInclude Include="Stone.h" />
+    <ClInclude Include="Lantern.h" />
+    <ClInclude Include="LanternAttack.h" />
+    <ClInclude Include="UIStone.h" />
+    <ClInclude Include="DebugScene.h" />
+    <ClInclude Include="SpriteCollection.h" />
     <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="UIcurseBar.h" />

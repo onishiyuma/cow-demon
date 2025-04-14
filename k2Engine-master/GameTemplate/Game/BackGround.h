@@ -5,6 +5,7 @@ public:
 	//ƒƒ“ƒoŠÖ”
 	BackGround();
 	~BackGround();
+	bool Start();
 	void Render(RenderContext& rc);
 
 	//ƒƒ“ƒo•Ï”

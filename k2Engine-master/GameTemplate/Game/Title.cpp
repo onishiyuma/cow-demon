@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Game.h"
-
+#include "DebugScene.h"
 
 bool Title::Start()
 {
@@ -10,7 +10,7 @@ bool Title::Start()
 
 	//ゲーム外にする。
 	m_game->enOutGame;
-
+	
 	//文字の表示。
 	m_fontRender.SetText(L"Please Press AnyKey");
 	m_fontRender.SetPosition({ -250.0f,-300.0f,0.0f });
@@ -39,6 +39,7 @@ void Title::Update()
 	{
 		//インゲームにする。
 		m_game->enInGame;
+		;
 		NewGO<Game>(0, "game");
 		m_spriteRender.Update();
 		//自身を削除する。
