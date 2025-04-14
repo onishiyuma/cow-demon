@@ -57,9 +57,6 @@ public:
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
 	Quaternion m_rotation;
-	float m_gravity = 10.5f;//重力を発生させる。
-	float m_charaConRadius = 25.0f;//キャラコンの半径。
-	float m_charaConHeight = 75.0f;//キャラコンの高さ。
 	FontRender m_fontRender;//フォントレンダー。
 	const float m_collectTime = 15.0f;//しめ縄を設置できる時間。
 	const float m_gravity = 10.5f;//重力を発生させる。
@@ -72,7 +69,6 @@ public:
 	const int m_cliticalDamage = 2;//会心ダメ。
 	float m_attackCoolDown = 0.0f;//攻撃のクールダウン。
 	float m_tukuyomiBlessingCoolDown = 0.0f;//月読の加護のクールダウン。
-	float m_shimenawaGetTime = 0.0f;//しめ縄を時間で取得する。
 	float m_deleteTimer=0.0f;//削除までの時間。
 	bool m_deleteFlag=false;//削除するか。
 	bool m_enemyIsCanAttack = false;//敵を攻撃できるか？。
@@ -80,9 +76,6 @@ public:
 	int m_skillCharge = 0;//スキルのチャージ。
 	int m_normalATK = 0;//通常攻撃ダメージ。
 	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
-	int m_skillATK=0;//スキル総ダメージ。
-	int m_TukuyomiATK;//月読の加護の総ダメージ。
-	bool m_enemyIsCanAttack=false;//敵を攻撃できるか？7。
 	float m_shimenawaGetTime=0.0f;//しめ縄を時間で取得する。
 	int m_stoneCount = 0; //火打石のアイテムカウント
 	int m_skillATK = 0;//スキル総ダメージ。
