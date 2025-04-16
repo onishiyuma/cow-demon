@@ -45,11 +45,21 @@ public:
 	CrossHair*m_crossHair;//クロスヘアー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Shimenawa* m_shimenawa;//しめ縄。
-	Stone* m_stone; //火打石
 	Stone* m_stone1; //火打石
+	Stone* m_stone2; //火打石
+	Stone* m_stone3; //火打石
+	Stone* m_stone4; //火打石
+	Stone* m_stone5; //火打石
+	Stone* m_stone6; //火打石
+	Stone* m_stone7; //火打石
 	UIStone* m_uiStone; //火打石の数
-	Lantern* m_lantern; //灯籠
-	LanternAttack* m_lanternAttack; //攻撃用灯籠
+	Lantern* m_lantern1; //灯籠
+	Lantern* m_lantern2; //灯籠
+	Lantern* m_lantern3; //灯籠
+	Lantern* m_lantern4; //灯籠
+	LanternAttack* m_lanternAttack1; //攻撃用灯籠
+	LanternAttack* m_lanternAttack2; //攻撃用灯籠
+	LanternAttack* m_lanternAttack3; //攻撃用灯籠
 	UItukuyomi* m_uitukuyomi;
 	UIskill* m_uiskill;
 	UISimenawa* m_uisimenawa;
@@ -58,7 +68,10 @@ public:
 	UIheal* m_uiheal;
 	Vector3 m_pos;//座標。
 	SpriteRender m_spriteRender;//スプライトレンダー。
+	
+
 	bool m_lanternAction = false; 
 	float m_timeLimit=0;//制限時間。
+
 };
 

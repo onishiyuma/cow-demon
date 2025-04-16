@@ -3,6 +3,7 @@
 class Stone;
 class Player;
 
+
 class UIStone: public IGameObject
 {
 public:

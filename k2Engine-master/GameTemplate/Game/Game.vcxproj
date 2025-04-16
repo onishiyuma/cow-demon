@@ -234,6 +234,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Lantern.cpp" />
     <ClCompile Include="LanternAttack.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -241,6 +242,9 @@
     <ClCompile Include="RingBell.cpp" />
     <ClCompile Include="Shimenawa.cpp" />
     <ClCompile Include="SpriteCollection.cpp" />
+    <ClCompile Include="SpriteLight.cpp" />
+    <ClCompile Include="SpriteNoStone.cpp" />
+    <ClCompile Include="SpritePush.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -248,6 +252,9 @@
     </ClCompile>
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="TimingBarA.cpp" />
+    <ClCompile Include="TimingBarB.cpp" />
+    <ClCompile Include="TimingBarC.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="TukuyomiBlessing.cpp" />
     <ClCompile Include="UIStone.cpp" />
@@ -270,15 +277,22 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Lantern.h" />
     <ClInclude Include="LanternAttack.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Purification.h" />
     <ClInclude Include="RingBell.h" />
     <ClInclude Include="Shimenawa.h" />
     <ClInclude Include="SpriteCollection.h" />
+    <ClInclude Include="SpriteLight.h" />
+    <ClInclude Include="SpriteNoStone.h" />
+    <ClInclude Include="SpritePush.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="TimingBarA.h" />
+    <ClInclude Include="TimingBarB.h" />
+    <ClInclude Include="TimingBarC.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="TukuyomiBlessing.h" />
     <ClInclude Include="UIStone.h" />

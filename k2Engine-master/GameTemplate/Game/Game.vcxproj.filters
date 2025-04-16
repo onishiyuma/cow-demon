@@ -30,6 +30,13 @@
     <ClCompile Include="UISimenawa.cpp" />
     <ClCompile Include="UIskill.cpp" />
     <ClCompile Include="UItukuyomi.cpp" />
+    <ClCompile Include="SpriteLight.cpp" />
+    <ClCompile Include="SpriteNoStone.cpp" />
+    <ClCompile Include="TimingBarA.cpp" />
+    <ClCompile Include="Line.cpp" />
+    <ClCompile Include="TimingBarB.cpp" />
+    <ClCompile Include="TimingBarC.cpp" />
+    <ClCompile Include="SpritePush.cpp" />
     <ClCompile Include="RingBell.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +69,13 @@
     <ClInclude Include="UISimenawa.h" />
     <ClInclude Include="UIskill.h" />
     <ClInclude Include="UItukuyomi.h" />
+    <ClInclude Include="SpriteLight.h" />
+    <ClInclude Include="SpriteNoStone.h" />
+    <ClInclude Include="TimingBarA.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="TimingBarB.h" />
+    <ClInclude Include="TimingBarC.h" />
+    <ClInclude Include="SpritePush.h" />
     <ClInclude Include="RingBell.h" />
   </ItemGroup>
   <ItemGroup>

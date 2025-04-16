@@ -83,6 +83,7 @@ public:
 	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
 	float m_shimenawaGetTime=0.0f;//しめ縄を時間で取得する。
 	int m_stoneCount = 0; //火打石のアイテムカウント
+	int m_LanternCount = 0; //火を灯した灯籠の数
 	int m_skillATK = 0;//スキル総ダメージ。
 	int m_tukuyomiATK = 0;//月読の加護の総ダメージ。
 	float m_totalRotationRotation = 0.0f;
