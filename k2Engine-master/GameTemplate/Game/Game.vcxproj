@@ -239,6 +239,7 @@
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Purification.cpp" />
+    <ClCompile Include="RingBell.cpp" />
     <ClCompile Include="Shimenawa.cpp" />
     <ClCompile Include="SpriteCollection.cpp" />
     <ClCompile Include="SpriteLight.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Purification.h" />
+    <ClInclude Include="RingBell.h" />
     <ClInclude Include="Shimenawa.h" />
     <ClInclude Include="SpriteCollection.h" />
     <ClInclude Include="SpriteLight.h" />

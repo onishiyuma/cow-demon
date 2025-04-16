@@ -7,7 +7,7 @@
 bool GameOver::Start()
 {
 	//ゲームオーバーの画像を読み込む。
-	m_spriteRender.Init("TukuyomiMax.DDS", 1920.0f, 1080.0f);
+	m_spriteRender.Init("Assets/sprite/S.DDS", 1920.0f, 1080.0f);
 
 	return true;
 }
@@ -19,16 +19,14 @@ GameOver::GameOver()
 
 GameOver::~GameOver()
 {
-	DeleteGO(this);
+
 }
 
 void GameOver::Update()
 {
-	if (g_pad[0]->IsPressAnyKey())
+	if (g_pad[0]->IsTrigger(enButtonA))
 	{
-		//ゲーム外にする。
-		//m_game->enOutGame;
-		NewGO<Title>(0, "title");
+		NewGO<Title>(0);
 
 		DeleteGO(this);
 	}

@@ -1,11 +1,11 @@
 #pragma once
 #include "Game.h";
-class UISimenaw :public IGameObject
+class UISimenawa :public IGameObject
 {
 public:
-	UISimenaw();
+	UISimenawa();
 
-	~UISimenaw();
+	~UISimenawa();
 
 	bool Start();
 
@@ -13,11 +13,10 @@ public:
 
 	void Render(RenderContext& rc);
 
-	Player* m_player = nullptr; 
-	SpriteRender m_RopeSprite;
-	SpriteRender m_RopeGage;
-	float m_RopeTimer = 0.0f;
-
+	Player* m_player; 
+	SpriteRender m_ropeSprite;
+	SpriteRender m_ropeGage;
+	float m_ropeTimer = 0.0f;
 
 };
 

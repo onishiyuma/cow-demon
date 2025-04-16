@@ -34,6 +34,10 @@ public:
 	void Move();
 	//ステート管理
 	void ManageState();
+	//鈴の当たり判定。
+	void Collision();
+	//回復用処理。
+	void HealHP(int amount);
 
 
 	//座標を取得する関数。
@@ -73,6 +77,7 @@ public:
 	bool m_deleteFlag=false;//削除するか。
 	bool m_enemyIsCanAttack = false;//敵を攻撃できるか？。
 	int m_playerHP = 0;//プレイヤーのHP。
+	int m_playerMaxHP = 0;//プレイヤーの最大体力。
 	int m_skillCharge = 0;//スキルのチャージ。
 	int m_normalATK = 0;//通常攻撃ダメージ。
 	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
@@ -81,4 +86,6 @@ public:
 	int m_LanternCount = 0; //火を灯した灯籠の数
 	int m_skillATK = 0;//スキル総ダメージ。
 	int m_tukuyomiATK = 0;//月読の加護の総ダメージ。
+	float m_totalRotationRotation = 0.0f;
+	float m_prevStickAngle = 0.0f;
 };

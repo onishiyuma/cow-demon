@@ -16,8 +16,6 @@ public:
 	void CreateCollision();
 	//エフェクト作成用関数。
 	void CreateEffect();
-	//敵の位置で判定を取る関数。
-	void Distance();
 	//継続時間。
 	void DeleteTime();
 	void Move();

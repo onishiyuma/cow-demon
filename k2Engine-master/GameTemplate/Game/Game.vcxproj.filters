@@ -37,6 +37,7 @@
     <ClCompile Include="TimingBarB.cpp" />
     <ClCompile Include="TimingBarC.cpp" />
     <ClCompile Include="SpritePush.cpp" />
+    <ClCompile Include="RingBell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -75,6 +76,7 @@
     <ClInclude Include="TimingBarB.h" />
     <ClInclude Include="TimingBarC.h" />
     <ClInclude Include="SpritePush.h" />
+    <ClInclude Include="RingBell.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
