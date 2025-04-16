@@ -13,7 +13,7 @@ public:
 	//コリジョンの作成。
 	void CreateCollision();
 	//削除時間。
-	void DeleteTime();
+	void DurationTime();
 	//設置する関数。
 	void Put();
 	void Render(RenderContext& rc);
@@ -43,7 +43,7 @@ public:
 	Player* m_player;//プレイヤー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Vector3 m_position;//座標。
-	float m_deleteTimer = 0.0f;//削除までの時間。
+	float m_durationTimer = 0.0f;//削除までの時間。
 	const float m_duration=5.0f;//継続時間。
 	Vector3 m_placePosition;//設置座標。
 };

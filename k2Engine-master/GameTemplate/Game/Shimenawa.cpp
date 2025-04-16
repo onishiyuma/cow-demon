@@ -33,14 +33,13 @@ void Shimenawa::Update()
 {
 	//設置。
 	Put();
-	//削除までの時間。
-	DeleteTime();
+	//継続時間。
+	DurationTime();
 }
 
 //設置する関数
 void Shimenawa::Put()
 {
-	m_placePosition = m_player->GetPosition();
 	m_collisionObject->SetPosition(m_position);
 	m_collisionObject->Update();
 	m_modelRender.SetPosition(m_position);
@@ -59,11 +58,11 @@ void Shimenawa::CreateCollision()
 	m_collisionObject->SetIsEnableAutoDelete(false);
 }
 
-void Shimenawa::DeleteTime()
+void Shimenawa::DurationTime()
 {
-	m_deleteTimer+= g_gameTime->GetFrameDeltaTime();
+	m_durationTimer+= g_gameTime->GetFrameDeltaTime();
 
-	if (m_deleteTimer >= m_duration)
+	if (m_durationTimer >= m_duration)
 	{
 		DeleteGO(this);
 	}
