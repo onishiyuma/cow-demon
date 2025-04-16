@@ -17,7 +17,7 @@ public:
 	FontRender m_fontRender;
 	SpriteRender m_spriteRender;//スプライトレンダー。
 	Game* m_game;//ゲーム。
-
+	float m_timer;
 
 private:
 };

@@ -11,11 +11,11 @@
 
 bool Player::Start()
 {
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	//キャラコンを初期化
-	m_position.Set(70.0f, 50.0f, -1300.0f);
+	m_position.Set(70.0f, 0.0f, -1000.0f);
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
 	//プレイヤーのHPをセットする。
 	m_playerHP = 100;
@@ -80,6 +80,9 @@ void Player::Update()
 		DeleteGO(this);
 	}
 
+	//判定を呼び出す。
+	Collision();
+
 
 	//モデルを更新する。
 	m_modelRender.Update();
@@ -143,7 +146,7 @@ void Player::NormalAttack()
 	//クールタイムを減らす。
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonRB1)&&m_attackCoolDown<=0.0f)
+	if (g_pad[0]->IsTrigger(enButtonRB2)&&m_attackCoolDown<=0.0f)
 	/////////////////デバック用///////////////////////////////////
 	/*if (g_pad[0]->IsTrigger(enButtonA) && m_attackCoolDown <= 0.0f)
 	{
@@ -182,7 +185,7 @@ void Player::Skill()
 
 	////////////////正式なボタン配置///////////////////////
 	//スキル発動。
-	if (g_pad[0]->IsTrigger(enButtonLB1) && m_skillCharge >= 50)
+	if (g_pad[0]->IsTrigger(enButtonLB2) && m_skillCharge >= 50)
 	{
 		//スキルの作成用関数を呼び出す。
 		MakeSkill();
@@ -289,6 +292,71 @@ void Player::MakeShimenawa()
 void Player::ManageState()
 {
 
+}
+
+void Player::Collision()
+{
+	//鈴のコリジョンを取得する。
+	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("ringbell");
+	//コリジョンの配列をfor文で回す。
+	for (auto collision : collisions)
+	{
+		//コントローラーを回す処理。
+		if (g_pad[0]->IsTrigger(enButtonA))
+		{
+			//右スティックのx,y値。
+			float x = g_pad[0]->GetRStickXF();
+			float y = g_pad[0]->GetRStickYF();
+
+			//入力量がある程度以上でなければ反応しない。
+			if (x * x + y * y > 0.01f)
+			{
+				//スティックの現在の角度。(ラジアンから度に変換。)
+				float angle = atan2f(y, x) * (180.0f / 3.14159265);
+
+				//角度差分(回転の方向も加味する。)
+				float delta = angle - m_prevStickAngle;
+
+				//-180~180度の範囲に収める。
+				if (delta > 180.0f)
+				{
+					delta -= 360.0f;
+				}
+				if (delta < 180.0f)
+				{
+					delta += 360.0f;
+				}
+
+				//累積回転量に加算する。
+				m_totalRotationRotation += fabsf(delta);
+
+				//現在の角度を保存する。
+				m_prevStickAngle = angle;
+
+				//360度回した回復。
+				if (m_totalRotationRotation >= 360.0f)
+				{
+					//HPを回復する
+					HealHP(10);
+					m_totalRotationRotation = 0.0f;
+				}
+			}
+		}
+		else
+		{
+			//接触していない場合は回転角をリセット。
+			m_totalRotationRotation = 0.0f;
+		}
+	}
+}
+
+void Player::HealHP(int amount)
+{
+	m_playerHP += amount;
+	if (m_playerHP >m_playerMaxHP)
+	{
+		m_playerHP = m_playerMaxHP;
+	}
 }
 
 void Player::Render(RenderContext&renderContext)

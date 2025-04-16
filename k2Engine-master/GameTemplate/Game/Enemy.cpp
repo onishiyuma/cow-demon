@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Game.h"
+#include "GameOver.h"
 
 
 #include"collision/CollisionObject.h"
@@ -171,13 +172,24 @@ void Enemy::Collision()
 				//呪いの抵抗の侵食値を減らしていく。
 				m_player->m_playerHP -= 1;
 				//会心の設定。
-				int ram = rand() % 100;
-				if (ram > m_player->m_criticalRate)
+				int ram = rand() % 100<20;
+				if (ram < m_player->m_criticalRate)
 				{
 					//クリティカルダメージ。
 					m_player->m_criticalATK = m_player->m_playerATK * m_player->m_cliticalDamage;
 					//敵のHPを減らす。
 					m_hp -= m_player->m_criticalATK;
+
+					if (m_hp <= 0)
+					{
+						//HPが0になったら
+						m_enemyState = enEnemyState_Down;
+					}
+					else {
+						//被ダメージステートに遷移する
+						m_enemyState = enEnemyState_Damage;
+					}
+
 					//スキルを使うため
 					m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
 				}
@@ -188,16 +200,19 @@ void Enemy::Collision()
 					m_player->m_normalATK = m_player->m_playerATK;
 					//敵のHPを減らす。
 					m_hp -= m_player->m_normalATK;
-				}
 
-				//HPが0になったら
-				m_enemyState = enEnemyState_Down;
+					if (m_hp <= 0)
+					{
+						//HPが0になったら
+						m_enemyState = enEnemyState_Down;
+					}
+					else {
+						//被ダメージステートに遷移する
+						m_enemyState = enEnemyState_Damage;
+					}
+					return;
+				}
 			}
-			else {
-				//被ダメージステートに遷移する
-				m_enemyState = enEnemyState_Damage;
-			}
-			return;
 		}
 	}
 
@@ -262,38 +277,58 @@ void Enemy::Collision()
 		}
 	}
 	
+	{
+		//プレイヤーのしめ縄用のコリジョンを取得する。
+		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Shimenawa");
+		//for文で配列を回す。
+		for (auto collision : collisions)
+		{
+			//コリジョンとキャラが衝突する。
+			if (collision->IsHit(m_charaCon))
+			{
+				//停止
+				m_isStopped = true;
+				break;
+			}
+			//停止させる準備。
+			if (!m_isStopped)
+			{
+				//動きを止める。
+				m_moveSpeed = m_stopMove;
+				//アニメーションも止める。
+				m_enemyState = enEnemyState_Idle;
+				//時間をリセット。
+				m_stopTimer = 5.0f;
+			}
+			//停止中の処理。
+			else if (m_isStopped)
+			{
+				m_stopTimer -= g_gameTime->GetFrameDeltaTime();
 
-	//プレイヤーのしめ縄用のコリジョンを取得する。
-	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Shimenawa");
-	//for文で配列を回す。
+				if (m_stopTimer <= 0.0f)
+				{
+					m_isStopped = false;
+					return;
+				}
+			}
+		}
+	}
+
+	//本殿に触れたらゲームオーバー。
+	const auto& collisions = g_collisionObjectManager->FindMatchForwardNameCollisionObjects("gameover_collision");
+	//コリジョンの配列をfor文で回す。
 	for (auto collision : collisions)
 	{
-		//コリジョンとキャラが衝突する。
+		//コリジョンとキャラが衝突したら。
 		if (collision->IsHit(m_charaCon))
 		{
-			//停止
-			m_isStopped = true;
-			break;
-		}
-		//停止させる準備。
-		if (!m_isStopped)
-		{
-			//動きを止める。
-			m_moveSpeed = m_stopMove;
-			//アニメーションも止める。
-			m_enemyState=enEnemyState_Idle;
-			//時間をリセット。
-			m_stopTimer = 5.0f;
-		}
-		//停止中の処理。
-		else if (m_isStopped)
-		{
-			m_stopTimer -= g_gameTime->GetFrameDeltaTime();
+			DeleteGO(this);
+			m_gameoverFlag = true;
 
-			if (m_stopTimer <= 0.0f)
+			if (m_gameoverFlag)
 			{
-				m_isStopped = false;
-				return;
+				NewGO<GameOver>(0);
+				DeleteGO(this);
 			}
 		}
 	}

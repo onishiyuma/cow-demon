@@ -115,5 +115,6 @@ private:
 	int m_FangBoneId = -1;
 	float m_stopTimer=0.0f;//拘束時間。
 	bool m_isStopped = false;//動きを止めるフラグ。
+	bool m_gameoverFlag=false;//ゲームオーバーを呼ぶための変数。
 };
 

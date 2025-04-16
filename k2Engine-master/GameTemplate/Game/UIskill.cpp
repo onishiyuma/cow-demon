@@ -28,7 +28,7 @@ bool UIskill::Start()
 {
 	m_player = FindGO<Player>("player");
 	//スキルゲージ
-	m_SkillGage.Init("Assets/UI/Red.DDS", 120, 12);
+	m_SkillGage.Init("Assets/UI/White.DDS", 120, 12);
 	m_SkillGage.SetPosition(SKILL_GAUGE_POSITION);
 	m_SkillGage.SetPivot(Vector2{ 0.5f,0.0f });
 	m_SkillGage.SetMulColor(BLACK);

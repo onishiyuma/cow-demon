@@ -12,10 +12,13 @@ class Stone;
 class UIStone;
 class Lantern;
 class LanternAttack;
+class RingBell;
+class GameClear;
+class GameOver;
 
 class UItukuyomi;
 class UIskill;
-class UISimenaw;
+class UISimenawa;
 class UIcurseBar;
 class UIheal;
 class MiniMap;
@@ -23,19 +26,18 @@ class MiniMap;
 class Game : public IGameObject
 {
 public:
-	enum GameState
-	{
-		enInGame,//�C���Q�[���B
-		enOutGame,//�A�E�g�Q�[���B
-	};
-public:
 	Game();
 	~Game();
 
 	bool Start();
 	void Update();
+	void GameManager();//
 	void Render(RenderContext& rc);
 
+	//メンバ変数。
+	SkyCube* m_skyCube;//スカイキューブ。
+	GameClear*m_gameClear;//ゲームクリアー。
+	RingBell* m_ringBell;//鈴。
 	BackGround* m_backGround;//背景。
 	GameCamera* m_gameCamera;//ゲームカメラ。
 	Player*m_player;//プレイヤー。
@@ -50,14 +52,13 @@ public:
 	LanternAttack* m_lanternAttack; //攻撃用灯籠
 	UItukuyomi* m_uitukuyomi;
 	UIskill* m_uiskill;
-	UISimenaw* m_uisimenaw;
+	UISimenawa* m_uisimenawa;
 	MiniMap* m_miniMap;
 	UIcurseBar* m_uicursebar;
 	UIheal* m_uiheal;
 	Vector3 m_pos;//座標。
-	GameState m_gameState = enOutGame;//�A�E�g�Q�[���ɂ��Ă���
 	SpriteRender m_spriteRender;//スプライトレンダー。
 	bool m_lanternAction = false; 
-
+	float m_timeLimit=0;//制限時間。
 };
 
