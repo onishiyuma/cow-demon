@@ -4,12 +4,11 @@ class Player;
 class Enemy;
 class Game;
 
-class GameClear
+class GameClear:public IGameObject
 {
 public:
 	GameClear();
 	~GameClear();
-
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
