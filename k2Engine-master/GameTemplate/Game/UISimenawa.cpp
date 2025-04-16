@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UISimenawa.h"
-#include "Player.h";
-#include "Game.h";
+#include "Player.h"
+#include "Game.h"
 
 namespace
 {
@@ -9,56 +9,67 @@ namespace
 	Vector3 ROPE_FREME_POSITION = Vector3(435.0f, -425.0f, 0.0f);
 	//しめ縄ゲージ
 	Vector3 ROPE_GAUGE_POSITION = Vector3(435.0f, -486.0f, 0.0f);
-	//黒
-	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	//緑
+	Vector4 GREEN = Vector4(0.0f,1.0f,0.0f,1.0f);
+	//薄い緑
+	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
 }
 
-UISimenaw::UISimenaw()
+UISimenawa::UISimenawa()
 {
 
 }
 
-UISimenaw::~UISimenaw()
+UISimenawa::~UISimenawa()
 {
 
 }
 
-bool UISimenaw::Start()
+bool UISimenawa::Start()
 {
+	//インスタンスアドレスを検索。
+	m_player=FindGO<Player>("player");
+
 	//ロープゲージ
-	m_RopeGage.Init("Assets/UI/Red.DDS", 120, 14);
-	m_RopeGage.SetPosition(ROPE_GAUGE_POSITION);
-	m_RopeGage.SetPivot(Vector2{ 0.5f, 0.0f });
-	m_RopeGage.SetMulColor(BLACK);
+	m_ropeGage.Init("Assets/UI/White.DDS", 120, 14);
+	m_ropeGage.SetPosition(ROPE_GAUGE_POSITION);
+	m_ropeGage.SetPivot(Vector2{ 0.5f, 0.0f });
 
 	//ロープの画像
-	m_RopeSprite.Init("Assets/UI/aitemskil1.DDS", 130, 130);
-	m_RopeSprite.SetPosition(ROPE_FREME_POSITION);
-
+	m_ropeSprite.Init("Assets/UI/aitemskil1.DDS", 130, 130);
+	m_ropeSprite.SetPosition(ROPE_FREME_POSITION);
+	
 	return true;
 }
 
-void UISimenaw::Update()
+void UISimenawa::Update()
 {
-	m_RopeTimer += g_gameTime->GetFrameDeltaTime();
-	float wari = (float)m_RopeTimer / 2.6;
-	Vector3 scal = { 1.0f,1.0f,1.0f };
-	scal.y += wari;
 
-	if (m_RopeTimer <= 20) {
-		m_RopeGage.SetScale(scal);
-	}
-	else {
+	m_ropeTimer = m_player->m_shimenawaGetTime;
+	float wari = (float)m_ropeTimer / 2.6;
+	Vector3 scal = { 1.0f,1.52f,1.0f };
+	scal.y *= wari;
 
+	if (m_ropeTimer <= m_player->m_collectTime)
+	{
+		m_ropeGage.SetScale(scal);
+		m_ropeGage.SetMulColor(LIGHT_GREEN);
 	}
-	m_RopeSprite.Update();
-	m_RopeGage.Update();
+	else
+	{
+		m_ropeGage.SetMulColor(GREEN);
+	}
+
+	m_ropeSprite.Update();
+	m_ropeGage.Update();
 }
 
-void UISimenaw::Render(RenderContext& rc)
+void UISimenawa::Render(RenderContext& rc)
 {
-	if (m_RopeTimer > 0) {
-		m_RopeGage.Draw(rc);
+	if (m_ropeTimer > 0) 
+	{
+		m_ropeGage.Draw(rc);
 	}
-	m_RopeSprite.Draw(rc);
+
+	m_ropeSprite.Draw(rc);
 }
