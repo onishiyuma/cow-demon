@@ -44,42 +44,36 @@ void Stone::Update()
 	//プレイヤーから火打石に向かうベクトルを計算。
 	Vector3 diff = m_player->m_position - m_position;
 	//ベクトルの長さが120.0fより小さかったら
-	if (diff.Length() <= 200.f) {
+	if (diff.Length() <= 50.0f) {
 
-		if (m_collectionFlag != true) {
-
-			m_collectionFlag = true;
+		if (m_collectionFlag ==false) {
 
 			m_spriteCollection = NewGO<SpriteCollection>(0, "spriteCollection");
 
-			if (m_collectionFlag == true) {
+			m_collectionFlag = true;
 
-				//Aボタンを押したら
-				if (g_pad[0]->IsTrigger(enButtonA)) {
-
-					//火打石のアイテムカウントを1増やす。
-					m_player->m_stoneCount += 1;
-
-
-
-
-
-					//自身を削除する。
-					DeleteGO(this);
-
-					m_collectionFlag = false;
-				}
-			}
 			
-	
+			
 		}
+		//Aボタンを押したら
+		if (g_pad[0]->IsTrigger(enButtonA)) {
+
+			//火打石のアイテムカウントを1増やす。
+			m_player->m_stoneCount += 1;
+
+			//自身を削除する。
+			DeleteGO(this);
 			
+		}
+		
 	}
 	else {
+
 		m_collectionFlag = false;
 
 		DeleteGO(m_spriteCollection);
 	}
+	
 	
 }
 

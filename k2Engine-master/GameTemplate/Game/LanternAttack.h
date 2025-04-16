@@ -2,6 +2,13 @@
 
 class Player;
 class Stone;
+class SpriteLight;
+class SpriteNoStone;
+class TimingBarA;
+class TimingBarB;
+class TimingBarC;
+class Line;
+class SpritePush;
 
 class LanternAttack:public IGameObject
 {
@@ -22,6 +29,19 @@ public:
 	Vector3 m_position;
 	Player* m_player;
 	Stone* m_stone;
-	int m_lanternAttackCount = 0; //火を灯したカウント
+	SpriteLight* m_spriteLight;
+	SpriteNoStone* m_spriteNoStone;
+	TimingBarA* m_timingBarA;
+	TimingBarB* m_timingBarB;
+	TimingBarC* m_timingBarC;
+	Line* m_line;
+	SpritePush* m_spritePush;
+
+	int m_lanternCount = 0; //火を灯したカウント
+	bool m_lightUI = false; //灯籠の近くにいるか？
+	bool m_noStoneUI = false; //火打石がなかったら
+	bool m_lanternAttackAction = false; //「A:火を灯す」を押したら
+	bool m_lightFlag = false;//火が灯っているか？
+	int m_buttonAState = 0;
 };
 

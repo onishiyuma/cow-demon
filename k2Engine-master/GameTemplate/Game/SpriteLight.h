@@ -1,21 +1,18 @@
 #pragma once
-class SpriteCollection:public IGameObject
+class SpriteLight :public IGameObject
 {
 public:
 	//メンバ関数
-	SpriteCollection();
-	~SpriteCollection();
+	SpriteLight();
+	~SpriteLight();
 
 	bool Start();
-	//更新処理
+	void Move();
 	void Update();
-	//描画処理
 	void Render(RenderContext& rc);
 
 	//メンバ変数
 	SpriteRender m_spriteRender;
-	Vector3 m_firstPosition;
 	Vector3 m_position;
-
 };
 
