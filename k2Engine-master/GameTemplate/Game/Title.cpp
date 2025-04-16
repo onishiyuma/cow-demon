@@ -7,9 +7,6 @@ bool Title::Start()
 {
 	//タイトルの画像を読み込む。
 	m_spriteRender.Init("Assets/sprite/Title.DDS", 1920.0f, 1080.0f);
-
-	//ゲーム外にする。
-	m_game->enOutGame;
 	
 	//文字の表示。
 	m_fontRender.SetText(L"Please Press AnyKey");
@@ -26,20 +23,16 @@ Title::Title()
 
 Title::~Title()
 {
-	DeleteGO(this);
+	
 }
 
 void Title::Update()
 {
-
-	Font();
+	m_timer+= g_gameTime->GetFrameDeltaTime();
 
 	//タイトルからインゲームへ移行。
-	if (g_pad[0]->IsPressAnyKey())
+	if (m_timer>0.1f&&g_pad[0]->IsPressAnyKey())
 	{
-		//インゲームにする。
-		m_game->enInGame;
-		;
 		NewGO<Game>(0, "game");
 		m_spriteRender.Update();
 		//自身を削除する。
