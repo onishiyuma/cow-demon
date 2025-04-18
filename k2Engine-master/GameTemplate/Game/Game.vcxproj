@@ -267,6 +267,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
+    <ClInclude Include="Assets\shader\util\ColorSpace.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="DebugScene.h" />

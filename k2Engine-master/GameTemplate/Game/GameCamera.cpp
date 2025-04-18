@@ -15,6 +15,8 @@ bool GameCamera::Start()
 	g_camera3D->SetNear(m_nearClip);
 	g_camera3D->SetFar(m_furClip);
 
+	
+
 	return true;
 }
 

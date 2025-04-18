@@ -41,6 +41,7 @@ Lantern::~Lantern()
 	DeleteGO(m_timingBarA);
 	DeleteGO(m_line);
 	DeleteGO(m_spritePush);
+	//DeleteGO(this);
 }
 
 
@@ -126,7 +127,7 @@ void Lantern::Update()
 						if (m_line->m_position.x <= 10.0f && m_line->m_position.x >= -10.0f) {
 
 							//—z‚ª“”‚Á‚Ä‚¢‚é“”âÄ‚ÌƒJƒEƒ“ƒg‚ð‘‚â‚·
-							m_lanternCount++;
+							m_player->m_lanternCount++;
 
 							//‰Î‘ÅÎ‚Ì”‚ð1Œ¸‚ç‚·
 							m_player->m_stoneCount--;
@@ -168,10 +169,9 @@ void Lantern::Update()
 			DeleteGO(m_spritePush);
 		}
 	}
-	else if (m_lightFlag == true) {
-		if (m_lanternCount == 4) {
-			m_player->m_enemyIsCanAttack = true;
-		}
+	
+	if (m_player->m_lanternCount == 4) {
+		m_player->m_enemyIsCanAttack = true;
 	}
 }	
 

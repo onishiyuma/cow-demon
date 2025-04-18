@@ -41,6 +41,7 @@ LanternAttack::~LanternAttack()
 	DeleteGO(m_timingBarA);
 	DeleteGO(m_line);
 	DeleteGO(m_spritePush);
+	//DeleteGO(this);
 }
 
 void LanternAttack::Update() 

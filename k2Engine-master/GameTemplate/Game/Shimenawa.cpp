@@ -6,7 +6,7 @@
 bool Shimenawa::Start()
 {
 	//モデルを読み込む。
-	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	m_modelRender.Init("Assets/modelData/rope/rope.tkm");
 
 	//プレイヤーのインスタンスを検索する。
 	m_player = FindGO<Player>("player");

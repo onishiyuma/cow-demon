@@ -22,6 +22,8 @@ bool Player::Start()
 	//プレイヤーのHPをセットする。
 	m_playerHP = 100;
 
+	
+
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 
@@ -54,6 +56,7 @@ void Player::Update()
 		Skill();
 
 		//月読の加護。
+		SkillTukuyomiBlessing();
 	    SkillTukuyomiBlessing();
 
 		//しめ縄。
@@ -149,6 +152,7 @@ void Player::NormalAttack()
 	//クールタイムを減らす。
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
+	//if (g_pad[0]->IsTrigger(enButtonRB2)&&m_attackCoolDown<=0.0f)
 	/////////////////デバック用///////////////////////////////////
 	/*if (g_pad[0]->IsTrigger(enButtonA) && m_attackCoolDown <= 0.0f)
 	{
