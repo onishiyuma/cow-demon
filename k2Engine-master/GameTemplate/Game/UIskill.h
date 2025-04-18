@@ -15,10 +15,12 @@
 
 		Player* m_player = nullptr;
 
-		SpriteRender m_SkillSprite;
-		SpriteRender m_SkillGage;
+		SpriteRender m_skillSprite;
+		SpriteRender m_skillGageSprite;
+		int m_skillGage = 0.0f;//スキルゲージ。
+		int m_skillMax=0.0f;//スキルがマックスになったら。
 
-		float m_RunaTimer = 0.0f;
+		float m_runaTimer = 0.0f;
 	
 };
 

@@ -10,8 +10,10 @@ namespace
 
 	//スキルゲージ
 	Vector3 SKILL_GAUGE_POSITION = Vector3(600.0f, -485.0f, 0.0f);
-	//黒
-	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	//緑
+	Vector4 GREEN = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+	//薄い緑
+	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
 }
 
 UIskill::UIskill()
@@ -28,40 +30,48 @@ bool UIskill::Start()
 {
 	m_player = FindGO<Player>("player");
 	//スキルゲージ
-	m_SkillGage.Init("Assets/UI/White.DDS", 120, 12);
-	m_SkillGage.SetPosition(SKILL_GAUGE_POSITION);
-	m_SkillGage.SetPivot(Vector2{ 0.5f,0.0f });
-	m_SkillGage.SetMulColor(BLACK);
+	m_skillGageSprite.Init("Assets/UI/White.DDS", 120, 14);
+	m_skillGageSprite.SetPosition(SKILL_GAUGE_POSITION);
+	m_skillGageSprite.SetPivot(Vector2{ 0.5f,0.0f });
 
 	//スキルスプライト
-	m_SkillSprite.Init("Assets/UI/skilmax.DDS", 130, 130);
-	m_SkillSprite.SetPosition(SKILL_FREME_POSITION);
+	m_skillSprite.Init("Assets/UI/skilmax.DDS", 130, 130);
+	m_skillSprite.SetPosition(SKILL_FREME_POSITION);
 	return true;
 }
 
 void UIskill::Update()
 {
-	int newSkillGage = m_player->m_skillCharge;
-	float wari = (float)newSkillGage / 11;
-	Vector3 scal = { 1.0f,1.0f,1.0f };
-	scal.y += wari;
+	m_skillGage = m_player->m_skillCharge;
+	m_skillMax = m_player->m_skillMax;
 
-	if (m_player->m_skillCharge <= 100) {
-		m_SkillGage.SetScale(scal);
+	float wari = (float)m_skillGage / m_skillMax;
+
+	Vector3 scale = { 1.0f,8.7,1.0f };
+
+
+	if (m_skillGage>=m_skillMax) 
+	{
+		m_skillGageSprite.SetScale(scale);
+		m_skillGageSprite.SetMulColor(GREEN);
+
 	}
-	else {
-
+	else 
+	{
+		m_skillGageSprite.SetMulColor(LIGHT_GREEN);
 	}
 
-	m_SkillSprite.Update();
-	m_SkillGage.Update();
+	m_skillSprite.Update();
+	m_skillGageSprite.Update();
 }
 
 void UIskill::Render(RenderContext& rc)
 {
-	if (m_player->m_skillCharge > 0)
-		m_SkillGage.Draw(rc);
+	if (m_skillGage>0)
+	{
+		m_skillGageSprite.Draw(rc);
+	}
 
-	m_SkillSprite.Draw(rc);
+	m_skillSprite.Draw(rc);
 
 }

@@ -10,15 +10,23 @@ public:
 	bool Start();
 	void Update();
 	
+	void LockCamera(bool isLock) 
+	{ 
+		m_isLocked = isLock;
+	}
 
-	//ƒƒ“ƒo•Ï”
-	GameCamera* m_gameCamera;//ƒJƒƒ‰B
-	Player* m_player;//ƒvƒŒƒCƒ„[B
-	Vector3 m_toCameraPos;//’‹“_‚©‚ç‹“_‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹B
-	int m_nearClip = 1.0f;//ƒjƒA[ƒNƒŠƒbƒv
-	int m_furClip = 20000.0f;//ƒtƒ@[ƒNƒŠƒbƒv
-	const int m_half=2;//”¼•ª‚É‚·‚é
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°
+	GameCamera* m_gameCamera;//ã‚«ãƒ¡ãƒ©ã€‚
+	Player* m_player;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã€‚
+	Vector3 m_toCameraPos;//æ³¨è¦–ç‚¹ã‹ã‚‰è¦–ç‚¹ã«å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ã€‚
+	int m_nearClip = 1.0f;//ãƒ‹ã‚¢ãƒ¼ã‚¯ãƒªãƒƒãƒ—
+	int m_furClip = 20000.0f;//ãƒ•ã‚¡ãƒ¼ã‚¯ãƒªãƒƒãƒ—
+	const int m_half=2;//åŠåˆ†ã«ã™ã‚‹
 
-	
+
+	int m_nearClip = 1.0f;//ãƒ‹ã‚¢ãƒ¼ã‚¯ãƒªãƒƒãƒ—ã€‚
+	int m_furClip = 20000.0f;//ãƒ•ã‚¡ãƒ¼ã‚¯ãƒªãƒƒãƒ—ã€‚
+	const int m_half=2;//åŠåˆ†ã«ã™ã‚‹ã€‚
+	bool m_isLocked = false;//ã‚«ãƒ¡ãƒ©ã‚’åœæ­¢ã™ã‚‹ã‚ˆã†ãƒ•ãƒ©ã‚°ã€‚
 };
 

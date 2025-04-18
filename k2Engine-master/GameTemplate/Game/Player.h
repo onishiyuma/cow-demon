@@ -1,6 +1,7 @@
 #pragma once
 
 class Shimenawa;
+class GameCamera;
 
 class Player:public IGameObject
 {
@@ -54,19 +55,21 @@ public:
 
 
 	//メンバ変数
+	GameCamera*m_gameCamera;//ゲームカメラ。
 	Shimenawa* m_shimenawa;//しめ縄。
 	ModelRender m_modelRender;//モデルレンダー。
 	CharacterController m_characterController;//キャラコン。
+	FontRender m_fontRender;//フォントレンダー。
 	Vector3 m_position = Vector3::Zero;//座標。
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
-	Quaternion m_rotation;
-	FontRender m_fontRender;//フォントレンダー。
 	const float m_collectTime = 15.0f;//しめ縄を設置できる時間。
 	const float m_gravity = 10.5f;//重力を発生させる。
+	const float m_tukuyomiMax = 0.0f;//月読の加護のマックス値。
 	const int m_charaConRadius = 25.0f;//キャラコンの半径。
 	const int m_charaConHeight = 75.0f;//キャラコンの高さ。
 	const int m_playerATK = 5;//プレイヤーの攻撃力。
+	const int m_skillMax = 100;//スキルをチャージできるマックス値。
 	const int m_skillMagnification=5;//攻撃の倍率を上げる。
 	const int m_TukuyomiMagnification = 7;//月読の加護の倍率を設定。
 	const int m_criticalRate = 10;//会心率。
