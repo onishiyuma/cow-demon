@@ -58,7 +58,7 @@ void Amulet::Update()
 	//タイマーを加算。
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
 	//タイマーが一定の秒数経過していたら。
-	if (m_deleteTimer >= 0.48f)
+	if (m_deleteTimer >= 0.38f)
 	{
 		//自身を削除。
 		DeleteGO(this);

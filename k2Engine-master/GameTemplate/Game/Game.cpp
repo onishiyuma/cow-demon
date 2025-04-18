@@ -110,6 +110,7 @@ void Game::Update()
 	GameManager();
 }
 
+
 //ゲームクリア、ゲームオーバーの判定処理。
 void Game::GameManager()
 {
@@ -130,6 +131,7 @@ void Game::GameManager()
 		NewGO<GameOver>(0);
 		DeleteGO(this);
 	}
+
 }
 
 

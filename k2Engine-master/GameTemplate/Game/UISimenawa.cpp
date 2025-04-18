@@ -47,7 +47,7 @@ void UISimenawa::Update()
 
 	m_ropeTimer = m_player->m_shimenawaGetTime;
 	float wari = (float)m_ropeTimer / 2.6;
-	Vector3 scal = { 1.0f,1.52f,1.0f };
+	Vector3 scal = { 1.0f,1.51f,1.0f };
 	scal.y *= wari;
 
 	if (m_ropeTimer <= m_player->m_collectTime)

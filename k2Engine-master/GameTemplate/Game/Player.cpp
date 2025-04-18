@@ -6,6 +6,7 @@
 #include "Shimenawa.h"
 #include "GameOver.h"
 #include "Shimenawa.h"
+#include "GameCamera.h"
 
 #include<time.h>
 
@@ -17,10 +18,12 @@ bool Player::Start()
 	//キャラコンを初期化
 	m_position.Set(70.0f, 0.0f, -1000.0f);
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
+
 	//プレイヤーのHPをセットする。
 	m_playerHP = 100;
 
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
+	m_gameCamera = FindGO<GameCamera>("gameCamera");
 
 	return true;
 }
@@ -51,7 +54,7 @@ void Player::Update()
 		Skill();
 
 		//月読の加護。
-	    TukuyomiBlessing();
+	    SkillTukuyomiBlessing();
 
 		//しめ縄。
 	    ItemShimenawa();
@@ -85,7 +88,7 @@ void Player::Update()
 
 
 	//モデルを更新する。
-	m_modelRender.Update();
+	//m_modelRender.Update();
 }
 
 void Player::Move()
@@ -146,7 +149,6 @@ void Player::NormalAttack()
 	//クールタイムを減らす。
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonRB2)&&m_attackCoolDown<=0.0f)
 	/////////////////デバック用///////////////////////////////////
 	/*if (g_pad[0]->IsTrigger(enButtonA) && m_attackCoolDown <= 0.0f)
 	{
@@ -173,7 +175,7 @@ void Player::Skill()
 {
 	////////////////デバック用///////////////////////////////////
 	//スキル発動。
-	/*if (g_pad[0]->IsTrigger(enButtonB) && m_skillCharge >= 50)
+	/*if (g_pad[0]->IsTrigger(enButtonB) && m_skillCharge >= m_skillMax)
 	{
 		//スキルの作成用関数を呼び出す。
 		MakeSkill();
@@ -185,7 +187,7 @@ void Player::Skill()
 
 	////////////////正式なボタン配置///////////////////////
 	//スキル発動。
-	if (g_pad[0]->IsTrigger(enButtonLB2) && m_skillCharge >= 50)
+	if (g_pad[0]->IsTrigger(enButtonLB2) && m_skillCharge >= m_skillMax)
 	{
 		//スキルの作成用関数を呼び出す。
 		MakeSkill();
@@ -200,7 +202,7 @@ void Player::SkillTukuyomiBlessing()
 	//クールタイムを減らす。
 	m_tukuyomiBlessingCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonX) && m_tukuyomiBlessingCoolDown <= 0.0f)
+	if (g_pad[0]->IsTrigger(enButtonX) && m_tukuyomiBlessingCoolDown <= m_tukuyomiMax)
 	{
 		//月読の加護作成用関数を呼び出す。
 		MakeTukuyomiBlessing();
@@ -304,6 +306,8 @@ void Player::Collision()
 		//コントローラーを回す処理。
 		if (g_pad[0]->IsTrigger(enButtonA))
 		{
+			//m_gameCamera->LockCamera(true);
+
 			//右スティックのx,y値。
 			float x = g_pad[0]->GetRStickXF();
 			float y = g_pad[0]->GetRStickYF();
@@ -340,7 +344,9 @@ void Player::Collision()
 					HealHP(10);
 					m_totalRotationRotation = 0.0f;
 				}
+				//m_gameCamera->LockCamera(false);
 			}
+
 		}
 		else
 		{
@@ -359,8 +365,7 @@ void Player::HealHP(int amount)
 	}
 }
 
-void Player::Render(RenderContext&renderContext)
+void Player::Render(RenderContext& rc)
 {
-	//モデルを表示する。
-	//m_modelRender.Draw(renderContext);
+
 }

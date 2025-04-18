@@ -43,7 +43,7 @@ void RingBell::CreateCollision()
 
 	//コリジョンに名前をつける。
 	m_collisionObject->SetName("ringbell");
-	//オブジェクトっが自動で削除されないようにする。
+	//オブジェクトが自動で削除されないようにする。
 	m_collisionObject->SetIsEnableAutoDelete(false);
 }
 
