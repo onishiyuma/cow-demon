@@ -30,9 +30,9 @@ bool UIskill::Start()
 {
 	m_player = FindGO<Player>("player");
 	//スキルゲージ
-	m_SkillGageSprite.Init("Assets/UI/White.DDS", 120, 14);
-	m_SkillGageSprite.SetPosition(SKILL_GAUGE_POSITION);
-	m_SkillGageSprite.SetPivot(Vector2{ 0.5f,0.0f });
+	m_skillGageSprite.Init("Assets/UI/White.DDS", 120, 14);
+	m_skillGageSprite.SetPosition(SKILL_GAUGE_POSITION);
+	m_skillGageSprite.SetPivot(Vector2{ 0.5f,0.0f });
 
 	//スキルスプライト
 	m_skillSprite.Init("Assets/UI/skilmax.DDS", 130, 130);
@@ -52,24 +52,24 @@ void UIskill::Update()
 
 	if (m_skillGage>=m_skillMax) 
 	{
-		m_SkillGageSprite.SetScale(scale);
-		m_SkillGageSprite.SetMulColor(GREEN);
+		m_skillGageSprite.SetScale(scale);
+		m_skillGageSprite.SetMulColor(GREEN);
 
 	}
 	else 
 	{
-		m_SkillGageSprite.SetMulColor(LIGHT_GREEN);
+		m_skillGageSprite.SetMulColor(LIGHT_GREEN);
 	}
 
 	m_skillSprite.Update();
-	m_SkillGageSprite.Update();
+	m_skillGageSprite.Update();
 }
 
 void UIskill::Render(RenderContext& rc)
 {
 	if (m_skillGage>0)
 	{
-		m_SkillGageSprite.Draw(rc);
+		m_skillGageSprite.Draw(rc);
 	}
 
 	m_skillSprite.Draw(rc);

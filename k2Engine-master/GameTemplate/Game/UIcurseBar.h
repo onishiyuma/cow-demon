@@ -13,11 +13,11 @@ public:
 
 	void Render(RenderContext& rc);
 
-	Player* m_player = nullptr;
+	Player* m_player ;
 
-	SpriteRender m_CurseFrame;
+	SpriteRender m_curseFrame;
 
-	SpriteRender m_CurseSprit;
+	SpriteRender m_curseSprit;
 
 };
 

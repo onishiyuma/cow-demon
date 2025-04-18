@@ -28,30 +28,30 @@ bool UIheal::Start()
 {
 m_player = FindGO<Player>("player");
 	//âÒïúâÒêî1
-	m_SoulSprite1.Init("Assets/UI/gage.DDS", 150, 150);
-	m_SoulSprite1.SetPosition(SOUL_POSITION);
+	m_soulSprite1.Init("Assets/UI/gage.DDS", 150, 150);
+	m_soulSprite1.SetPosition(SOUL_POSITION);
 	//âÒïúâÒêî2
-	m_SoulSprite2.Init("Assets/UI/gage.DDS", 150, 150);
-	m_SoulSprite2.SetPosition(SOUL_POSITION2);
+	m_soulSprite2.Init("Assets/UI/gage.DDS", 150, 150);
+	m_soulSprite2.SetPosition(SOUL_POSITION2);
 	//âÒïúâÒêî3
-	m_SoulSprite3.Init("Assets/UI/gage.DDS", 150, 150);
-	m_SoulSprite3.SetPosition(SOUL_POSITION3);
+	m_soulSprite3.Init("Assets/UI/gage.DDS", 150, 150);
+	m_soulSprite3.SetPosition(SOUL_POSITION3);
 
 	return true;
 }
 
 void UIheal::Update()
 {
-	m_SoulSprite3.Update();
-	m_SoulSprite2.Update();
-	m_SoulSprite1.Update();
+	m_soulSprite3.Update();
+	m_soulSprite2.Update();
+	m_soulSprite1.Update();
 
 
 }
 
 void UIheal::Render(RenderContext& rc)
 {
-	m_SoulSprite1.Draw(rc);
-	m_SoulSprite2.Draw(rc);
-	m_SoulSprite3.Draw(rc);
+	m_soulSprite1.Draw(rc);
+	m_soulSprite2.Draw(rc);
+	m_soulSprite3.Draw(rc);
 }
