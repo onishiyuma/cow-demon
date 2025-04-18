@@ -24,59 +24,15 @@
 bool Game::Start()
 {
 	//制限時間の設定。
-	m_timeLimit =180.0f;
+	m_timeLimit =120.0f;
+
+	//ステージ全体を暗くする。
+	g_sceneLight->SetAmbinet(Vector3(0.0001f, 0.0001f, 0.0001f));
+	
+	g_sceneLight->SetDirectionLight(0, Vector3(0.01f,0.01f,0.01f), Vector3(1.0f, 1.0f, 1.0f));
 
 	//デバック用。
 	//m_timeLimit = 3.0f;
-
-	//�X�e�[�W�I�u�W�F�N�g�̍쐬
-	m_backGround = NewGO<BackGround>(0);
-
-	//�v���C���[�I�u�W�F�N�g�̍쐬
-	m_player = NewGO<Player>(0, "player");
-	//�J�����I�u�W�F�N�g�̍쐬
-	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
-	
-	//�G�l�~�[�I�u�W�F�N�g�̍쐬
-	m_enemy = NewGO<Enemy>(0,"enemy");
-	//クロスヘアーを表示。
-	m_crossHair = NewGO<CrossHair>(0);
-
-	//賽銭箱を表示（鈴）。
-	m_ringBell = NewGO<RingBell>(0);
-
-	// 火打石を表示。
-	m_stone = NewGO<Stone>(0, "stone");
-	m_stone->m_position = { 0.0f,0.0f,500.0f };
-	m_stone->m_firstPosition = m_stone->m_position;
-	m_stone = FindGO<Stone>("stone");
-
-	m_stone1 = NewGO<Stone>(0, "stone");
-	m_stone1->m_position = { 200.0f,0.0f,0.0f };
-	m_stone1->m_firstPosition = m_stone->m_position;
-	m_stone1 = FindGO<Stone>("stone");
-
-	//火打石のカウントを表示。
-	m_uiStone = NewGO<UIStone>(0, "uiStone");
-	m_uiStone = FindGO<UIStone>("uiStone");
-	
-
-	m_uitukuyomi = NewGO<UItukuyomi>(0,"uitukuyomi");
-	//スキルUI
-	m_uiskill = NewGO<UIskill>(0, "uiskill");
-	//しめ縄UI
-	m_uisimenawa = NewGO<UISimenawa>(0, "m_uisimenawa");
-	//ミニマップ
-	m_miniMap = NewGO<MiniMap>(0,"minimap");
-	//呪ゲージ
-	m_uicursebar = NewGO<UIcurseBar>(0, "m_uicursebar");
-	//回復
-	m_uiheal = NewGO <UIheal>(0, "uiheal");
-	//��̔w�i�쐬
-	m_skyCube=NewGO<SkyCube>(0);
-	m_skyCube->SetType(enSkyCubeType_NightToon);
-	m_skyCube->SetScale(1000.0f);
-
 
 		//�v���C���[�I�u�W�F�N�g�̍쐬
 		m_player = NewGO<Player>(0, "player");
@@ -96,7 +52,7 @@ bool Game::Start()
 		//m_stone = FindGO<Stone>("stone");
 
 		m_stone2 = NewGO<Stone>(0, "stone2");
-		m_stone2->m_position = { 200.0f,0.0f,-4000.0f };
+		m_stone2->m_position = { 200.0f,0.0f,-2000.0f };
 		m_stone2->m_firstPosition = m_stone2->m_position;
 		//m_stone1 = FindGO<Stone>("stone");
 
@@ -105,11 +61,11 @@ bool Game::Start()
 		m_stone3->m_firstPosition = m_stone3->m_position;
 
 		m_stone4 = NewGO<Stone>(0, "stone4");
-		m_stone4->m_position = { 2000.0f,0.0f,-3000.0f };
+		m_stone4->m_position = { 2000.0f,0.0f,-2000.0f };
 		m_stone4->m_firstPosition = m_stone4->m_position;
 
 		m_stone5 = NewGO<Stone>(0, "stone5");
-		m_stone5->m_position = { -2300.0f,0.0f,-3200.0f };
+		m_stone5->m_position = { -2300.0f,0.0f,-2200.0f };
 		m_stone5->m_firstPosition = m_stone5->m_position;
 
 		m_stone6 = NewGO<Stone>(0, "stone6");
@@ -122,7 +78,7 @@ bool Game::Start()
 
 		//火打石のカウントを表示。
 		m_uiStone = NewGO<UIStone>(0, "uiStone");
-		m_uiStone = FindGO<UIStone>("uiStone");
+		//m_uiStone = FindGO<UIStone>("uiStone");
 		
 		//灯籠のモデルを表示
 		m_lantern1 = NewGO<Lantern>(0, "lantern1");
@@ -168,7 +124,7 @@ bool Game::Start()
 		//スキルUI
 		m_uiskill = NewGO<UIskill>(0, "uiskill");
 		//しめ縄UI
-		m_uisimenaw = NewGO<UISimenaw>(0, "m_uisimenawa");
+		m_uisimenawa = NewGO<UISimenawa>(0, "m_uisimenawa");
 		//ミニマップ
 		m_miniMap = NewGO<MiniMap>(0,"minimap");
 		//呪ゲージ
@@ -176,10 +132,10 @@ bool Game::Start()
 		//回復
 		m_uiheal = NewGO <UIheal>(0, "uiheal");
 		//��̔w�i�쐬
-		SkyCube* skyCube = NewGO<SkyCube>(0);
-		skyCube->SetType(enSkyCubeType_NightToon);
-		skyCube->SetScale(1000.0f);
-	}
+		//SkyCube* skyCube = NewGO<SkyCube>(0);
+		//skyCube->SetType(enSkyCubeType_NightToon);
+		//skyCube->SetScale(1000.0f);
+	//}
 
 
 	return true;
@@ -211,7 +167,6 @@ Game::~Game()
 	DeleteGO(m_lanternAttack1);
 	DeleteGO(m_lanternAttack2);
 	DeleteGO(m_lanternAttack3);
-	DeleteGO(m_stone);
 	DeleteGO(m_ringBell);
 	DeleteGO(m_skyCube);
 	DeleteGO(m_uitukuyomi);
@@ -219,6 +174,7 @@ Game::~Game()
 	DeleteGO(m_uisimenawa);
 	DeleteGO(m_uicursebar);
 	DeleteGO(m_uiheal);
+	DeleteGO(m_uiStone);
 	DeleteGO(m_miniMap);
 }
 

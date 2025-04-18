@@ -18,5 +18,7 @@ public:
 	int m_nearClip = 1.0f;//ニアークリップ
 	int m_furClip = 20000.0f;//ファークリップ
 	const int m_half=2;//半分にする
+
+	
 };
 

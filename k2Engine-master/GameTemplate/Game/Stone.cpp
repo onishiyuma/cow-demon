@@ -31,6 +31,7 @@ Stone::Stone()
 Stone::~Stone() 
 {
 	DeleteGO(m_spriteCollection);
+	//DeleteGO(this);
 }
 
 void Stone::Update() 

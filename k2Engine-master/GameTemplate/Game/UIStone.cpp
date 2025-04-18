@@ -18,7 +18,7 @@ UIStone::UIStone()
 
 UIStone::~UIStone() 
 {
-
+	//DeleteGO(this);
 }
 
 void UIStone::Update() 

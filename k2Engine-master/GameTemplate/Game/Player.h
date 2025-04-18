@@ -88,4 +88,5 @@ public:
 	int m_tukuyomiATK = 0;//月読の加護の総ダメージ。
 	float m_totalRotationRotation = 0.0f;
 	float m_prevStickAngle = 0.0f;
+	int m_lanternCount = 0;
 };
