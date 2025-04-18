@@ -17,9 +17,9 @@ public:
 
 	Player* m_player;
 
-	SpriteRender m_SoulSprite1;
-	SpriteRender m_SoulSprite2;
-	SpriteRender m_SoulSprite3;
+	SpriteRender m_soulSprite1;
+	SpriteRender m_soulSprite2;
+	SpriteRender m_soulSprite3;
 
 };
 

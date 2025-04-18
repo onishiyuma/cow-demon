@@ -33,16 +33,16 @@ bool UIcurseBar::Start()
 {
 	m_player = FindGO<Player>("player");
 	//Žô‚Ì’ïRƒtƒŒ[ƒ€
-	m_CurseFrame.Init("Assets/UI/Red.DDS", 1024, 128);
-	m_CurseFrame.SetPosition(HP_FREME_POSITION);
-	m_CurseFrame.SetScale(HP_FRAME_SCAL);
-	m_CurseFrame.SetMulColor(BLACK);
+	m_curseFrame.Init("Assets/UI/Red.DDS", 1024, 128);
+	m_curseFrame.SetPosition(HP_FREME_POSITION);
+	m_curseFrame.SetScale(HP_FRAME_SCAL);
+	m_curseFrame.SetMulColor(BLACK);
 
 	//Žô‚¢‚Ì’ïRƒQ[ƒW
-	m_CurseSprit.Init("Assets/UI/Red.DDS", 102.4, 50);
-	m_CurseSprit.SetPosition(HP_POSITION);
+	m_curseSprit.Init("Assets/UI/Red.DDS", 102.4, 50);
+	m_curseSprit.SetPosition(HP_POSITION);
 
-	m_CurseSprit.SetPivot(HP_PIVOT);
+	m_curseSprit.SetPivot(HP_PIVOT);
 	return true;
 }
 
@@ -54,20 +54,20 @@ void UIcurseBar::Update()
 	scal.x *= wari;
 
 	if (m_player->m_playerHP <= 100) {
-		m_CurseSprit.SetScale(scal);
+		m_curseSprit.SetScale(scal);
 	}
 	else {
 
 	}
 
-	m_CurseFrame.Update();
-	m_CurseSprit.Update();
+	m_curseFrame.Update();
+	m_curseSprit.Update();
 }
 
 void UIcurseBar::Render(RenderContext& rc)
 {
-	m_CurseFrame.Draw(rc);
+	m_curseFrame.Draw(rc);
 	if (m_player->m_playerHP > 0) {
-		m_CurseSprit.Draw(rc);
+		m_curseSprit.Draw(rc);
 	}
 }

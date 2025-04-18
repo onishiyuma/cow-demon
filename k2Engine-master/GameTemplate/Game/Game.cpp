@@ -168,11 +168,11 @@ bool Game::Start()
 		//スキルUI
 		m_uiskill = NewGO<UIskill>(0, "uiskill");
 		//しめ縄UI
-		m_uisimenaw = NewGO<UISimenaw>(0, "m_uisimenawa");
+		m_uisimenawa = NewGO<UISimenawa>(0, "uisimenawa");
 		//ミニマップ
 		m_miniMap = NewGO<MiniMap>(0,"minimap");
 		//呪ゲージ
-		m_uicursebar = NewGO<UIcurseBar>(0, "m_uicursebar");
+		m_uicursebar = NewGO<UIcurseBar>(0, "uicursebar");
 		//回復
 		m_uiheal = NewGO <UIheal>(0, "uiheal");
 		//��̔w�i�쐬
