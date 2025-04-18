@@ -7,14 +7,6 @@ namespace
 {
 	//ツクヨミ
 	Vector3 RUNA_FREME_POSITION = Vector3(815.0f, -425.0f, 0.0f);
-	//透明
-	Vector4 TOUMEI = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-	//80%透明
-	Vector4 TOUMEI_80 = Vector4(1.0f, 1.0f, 1.0f, 0.8f);
-	//40%透明
-	Vector4 TOUMEI_40 = Vector4(1.0f, 1.0f, 1.0f, 0.4f);
-	//20％透明
-	Vector4 TOUMEI_20 = Vector4(1.0f, 1.0f, 1.0f, 0.2f);
 }
 
 UItukuyomi::UItukuyomi()
@@ -31,64 +23,40 @@ bool UItukuyomi::Start()
 {
 	m_player = FindGO<Player>("player");
 	//ツクヨミゲージ0
-	m_RunaSprite.Init("Assets/UI/Tukuyomi 1.DDS", 230, 230);
+	m_runaSprite.Init("Assets/UI/Tukuyomi 1.DDS", 230, 230);
+	m_runaSprite.SetPosition(RUNA_FREME_POSITION);
+	m_runaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, 0.5f));
+
 	//ツクヨミMAX
-	m_RunaSprite2.Init("Assets/UI/TukuyomiMax 1.DDS", 230, 230);
+	m_runaSprite2.Init("Assets/UI/TukuyomiMax 1.DDS", 230, 230);
+	m_runaSprite2.SetPosition(RUNA_FREME_POSITION);
+	m_runaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, 0.5f));
 
 	return true;
 }
 
 void UItukuyomi::Update()
 {
-	m_RunaTimer += g_gameTime->GetFrameDeltaTime();
-	 float wari = (float)m_RunaTimer;
-	 Vector3 scal = { 1.0f,1.0f,1.0f };
-	 scal.x,scal.y += wari;
+	m_fadeTime = m_player->m_tukuyomiBlessingCoolDown;
+	m_runaMax = m_player->m_tukuyomiMax;
+
+	Vector3 scal = { 1.0f,1.0f,1.0f };
+
+	m_runaSprite2.SetScale(scal);
 
 
-	if (m_RunaTimer >= 40) {
-		m_RunaSprite2.SetPosition(RUNA_FREME_POSITION);
-		m_RunaSprite2.Update();
-	}
-
-	if (m_RunaTimer >= 30, m_RunaTimer < 39)
-	{
-		m_RunaSprite2.SetPosition(RUNA_FREME_POSITION);
-		m_RunaSprite2.SetMulColor(TOUMEI_80);
-		m_RunaSprite2.Update();
-	}
-
-	if (m_RunaTimer >= 20, m_RunaTimer < 29)
-	{
-		m_RunaSprite2.SetPosition(RUNA_FREME_POSITION);
-		m_RunaSprite2.SetMulColor(TOUMEI_40);
-		m_RunaSprite2.Update();
-	}
-
-	if (m_RunaTimer >= 10, m_RunaTimer < 19)
-	{
-		m_RunaSprite2.SetPosition(RUNA_FREME_POSITION);
-		m_RunaSprite2.SetMulColor(TOUMEI_20);
-		m_RunaSprite2.Update();
-	}
-
-	if (m_RunaTimer <= 9)
-	{
-		m_RunaSprite.SetPosition(RUNA_FREME_POSITION);
-		m_RunaSprite.Update();
-	}
-
-
+	m_runaSprite.Update();
+	m_runaSprite2.Update();
 }
 
 void UItukuyomi::Render(RenderContext& rc)
 {
-	if (m_RunaTimer >= 10) {
-		m_RunaSprite2.Draw(rc);
+	if (m_fadeTime >=m_runaMax)
+	{
+		m_runaSprite.Draw(rc);
 	}
-
-	else {
-		
-		m_RunaSprite.Draw(rc);
+	else
+	{
+		m_runaSprite2.Draw(rc);
 	}
 }
