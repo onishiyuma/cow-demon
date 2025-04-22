@@ -35,7 +35,6 @@ public:
 	void Render(RenderContext& rc);
 
 	//メンバ変数。
-	SkyCube* m_skyCube;//スカイキューブ。
 	GameClear*m_gameClear;//ゲームクリアー。
 	RingBell* m_ringBell;//鈴。
 	BackGround* m_backGround;//背景。
@@ -60,12 +59,12 @@ public:
 	LanternAttack* m_lanternAttack1; //攻撃用灯籠
 	LanternAttack* m_lanternAttack2; //攻撃用灯籠
 	LanternAttack* m_lanternAttack3; //攻撃用灯籠
-	UItukuyomi* m_uitukuyomi;
-	UIskill* m_uiskill;
-	UISimenawa* m_uisimenawa;
+	UItukuyomi* m_uiTukuyomi;
+	UIskill* m_uiSkill;
+	UISimenawa* m_uiSimenawa;
 	MiniMap* m_miniMap;
-	UIcurseBar* m_uicursebar;
-	UIheal* m_uiheal;
+	UIcurseBar* m_uiCurseBar;
+	UIheal* m_uiHeal;
 	Vector3 m_pos;//座標。
 	SpriteRender m_spriteRender;//スプライトレンダー。
 	

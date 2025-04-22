@@ -29,8 +29,6 @@ RingBell::~RingBell()
 void RingBell::Update()
 {
 	m_modelRender.Update();
-
-
 }
 
 //ƒRƒŠƒWƒ‡ƒ“‚ğì¬B
