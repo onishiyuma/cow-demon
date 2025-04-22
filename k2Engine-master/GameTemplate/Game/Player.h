@@ -2,6 +2,9 @@
 
 class Shimenawa;
 class GameCamera;
+class Lantern;
+class UIheal;
+class RingBell;
 
 class Player:public IGameObject
 {
@@ -37,6 +40,10 @@ public:
 	void ManageState();
 	//鈴の当たり判定。
 	void Collision();
+	//距離の計算。
+	void Distance();
+	//カメラの回転処理。
+	void RotationCamera();
 	//回復用処理。
 	void HealHP(int amount);
 
@@ -55,6 +62,9 @@ public:
 
 
 	//メンバ変数
+	RingBell* m_ringBell;//鈴。
+	UIheal* m_uiHeal;//回復できるゲージ。
+	Lantern* m_lantern;//ランタン。
 	GameCamera*m_gameCamera;//ゲームカメラ。
 	Shimenawa* m_shimenawa;//しめ縄。
 	ModelRender m_modelRender;//モデルレンダー。
@@ -66,6 +76,7 @@ public:
 	const float m_collectTime = 15.0f;//しめ縄を設置できる時間。
 	const float m_gravity = 10.5f;//重力を発生させる。
 	const float m_tukuyomiMax = 0.0f;//月読の加護のマックス値。
+	const float contactThresholdSq= 100.0f * 100.0f;
 	const int m_charaConRadius = 25.0f;//キャラコンの半径。
 	const int m_charaConHeight = 75.0f;//キャラコンの高さ。
 	const int m_playerATK = 5;//プレイヤーの攻撃力。
@@ -80,7 +91,7 @@ public:
 	bool m_deleteFlag=false;//削除するか。
 	bool m_enemyIsCanAttack = false;//敵を攻撃できるか？。
 	int m_playerHP = 0;//プレイヤーのHP。
-	int m_playerMaxHP = 0;//プレイヤーの最大体力。
+	int m_playerMaxHP = 100;//プレイヤーの最大体力。
 	int m_skillCharge = 0;//スキルのチャージ。
 	int m_normalATK = 0;//通常攻撃ダメージ。
 	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
@@ -92,4 +103,6 @@ public:
 	float m_totalRotationRotation = 0.0f;
 	float m_prevStickAngle = 0.0f;
 	int m_lanternCount = 0;
+	float distSq = 0.0f;
+	bool m_isRotating = false;//回転フラグ。
 };
