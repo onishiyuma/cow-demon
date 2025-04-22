@@ -12,6 +12,11 @@ public:
 	//コリジョンの作成。
 	void CreateCollision();
 
+	const Vector3& GetPosition()const
+	{
+		return m_position;
+	}
+
 	//メンバ変数。
 	PhysicsStaticObject m_physicsStaticObject;//判定。
 	CollisionObject*m_collisionObject;//コリジョンオブジェクト。
