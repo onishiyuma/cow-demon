@@ -177,8 +177,6 @@ void Enemy::Collision()
 				{
 					//クリティカルダメージ。
 					m_player->m_criticalATK = m_player->m_playerATK * m_player->m_cliticalDamage;
-					//敵のHPを減らす。
-					m_hp -= m_player->m_criticalATK;
 
 					if (m_hp <= 0)
 					{
@@ -198,8 +196,6 @@ void Enemy::Collision()
 				{
 					//通常ダメージ。
 					m_player->m_normalATK = m_player->m_playerATK;
-					//敵のHPを減らす。
-					m_hp -= m_player->m_normalATK;
 
 					if (m_hp <= 0)
 					{
