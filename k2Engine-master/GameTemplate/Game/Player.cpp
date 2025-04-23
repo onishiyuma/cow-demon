@@ -6,11 +6,11 @@
 #include "GameOver.h"
 #include "Shimenawa.h"
 #include "GameCamera.h"
+#include "PlayerLight.h"
 #include "Lantern.h"
 #include "UIheal.h"
 #include "RingBell.h"
 #include "GameCamera.h"
-
 #include<time.h>
 
 bool Player::Start()
@@ -31,6 +31,11 @@ bool Player::Start()
 	//ヒールのクールタイム
 	m_healCoolDown = 10.0f;
 
+	m_shimenawa = FindGO<Shimenawa>("shimenawa");
+	m_gameCamera = FindGO<GameCamera>("gameCamera");
+	m_playerLight = FindGO<PlayerLight>("playerLight");
+
+	m_playerLight = NewGO<PlayerLight>(0, "playerLight");
 	//インスタンスアドレスの検索。
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
@@ -48,6 +53,7 @@ Player::Player()
 
 Player::~Player()
 {
+	DeleteGO(m_playerLight);
 	DeleteGO(this);
 }
 
@@ -75,6 +81,20 @@ void Player::Update()
 		//しめ縄。
 	    ItemShimenawa();
 	}
+	
+	//呪いの抵抗が0を下回っていたら。
+	if (m_playerHP<=0)
+	{
+		NewGO<GameOver>(0, "gameover");
+		DeleteGO(this);
+	}
+
+	//判定を呼び出す。
+	Collision();
+
+	SpotLight();
+	//モデルを更新する。
+	//m_modelRender.Update();
 	else
 	{
 		//文字の表示。
@@ -329,6 +349,8 @@ void Player::Collision()
 			
 	}
 
+				//累積回転量に加算する。
+				m_totalRotation += fabsf(delta);
 		// Aボタンを押していない間は回転量と角度をリセット。
 		m_totalRotationRotation = 0.0f;
 		m_prevStickAngle=0.0f;
@@ -340,6 +362,15 @@ void Player::Distance()
 		return; // もしくはログ出力して気づけるように
 	}
 
+				//360度回した回復。
+				if (m_totalRotation >= 360.0f)
+				{
+					//HPを回復する
+					HealHP(10);
+					m_totalRotation = 0.0f;
+				}
+				//m_gameCamera->LockCamera(false);
+			}
 	// プレイヤーと鈴の位置を取得
 	Vector3 bellPos = m_ringBell->GetPosition();
 	Vector3 playerPos = m_position;
@@ -389,6 +420,8 @@ void Player::RotationCamera()
 	{
 		if (m_healCoolDown <= 0)
 		{
+			//接触していない場合は回転角をリセット。
+			m_totalRotation = 0.0f;
 			if (m_uiHeal->m_useHeal >= 0)
 			{
 				m_healCoolDown = 10.0f;

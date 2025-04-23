@@ -240,6 +240,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerLight.cpp" />
     <ClCompile Include="Poison.cpp" />
     <ClCompile Include="Purification.cpp" />
     <ClCompile Include="RingBell.cpp" />
@@ -286,6 +287,7 @@
     <ClInclude Include="LittleEnemy.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerLight.h" />
     <ClInclude Include="Poison.h" />
     <ClInclude Include="Purification.h" />
     <ClInclude Include="RingBell.h" />

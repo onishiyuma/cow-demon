@@ -73,7 +73,7 @@ void Line::Update()
 
 		//if (m_moving == false) {
 
-			while (m_moving==true) {
+			/*while (m_moving==true) {
 
 					Move();
 					m_spriteRender.SetPosition(m_position);
@@ -84,12 +84,12 @@ void Line::Update()
 					m_spriteRender.Update();
 					break;
 				}
-			}
+			}*/
 		//}
 
 	//}
 	
-	
+	Move();
 }
 
 void Line::Render(RenderContext& rc)
