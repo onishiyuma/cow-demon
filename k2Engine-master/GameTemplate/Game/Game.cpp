@@ -13,7 +13,7 @@
 #include "MiniMap.h"
 #include "LittleEnemy.h"
 #include "UItukuyomi.h"
-#include "UIskill.h";
+#include "UIskill.h"
 #include "UISimenawa.h"
 #include "UIcurseBar.h"
 #include "UIheal.h"
@@ -26,7 +26,7 @@ bool Game::Start()
 {
 
 	//ステージ全体を暗くする。
-	g_sceneLight->SetAmbinet(Vector3(0.0001f, 0.0001f, 0.0001f));
+	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
 
 	g_sceneLight->SetDirectionLight(0, Vector3(0.01f, 0.01f, 0.01f), Vector3(1.0f, 1.0f, 1.0f));
 
@@ -36,25 +36,122 @@ bool Game::Start()
 	m_timeLimit =120.0f;
 
 
-	//�X�e�[�W�I�u�W�F�N�g�̍쐬
+	//背景の作成。
 	m_backGround = NewGO<BackGround>(0);
 
 	//ベルの作成。
 	m_ringBell = NewGO<RingBell>(0, "ringbell");
 
-	//�v���C���[�I�u�W�F�N�g�̍쐬
+	//プレイヤーの作成。
 	m_player = NewGO<Player>(0, "player");
 
-	//�J�����I�u�W�F�N�g�̍쐬
+	//ゲームカメラの作成。
 	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
 	
-	//�G�l�~�[�I�u�W�F�N�g�̍쐬
+	//エネミーの作成。
 	m_enemy = NewGO<Enemy>(0,"enemy");
 
 	//クロスヘアーを表示。
 	m_crossHair = NewGO<CrossHair>(0);
+	
+	//火打石の作成。
+	CreateStone();
+
+	//灯籠の作成。
+	CreateLantern();
+
+	//攻撃用灯籠の作成。
+	CreateAttackLantern();
+
+	//火打石のカウントを表示。
+	m_uiStone = NewGO<UIStone>(0, "uiStone");
+
+	//UIの作成
+	CreateUI();
+	
+	return true;
+}
+
+Game::Game()
+{
+	
+}
+
+Game::~Game()
+{
+	//オブジェクトなど。
+	DeleteGO(m_player);
+	DeleteGO(m_gameCamera);
+	DeleteGO(m_enemy);
+	DeleteGO(m_backGround);
+	DeleteGO(m_crossHair);
+	DeleteGO(m_ringBell);
 
 
+	//火打石。
+	DeleteGO(m_stone1);
+	DeleteGO(m_stone2);
+	DeleteGO(m_stone3);
+	DeleteGO(m_stone4);
+	DeleteGO(m_stone5);
+	DeleteGO(m_stone6);
+	DeleteGO(m_stone7);
+
+
+	//灯籠。
+	DeleteGO(m_lantern1);
+	DeleteGO(m_lantern2);
+	DeleteGO(m_lantern3);
+	DeleteGO(m_lantern4);
+
+
+	//攻撃用ランタン。
+	DeleteGO(m_lanternAttack1);
+	DeleteGO(m_lanternAttack2);
+	DeleteGO(m_lanternAttack3);
+
+
+	//UI関連。
+	DeleteGO(m_uiTukuyomi);
+	DeleteGO(m_uiSkill);
+	DeleteGO(m_uiSimenawa);
+	DeleteGO(m_uiCurseBar);
+	DeleteGO(m_uiHeal);
+	DeleteGO(m_uiStone);
+	DeleteGO(m_miniMap);
+}
+
+void Game::Update()
+{
+	GameManager();
+}
+
+
+//ゲームクリア、ゲームオーバーの判定処理。
+void Game::GameManager()
+{
+	//タイマーを減らす処理。
+	m_timeLimit -= g_gameTime->GetFrameDeltaTime();
+
+	//敵から本殿を守り切ったらゲームクリア。
+	if (m_timeLimit <= 0)
+	{
+		NewGO<GameClear>(0);
+		DeleteGO(this);
+	}
+
+
+	//呪いの抵抗値がなくなったら。
+	if (m_player->m_playerHP <= 0)
+	{
+		NewGO<GameOver>(0);
+		DeleteGO(this);
+	}
+}
+
+//火打石作成用関数。
+void Game::CreateStone()
+{
 	// 火打石を表示。
 	m_stone1 = NewGO<Stone>(0, "stone1");
 	m_stone1->m_position = { 1000.0f,0.0f,-500.0f };
@@ -85,11 +182,11 @@ bool Game::Start()
 	m_stone7 = NewGO<Stone>(0, "stone7");
 	m_stone7->m_position = { 0.0f,0.0f,-500.0f };
 	m_stone7->m_firstPosition = m_stone7->m_position;
+}
 
-	//火打石のカウントを表示。
-	m_uiStone = NewGO<UIStone>(0, "uiStone");
-	//m_uiStone = FindGO<UIStone>("uiStone");
-	
+//灯籠作成用関数。
+void Game::CreateLantern()
+{
 	//灯籠のモデルを表示
 	m_lantern1 = NewGO<Lantern>(0, "lantern1");
 	m_lantern1->m_position = { 500.0f,-50.0f,500.0f };
@@ -110,7 +207,11 @@ bool Game::Start()
 	m_lantern4->m_position = { -500.0f,-50.0f,-500.0f };
 	m_lantern4->m_firstPosition = m_lantern4->m_position;
 	//m_lantern4 = FindGO<Lantern>("lantern4");
+}
 
+//攻撃灯籠の作成用関数
+void Game::CreateAttackLantern()
+{
 	//攻撃用灯籠のモデルを表示
 	m_lanternAttack1 = NewGO<LanternAttack>(0, "lanternAttack1");
 	m_lanternAttack1->m_position = { 700.0f,-50.0f,2000.0f };
@@ -126,6 +227,11 @@ bool Game::Start()
 	m_lanternAttack3->m_position = { 100.0f,-50.0f,1600.0f };
 	m_lanternAttack3->m_firstPosition = m_lanternAttack3->m_position;
 	//m_lantern3= FindGO<Lantern>("lantern3");
+}
+
+//UI作成用関数。
+void Game::CreateUI()
+{
 
 	for (int i = 0; i < 20; i++)
 	{
@@ -145,14 +251,15 @@ bool Game::Start()
 		}
 	}
 
+
 	//月読の加護のUI
-	m_uiTukuyomi = NewGO<UItukuyomi>(0,"uitukuyomi");
+	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
 	//スキルUI
 	m_uiSkill = NewGO<UIskill>(0, "uiskill");
 	//しめ縄UI
 	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
 	//ミニマップ
-	m_miniMap = NewGO<MiniMap>(0,"minimap");
+	m_miniMap = NewGO<MiniMap>(0, "minimap");
 	//呪ゲージ
 	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
 	//回復

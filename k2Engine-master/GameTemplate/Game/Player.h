@@ -5,6 +5,7 @@ class GameCamera;
 class Lantern;
 class UIheal;
 class RingBell;
+class GameCamera;
 
 class Player:public IGameObject
 {
@@ -70,6 +71,7 @@ public:
 	ModelRender m_modelRender;//モデルレンダー。
 	CharacterController m_characterController;//キャラコン。
 	FontRender m_fontRender;//フォントレンダー。
+
 	Vector3 m_position = Vector3::Zero;//座標。
 	Vector3 m_forward = Vector3::AxisZ;//前方向
 	Vector3 m_moveSpeed;//移動速度。
@@ -83,26 +85,27 @@ public:
 	const int m_skillMax = 100;//スキルをチャージできるマックス値。
 	const int m_skillMagnification=5;//攻撃の倍率を上げる。
 	const int m_TukuyomiMagnification = 7;//月読の加護の倍率を設定。
-	const int m_criticalRate = 10;//会心率。
+	const int m_criticalRate = 20;//会心率。
 	const int m_cliticalDamage = 2;//会心ダメ。
 	float m_attackCoolDown = 0.0f;//攻撃のクールダウン。
 	float m_tukuyomiBlessingCoolDown = 0.0f;//月読の加護のクールダウン。
+	float m_healCoolDown = 0.0f;//回復のクールタイム。
 	float m_deleteTimer=0.0f;//削除までの時間。
-	bool m_deleteFlag=false;//削除するか。
+	float m_shimenawaGetTime = 0.0f;//しめ縄を時間で取得する。
+	float m_totalRotationRotation = 0.0f;//回した合計値。
+	float m_prevStickAngle = 0.0f;
+	float distSq = 0.0f;
+	bool m_deleteFlag = false;//削除するか。
 	bool m_enemyIsCanAttack = false;//敵を攻撃できるか？。
+	bool m_isRotating = false;//回転フラグ。
 	int m_playerHP = 0;//プレイヤーのHP。
 	int m_playerMaxHP = 100;//プレイヤーの最大体力。
 	int m_skillCharge = 0;//スキルのチャージ。
 	int m_normalATK = 0;//通常攻撃ダメージ。
 	int m_criticalATK = 0;//クリティカルを考慮した攻撃。
-	float m_shimenawaGetTime=0.0f;//しめ縄を時間で取得する。
 	int m_stoneCount = 0; //火打石のアイテムカウント
 	int m_LanternCount = 0; //火を灯した灯籠の数
 	int m_skillATK = 0;//スキル総ダメージ。
 	int m_tukuyomiATK = 0;//月読の加護の総ダメージ。
-	float m_totalRotationRotation = 0.0f;
-	float m_prevStickAngle = 0.0f;
-	int m_lanternCount = 0;
-	float distSq = 0.0f;
-	bool m_isRotating = false;//回転フラグ。
+	int m_lanternCount = 0;//灯籠のカウント。
 };

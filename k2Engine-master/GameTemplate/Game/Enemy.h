@@ -107,6 +107,7 @@ public:
 	BackGround * m_backGround= nullptr;
 	ModelRender m_modelRender;
 	Vector3 m_position;
+	Vector3 m_farstPosition=Vector3::Zero;
 	Vector3 m_forward = Vector3::AxisZ;
 	Vector3 m_moveSpeed;
 	const Vector3 m_stopMove = Vector3::Zero;

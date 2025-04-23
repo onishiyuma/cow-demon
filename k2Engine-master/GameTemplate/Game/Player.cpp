@@ -3,13 +3,13 @@
 #include "Purification.h"
 #include "Amulet.h"
 #include "TukuyomiBlessing.h"
-#include "Shimenawa.h"
 #include "GameOver.h"
 #include "Shimenawa.h"
 #include "GameCamera.h"
 #include "Lantern.h"
 #include "UIheal.h"
 #include "RingBell.h"
+#include "GameCamera.h"
 
 #include<time.h>
 
@@ -22,13 +22,16 @@ bool Player::Start()
 	//キャラコンを初期化。
 	m_position.Set(70.0f, 0.0f, -1000.0f);
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
+	
 	//初期化。
 	m_prevStickAngle = 0.0f;
 	m_totalRotationRotation = 0.0f;
-
 	//プレイヤーのHPをセットする。
 	m_playerHP = 100;
+	//ヒールのクールタイム
+	m_healCoolDown = 10.0f;
 
+	//インスタンスアドレスの検索。
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 	m_lantern = FindGO<Lantern>("lantern");
@@ -83,6 +86,8 @@ void Player::Update()
 	}
 	////////////////////////////////////////////////////////////////////////////
 
+	m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
+
 
 	////////////////////////////ここは削除する/////////////////////////
 	////通常攻撃。
@@ -118,8 +123,8 @@ void Player::Move()
 	right.y = 0.0f;
 
 	//左スティックの入力量を乗算する
-	right *= stikL.x * 250.0f;
-	forward *= stikL.y * 250.0f;
+	right *= stikL.x * 270.0f;
+	forward *= stikL.y * 270.0f;
 
 	//移動速度にスティックの入力量を加算する。
 	m_moveSpeed += right + forward;
@@ -149,27 +154,21 @@ void Player::Move()
 	m_modelRender.SetPosition(m_position);
 }
 
+//------------------------------------------------------------------------
 //通常攻撃。
+//-------------------------------------------------------------------------
 void Player::NormalAttack()
 {
 	//クールタイムを減らす。
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	//if (g_pad[0]->IsTrigger(enButtonRB2)&&m_attackCoolDown<=0.0f)
-	/////////////////デバック用///////////////////////////////////
-	/*if (g_pad[0]->IsTrigger(enButtonA) && m_attackCoolDown <= 0.0f)
-	{
-		//クールタイムの設定。
-		m_attackCoolDown = 0.38f;
-		//通常攻撃の作成用関数。
-		MakeNormalAttack();
-	}*/
-	///////////////////////////////////////////////////////////////
-
-
-	////////////////正式なボタン配置///////////////////////
 	if (g_pad[0]->IsTrigger(enButtonRB2) && m_attackCoolDown <= 0.0f)
 	{
+		//クリティカルダメージ。
+		m_criticalATK = m_playerATK *m_cliticalDamage;
+		//通常ダメージ。
+		m_normalATK = m_playerATK;
+
 		//クールタイムの設定。
 		m_attackCoolDown = 0.389f;
 		//通常攻撃の作成用関数。
@@ -177,22 +176,11 @@ void Player::NormalAttack()
 	}
 }
 
+//------------------------------------------------------------------------
 //スキル。
+//-------------------------------------------------------------------------
 void Player::Skill()
 {
-	////////////////デバック用///////////////////////////////////
-	//スキル発動。
-	/*if (g_pad[0]->IsTrigger(enButtonB) && m_skillCharge >= m_skillMax)
-	{
-		//スキルの作成用関数を呼び出す。
-		MakeSkill();
-		//チャージ量をリセット。
-			m_skillCharge = 0;
-	}*/
-	///////////////////////////////////////////////////////////////
-
-
-	////////////////正式なボタン配置///////////////////////
 	//スキル発動。
 	if (g_pad[0]->IsTrigger(enButtonLB2) && m_skillCharge >= m_skillMax)
 	{
@@ -203,7 +191,9 @@ void Player::Skill()
 	}
 }
 
+//------------------------------------------------------------------------
 //月読の加護。
+//-------------------------------------------------------------------------
 void Player::SkillTukuyomiBlessing()
 {
 	//クールタイムを減らす。
@@ -218,7 +208,9 @@ void Player::SkillTukuyomiBlessing()
 	}
 }
 
-//しめ縄。(アイテム)
+//------------------------------------------------------------------------
+//しめ縄。
+//-------------------------------------------------------------------------
 void Player::ItemShimenawa()
 {
 	//取得までの時間を増加。
@@ -235,8 +227,10 @@ void Player::ItemShimenawa()
 
 
 
-////////////////ここから先は作成用関数////////////////////////////////////
 
+//---------------------------------------------------------------
+//ここから作成用関数
+//---------------------------------------------------------------
 
 //通常攻撃作成
 void Player::MakeNormalAttack()
@@ -295,7 +289,9 @@ void Player::MakeShimenawa()
 	shimenawa->SetName("shimenawa");
 }
 
-////////////////////////////////////終わり///////////////////////////////////////////
+//---------------------------------------------------------------
+//終わり
+//---------------------------------------------------------------
  
 //プレイヤーの管理。
 void Player::ManageState()
@@ -309,10 +305,9 @@ void Player::Collision()
 	// 鈴のコリジョンを取得する。
 	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("ringbell");
 
-	// Aボタンが押されたときに処理を行う。
-	if (g_pad[0]->IsTrigger(enButtonA))
+	for (auto collision : collisions)
 	{
-		for (auto collision : collisions)
+		if (g_pad[0]->IsTrigger(enButtonA))
 		{
 			Distance();
 
@@ -327,18 +322,16 @@ void Player::Collision()
 				{
 					m_totalRotationRotation = 0.0f;
 				}
-
 				// 接触中の鈴が見つかったら break
 				break;
 			}
 		}
+			
 	}
-	else
-	{
+
 		// Aボタンを押していない間は回転量と角度をリセット。
 		m_totalRotationRotation = 0.0f;
 		m_prevStickAngle=0.0f;
-	}
 }
 
 void Player::Distance()
@@ -391,13 +384,17 @@ void Player::RotationCamera()
 	// 現在の角度を保存。
 	m_prevStickAngle = angle;
 
-	// 360度回したら回復。
-	if (m_totalRotationRotation >= 100.0)
+	// スティックを回すと回復。
+	if (m_totalRotationRotation >= 100.0f)
 	{
-		if (m_uiHeal->m_useHeal >= 0)
+		if (m_healCoolDown <= 0)
 		{
-			HealHP(100);
-			m_uiHeal->m_useHeal--;
+			if (m_uiHeal->m_useHeal >= 0)
+			{
+				m_healCoolDown = 10.0f;
+				HealHP(100);
+				m_uiHeal->m_useHeal--;
+			}
 		}
 	}
 
