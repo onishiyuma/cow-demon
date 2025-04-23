@@ -16,17 +16,6 @@ namespace
 	int CHARGE_INCREASE_AMOUNT = 2;//チャージ増加量。
 }
 
-
-Enemy::Enemy()
-{
-
-}
-
-Enemy::~Enemy()
-{
-
-}
-
 bool Enemy::Start()
 {
 	m_animationClips[enAnimationClip_Idle].Load("Assets/animData/enemy/idle.tka");
@@ -45,7 +34,7 @@ bool Enemy::Start()
 	m_modelRender.Init("Assets/modelData/enemy/enemy.tkm", m_animationClips, enAnimationClip_Num);
 
 	////座標を更新する
-	//m_modelRender.SetPosition(m_position);
+	m_modelRender.SetPosition(m_farstPosition);
 	//回転を設定する
 	m_modelRender.SetRotation(m_rotation);
 	////大きさを設定する
@@ -73,7 +62,15 @@ bool Enemy::Start()
 	return true;
 }
 
+Enemy::Enemy()
+{
 
+}
+
+Enemy::~Enemy()
+{
+
+}
 
 void Enemy::Update()
 {
@@ -160,6 +157,10 @@ void Enemy::Collision()
 		return;
 	}
 
+	//-----------------------------------------
+	//プレイヤーの攻撃判定処理。
+	//-----------------------------------------
+
 	{
 		//プレイヤー攻撃用のコリジョンを取得する
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("purification");
@@ -169,14 +170,11 @@ void Enemy::Collision()
 			//コリジョンとキャラコンが衝突したら
 			if (collision->IsHit(m_charaCon))
 			{
-				//呪いの抵抗の侵食値を減らしていく。
-				m_player->m_playerHP -= 1;
 				//会心の設定。
-				int ram = rand() % 100<20;
+				int ram = rand() %100;
 				if (ram < m_player->m_criticalRate)
 				{
-					//クリティカルダメージ。
-					m_player->m_criticalATK = m_player->m_playerATK * m_player->m_cliticalDamage;
+					m_hp -= m_player->m_criticalATK;
 
 					if (m_hp <= 0)
 					{
@@ -194,8 +192,7 @@ void Enemy::Collision()
 				//非会心。
 				else
 				{
-					//通常ダメージ。
-					m_player->m_normalATK = m_player->m_playerATK;
+					m_hp -= m_player->m_normalATK;
 
 					if (m_hp <= 0)
 					{
@@ -211,6 +208,10 @@ void Enemy::Collision()
 			}
 		}
 	}
+
+	//-----------------------------------------
+	//プレイヤーのスキル処理。
+	//-----------------------------------------	
 
 	{
 		//プレイヤーのスキル用のコリジョンを取得する
@@ -242,6 +243,10 @@ void Enemy::Collision()
 		}
 	}
 	
+	//-----------------------------------------
+	//月読の加護の判定処理。
+	//-----------------------------------------
+
 	{
 		//プレイヤーの月読の加護用のコリジョンを取得する。
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Tukuyomi");
@@ -273,6 +278,10 @@ void Enemy::Collision()
 		}
 	}
 	
+	//-----------------------------------------
+	//しめ縄の判定処理。
+	//-----------------------------------------
+
 	{
 		//プレイヤーのしめ縄用のコリジョンを取得する。
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Shimenawa");
@@ -282,20 +291,19 @@ void Enemy::Collision()
 			//コリジョンとキャラが衝突する。
 			if (collision->IsHit(m_charaCon))
 			{
-				//停止
-				m_isStopped = true;
-				break;
+				//停止させる準備。
+				if (!m_isStopped)
+				{
+					m_isStopped = true;
+					//動きを止める。
+					m_moveSpeed = m_stopMove;
+					//アニメーションも止める。
+					m_enemyState = enEnemyState_Idle;
+					//時間をリセット。
+					m_stopTimer = 5.0f;
+				}
 			}
-			//停止させる準備。
-			if (!m_isStopped)
-			{
-				//動きを止める。
-				m_moveSpeed = m_stopMove;
-				//アニメーションも止める。
-				m_enemyState = enEnemyState_Idle;
-				//時間をリセット。
-				m_stopTimer = 5.0f;
-			}
+
 			//停止中の処理。
 			else if (m_isStopped)
 			{
@@ -304,11 +312,14 @@ void Enemy::Collision()
 				if (m_stopTimer <= 0.0f)
 				{
 					m_isStopped = false;
-					return;
 				}
 			}
 		}
 	}
+
+	//-----------------------------------------
+	//本殿に接触したらゲームオーバーする処理。
+	//-----------------------------------------
 
 	//本殿に触れたらゲームオーバー。
 	const auto& collisions = g_collisionObjectManager->FindMatchForwardNameCollisionObjects("gameover_collision");
@@ -318,14 +329,8 @@ void Enemy::Collision()
 		//コリジョンとキャラが衝突したら。
 		if (collision->IsHit(m_charaCon))
 		{
+			NewGO<GameOver>(0);
 			DeleteGO(this);
-			m_gameoverFlag = true;
-
-			if (m_gameoverFlag)
-			{
-				NewGO<GameOver>(0);
-				DeleteGO(this);
-			}
 		}
 	}
 
