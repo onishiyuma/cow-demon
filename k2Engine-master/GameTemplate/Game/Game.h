@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Level3DRender/LevelRender.h"
-
+#include <vector>
 class Player;
 class GameCamera;
 class BackGround;
@@ -15,7 +15,7 @@ class LanternAttack;
 class RingBell;
 class GameClear;
 class GameOver;
-
+class LittleEnemy;
 class UItukuyomi;
 class UIskill;
 class UISimenawa;
@@ -33,14 +33,15 @@ public:
 	void Update();
 	void GameManager();//
 	void Render(RenderContext& rc);
-
+	Vector3 Random();
 	//メンバ変数。
 	GameClear*m_gameClear;//ゲームクリアー。
 	RingBell* m_ringBell;//鈴。
 	BackGround* m_backGround;//背景。
 	GameCamera* m_gameCamera;//ゲームカメラ。
 	Player*m_player;//プレイヤー。
-	Enemy* m_enemy;//敵。
+	Enemy* m_enemy ;//敵。
+	LittleEnemy* m_littleEnemy;
 	CrossHair*m_crossHair;//クロスヘアー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Shimenawa* m_shimenawa;//しめ縄。
@@ -67,8 +68,14 @@ public:
 	UIheal* m_uiHeal;
 	Vector3 m_pos;//座標。
 	SpriteRender m_spriteRender;//スプライトレンダー。
-	
+	FontRender m_fontRender;//時計
+	//敵の一覧を取得するためのメソッドを取得
+	const std::vector<Enemy*>& GetEnemies()const { return m_enemyList; }
+	const std::vector<LittleEnemy*>& GetLittleEnemies() const { return m_littleEnemyList; }
 
+	std::vector<Enemy*>   m_enemyList;
+	std::vector<LittleEnemy*> m_littleEnemyList;
+	float m_timer = 120.0f;
 	bool m_lanternAction = false; 
 	float m_timeLimit=0;//制限時間。
 
