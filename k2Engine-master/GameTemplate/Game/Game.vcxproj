@@ -228,6 +228,7 @@
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="DebugScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameClear.cpp" />
@@ -235,9 +236,11 @@
     <ClCompile Include="Lantern.cpp" />
     <ClCompile Include="LanternAttack.cpp" />
     <ClCompile Include="Line.cpp" />
+    <ClCompile Include="LittleEnemy.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Poison.cpp" />
     <ClCompile Include="Purification.cpp" />
     <ClCompile Include="RingBell.cpp" />
     <ClCompile Include="Shimenawa.cpp" />
@@ -272,6 +275,7 @@
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="DebugScene.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameClear.h" />
@@ -279,8 +283,10 @@
     <ClInclude Include="Lantern.h" />
     <ClInclude Include="LanternAttack.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="LittleEnemy.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Poison.h" />
     <ClInclude Include="Purification.h" />
     <ClInclude Include="RingBell.h" />
     <ClInclude Include="Shimenawa.h" />
