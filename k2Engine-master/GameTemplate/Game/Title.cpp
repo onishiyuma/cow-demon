@@ -6,7 +6,7 @@
 bool Title::Start()
 {
 	//タイトルの画像を読み込む。
-	m_spriteRender.Init("Assets/sprite/Title.DDS", 1920.0f, 1080.0f);
+	m_spriteRender.Init("Assets/sprite/cowDemonTitle.DDS", 1920.0f, 1080.0f);
 	
 	//文字の表示。
 	m_fontRender.SetText(L"Please Press AnyKey");

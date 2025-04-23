@@ -7,6 +7,7 @@
 #include "GameOver.h"
 #include "Shimenawa.h"
 #include "GameCamera.h"
+#include "PlayerLight.h"
 
 #include<time.h>
 
@@ -22,10 +23,11 @@ bool Player::Start()
 	//プレイヤーのHPをセットする。
 	m_playerHP = 100;
 
-	
-
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
+	m_playerLight = FindGO<PlayerLight>("playerLight");
+
+	m_playerLight = NewGO<PlayerLight>(0, "playerLight");
 
 	return true;
 }
@@ -37,6 +39,7 @@ Player::Player()
 
 Player::~Player()
 {
+	DeleteGO(m_playerLight);
 	DeleteGO(this);
 }
 
@@ -45,7 +48,6 @@ void Player::Update()
 	//移動処理。
 	Move();
 
-	/////////////////////コメントアウト解除を忘れずに/////////////////////////////
 	//灯籠に火が灯っていれば攻撃できる。
 	if (m_enemyIsCanAttack == true)
 	{
@@ -62,23 +64,7 @@ void Player::Update()
 		//しめ縄。
 	    ItemShimenawa();
 	}
-	////////////////////////////////////////////////////////////////////////////
-
-
-	////////////////////////////ここは削除する/////////////////////////
-	////通常攻撃。
-	//NormalAttack();
-
-	////スキル。
-	//Skill();
-
-	////月読の加護。
-	//SkillTukuyomiBlessing();
-
-	////しめ縄。
-	//ItemShimenawa();
-	/////////////////////////////////////////////////////////////////
-
+	
 	//呪いの抵抗が0を下回っていたら。
 	if (m_playerHP<=0)
 	{
@@ -89,7 +75,7 @@ void Player::Update()
 	//判定を呼び出す。
 	Collision();
 
-
+	SpotLight();
 	//モデルを更新する。
 	//m_modelRender.Update();
 }
@@ -336,17 +322,17 @@ void Player::Collision()
 				}
 
 				//累積回転量に加算する。
-				m_totalRotationRotation += fabsf(delta);
+				m_totalRotation += fabsf(delta);
 
 				//現在の角度を保存する。
 				m_prevStickAngle = angle;
 
 				//360度回した回復。
-				if (m_totalRotationRotation >= 360.0f)
+				if (m_totalRotation >= 360.0f)
 				{
 					//HPを回復する
 					HealHP(10);
-					m_totalRotationRotation = 0.0f;
+					m_totalRotation = 0.0f;
 				}
 				//m_gameCamera->LockCamera(false);
 			}
@@ -355,7 +341,7 @@ void Player::Collision()
 		else
 		{
 			//接触していない場合は回転角をリセット。
-			m_totalRotationRotation = 0.0f;
+			m_totalRotation = 0.0f;
 		}
 	}
 }

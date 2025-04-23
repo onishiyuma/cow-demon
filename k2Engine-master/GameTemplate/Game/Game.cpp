@@ -29,7 +29,7 @@ bool Game::Start()
 	//ステージ全体を暗くする。
 	g_sceneLight->SetAmbinet(Vector3(0.0001f, 0.0001f, 0.0001f));
 	
-	g_sceneLight->SetDirectionLight(0, Vector3(0.01f,0.01f,0.01f), Vector3(1.0f, 1.0f, 1.0f));
+	g_sceneLight->SetDirectionLight(0, Vector3(0.0f,0.0f,0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
 	//デバック用。
 	//m_timeLimit = 3.0f;
@@ -132,6 +132,7 @@ bool Game::Start()
 		m_uicursebar = NewGO<UIcurseBar>(0, "uicursebar");
 		//回復
 		m_uiheal = NewGO <UIheal>(0, "uiheal");
+		
 		//��̔w�i�쐬
 		//SkyCube* skyCube = NewGO<SkyCube>(0);
 		//skyCube->SetType(enSkyCubeType_NightToon);

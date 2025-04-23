@@ -14,10 +14,15 @@ bool Stone::Start()
 	m_spriteCollection = FindGO<SpriteCollection>("spriteCollection");
 
 	//モデルを読み込む
-	m_modelRender.Init("Assets/modelData/stone/stone.tkm");
+	m_modelRender.Init("Assets/modelData/stone/stone.test.tkm");
 	m_modelRender.SetScale(0.5f, 0.5f, 0.5f);
 	
-
+	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
+	//コリジョン作成用関数を呼び出す。
+	//CreateCollision();
+	//コリジョンに座標をセット。
+	//m_collisionObject->SetPosition(m_position);
+	//m_collisionObject->Update();
 	
 
 	return true;
@@ -31,6 +36,7 @@ Stone::Stone()
 Stone::~Stone() 
 {
 	DeleteGO(m_spriteCollection);
+	//DeleteGO(m_collisionObject);
 	//DeleteGO(this);
 }
 
@@ -41,7 +47,7 @@ void Stone::Update()
 	m_modelRender.Update();
 
 	Move();
-
+	
 	//プレイヤーから火打石に向かうベクトルを計算。
 	Vector3 diff = m_player->m_position - m_position;
 	//ベクトルの長さが120.0fより小さかったら
@@ -82,6 +88,22 @@ void Stone::Move()
 {
 	m_modelRender.SetPosition(m_position);
 }
+
+////コリジョンを作成。
+//void Stone::CreateCollision()
+//{
+//	m_collisionObject = NewGO<CollisionObject>(0);
+//
+//	//箱状のコリジョンを作成。
+//	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { m_collisionScale });
+//
+//	//コリジョンに名前をつける。
+//	m_collisionObject->SetName("gameover_collision");
+//
+//	//オブジェクトが自動で削除されないようにする。
+//	m_collisionObject->SetIsEnableAutoDelete(false);
+//}
+
 
 void Stone::Render(RenderContext& rc) 
 {

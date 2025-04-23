@@ -38,6 +38,7 @@
     <ClCompile Include="TimingBarC.cpp" />
     <ClCompile Include="SpritePush.cpp" />
     <ClCompile Include="RingBell.cpp" />
+    <ClCompile Include="PlayerLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -78,6 +79,7 @@
     <ClInclude Include="SpritePush.h" />
     <ClInclude Include="RingBell.h" />
     <ClInclude Include="Assets\shader\util\ColorSpace.h" />
+    <ClInclude Include="PlayerLight.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

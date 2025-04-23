@@ -14,6 +14,7 @@ bool BackGround::Start()
 	//コリジョンに座標をセット。
 	m_collisionObject->SetPosition(m_position);
 	m_collisionObject->Update();
+	//m_modelRender.;  // ← 存在するなら、必ず呼ぶ！
 
 	return true;
 }
@@ -51,4 +52,5 @@ void BackGround::CreateCollision()
 void BackGround::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	
 }
