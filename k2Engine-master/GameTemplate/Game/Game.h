@@ -42,7 +42,8 @@ public:
 	//ゲームオーバー、ゲームクリアーを呼ぶ関数。
 	void GameManager();
 	void Render(RenderContext& rc);
-	Vector3 Random();
+
+
 	//メンバ変数。
 	GameClear*m_gameClear;//ゲームクリアー。
 	RingBell* m_ringBell;//鈴。
@@ -83,16 +84,23 @@ public:
 
 
 	SpriteRender m_spriteRender;//スプライトレンダー。
+	FontRender m_timerFontRender;//時計
 	Vector3 m_pos;//座標。
-	Vector3 m_pos;//座標。
-	SpriteRender m_spriteRender;//スプライトレンダー。
-	FontRender m_fontRender;//時計
+	Vector3 Random();
+
 	//敵の一覧を取得するためのメソッドを取得
-	const std::vector<Enemy*>& GetEnemies()const { return m_enemyList; }
-	const std::vector<LittleEnemy*>& GetLittleEnemies() const { return m_littleEnemyList; }
+	const std::vector<Enemy*>& GetEnemies()const
+	{
+		return m_enemyList;
+	}
+	const std::vector<LittleEnemy*>& GetLittleEnemies() const
+	{
+		return m_littleEnemyList;
+	}
 
 	std::vector<Enemy*>   m_enemyList;
 	std::vector<LittleEnemy*> m_littleEnemyList;
+
   	float m_timer = 120.0f;
 	bool m_lanternAction = false; 
 	float m_timeLimit=0;//制限時間。
