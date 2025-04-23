@@ -536,7 +536,7 @@ namespace nsK2Engine {
         /// ŠÂ‹«Œõ‚ğİ’èB
         /// </summary>
         /// <param name="ambient"></param>
-        void SetAmbinet(Vector3 ambient)
+        void SetAmbient(Vector3 ambient)
         {
             m_light.ambinetLight = ambient;
         }

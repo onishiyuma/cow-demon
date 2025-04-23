@@ -472,7 +472,7 @@ namespace nsK2Engine {
         /// <param name="ambient"></param>
         void SetAmbient(Vector3 ambient)
         {
-            m_sceneLight.SetAmbinet(ambient);
+            m_sceneLight.SetAmbient(ambient);
         }
         /// <summary>
         /// レイトレーシングが有効かどうかを判定する。

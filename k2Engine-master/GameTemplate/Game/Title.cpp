@@ -11,7 +11,7 @@ bool Title::Start()
 	//•¶š‚Ì•\¦B
 	m_fontRender.SetText(L"Please Press AnyKey");
 	m_fontRender.SetPosition({ -250.0f,-300.0f,0.0f });
-	m_fontRender.SetColor({ 1.0f,1.0f,1.0f,0.0f });
+	m_fontRender.SetColor(g_vec4White);
 
 	return true;
 }

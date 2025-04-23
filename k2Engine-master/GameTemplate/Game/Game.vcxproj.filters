@@ -39,6 +39,9 @@
     <ClCompile Include="SpritePush.cpp" />
     <ClCompile Include="RingBell.cpp" />
     <ClCompile Include="PlayerLight.cpp" />
+    <ClCompile Include="EnemyBase.cpp" />
+    <ClCompile Include="LittleEnemy.cpp" />
+    <ClCompile Include="Poison.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -80,6 +83,9 @@
     <ClInclude Include="RingBell.h" />
     <ClInclude Include="Assets\shader\util\ColorSpace.h" />
     <ClInclude Include="PlayerLight.h" />
+    <ClInclude Include="EnemyBase.h" />
+    <ClInclude Include="LittleEnemy.h" />
+    <ClInclude Include="Poison.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

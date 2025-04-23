@@ -35,7 +35,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//////////////////////////////////////
 
 	//タイトルクラスのオブジェクトを作成。
-	NewGO<Title>(0);
+	//NewGO<Title>(0);
+	NewGO<Game>(0);
 
 	// NewGO< DebugScene>(0);
 	// NewGO<Game>(0, "game");
