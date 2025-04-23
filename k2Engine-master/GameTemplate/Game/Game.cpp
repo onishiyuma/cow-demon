@@ -11,6 +11,7 @@
 #include "LanternAttack.h"
 #include "DebugScene.h"
 #include "MiniMap.h"
+#include "LittleEnemy.h"
 #include "UItukuyomi.h"
 #include "UIskill.h"
 #include "UISimenawa.h"
@@ -231,6 +232,26 @@ void Game::CreateAttackLantern()
 //UI作成用関数。
 void Game::CreateUI()
 {
+
+	for (int i = 0; i < 20; i++)
+	{
+
+		int ram = rand() % 100;
+		if (ram > 30)
+		{
+			Enemy* enemy = NewGO<Enemy>(1, "enmy");
+			enemy->SetPosition(Random());
+			m_enemyList.push_back(enemy);//敵リストに追加
+		}
+		else
+		{
+			LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
+			littleEnemy->SetPosition(Random());
+			m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
+		}
+	}
+
+
 	//月読の加護のUI
 	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
 	//スキルUI
@@ -243,10 +264,105 @@ void Game::CreateUI()
 	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
 	//回復
 	m_uiHeal = NewGO <UIheal>(0, "uiheal");
+
+
+	return true;
+}
+
+Game::Game()
+{
+	
+}
+
+Game::~Game()
+{
+	DeleteGO(m_player);
+	DeleteGO(m_gameCamera);
+	DeleteGO(m_enemy);
+	DeleteGO(m_backGround);
+	DeleteGO(m_crossHair);
+	DeleteGO(m_stone1);
+	DeleteGO(m_stone2);
+	DeleteGO(m_stone3);
+	DeleteGO(m_stone4);
+	DeleteGO(m_stone5);
+	DeleteGO(m_stone6);
+	DeleteGO(m_stone7);
+	DeleteGO(m_lantern1);
+	DeleteGO(m_lantern2);
+	DeleteGO(m_lantern3);
+	DeleteGO(m_lantern4);
+	DeleteGO(m_lanternAttack1);
+	DeleteGO(m_lanternAttack2);
+	DeleteGO(m_lanternAttack3);
+	DeleteGO(m_ringBell);
+	DeleteGO(m_littleEnemy);
+	DeleteGO(m_uiTukuyomi);
+	DeleteGO(m_uiSkill);
+	DeleteGO(m_uiSimenawa);
+	DeleteGO(m_uiCurseBar);
+	DeleteGO(m_uiHeal);
+	DeleteGO(m_uiStone);
+	/*DeleteGO(m_miniMap);*/
+}
+
+void Game::Update()
+{
+	wchar_t wcsbuf[256];
+
+	int minute = (int)m_timer / 60;
+
+	int sec = (int)m_timer % 60;
+	swprintf_s(wcsbuf, 256, L"AM%01d:%02d", minute, sec);
+
+
+	//表示するテキストを表示
+	m_fontRender.SetText(wcsbuf);
+	//フォントの位置を設定
+	m_fontRender.SetPosition(Vector3(-30.0f, 500.0f, 0.0f));
+	//フォントの色を設定
+	m_fontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+
+	m_timer += g_gameTime->GetFrameDeltaTime();
+
+	GameManager();
+}
+
+Vector3 Game::Random()
+{
+	Vector3 m_position;
+	//ランダムにポジションを当てはめる
+	m_position.x = rand() % 800 - 400;
+	m_position.y = 0.0f;
+	m_position.z = rand() % 1000 + 500;
+	return m_position;
+}
+
+//ゲームクリア、ゲームオーバーの判定処理。
+void Game::GameManager()
+{
+	//タイマーを減らす処理。
+	m_timeLimit -= g_gameTime->GetFrameDeltaTime();
+
+	//敵から本殿を守り切ったらゲームクリア。
+	if (m_timeLimit <= 0)
+	{
+		NewGO<GameClear>(0);
+		DeleteGO(this);
+	}
+
+
+	//呪いの抵抗値がなくなったら。
+	if (m_player->m_playerHP <= 0)
+	{
+		NewGO<GameOver>(0);
+		DeleteGO(this);
+	}
+
 }
 
 
 void Game::Render(RenderContext& rc)
 {
-
+	m_fontRender.Draw(rc);
 }

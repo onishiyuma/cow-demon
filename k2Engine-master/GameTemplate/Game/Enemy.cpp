@@ -4,8 +4,8 @@
 #include "Player.h"
 #include "Game.h"
 #include "GameOver.h"
-
-
+#include "RingBell.h"
+#include "BackGround.h"
 #include"collision/CollisionObject.h"
 #include<time.h>
 #include<stdlib.h>
@@ -54,6 +54,7 @@ bool Enemy::Start()
 		OneAnimationEvent(clipName, eventName);
 		});
 	m_player = FindGO<Player>("player");
+	m_ringBell = FindGO<RingBell>("ringbell");
 	/*m_tou = FindGO<Tou>("tou");*/
 	//乱数を初期化する
 	srand((unsigned)time(NULL));
@@ -77,7 +78,7 @@ void Enemy::Update()
 	//追跡処理
 	Chase();
 	//本殿追跡処理
-	/*Goal();*/
+	IsHonden();
 	//回転処理
 	Rotation();
 	//当たり判定
@@ -117,7 +118,7 @@ void Enemy::Chase()
 	{
 		return;
 	}
-	/*m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();*/
+	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
 	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
 	if (m_charaCon.IsOnGround()) {
 		//地面についた
@@ -128,23 +129,23 @@ void Enemy::Chase()
 	m_modelRender.SetPosition(modelPosition);
 }
 
-//void Enemy::Goal()
-//{
-//	//追跡ステートでないなら、追跡処理はしない
-//	if (m_enemyState != enEnemyState_Goal)
-//	{
-//		return;
-//	}
-//	/*m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();*/
-//	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
-//	if (m_charaCon.IsOnGround()) {
-//		//地面についた
-//		m_moveSpeed.y = 0.0f;
-//	}
-//	Vector3 modelPosition = m_position;
-//
-//	m_modelRender.SetPosition(modelPosition);
-//}
+void Enemy::IsHonden()
+{
+	//追跡ステートでないなら、追跡処理はしない
+	if (m_enemyState != enEnemyState_Honden)
+	{
+		return;
+	}
+	/*m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();*/
+	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+	if (m_charaCon.IsOnGround()) {
+		//地面についた
+		m_moveSpeed.y = 0.0f;
+	}
+	Vector3 modelPosition = m_position;
+
+	m_modelRender.SetPosition(modelPosition);
+}
 
 
 void Enemy::Collision()
@@ -377,26 +378,29 @@ const bool Enemy::SearchPlayer()const
 	}
 }
 
-//const bool Enemy::SearchGoal()const
-//{
-//	Vector3 diff = m_tou->GetPosition()-m_position;
-//	//対象に向かう
-//	if (diff.LengthSq() <= 10000*10000)
-//	{
-//		//エネミーから本殿に向かうベクトルを正規化する
-//		diff.Normalize();
-//		//内積(cos0)を調べる
-//		float cos = m_forward.Dot(diff);
-//		//内積から角度を求める
-//		float angle = acosf(cos);
-//		if (angle <= (Math::PI / 360.0f) * 360.0f)
-//		{
-//			return true;
-//		}
-//		return false;
-//		
-//	}
-//}
+const bool Enemy::SearchHonden()const
+{
+	Vector3 diff2 = m_ringBell->GetPosition() - m_position;
+	//対象に向かう
+	if (diff2.LengthSq() <= 10000 * 10000)
+	{
+		//エネミーから本殿に向かうベクトルを正規化する
+		diff2.Normalize();
+		//内積(cos0)を調べる
+		float cos = m_forward.Dot(diff2);
+		//内積から角度を求める
+		float angle = acosf(cos);
+		if (angle <= (Math::PI / 360.0f) * 360.0f)
+		{
+			return true;
+		}
+		return false;
+
+	}
+}
+
+
+
 
 void Enemy::MakeAttackCollision()
 {
@@ -475,11 +479,74 @@ void Enemy::ProcessDownStateTransition()
 	}
 }
 
-//void Enemy::ProcessGoalStateTransition()
+void Enemy::ProcessHondenStateTransition()
+{
+	//攻撃ができる距離になったら
+	if (IsCanAttack() == true)
+	{
+		//他のステートに遷移する
+		ProcessCommonStateTransition();
+		return;
+	}
+
+	m_hondenTimer += g_gameTime->GetFrameDeltaTime();
+	//追跡時移行がある程度経過したら
+	if (m_hondenTimer >= 0.8f)
+	{
+		ProcessCommonStateTransition();
+	}
+}
+
+//void Enemy::ProcessCommonStateTransition()
 //{
-//	if (SearchGoal() == false)
+//	//各タイマーを初期化
+//	m_idleTimer = 0.0f;
+//	m_chaseTimer = 0.0f;
+//
+//	//エネミーからプレイヤーに向かうベクトルを計算する
+//	Vector3 diff1 = m_player->GetPosition() - m_position;
+//	
+//	//プレイヤーを見つけたら
+//	if (SearchPlayer() == true)
 //	{
-//		ProcessCommonStateTransition();
+//
+//		//ベクトルを正規化する
+//		diff1.Normalize();
+//		//移動速度を設定する
+//		m_moveSpeed = diff1 * 250.0f;
+//		//攻撃できる距離なら
+//		if (IsCanAttack() == true)
+//		{
+//			//乱数によって、攻撃するか待機させるかを決定する
+//			int ram = rand() % 100;
+//			if (ram > 30)
+//			{
+//				m_enemyState = enEnemyState_Attack;
+//				m_isUnderAttack = false;
+//				return;
+//			}
+//			else
+//			{
+//				//待機ステートに遷移する
+//				m_enemyState = enEnemyState_Idle;
+//				return;
+//			}
+//
+//		}
+//		//攻撃できない距離なら
+//		if (IsCanAttack() == false) {
+//			m_enemyState = enEnemyState_Chase;
+//			return;
+//		}
+//	}
+//
+//	
+//	//何も見つけられなければ
+//	else
+//	{
+//		//待機ステートに遷移する
+//		m_enemyState = enEnemyState_Idle;
+//		return;
 //	}
 //}
 
@@ -488,64 +555,69 @@ void Enemy::ProcessCommonStateTransition()
 	//各タイマーを初期化
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
-
+	m_hondenTimer = 0.0f;
 	//エネミーからプレイヤーに向かうベクトルを計算する
-	Vector3 diff1 = m_player->GetPosition() - m_position;
-	//Vector3 diff2 = m_tou->GetPosition() - m_position;
+
 	//プレイヤーを見つけたら
-	if (SearchPlayer() == true)
+
+
+	if (SearchHonden() == true)
 	{
 
-		//ベクトルを正規化する
-		diff1.Normalize();
-		//移動速度を設定する
-		m_moveSpeed = diff1 * 250.0f;
-		//攻撃できる距離なら
-		if (IsCanAttack() == true)
-		{
-			//乱数によって、攻撃するか待機させるかを決定する
-			int ram = rand() % 100;
-			if (ram > 30)
-			{
-				m_enemyState = enEnemyState_Attack;
-				m_isUnderAttack = false;
-				return;
-			}
-			else
-			{
-				//待機ステートに遷移する
-				m_enemyState = enEnemyState_Idle;
-				return;
-			}
 
+
+		if (SearchPlayer() == true)
+		{
+			Vector3 diff = m_player->GetPosition() - m_position;
+			//ベクトルを正規化する
+			diff.Normalize();
+			//移動速度を設定する
+			m_moveSpeed = diff * 250.0f;
+			//攻撃できる距離なら
+
+			int ram = rand() % 100;
+
+			if (IsCanAttack() == true)
+			{
+				if (ram > 70)
+				{
+
+
+					m_enemyState = enEnemyState_Attack;
+					m_isUnderAttack = false;
+					return;
+				}
+
+				else
+				{
+					m_enemyState = enEnemyState_Chase;
+				}
+
+			}
+			//攻撃できない距離なら
+			if (IsCanAttack() == false) {
+
+
+				m_enemyState = enEnemyState_Chase;
+
+				return;
+			}
 		}
-		//攻撃できない距離なら
-		if (IsCanAttack() == false) {
-			m_enemyState = enEnemyState_Chase;
+
+		//何も見つけられなければ
+
+		else
+		{
+			Vector3 diff = m_ringBell->GetPosition() - m_position;
+			diff.Normalize();
+			m_moveSpeed = diff * 250.0f;
+
+			m_enemyState = enEnemyState_Honden;
 			return;
 		}
-	}
 
-	////本殿へ向かう
-	//if (SearchGoal() == true)
-	//{
-	//	diff2.Normalize();
-	//	m_moveSpeed = diff2 * 250.0f;
-	//	//本殿を目指すステートに遷移する
-	//	m_enemyState = enEnemyState_Goal;
-	//	return;
-	//}
-
-	//何も見つけられなければ
-	else
-	{
-		//待機ステートに遷移する
-		m_enemyState = enEnemyState_Idle;
-		return;
 	}
 }
-
-
 
 void Enemy::ManageState()
 {
@@ -555,10 +627,10 @@ void Enemy::ManageState()
 	case Enemy::enEnemyState_Idle:
 		ProcessIdleStateTransition();
 		break;
-		/*case Enemy::enEnemyState_Goal:
-			ProcessGoalStateTransition();
-			break;*/
-			//追跡ステート
+	case Enemy::enEnemyState_Honden:
+		ProcessHondenStateTransition();
+		break;
+		//追跡ステート
 	case  Enemy::enEnemyState_Chase:
 		ProcessChaseStateTransition();
 		break;
@@ -587,21 +659,22 @@ void Enemy::PlayAnimation()
 	case Enemy::enEnemyState_Idle:
 		m_modelRender.PlayAnimation(enAnimationClip_Idle, 0.1f);
 		break;
+	case Enemy::enEnemyState_Honden:
+		m_modelRender.SetAnimationSpeed(1.2f);
+		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
+		break;
 	case Enemy::enEnemyState_Chase:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
-		/*case Enemy::enEnemyState_Goal:
-			m_modelRender.SetAnimationSpeed(1.2f);
-			m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
-			break;*/
 	case Enemy::enEnemyState_Attack:
 		m_modelRender.SetAnimationSpeed(1.6f);
 		m_modelRender.PlayAnimation(enAnimationClip_Attack, 0.1f);
 		break;
-	case enEnemyState_Damage:
+	case Enemy::enEnemyState_Damage:
 		m_modelRender.SetAnimationSpeed(1.3f);
 		m_modelRender.PlayAnimation(enAnimationClip_Damage, 0.1f);
+		break;
 	case Enemy::enEnemyState_Down:
 		m_modelRender.PlayAnimation(enAnimationClip_Down, 0.1f);
 		break;
@@ -626,7 +699,7 @@ const bool Enemy::IsCanAttack() const
 {
 	Vector3 diff = m_player->GetPosition() - m_position;
 	//エネミーとプレイヤーの距離が近かったら
-	if (diff.LengthSq() <= 100.0f * 100.0f)
+	if (diff.LengthSq() <= 50.0f * 50.0f)
 	{
 		//攻撃可
 		return true;

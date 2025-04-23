@@ -1,15 +1,18 @@
 #pragma once
+#include "EnemyBase.h"
 class Player;
-//class Tou;
+class BackGround;
 class Collision;
+class RingBell;
+class EnemyBase;
 
-class Enemy : public IGameObject
+class Enemy : public EnemyBase
 {
 
 public:
 	enum EnEnemyState {
 		enEnemyState_Idle,
-		enEnemyState_Goal,
+		enEnemyState_Honden,
 		enEnemyState_Chase,
 		enEnemyState_Attack,
 		enEnemyState_Damage,
@@ -18,10 +21,10 @@ public:
 public:
 	Enemy();
 	~Enemy();
-	bool Start();
-	void Update();
-	void Rotation();
-	void Render(RenderContext& rc);
+	bool Start()override;
+	void Update()override;
+	void Rotation()override;
+	void Render(RenderContext& rc)override;
 	void SetPosition(const Vector3& position)
 	{
 		m_position = position;
@@ -48,19 +51,21 @@ public:
 	}
 
 
-private:
+//private:
 	//追いかける
-	void Chase();
+	void Chase()override;
 	//プレイヤー発見
-	const bool SearchPlayer() const;
+	const bool SearchPlayer() const override;
 	//本殿発見
-	const bool SearchGoal()const;
+	const bool SearchHonden()const;
+
 	//ステート管理
-	void ManageState();
+	void ManageState()override;
+	
 	//本殿を目指す
-	void Goal();
+	void IsHonden();
 	//コリジョン
-	void Collision();
+	void Collision()override;
 	//攻撃
 	void Attack();
 	//攻撃用コリジョン
@@ -68,21 +73,21 @@ private:
 
 	void OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName);
 
-	void ProcessCommonStateTransition();
+	void ProcessCommonStateTransition()override;
 
-	void ProcessIdleStateTransition();
+	void ProcessIdleStateTransition()override;
 
-	void ProcessChaseStateTransition();
+	void ProcessChaseStateTransition()override;
 
 	void ProcessAttackStateTransition();
 
-	void ProcessDamageStateTransition();
+	void ProcessDamageStateTransition()override;
 
-	void ProcessDownStateTransition();
+	void ProcessHondenStateTransition();
 
-	void ProcessGoalStateTransition() {};
+	void ProcessDownStateTransition()override;
 
-	void PlayAnimation();
+	void PlayAnimation()override;
 
 	const bool IsCanAttack() const;
 
@@ -98,7 +103,8 @@ private:
 	};
 	AnimationClip m_animationClips[enAnimationClip_Num];
 	Player* m_player = nullptr;
-	/*Tou* m_tou = nullptr;*/
+	RingBell* m_ringBell = nullptr;
+	BackGround * m_backGround= nullptr;
 	ModelRender m_modelRender;
 	Vector3 m_position;
 	Vector3 m_farstPosition=Vector3::Zero;
@@ -115,6 +121,7 @@ private:
 	int m_isUnderAttack = false;
 	int m_FangBoneId = -1;
 	float m_stopTimer=0.0f;//拘束時間。
+	float m_hondenTimer = 0.0f;
 	bool m_isStopped = false;//動きを止めるフラグ。
 	bool m_gameoverFlag=false;//ゲームオーバーを呼ぶための変数。
 };
