@@ -25,7 +25,7 @@ bool Player::Start()
 	
 	//初期化。
 	m_prevStickAngle = 0.0f;
-	m_totalRotationRotation = 0.0f;
+	m_totalRotation = 0.0f;
 	//プレイヤーのHPをセットする。
 	m_playerHP = 100;
 	//ヒールのクールタイム
@@ -65,6 +65,8 @@ void Player::Update()
 	//判定を呼び出す。
 	Collision();
 
+	//モデルを更新する。
+	//m_modelRender.Update();
 	/////////////////////コメントアウト解除を忘れずに/////////////////////////////
 	//灯籠に火が灯っていれば攻撃できる。
 	if (m_enemyIsCanAttack)
@@ -88,13 +90,6 @@ void Player::Update()
 		NewGO<GameOver>(0, "gameover");
 		DeleteGO(this);
 	}
-
-	//判定を呼び出す。
-	Collision();
-
-	SpotLight();
-	//モデルを更新する。
-	//m_modelRender.Update();
 	else
 	{
 		//文字の表示。
@@ -331,7 +326,7 @@ void Player::Collision()
 		{
 			Distance();
 
-			if (distSq <= contactThresholdSq)
+			if (m_distSq <= contactThresholdSq)
 			{
 				// ヒールUIが有効な場合のみ回転処理
 				if (!m_uiHeal->m_deleteFlag)
@@ -340,7 +335,7 @@ void Player::Collision()
 				}
 				else
 				{
-					m_totalRotationRotation = 0.0f;
+					m_totalRotation = 0.0f;
 				}
 				// 接触中の鈴が見つかったら break
 				break;
@@ -349,10 +344,10 @@ void Player::Collision()
 			
 	}
 
-				//累積回転量に加算する。
-				m_totalRotation += fabsf(delta);
+		//累積回転量に加算する。
+		//m_totalRotation += fabsf(delta);
 		// Aボタンを押していない間は回転量と角度をリセット。
-		m_totalRotationRotation = 0.0f;
+		m_totalRotation = 0.0f;
 		m_prevStickAngle=0.0f;
 }
 
@@ -362,21 +357,21 @@ void Player::Distance()
 		return; // もしくはログ出力して気づけるように
 	}
 
-				//360度回した回復。
-				if (m_totalRotation >= 360.0f)
-				{
-					//HPを回復する
-					HealHP(10);
-					m_totalRotation = 0.0f;
-				}
-				//m_gameCamera->LockCamera(false);
-			}
+	//360度回した回復。
+	if (m_totalRotation >= 360.0f)
+	{
+		//HPを回復する
+		HealHP(10);
+		m_totalRotation = 0.0f;
+	}
+	//m_gameCamera->LockCamera(false);
+			
 	// プレイヤーと鈴の位置を取得
 	Vector3 bellPos = m_ringBell->GetPosition();
 	Vector3 playerPos = m_position;
 
 	// 距離を測って接触判定
-	distSq = (playerPos - bellPos).LengthSq();
+	m_distSq = (playerPos - bellPos).LengthSq();
 
 }
 
@@ -410,13 +405,13 @@ void Player::RotationCamera()
 	}
 
 	// 累積回転量に加算。
-	m_totalRotationRotation += fabsf(delta);
+	m_totalRotation += fabsf(delta);
 
 	// 現在の角度を保存。
 	m_prevStickAngle = angle;
 
 	// スティックを回すと回復。
-	if (m_totalRotationRotation >= 100.0f)
+	if (m_totalRotation >= 100.0f)
 	{
 		if (m_healCoolDown <= 0)
 		{
@@ -432,7 +427,7 @@ void Player::RotationCamera()
 	}
 
 	//回転量と角度をリセット。
-	m_totalRotationRotation = 0.0f;
+	m_totalRotation = 0.0f;
 }
 
 void Player::HealHP(int amount)

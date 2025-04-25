@@ -8,7 +8,7 @@ class EnemyBase :public IGameObject, Noncopyable
 public:
 
 	EnemyBase() {};
-	virtual~EnemyBase() {};
+	~EnemyBase() {};
 
 	bool Start();
 	void EnemySpeed();

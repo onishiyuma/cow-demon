@@ -83,10 +83,10 @@ public:
 	UIheal* m_uiHeal;
 
 
-	SpriteRender m_spriteRender;//スプライトレンダー。
+	SpriteRender m_spriteRender;//スプライトレンダー
 	FontRender m_timerFontRender;//時計
-	Vector3 m_pos;//座標。
-	Vector3 Random();
+	Vector3 m_pos;//座標
+	Vector3 Random(); //エネミーのランダムスポーン
 
 	//敵の一覧を取得するためのメソッドを取得
 	const std::vector<Enemy*>& GetEnemies()const
@@ -103,7 +103,7 @@ public:
 
   	float m_timer = 120.0f;
 	bool m_lanternAction = false; 
-	float m_timeLimit=0;//制限時間。
+	float m_timeLimit=0;//制限時間
 
 };
 
