@@ -21,9 +21,6 @@ public:
 	float m_nearClip = 1.0f;//ニアークリップ
 	float m_furClip = 20000.0f;//ファークリップ
 	const int m_half=2;//半分にする
-	int m_nearClip = 1.0f;//ニアークリップ
-	int m_furClip = 20000.0f;//ファークリップ
-	const float m_half=2;//半分にする
 	bool m_isLocked = false;//カメラを停止するようフラグ。
 };
 
