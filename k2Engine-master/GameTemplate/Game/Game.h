@@ -39,6 +39,8 @@ public:
 	void CreateAttackLantern();
 	//UIを関数化。
 	void CreateUI();
+	//エネミーの生成。
+	void CreateEnemy();
 	//ゲームオーバー、ゲームクリアーを呼ぶ関数。
 	void GameManager();
 	void Render(RenderContext& rc);

@@ -13,8 +13,6 @@ public:
 
 
 	bool Start();
-	//移動処理
-	void Move();
 	//更新処理
 	void Update();
 	//コリジョンの作成。

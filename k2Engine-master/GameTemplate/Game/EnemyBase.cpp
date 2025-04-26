@@ -3,6 +3,17 @@
 #include "Game.h"
 #include "Player.h"
 
+
+EnemyBase::EnemyBase()
+{
+
+}
+
+EnemyBase::~EnemyBase()
+{
+	
+}
+
 bool EnemyBase::Start()
 {
 	//ゲームを探す
@@ -17,7 +28,9 @@ bool EnemyBase::Start()
 
 void EnemyBase::Update()
 {
-
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.SetRotation(m_rotation);
+	//m_modelRender.Update();
 }
 
 void EnemyBase::BaseAction()
@@ -39,9 +52,7 @@ void EnemyBase::BaseAction()
 	////アニメーションの再生
 	//PlayAnimation();
 
-	m_modelRender.SetPosition(m_position);
-	m_modelRender.SetRotation(m_rotation);
-	m_modelRender.Update();
+	
 }
 
 

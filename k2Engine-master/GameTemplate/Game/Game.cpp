@@ -27,13 +27,10 @@ bool Game::Start()
 	//ステージ全体を暗くする。
 	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
 
-	g_sceneLight->SetDirectionLight(0, Vector3(0.01f, 0.01f, 0.01f), Vector3(1.0f, 1.0f, 1.0f));
-
-
+	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
 	//制限時間の設定。
 	m_timeLimit =120.0f;
-
 
 	//背景の作成。
 	m_backGround = NewGO<BackGround>(0);
@@ -46,9 +43,6 @@ bool Game::Start()
 
 	//ゲームカメラの作成。
 	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
-	
-	//エネミーの作成。
-	//m_enemy = NewGO<Enemy>(0,"enemy");
 
 	//クロスヘアーを表示。
 	m_crossHair = NewGO<CrossHair>(0);
@@ -56,23 +50,6 @@ bool Game::Start()
 	//デバック用。
 	//m_timeLimit = 3.0f;
 
-		
-	//�X�e�[�W�I�u�W�F�N�g�̍쐬
-	m_backGround = NewGO<BackGround>(0);
-		
-	m_uiTukuyomi = NewGO<UItukuyomi>(0,"uitukuyomi");
-	//スキルUI
-	m_uiSkill = NewGO<UIskill>(0, "uiskill");
-	//しめ縄UI
-	m_uiSimenawa = NewGO<UISimenawa>(0, "m_uisimenawa");
-	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
-	//ミニマップ
-	m_miniMap = NewGO<MiniMap>(0,"minimap");
-	//呪ゲージ
-	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
-	//回復
-	m_uiHeal = NewGO <UIheal>(0, "uiheal");
-		
 	//��̔w�i�쐬
 	//SkyCube* skyCube = NewGO<SkyCube>(0);
 	//skyCube->SetType(enSkyCubeType_NightToon);
@@ -91,7 +68,10 @@ bool Game::Start()
 	m_uiStone = NewGO<UIStone>(0, "uiStone");
 
 	//UIの作成
-	//CreateUI();
+	CreateUI();
+
+	//Enemyの作成
+	CreateEnemy();
 	
 	return true;
 }
@@ -103,12 +83,21 @@ Game::Game()
 
 Game::~Game()
 {
-	DeleteGO(m_player);
-	DeleteGO(m_gameCamera);
-	DeleteGO(m_enemy);
-	DeleteGO(m_backGround);
-	DeleteGO(m_crossHair);
-	DeleteGO(m_ringBell);
+	//牛鬼
+	for (auto* enemy : m_enemyList) {
+		DeleteGO(enemy);
+	}
+
+	//ミニ牛鬼
+	for (auto* littleEnemy : m_littleEnemyList) {
+		DeleteGO(littleEnemy);
+	}
+
+	DeleteGO(m_player); //プレイヤー
+	DeleteGO(m_gameCamera); //ゲームカメラ
+	DeleteGO(m_backGround); //ステージ
+	DeleteGO(m_crossHair); //クロスヘアー
+	DeleteGO(m_ringBell); //ベル
 
 	//火打石。
 	DeleteGO(m_stone1);
@@ -139,6 +128,8 @@ Game::~Game()
 	DeleteGO(m_uiHeal);
 	DeleteGO(m_uiStone);
 	DeleteGO(m_miniMap);
+
+	
 }
 
 void Game::Update()
@@ -154,9 +145,11 @@ void Game::Update()
 	//表示するテキストを表示
 	m_timerFontRender.SetText(wcsbuf);
 	//フォントの位置を設定
-	m_timerFontRender.SetPosition(Vector3(-30.0f, 500.0f, 0.0f));
+	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
 	//フォントの色を設定
 	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	//フォントの大きさを設定
+	m_timerFontRender.SetScale(1.5f);
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
@@ -203,12 +196,12 @@ void Game::CreateStone()
 	m_stone1 = NewGO<Stone>(0, "stone1");
 	m_stone1->m_position = { 1000.0f,0.0f,-500.0f };
 	m_stone1->m_firstPosition = m_stone1->m_position;
-	//m_stone = FindGO<Stone>("stone");
+	//m_stone1 = FindGO<Stone>("stone");
 
 	m_stone2 = NewGO<Stone>(0, "stone2");
 	m_stone2->m_position = { 200.0f,0.0f,-2000.0f };
 	m_stone2->m_firstPosition = m_stone2->m_position;
-	//m_stone1 = FindGO<Stone>("stone");
+	//m_stone2 = FindGO<Stone>("stone");
 
 	m_stone3 = NewGO<Stone>(0, "stone3");
 	m_stone3->m_position = { -1200.0f,0.0f,500.0f };
@@ -276,11 +269,10 @@ void Game::CreateAttackLantern()
 	//m_lantern3= FindGO<Lantern>("lantern3");
 }
 
-//UI作成用関数。
-void Game::CreateUI()
+void Game::CreateEnemy()
 {
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 5; i++)
 	{
 
 		int ram = rand() % 100;
@@ -297,8 +289,11 @@ void Game::CreateUI()
 			m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
 		}
 	}
+}
 
-
+//UI作成用関数。
+void Game::CreateUI()
+{
 	//月読の加護のUI
 	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
 	//スキルUI
@@ -306,7 +301,7 @@ void Game::CreateUI()
 	//しめ縄UI
 	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
 	//ミニマップ
-	m_miniMap = NewGO<MiniMap>(0, "minimap");
+	//m_miniMap = NewGO<MiniMap>(0, "minimap");
 	//呪ゲージ
 	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
 	//回復

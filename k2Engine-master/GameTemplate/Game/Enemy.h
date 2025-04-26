@@ -5,6 +5,7 @@ class BackGround;
 class Collision;
 class RingBell;
 class EnemyBase;
+class Game;
 
 class Enemy : public EnemyBase
 {
@@ -20,7 +21,7 @@ public:
 	};
 public:
 	Enemy();
-	~Enemy();
+	virtual ~Enemy();
 	bool Start()override;
 	void Update()override;
 	void Rotation()override;
@@ -105,6 +106,7 @@ public:
 	Player* m_player = nullptr;
 	RingBell* m_ringBell = nullptr;
 	BackGround * m_backGround= nullptr;
+	Game* m_game;
 	ModelRender m_modelRender;
 	Vector3 m_position;
 	Vector3 m_farstPosition=Vector3::Zero;
@@ -113,7 +115,7 @@ public:
 	const Vector3 m_stopMove = Vector3::Zero;
 	Vector3 m_scale;
 	Quaternion m_rotation;
-	CharacterController m_charaCon;
+	//CharacterController m_charaCon;
 	EnEnemyState m_enemyState = enEnemyState_Idle;
 	int m_hp = 0;
 	float m_chaseTimer = 0.0f;

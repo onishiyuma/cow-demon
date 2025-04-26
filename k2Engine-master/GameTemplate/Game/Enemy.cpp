@@ -6,6 +6,7 @@
 #include "GameOver.h"
 #include "RingBell.h"
 #include "BackGround.h"
+#include "Game.h"
 #include"collision/CollisionObject.h"
 #include<time.h>
 #include<stdlib.h>
@@ -55,6 +56,7 @@ bool Enemy::Start()
 		});
 	m_player = FindGO<Player>("player");
 	m_ringBell = FindGO<RingBell>("ringbell");
+	m_game = FindGO<Game>("game");
 	/*m_tou = FindGO<Tou>("tou");*/
 	//—”‚ð‰Šú‰»‚·‚é
 	srand((unsigned)time(NULL));
@@ -331,7 +333,8 @@ void Enemy::Collision()
 		if (collision->IsHit(m_charaCon))
 		{
 			NewGO<GameOver>(0);
-			DeleteGO(this);
+			DeleteGO(m_game);
+			break;
 		}
 	}
 
