@@ -13,9 +13,9 @@ TimingBarA::~TimingBarA()
 
 bool TimingBarA::Start()
 {
-	m_spriteRender.Init("Assets/sprite/patternA.DDS", 1000.0f, 800.0f); //‰æ‘œ‚ğ“Ç‚İ‚Ş
-	m_spriteRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f)); //À•W‚Ìİ’è
-	m_spriteRender.SetScale({ 1.0f,1.0f,1.0f }); //‘å‚«‚³‚Ìİ’è
+	m_spriteRender.Init("Assets/sprite/patternA.DDS", 1000.0f, 800.0f); //ç”»åƒã‚’èª­ã¿è¾¼ã‚€
+	m_spriteRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f)); //åº§æ¨™ã®è¨­å®š
+	m_spriteRender.SetScale({ 1.0f,1.0f,1.0f }); //å¤§ãã•ã®è¨­å®š
 	m_spriteRender.Update();
 
 	return true;

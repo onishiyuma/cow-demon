@@ -2,7 +2,7 @@
 class SpriteLight :public IGameObject
 {
 public:
-	//ƒƒ“ƒoŠÖ”
+	//ãƒ¡ãƒ³ãƒé–¢æ•°
 	SpriteLight();
 	~SpriteLight();
 
@@ -11,7 +11,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	//ƒƒ“ƒo•Ï”
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°
 	SpriteRender m_spriteRender;
 	Vector3 m_position;
 };

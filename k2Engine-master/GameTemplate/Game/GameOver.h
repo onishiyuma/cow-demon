@@ -11,7 +11,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	//ƒƒ“ƒo•Ï”B
-	SpriteRender m_spriteRender;//ƒXƒvƒ‰ƒCƒgƒŒƒ“ƒ_[B
-	Game* m_game;//ƒQ[ƒ€B
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚
+	SpriteRender m_spriteRender;//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
+	Game* m_game;//ã‚²ãƒ¼ãƒ ã€‚
 };

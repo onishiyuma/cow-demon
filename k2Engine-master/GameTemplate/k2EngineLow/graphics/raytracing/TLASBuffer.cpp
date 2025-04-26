@@ -35,7 +35,7 @@ namespace nsK2EngineLow {
 			else {
 				D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO info;
 				d3dDevice->GetRaytracingAccelerationStructurePrebuildInfo(&m_inputs, &info);
-				// TLAS�̍č\�z���K�v�B
+				// TLASの再構築が必要。
 				m_topLevelASBuffers.Release();
 				m_topLevelASBuffers.pScratch = CreateBuffer(d3dDevice, info.ScratchDataSizeInBytes, D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, kDefaultHeapProps);
 				m_topLevelASBuffers.pResult = CreateBuffer(d3dDevice, info.ResultDataMaxSizeInBytes, D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_RAYTRACING_ACCELERATION_STRUCTURE, kDefaultHeapProps);
@@ -48,7 +48,7 @@ namespace nsK2EngineLow {
 				
 			}
 
-			// �C���X�^���X�����R�s�[�B
+			// インスタンス情報をコピー。
 			D3D12_RAYTRACING_INSTANCE_DESC* instanceDescs;
 			m_topLevelASBuffers.pInstanceDesc->Map(0, nullptr, (void**)&instanceDescs);
 			ZeroMemory(instanceDescs, sizeof(D3D12_RAYTRACING_INSTANCE_DESC) * numInstance);
@@ -64,38 +64,38 @@ namespace nsK2EngineLow {
 
 			m_topLevelASBuffers.pInstanceDesc->Unmap(0, nullptr);
 
-			//TopLevelAS���쐬�B
+			//TopLevelASを作成。
 			D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC asDesc = {};
 			asDesc.Inputs = m_inputs;
 			asDesc.Inputs.InstanceDescs = m_topLevelASBuffers.pInstanceDesc->GetGPUVirtualAddress();
 			asDesc.DestAccelerationStructureData = m_topLevelASBuffers.pResult->GetGPUVirtualAddress();
 			asDesc.ScratchAccelerationStructureData = m_topLevelASBuffers.pScratch->GetGPUVirtualAddress();
 			if (isUpdate) {
-				// �X�V�Ȃ̂Ō��f�[�^��ݒ肷��B
+				// 更新なので元データを設定する。
 				asDesc.SourceAccelerationStructureData = m_topLevelASBuffers.pResult->GetGPUVirtualAddress();
 			}
 			else {
-				// �č\�z���K�v�ł���΁A���f�[�^�͕s�v�Ȃ̂�0�����B
+				// 再構築が必要であれば、元データは不要なので0を代入。
 				asDesc.SourceAccelerationStructureData = 0;
 			}
 			
-			// TLAS���\�z�B
+			// TLASを構築。
 			rc.BuildRaytracingAccelerationStructure(asDesc);
 
-			//���C�g���[�V���O�A�N�Z�����[�V�����\���̃r���h�����҂��̃o���A������B
+			//レイトレーシングアクセラレーション構造のビルド完了待ちのバリアを入れる。
 			D3D12_RESOURCE_BARRIER uavBarrier = {};
 			uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
 			uavBarrier.UAV.pResource = m_topLevelASBuffers.pResult;
 			rc.ResourceBarrier(uavBarrier);
 		}
 		/// <summary>
-		/// SRV�ɓo�^�B
+		/// SRVに登録。
 		/// </summary>
 		/// <param name="descriptorHandle"></param>
 		void TLASBuffer::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo)
 		{
 			auto d3dDevice = g_graphicsEngine->GetD3DDevice();
-			//TLAS���f�B�X�N���v�^�q�[�v�ɓo�^�B
+			//TLASをディスクリプタヒープに登録。
 			D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 			memset(&srvDesc, 0, sizeof(srvDesc));
 			srvDesc.ViewDimension = D3D12_SRV_DIMENSION_RAYTRACING_ACCELERATION_STRUCTURE;

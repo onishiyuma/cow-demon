@@ -5,57 +5,57 @@ namespace nsK2EngineLow {
 	class IndexBuffer;
 
 	/// <summary>
-	/// \‘¢‰»ƒoƒbƒtƒ@
+	/// æ§‹é€ åŒ–ãƒãƒƒãƒ•ã‚¡
 	/// </summary>
 	class RWStructuredBuffer : public IUnorderAccessResrouce {
 	public:
 
 		/// <summary>
-		/// ƒfƒXƒgƒ‰ƒNƒ^B
+		/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
 		/// </summary>
 		~RWStructuredBuffer();
 		/// <summary>
-		/// \‘¢‰»ƒoƒbƒtƒ@‚ð‰Šú‰»B
+		/// æ§‹é€ åŒ–ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–ã€‚
 		/// </summary>
-		/// <param name="sizeOfElement">ƒGƒŒƒƒ“ƒg‚ÌƒTƒCƒYB</param>
-		/// <param name="numElement">ƒGƒŒƒƒ“ƒg‚Ì”B</param>
-		/// <param name="initData">‰Šúƒf[ƒ^B</param>
-		/// <param name="isAccessCPU">CPU‚©‚çƒAƒNƒZƒX‚·‚éH</param>
+		/// <param name="sizeOfElement">ã‚¨ãƒ¬ãƒ¡ãƒ³ãƒˆã®ã‚µã‚¤ã‚ºã€‚</param>
+		/// <param name="numElement">ã‚¨ãƒ¬ãƒ¡ãƒ³ãƒˆã®æ•°ã€‚</param>
+		/// <param name="initData">åˆæœŸãƒ‡ãƒ¼ã‚¿ã€‚</param>
+		/// <param name="isAccessCPU">CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹ï¼Ÿ</param>
 		void Init(int sizeOfElement, int numElement, void* initData, bool isAccessCPU);
 		/// <summary>
-		/// ’¸“_ƒoƒbƒtƒ@‚ðŽg—p‚µ‚Ä\‘¢‰»ƒoƒbƒtƒ@‚ð‰Šú‰»B
+		/// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ä½¿ç”¨ã—ã¦æ§‹é€ åŒ–ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–ã€‚
 		/// </summary>
-		/// <param name="vb">’¸“_ƒoƒbƒtƒ@</param>
+		/// <param name="vb">é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡</param>
 		/// <param name="isUpdateByCPU">
-		/// CPU‘¤‚Å’¸“_ƒoƒbƒtƒ@‚ðXV‚·‚é‚©‚Ç‚¤‚©B
-		/// CPU‘¤‚ÅXV‚·‚éê‡Aˆø”‚Å“n‚³‚ê‚½’¸“_ƒoƒbƒtƒ@‚Ì•¡»‚ð“ñ‚Â•¡»‚µ‚Ü‚·B
-		/// ‚»‚Ì‚½‚ßAƒƒ‚ƒŠ‚ÌŽg—p—Ê‚Í‚R”{‚É‚È‚è‚Ü‚·B
+		/// CPUå´ã§é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’æ›´æ–°ã™ã‚‹ã‹ã©ã†ã‹ã€‚
+		/// CPUå´ã§æ›´æ–°ã™ã‚‹å ´åˆã€å¼•æ•°ã§æ¸¡ã•ã‚ŒãŸé ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¤‡è£½ã‚’äºŒã¤è¤‡è£½ã—ã¾ã™ã€‚
+		/// ãã®ãŸã‚ã€ãƒ¡ãƒ¢ãƒªã®ä½¿ç”¨é‡ã¯ï¼“å€ã«ãªã‚Šã¾ã™ã€‚
 		/// </param>
 		void Init(const VertexBuffer& vb, bool isUpdateByCPU);
 		/// <summary>
-		/// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ð—˜—p‚µ‚Ä\‘¢‰»ƒoƒbƒtƒ@‚ð‰Šú‰»B
+		/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’åˆ©ç”¨ã—ã¦æ§‹é€ åŒ–ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–ã€‚
 		/// </summary>
-		/// <param name="ib">ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@</param>
+		/// <param name="ib">ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡</param>
 		/// <param name="isUpdateByCPU">
-		/// CPU‘¤‚ÅƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ðXV‚·‚é‚©‚Ç‚¤‚©B
-		/// CPU‘¤‚ÅXV‚·‚éê‡Aˆø”‚Å“n‚³‚ê‚½ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ì•¡»‚ð“ñ‚Â•¡»‚µ‚Ü‚·B
-		/// ‚»‚Ì‚½‚ßAƒƒ‚ƒŠ‚ÌŽg—p—Ê‚Í‚R”{‚É‚È‚è‚Ü‚·B
+		/// CPUå´ã§ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’æ›´æ–°ã™ã‚‹ã‹ã©ã†ã‹ã€‚
+		/// CPUå´ã§æ›´æ–°ã™ã‚‹å ´åˆã€å¼•æ•°ã§æ¸¡ã•ã‚ŒãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®è¤‡è£½ã‚’äºŒã¤è¤‡è£½ã—ã¾ã™ã€‚
+		/// ãã®ãŸã‚ã€ãƒ¡ãƒ¢ãƒªã®ä½¿ç”¨é‡ã¯ï¼“å€ã«ãªã‚Šã¾ã™ã€‚
 		/// </param>
 		void Init(const IndexBuffer& ib, bool isUpdateByCPU);
 		/// <summary>
-		/// UAV‚É“o˜^B
+		/// UAVã«ç™»éŒ²ã€‚
 		/// </summary>
 		/// <param name=""></param>
 		/// <param name="bufferNo"></param>
 		void RegistUnorderAccessView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo) override;
 		/// <summary>
-		/// SRV‚É“o˜^B
+		/// SRVã«ç™»éŒ²ã€‚
 		/// </summary>
 		/// <param name="descriptorHandle"></param>
 		/// <param name="bufferNo"></param>
 		void RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo) override;
 		/// <summary>
-		/// ‰Šú‰»‚³‚ê‚Ä‚¢‚é‚©”»’èB
+		/// åˆæœŸåŒ–ã•ã‚Œã¦ã„ã‚‹ã‹åˆ¤å®šã€‚
 		/// </summary>
 		/// <returns></returns>
 		bool IsInited() const
@@ -63,12 +63,12 @@ namespace nsK2EngineLow {
 			return m_isInited;
 		}
 		/// <summary>
-		/// CPU‚©‚çƒAƒNƒZƒX‰Â”\‚ÈƒŠƒ\[ƒX‚ðŽæ“¾‚·‚éB
+		/// CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ãªãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—ã™ã‚‹ã€‚
 		/// </summary>
 		/// <returns></returns>
 		void* GetResourceOnCPU();
 		/// <summary>
-		/// ƒoƒbƒtƒ@ƒTƒCƒY‚ðŽæ“¾B
+		/// ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã‚’å–å¾—ã€‚
 		/// </summary>
 		/// <returns></returns>
 		int GetSize() const
@@ -76,7 +76,7 @@ namespace nsK2EngineLow {
 			return m_sizeOfElement * m_numElement;
 		}
 		/// <summary>
-		/// 1—v‘f‚ÌƒTƒCƒY‚ðŽæ“¾B
+		/// 1è¦ç´ ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã€‚
 		/// </summary>
 		/// <returns></returns>
 		int GetStride() const
@@ -86,15 +86,15 @@ namespace nsK2EngineLow {
 		ID3D12Resource* GetD3DResoruce();
 	private:
 		/// <summary>
-		/// ‰ð•úB
+		/// è§£æ”¾ã€‚
 		/// </summary>
 		void Release();
 	private:
 		ID3D12Resource* m_buffersOnGPU[2] = { nullptr };
-		void* m_buffersOnCPU[2] = { nullptr };		//CPU‘¤‚©‚çƒAƒNƒZƒX‚Å‚«‚é‚·‚éƒXƒgƒ‰ƒNƒ`ƒƒƒoƒbƒtƒ@‚ÌƒAƒhƒŒƒXB
-		int m_numElement = 0;				// —v‘f”B
-		int m_sizeOfElement = 0;			// ƒGƒŒƒƒ“ƒg‚ÌƒTƒCƒYB
-		bool m_isInited = false;			// ‰Šú‰»Ï‚ÝH
-		bool m_isAccessCPU = false;			// CPU‚©‚çƒAƒNƒZƒX‚·‚éH
+		void* m_buffersOnCPU[2] = { nullptr };		//CPUå´ã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹ã™ã‚‹ã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£ãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚
+		int m_numElement = 0;				// è¦ç´ æ•°ã€‚
+		int m_sizeOfElement = 0;			// ã‚¨ãƒ¬ãƒ¡ãƒ³ãƒˆã®ã‚µã‚¤ã‚ºã€‚
+		bool m_isInited = false;			// åˆæœŸåŒ–æ¸ˆã¿ï¼Ÿ
+		bool m_isAccessCPU = false;			// CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹ï¼Ÿ
 	};
 }

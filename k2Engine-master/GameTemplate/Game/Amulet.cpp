@@ -7,25 +7,25 @@
 
 bool Amulet::Start()
 {
-	//インスタンスアドレスを検索。
+	//繧､繝ｳ繧ｹ繧ｿ繝ｳ繧ｹ繧｢繝峨Ξ繧ｹ繧呈､懃ｴ｢縲・
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_player = FindGO<Player>("player");
 
-	//エフェクトをロードする。
+	//繧ｨ繝輔ぉ繧ｯ繝医ｒ繝ｭ繝ｼ繝峨☆繧九・
 	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/hit.efk");
 
-	//カメラ行列を前方向に代入。
+	//繧ｫ繝｡繝ｩ陦悟・繧貞燕譁ｹ蜷代↓莉｣蜈･縲・
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();
 	m_direction = Vector3(cameraMatrix.m[2][0], cameraMatrix.m[2][1], cameraMatrix.m[2][2]);
 	m_direction.Normalize();
 
-	//移動速度を計算。
+	//遘ｻ蜍暮溷ｺｦ繧定ｨ育ｮ励・
 	m_moveSpeed = m_direction * m_amuletSpeed;
 
-	//コリジョンを作成。
+	//繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ繧剃ｽ懈・縲・
 	CreateCollision();
 
-	//エフェクトを作成。
+	//繧ｨ繝輔ぉ繧ｯ繝医ｒ菴懈・縲・
 	CreateEffect();
 
 	return true;
@@ -44,44 +44,44 @@ Amulet::~Amulet()
 
 void Amulet::Update()	
 {
-	//座標を移動させる。
+	//蠎ｧ讓吶ｒ遘ｻ蜍輔＆縺帙ｋ縲・
 	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
 
 	if (m_effectEmitter->GetEffect() != nullptr)
 	{
-		//エフェクトに座標を設定。
+		//繧ｨ繝輔ぉ繧ｯ繝医↓蠎ｧ讓吶ｒ險ｭ螳壹・
 		m_effectEmitter->SetPosition(m_position);
 	}
-	//コリジョンオブジェクトに座標を設定する。
+	//繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ繧ｪ繝悶ず繧ｧ繧ｯ繝医↓蠎ｧ讓吶ｒ險ｭ螳壹☆繧九・
 	m_collisionObj->SetPosition(m_position);
 
-	//タイマーを加算。
+	//繧ｿ繧､繝槭・繧貞刈邂励・
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
-	//タイマーが一定の秒数経過していたら。
+	//繧ｿ繧､繝槭・縺御ｸ螳壹・遘呈焚邨碁℃縺励※縺・◆繧峨・
 	if (m_deleteTimer >= 0.38f)
 	{
-		//自身を削除。
+		//閾ｪ霄ｫ繧貞炎髯､縲・
 		DeleteGO(this);
-		//エフェクトの再生を停止。
+		//繧ｨ繝輔ぉ繧ｯ繝医・蜀咲函繧貞●豁｢縲・
 		m_effectEmitter->Stop();
 	}
 }
 
 void Amulet::CreateCollision()
 {
-	//カメラの現在位置を取得。（視点位置）
+	//繧ｫ繝｡繝ｩ縺ｮ迴ｾ蝨ｨ菴咲ｽｮ繧貞叙蠕励ゑｼ郁ｦ也せ菴咲ｽｮ・・
 	Vector3 cameraPosition = g_camera3D->GetPosition();
 
-	//コリジョンオブジェクトの作成。
+	//繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ繧ｪ繝悶ず繧ｧ繧ｯ繝医・菴懈・縲・
 	m_collisionObj = NewGO<CollisionObject>(0);
 
-	//箱状のコリジョンを作成。
+	//邂ｱ迥ｶ縺ｮ繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ繧剃ｽ懈・縲・
 	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 100.0f,100.0f,100.0f });
 
-	//コリジョンの名前。
+	//繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ縺ｮ蜷榊燕縲・
 	m_collisionObj->SetName("purification");
 
-	//オブジェクトが勝手に削除されないように。
+	//繧ｪ繝悶ず繧ｧ繧ｯ繝医′蜍晄焔縺ｫ蜑企勁縺輔ｌ縺ｪ縺・ｈ縺・↓縲・
 	m_collisionObj->SetIsEnableAutoDelete(false);
 }
 
@@ -89,9 +89,9 @@ void Amulet::CreateEffect()
 {
 	m_effectEmitter = NewGO<EffectEmitter>(0);
 	m_effectEmitter->Init(0);
-	//エフェクトの大きさを設定する。
+	//繧ｨ繝輔ぉ繧ｯ繝医・螟ｧ縺阪＆繧定ｨｭ螳壹☆繧九・
 	m_effectEmitter->SetScale({ 55.0f,55.0f,55.0f });
-	//エフェクトの座標をセットする。
+	//繧ｨ繝輔ぉ繧ｯ繝医・蠎ｧ讓吶ｒ繧ｻ繝・ヨ縺吶ｋ縲・
 	m_effectEmitter->SetPosition(m_position);
 	m_effectEmitter->Play();
 }

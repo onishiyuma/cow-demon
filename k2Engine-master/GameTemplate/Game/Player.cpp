@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "Player.h"
 #include "Purification.h"
 #include "Amulet.h"

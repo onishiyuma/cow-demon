@@ -18,10 +18,10 @@ class UItukuyomi:public IGameObject
 	SpriteRender m_runaSprite;
 	SpriteRender m_runaSprite2;
 
-	float m_fadeTime = 0.0f;//ƒtƒF[ƒh‚Ü‚Å‚ÌŠÔB
-	float m_elapsedTime = 0.0f;//Œo‰ßŠÔB
-	float m_alpha = 0.0f;//ƒ¿’l
-	float m_runaMax;//Œ“Ç‚Ì‰ÁŒì‚Ìƒ}ƒbƒNƒXB
+	float m_fadeTime = 0.0f;//ãƒ•ã‚§ãƒ¼ãƒ‰ã¾ã§ã®æ™‚é–“ã€‚
+	float m_elapsedTime = 0.0f;//çµŒéæ™‚é–“ã€‚
+	float m_alpha = 0.0f;//Î±å€¤
+	float m_runaMax;//æœˆèª­ã®åŠ è­·ã®ãƒãƒƒã‚¯ã‚¹ã€‚
 	bool m_isVisible = false;
 };
 

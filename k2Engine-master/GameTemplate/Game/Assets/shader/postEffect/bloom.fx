@@ -1,13 +1,13 @@
 /*!
- * @brief ƒuƒ‹[ƒ€
+ * @brief ãƒ–ãƒ«ãƒ¼ãƒ 
  */
 
 #include "../util/ColorSpace.h"
 
 cbuffer cb : register(b0)
 {
-    float4x4 mvp;       // MVPs—ñ
-    float4 mulColor;    // æZƒJƒ‰[
+    float4x4 mvp;       // MVPè¡Œåˆ—
+    float4 mulColor;    // ä¹—ç®—ã‚«ãƒ©ãƒ¼
 };
 
 struct VSInput
@@ -23,7 +23,7 @@ struct PSInput
 };
 
 /*!
- * @brief ’¸“_ƒVƒF[ƒ_[
+ * @brief é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
  */
 PSInput VSMain(VSInput In)
 {
@@ -33,12 +33,12 @@ PSInput VSMain(VSInput In)
     return psIn;
 }
 
-Texture2D<float4> mainRenderTargetTexture : register(t0);   // ƒƒCƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ÌƒeƒNƒXƒ`ƒƒ
-Texture2D<float4> luminanceAvgTexture : register(t1);       // ƒV[ƒ“‚Ì•½‹Ï‹P“x‚ª‹L‰¯‚³‚ê‚Ä‚¢‚éƒeƒNƒXƒ`ƒƒB
+Texture2D<float4> mainRenderTargetTexture : register(t0);   // ãƒ¡ã‚¤ãƒ³ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ãƒ†ã‚¯ã‚¹ãƒãƒ£
+Texture2D<float4> luminanceAvgTexture : register(t1);       // ã‚·ãƒ¼ãƒ³ã®å¹³å‡è¼åº¦ãŒè¨˜æ†¶ã•ã‚Œã¦ã„ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
 sampler Sampler : register(s0);
 
 /////////////////////////////////////////////////////////
-// ‹P“x’Šo—p
+// è¼åº¦æŠ½å‡ºç”¨
 /////////////////////////////////////////////////////////
 cbuffer SamplingLuminanceCb : register(b1)
 {
@@ -48,36 +48,36 @@ cbuffer SamplingLuminanceCb : register(b1)
 };
 
 /*!
- * @brief ‹P“x’Šo—p‚ÌƒsƒNƒZƒ‹ƒVƒF[ƒ_[
+ * @brief è¼åº¦æŠ½å‡ºç”¨ã®ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
  */
 float4 PSSamplingLuminance(PSInput In) : SV_Target0
 {
-    // ƒƒCƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚©‚çƒJƒ‰[‚ğƒTƒ“ƒvƒŠƒ“ƒO
+    // ãƒ¡ã‚¤ãƒ³ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‹ã‚‰ã‚«ãƒ©ãƒ¼ã‚’ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°
     float4 color = mainRenderTargetTexture.Sample(Sampler, In.uv);
 
-    // ƒTƒ“ƒvƒŠƒ“ƒO‚µ‚½ƒJƒ‰[‚Ì–¾‚é‚³‚ğŒvZ
-    // ƒƒCƒ“ƒV[ƒ“‚Ì‹P“x‚ğ‹‚ß‚éB
+    // ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã—ãŸã‚«ãƒ©ãƒ¼ã®æ˜ã‚‹ã•ã‚’è¨ˆç®—
+    // ãƒ¡ã‚¤ãƒ³ã‚·ãƒ¼ãƒ³ã®è¼åº¦ã‚’æ±‚ã‚ã‚‹ã€‚
     float luminance = luminanceAvgTexture.Sample(Sampler, In.uv);
     float3 hsv = Rgb2Hsv(color);
     if(isEnableTonemap){
         
         hsv.z = ( middleGray / ( max(luminance, 0.001f ))) * hsv.z;
     }
-    // clip()ŠÖ”‚Íˆø”‚Ì’l‚ªƒ}ƒCƒiƒX‚É‚È‚é‚ÆAˆÈ~‚Ìˆ—‚ğƒXƒLƒbƒv‚·‚é
-    // ‚È‚Ì‚ÅAƒ}ƒCƒiƒX‚É‚È‚é‚ÆƒsƒNƒZƒ‹ƒJƒ‰[‚Ío—Í‚³‚ê‚È‚¢
+    // clip()é–¢æ•°ã¯å¼•æ•°ã®å€¤ãŒãƒã‚¤ãƒŠã‚¹ã«ãªã‚‹ã¨ã€ä»¥é™ã®å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹
+    // ãªã®ã§ã€ãƒã‚¤ãƒŠã‚¹ã«ãªã‚‹ã¨ãƒ”ã‚¯ã‚»ãƒ«ã‚«ãƒ©ãƒ¼ã¯å‡ºåŠ›ã•ã‚Œãªã„
     
     clip(hsv.z - threshold );
     hsv.z -= threshold;
     
     if(isEnableTonemap){
-        // ƒJƒ‰[‚ğŒ³‚ÌƒJƒ‰[‚É–ß‚·B
+        // ã‚«ãƒ©ãƒ¼ã‚’å…ƒã®ã‚«ãƒ©ãƒ¼ã«æˆ»ã™ã€‚
         hsv.z *= ( max(luminance, 0.001f )) / 0.18f;
     }
     color.xyz = Hsv2Rgb(hsv);
     return color;
 }
 
-// step-5 4–‡‚Ìƒ{ƒP‰æ‘œ‚ÉƒAƒNƒZƒX‚·‚é‚½‚ß‚Ì•Ï”‚ğ’Ç‰Á
+// step-5 4æšã®ãƒœã‚±ç”»åƒã«ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹ãŸã‚ã®å¤‰æ•°ã‚’è¿½åŠ 
 Texture2D<float4> g_bokeTexture_0 : register(t0);
 Texture2D<float4> g_bokeTexture_1 : register(t1);
 Texture2D<float4> g_bokeTexture_2 : register(t2);
@@ -85,7 +85,7 @@ Texture2D<float4> g_bokeTexture_3 : register(t3);
 
 float4 PSBloomFinal(PSInput In) : SV_Target0
 {
-    // step-6 ƒ{ƒP‰æ‘œ‚ğƒTƒ“ƒvƒŠƒ“ƒO‚µ‚ÄA•½‹Ï‚ğ‚Æ‚Á‚Äo—Í‚·‚é
+    // step-6 ãƒœã‚±ç”»åƒã‚’ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã—ã¦ã€å¹³å‡ã‚’ã¨ã£ã¦å‡ºåŠ›ã™ã‚‹
     float4 combineColor = g_bokeTexture_0.Sample(Sampler, In.uv);
     combineColor += g_bokeTexture_1.Sample(Sampler, In.uv);
     combineColor += g_bokeTexture_2.Sample(Sampler, In.uv);

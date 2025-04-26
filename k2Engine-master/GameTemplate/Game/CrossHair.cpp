@@ -3,9 +3,9 @@
 
 bool CrossHair::Start()
 {
-	//‰æ‘œ‚ğ“Ç‚İ‚ŞB
+	//ç”»åƒã‚’èª­ã¿è¾¼ã‚€ã€‚
 	m_spriteRender.Init("Assets/sprite/CrossHair.DDS", 120.0f, 120.0f);
-	//À•W‚ğƒZƒbƒgB
+	//åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã€‚
 	m_spriteRender.SetPosition(m_position);
 
 	return true;

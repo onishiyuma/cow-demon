@@ -2,21 +2,21 @@
 
 class Game;
 
-//ƒ^ƒCƒgƒ‹ƒNƒ‰ƒXB
+//ã‚¿ã‚¤ãƒˆãƒ«ã‚¯ãƒ©ã‚¹ã€‚
 class Title:public IGameObject
 {
 public:
 	Title();
 	~Title();
-	//ƒƒ“ƒoŠÖ”B
+	//ãƒ¡ãƒ³ãƒé–¢æ•°ã€‚
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
 
-	//ƒƒ“ƒo•Ï”B
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚
 	FontRender m_fontRender;
-	SpriteRender m_spriteRender;//ƒXƒvƒ‰ƒCƒgƒŒƒ“ƒ_[B
-	Game* m_game;//ƒQ[ƒ€B
+	SpriteRender m_spriteRender;//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
+	Game* m_game;//ã‚²ãƒ¼ãƒ ã€‚
 	float m_timer;
 
 private:

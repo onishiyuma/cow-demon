@@ -5,11 +5,11 @@
 namespace nsK2EngineLow {
 	using namespace std;
 	namespace {
-		const int NUM_CB_ONE_DISPATCH = 1;		// 1‰ñ‚ÌƒfƒBƒXƒpƒbƒ`‚Åg—p‚³‚ê‚é’è”ƒoƒbƒtƒ@‚Ì”B
-		const int NUM_SRV_ONE_DISPATCH = 3;		// 1‰ñ‚ÌƒfƒBƒXƒpƒbƒ`‚Åg—p‚³‚ê‚éSRV‚Ì”
-		const int NUM_UAV_ONE_DISPATCH = 1;		// 1‰ñ‚ÌƒfƒBƒXƒpƒbƒ`‚Åg—p‚³‚ê‚éUAV‚Ì”
-		const int NUM_THREAD_X_IN_GROUP = 256;	// 1ƒXƒŒƒbƒhƒOƒ‹[ƒv‚ÉŠÜ‚Ü‚ê‚éƒXƒŒƒbƒh‚Ì”(X•ûŒü)B
-		const int NUM_THREAD_Y_IN_GROUP = 4;	// 1ƒXƒŒƒbƒhƒOƒ‹[ƒv‚ÉŠÜ‚Ü‚ê‚éƒXƒŒƒbƒh‚Ì”(Y•ûŒü)
+		const int NUM_CB_ONE_DISPATCH = 1;		// 1å›ã®ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒã§ä½¿ç”¨ã•ã‚Œã‚‹å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ•°ã€‚
+		const int NUM_SRV_ONE_DISPATCH = 3;		// 1å›ã®ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒã§ä½¿ç”¨ã•ã‚Œã‚‹SRVã®æ•°
+		const int NUM_UAV_ONE_DISPATCH = 1;		// 1å›ã®ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒã§ä½¿ç”¨ã•ã‚Œã‚‹UAVã®æ•°
+		const int NUM_THREAD_X_IN_GROUP = 256;	// 1ã‚¹ãƒ¬ãƒƒãƒ‰ã‚°ãƒ«ãƒ¼ãƒ—ã«å«ã¾ã‚Œã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰ã®æ•°(Xæ–¹å‘)ã€‚
+		const int NUM_THREAD_Y_IN_GROUP = 4;	// 1ã‚¹ãƒ¬ãƒƒãƒ‰ã‚°ãƒ«ãƒ¼ãƒ—ã«å«ã¾ã‚Œã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰ã®æ•°(Yæ–¹å‘)
 	}
 	void ComputeAnimationVertexBuffer::Init(
 		const char* tkmFilePath,
@@ -20,7 +20,7 @@ namespace nsK2EngineLow {
 		StructuredBuffer* worldMatrixArraySB
 	){
 		m_numInstance = numInstance;
-		// tkmƒtƒ@ƒCƒ‹‚ğƒ[ƒhB
+		// tkmãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰ã€‚
 		m_tkmFile.Load(tkmFilePath, false, false, false);
 		m_numMesh = m_tkmFile.GetNumMesh();
 		m_meshArray = make_unique<SMeshLocal[]>(m_numMesh);
@@ -30,34 +30,34 @@ namespace nsK2EngineLow {
 			SMeshLocal& meshLocal = m_meshArray[meshNo];
 			int numVertex = (int)mesh.vertexBuffer.size();
 			int vertexStride = sizeof(TkmFile::SVertex);
-			// ƒAƒjƒ[ƒVƒ‡ƒ“‘O‚Ì’¸“_‚ğ‹L‰¯‚·‚é’¸“_ƒoƒbƒtƒ@‚ğì¬B
+			// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‰ã®é ‚ç‚¹ã‚’è¨˜æ†¶ã™ã‚‹é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆã€‚
 			meshLocal.m_vertexBuffer.Init(vertexStride * numVertex, vertexStride);
 			meshLocal.m_vertexBuffer.Copy((void*)&mesh.vertexBuffer[0]);
-			// ƒAƒjƒ[ƒVƒ‡ƒ“‘O‚Ì’¸“_ƒoƒbƒtƒ@‚ÌStructuredBuffer‚ğì¬B
+			// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‰ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®StructuredBufferã‚’ä½œæˆã€‚
 			meshLocal.m_vertexBufferSB.Init(meshLocal.m_vertexBuffer, false);
-			// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğì¬B
+			// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆã€‚
 			int indexBufferArraySize = (int)max<size_t>(mesh.indexBuffer32Array.size(), mesh.indexBuffer16Array.size());
 			meshLocal.m_animatedIndexBufferArray = make_unique<IndexBuffer[]>(indexBufferArraySize);
 			meshLocal.m_originalIndexBufferSize  = make_unique<int[]>(indexBufferArraySize);
 			meshLocal.m_numMaterial = mesh.materials.size();
 			for (int indexBufferNo = 0; indexBufferNo < indexBufferArraySize; indexBufferNo++) {
 				auto& indexBuffer = meshLocal.m_animatedIndexBufferArray[indexBufferNo];
-				// ƒCƒ“ƒfƒbƒNƒX‚ÌƒTƒCƒY
+				// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚µã‚¤ã‚º
 				const int strideIndex = 4;
-				// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒRƒs[B
+				// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚³ãƒ”ãƒ¼ã€‚
 				if (!mesh.indexBuffer32Array.empty()) {
-					// 32ƒrƒbƒgƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@B
+					// 32ãƒ“ãƒƒãƒˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã€‚
 					int numIndex = (int)mesh.indexBuffer32Array[indexBufferNo].indices.size();
-					// ˆê‚Â‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÌƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒTƒCƒYB
+					// ä¸€ã¤ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºã€‚
 					int indexBufferSizeOne = numIndex * strideIndex;	
-					// ‘S‚Ä‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÌƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒTƒCƒYB
+					// å…¨ã¦ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºã€‚
 					int indexBufferSize = indexBufferSizeOne * numInstance;
-					// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğ‰Šú‰»B
+					// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–ã€‚
 					indexBuffer.Init(indexBufferSize, strideIndex);
-					// ƒIƒŠƒWƒiƒ‹‚ÌƒCƒ“ƒfƒbƒNƒX‚Ì”‚ğ‹L‰¯‚µ‚Ä‚¨‚­B
+					// ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°ã‚’è¨˜æ†¶ã—ã¦ãŠãã€‚
 					meshLocal.m_originalIndexBufferSize[indexBufferNo] = numIndex;
 					for (int instanceNo = 0; instanceNo < numInstance; instanceNo++ ) {
-						// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ì”‚¾‚¯ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒRƒs[B
+						// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ•°ã ã‘ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚³ãƒ”ãƒ¼ã€‚
 						indexBuffer.Copy(
 							(uint32_t*)&mesh.indexBuffer32Array[indexBufferNo].indices.at(0),
 							numIndex,
@@ -67,18 +67,18 @@ namespace nsK2EngineLow {
 					}
 				}
 				else {
-					// 16ƒrƒbƒgƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@B
+					// 16ãƒ“ãƒƒãƒˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã€‚
 					int numIndex = (int)mesh.indexBuffer16Array[indexBufferNo].indices.size();
-					// ˆê‚Â‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÌƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒTƒCƒYB
+					// ä¸€ã¤ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºã€‚
 					int indexBufferSizeOne = numIndex * strideIndex;
-					// ‘S‚Ä‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÌƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒTƒCƒYB
+					// å…¨ã¦ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºã€‚
 					int indexBufferSize = indexBufferSizeOne * numInstance;
-					// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğ‰Šú‰»B
+					// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–ã€‚
 					indexBuffer.Init(indexBufferSize, strideIndex);
-					// ƒIƒŠƒWƒiƒ‹‚ÌƒCƒ“ƒfƒbƒNƒX‚Ì”‚ğ‹L‰¯‚µ‚Ä‚¨‚­B
+					// ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°ã‚’è¨˜æ†¶ã—ã¦ãŠãã€‚
 					meshLocal.m_originalIndexBufferSize[indexBufferNo] = numIndex;
 					for (int instanceNo = 0; instanceNo < numInstance; instanceNo++) {
-						// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ì”‚¾‚¯ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒRƒs[B
+						// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ•°ã ã‘ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚³ãƒ”ãƒ¼ã€‚
 						indexBuffer.Copy(
 							(uint16_t*)&mesh.indexBuffer16Array[indexBufferNo].indices.at(0),
 							numIndex,
@@ -88,20 +88,20 @@ namespace nsK2EngineLow {
 					}
 				}
 			}
-			// ƒAƒjƒ[ƒVƒ‡ƒ“Ï‚İ’¸“_ƒoƒbƒtƒ@‚ÌRWStructuredBuffer‚ğ‰Šú‰»B
+			// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ¸ˆã¿é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®RWStructuredBufferã‚’åˆæœŸåŒ–ã€‚
 			meshLocal.m_animatedVertexBufferRWSB.Init(
 				vertexStride,
 				numVertex * numInstance,
 				nullptr,
 				false
 			);
-			// ƒAƒjƒ[ƒVƒ‡ƒ“Ï‚İ’¸“_‚ğ‹L‰¯‚·‚é‚½‚ß‚Ìƒoƒbƒtƒ@‚ğì¬B
+			// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ¸ˆã¿é ‚ç‚¹ã‚’è¨˜æ†¶ã™ã‚‹ãŸã‚ã®ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆã€‚
 			meshLocal.m_animatedVertexBuffer.Init(meshLocal.m_animatedVertexBufferRWSB);
 			
 			meshNo++;
 		});
 
-		// ƒVƒF[ƒ_[‚ğƒ[ƒhB
+		// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ãƒ­ãƒ¼ãƒ‰ã€‚
 		const char* fxFilePath = "Assets/shader/preProcess/ComputeAnimationVertexBuffer.fx";
 		const char* entryPoint = "CSMain";
 		m_shader = g_engine->GetShaderFromBank(fxFilePath, entryPoint);
@@ -111,7 +111,7 @@ namespace nsK2EngineLow {
 			g_engine->RegistShaderToBank(fxFilePath, entryPoint, m_shader);
 		}
 		
-		// ƒ{[ƒ“s—ñ‚ğ‘—‚é‚½‚ß‚ÌƒXƒgƒ‰ƒNƒ`ƒƒ[ƒhƒoƒbƒtƒ@‚ğì¬B
+		// ãƒœãƒ¼ãƒ³è¡Œåˆ—ã‚’é€ã‚‹ãŸã‚ã®ã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆã€‚
 		m_boneMatrixArray = boneMatrixArray;
 		m_boneMatricesStructureBuffer.Init(sizeof(Matrix), numBone, boneMatrixArray);
 
@@ -119,9 +119,9 @@ namespace nsK2EngineLow {
 		for (int meshNo = 0; meshNo < m_numMesh; meshNo++) {
 			auto& mesh = m_meshArray[meshNo];
 			
-			// ’è”ƒoƒbƒtƒ@‚ğ‰Šú‰»B
+			// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–ã€‚
 			mesh.m_cb0.Init(sizeof(CB_0));
-			// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ğ‰Šú‰»B
+			// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã‚’åˆæœŸåŒ–ã€‚
 			mesh.m_rootSignature.Init(
 				nullptr,
 				0,
@@ -133,7 +133,7 @@ namespace nsK2EngineLow {
 				NUM_UAV_ONE_DISPATCH * meshNo
 			);
 
-			// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğ‰Šú‰»B
+			// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’åˆæœŸåŒ–ã€‚
 			D3D12_COMPUTE_PIPELINE_STATE_DESC  psoDesc = { 0 };
 			psoDesc.pRootSignature = mesh.m_rootSignature.Get();
 			psoDesc.CS = CD3DX12_SHADER_BYTECODE(m_shader->GetCompiledBlob());
@@ -143,22 +143,22 @@ namespace nsK2EngineLow {
 			
 		}
 		
-		// ƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚ğì¬B
+		// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã‚’ä½œæˆã€‚
 		CreateDescriptorHeaps(worldMatrixArraySB);
 	}
 	void ComputeAnimationVertexBuffer::CreateDescriptorHeaps(StructuredBuffer* worldMatrixArraySB)
 	{
-		// SRV‚ÆUAV‚Ì‘”‚ğŒvZ‚·‚éB
+		// SRVã¨UAVã®ç·æ•°ã‚’è¨ˆç®—ã™ã‚‹ã€‚
 		int numCBTotal 	= NUM_CB_ONE_DISPATCH * m_numMesh;
 		int numSrvTotal = NUM_SRV_ONE_DISPATCH * m_numMesh;
 		int numUavTotal = NUM_UAV_ONE_DISPATCH * m_numMesh;
 		
-		// CBASRVAUAV‚Ì“o˜^‚Å‚«‚éƒTƒCƒY‚ğƒŠƒTƒCƒY
+		// CBã€SRVã€UAVã®ç™»éŒ²ã§ãã‚‹ã‚µã‚¤ã‚ºã‚’ãƒªã‚µã‚¤ã‚º
 		m_descriptorHeap.ResizeConstantBuffer(numCBTotal);
 		m_descriptorHeap.ResizeShaderResource(numSrvTotal);
 		m_descriptorHeap.ResizeUnorderAccessResource(numUavTotal);
 
-		// ƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚ğ\’z‚µ‚Ä‚¢‚­B
+		// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã‚’æ§‹ç¯‰ã—ã¦ã„ãã€‚
 		int cbNo = 0;
 		int srvNo = 0;
 		int uavNo = 0;
@@ -193,10 +193,10 @@ namespace nsK2EngineLow {
 			}			
 		}
 		if (m_boneMatrixArray) {
-			// ƒ{[ƒ“s—ñ‚ªw’è‚³‚ê‚Ä‚¢‚éB
+			// ãƒœãƒ¼ãƒ³è¡Œåˆ—ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã€‚
 			m_boneMatricesStructureBuffer.Update(m_boneMatrixArray);
 		}
-		// ƒAƒjƒ[ƒVƒ‡ƒ“Ï‚İ’¸“_‚ÌŒvZˆ—‚ğƒfƒBƒXƒpƒbƒ`
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ¸ˆã¿é ‚ç‚¹ã®è¨ˆç®—å‡¦ç†ã‚’ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒ
 		for (int meshNo = 0; meshNo < m_numMesh; meshNo++) {
 			auto& mesh = m_meshArray[meshNo];
 			rc.SetComputeRootSignature(mesh.m_rootSignature);
@@ -213,7 +213,7 @@ namespace nsK2EngineLow {
 			rc.Dispatch(numThreadGroup_x, numThreadGroup_y, 1);
 		}
 		
-		// ƒŠƒ\[ƒXƒXƒe[ƒg‚ğ‘JˆÚ‚³‚¹‚éB
+		// ãƒªã‚½ãƒ¼ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆã‚’é·ç§»ã•ã›ã‚‹ã€‚
 		for (int meshNo = 0; meshNo < m_numMesh; meshNo++) {
 			auto& mesh = m_meshArray[meshNo];
 			rc.TransitionResourceState(
@@ -224,7 +224,7 @@ namespace nsK2EngineLow {
 		}
 		m_isFirstDispatch = false;
 
-		// ƒfƒBƒXƒpƒbƒ`‚µ‚½ƒCƒ“ƒXƒ^ƒ“ƒX‚Ì”‚É‰‚¶‚ÄAƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒJƒEƒ“ƒg‚ğŒˆ‚ß‚éB
+		// ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒã—ãŸã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ•°ã«å¿œã˜ã¦ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚«ã‚¦ãƒ³ãƒˆã‚’æ±ºã‚ã‚‹ã€‚
 		for (int meshNo = 0; meshNo < m_numMesh; meshNo++) {
 			auto& mesh = m_meshArray[meshNo];
 			for (int matNo = 0; matNo < mesh.m_numMaterial; matNo++) {

@@ -24,15 +24,15 @@ UIStone::~UIStone()
 void UIStone::Update() 
 {
 	wchar_t wcsbuf2[256];
-	swprintf_s(wcsbuf2, 256, L"�ΑŐ΂̐�:%d", int(m_player->m_stoneCount));
+	swprintf_s(wcsbuf2, 256, L"火打石の数:%d", int(m_player->m_stoneCount));
 
-	//�\������e�L�X�g��ݒ�B
+	//表示するテキストを設定。
 	m_fontRender.SetText(wcsbuf2);
-	//�t�H���g�̈ʒu��ݒ�B
+	//フォントの位置を設定。
 	m_fontRender.SetPosition(Vector3(200.0f, 500.0f, 0.0f));
-	//�t�H���g�̑傫����ݒ�B
+	//フォントの大きさを設定。
 	m_fontRender.SetScale(1.5f);
-	//�t�H���g�̐F��ݒ�B
+	//フォントの色を設定。
 	m_fontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 }
 

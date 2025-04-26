@@ -7,7 +7,7 @@
 
 bool TukuyomiBlessing::Start()
 {
-	//ƒGƒtƒFƒNƒg‚ğƒ[ƒh‚·‚éB
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã€‚
 	EffectEngine::GetInstance()->ResistEffect(0,u"Assets/effect/bullet.efkefc");
 	m_player = FindGO<Player>("player");
 
@@ -32,13 +32,13 @@ TukuyomiBlessing::~TukuyomiBlessing()
 
 void TukuyomiBlessing::Update()
 {
-	//’Ç]‚³‚¹‚éB
+	//è¿½å¾“ã•ã›ã‚‹ã€‚
 	Move();
-	//ƒGƒtƒFƒNƒg‚ğíœB
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤ã€‚
 	DeleteTime();
 }
 
-//Œp‘±ŠÔB
+//ç¶™ç¶šæ™‚é–“ã€‚
 void TukuyomiBlessing::DeleteTime()
 {
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
@@ -50,7 +50,7 @@ void TukuyomiBlessing::DeleteTime()
 	}
 }
 
-//’Ç]ˆ—B
+//è¿½å¾“å‡¦ç†ã€‚
 void TukuyomiBlessing::Move()
 {
 	Vector3 centerPosition = m_player->GetPosition();
@@ -58,29 +58,29 @@ void TukuyomiBlessing::Move()
 	m_effectEmitter->SetPosition(centerPosition);
 }
 
-//ƒRƒŠƒWƒ‡ƒ“‚Ìì¬B
+//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®ä½œæˆã€‚
 void TukuyomiBlessing::CreateCollision()
 {
-	//ƒRƒŠƒWƒ‡ƒ“‚ğì¬
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆ
 	m_collisionObject = NewGO <CollisionObject>(0);
-	//‹…ó‚ÌƒRƒŠƒWƒ‡ƒ“‚ğì¬‚·‚éB
+	//çƒçŠ¶ã®ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆã™ã‚‹ã€‚
 	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { 500.0f,1.0f,500.0f });
-	//–¼‘O‚ğ•t‚¯‚éB
+	//åå‰ã‚’ä»˜ã‘ã‚‹ã€‚
 	m_collisionObject->SetName("Tukuyomi");
-	//ƒIƒuƒWƒFƒNƒg‚ª©“®‚Åíœ‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚éB
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè‡ªå‹•ã§å‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹ã€‚
 	m_collisionObject->SetIsEnableAutoDelete(false);
 }
 
-//ƒGƒtƒFƒNƒg‚Ìì¬B
+//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ä½œæˆã€‚
 void TukuyomiBlessing::CreateEffect()
 {
 	m_effectEmitter=NewGO<EffectEmitter>(0);
 	m_effectEmitter->Init(0);
-	//‘å‚«‚³‚ğİ’èB
+	//å¤§ãã•ã‚’è¨­å®šã€‚
 	m_effectEmitter->SetScale({ 500.0f,2.0f,500.0f });
-	//ƒGƒtƒFƒNƒg‚ÌÀ•W‚ğƒZƒbƒg‚·‚éB
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 	m_effectEmitter->SetPosition(m_position);
-	//ƒGƒtƒFƒNƒg‚ğÄ¶B
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿã€‚
 	m_effectEmitter->Play();
 }
 

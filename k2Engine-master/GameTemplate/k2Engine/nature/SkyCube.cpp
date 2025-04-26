@@ -33,9 +33,9 @@ namespace nsK2Engine {
 	bool SkyCube::Start()
 	{
 		ModelInitData initData;
-		//tkmファイルのファイルパスを指定する。
+		//tkm繝輔ぃ繧､繝ｫ縺ｮ繝輔ぃ繧､繝ｫ繝代せ繧呈欠螳壹☆繧九�
 		initData.m_tkmFilePath = "Assets/modelData/preset/sky.tkm";
-		//シェーダーファイルのファイルパスを指定する。
+		//繧ｷ繧ｧ繝ｼ繝繝ｼ繝輔ぃ繧､繝ｫ縺ｮ繝輔ぃ繧､繝ｫ繝代せ繧呈欠螳壹☆繧九�
 		initData.m_fxFilePath = "Assets/shader/SkyCubeMap.fx";
 		initData.m_vsEntryPointFunc = "VSMain";
 		initData.m_psEntryPointFunc = "PSMain";

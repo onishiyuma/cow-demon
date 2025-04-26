@@ -35,7 +35,7 @@ namespace nsK2EngineLow {
 		{
 			auto d3dDevice = g_graphicsEngine->GetD3DDevice();
 
-			// ƒŒƒCƒgƒŒ‚ÌŒ‹‰Ê‚Ìo—Íæ‚ÌƒeƒNƒXƒ`ƒƒ‚ğì¬B
+			// ãƒ¬ã‚¤ãƒˆãƒ¬ã®çµæœã®å‡ºåŠ›å…ˆã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ä½œæˆã€‚
 			D3D12_RESOURCE_DESC resDesc = {};
 			resDesc.DepthOrArraySize = 1;
 			resDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -49,14 +49,14 @@ namespace nsK2EngineLow {
 			m_outputResource.Init(resDesc);
 			m_outputTexture.InitFromD3DResource(m_outputResource.Get());
 
-			//ƒŒƒCƒWƒFƒlƒŒ[ƒVƒ‡ƒ“—p‚Ì’è”ƒoƒbƒtƒ@B
+			//ãƒ¬ã‚¤ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ç”¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã€‚
 			Camera cam;
 			cam.pos = g_camera3D->GetPosition();
 			cam.mViewProjInv = g_camera3D->GetViewProjectionMatrixInv();
 			cam.aspect = g_camera3D->GetAspect();
 			cam.fNear = g_camera3D->GetNear();
 			cam.fFar = g_camera3D->GetFar();
-			// ƒŒƒCƒgƒŒƒGƒ“ƒWƒ“‘¤‚Åƒ_ƒuƒ‹ƒoƒbƒtƒ@‚É‚µ‚Ä‚¢‚é‚Ì‚ÅA“à•”‚Å‚Íƒ_ƒuƒ‹ƒoƒbƒtƒ@‚É‚µ‚È‚¢B
+			// ãƒ¬ã‚¤ãƒˆãƒ¬ã‚¨ãƒ³ã‚¸ãƒ³å´ã§ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡ã«ã—ã¦ã„ã‚‹ã®ã§ã€å†…éƒ¨ã§ã¯ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡ã«ã—ãªã„ã€‚
 			m_rayGenerationCB[0].Init(sizeof(Camera), &cam, false);
 			m_rayGenerationCB[1].Init(sizeof(Camera), &cam, false);
 
@@ -78,7 +78,7 @@ namespace nsK2EngineLow {
 			m_world.CommitRegistGeometry(rc);
 			
 			for (int i = 0; i < 2; i++) {
-				// ŠeíƒŠƒ\[ƒX‚ğƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚É“o˜^‚·‚éB
+				// å„ç¨®ãƒªã‚½ãƒ¼ã‚¹ã‚’ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã«ç™»éŒ²ã™ã‚‹ã€‚
 				m_descriptorHeaps[i].Init(
 					i, 
 					m_world, 
@@ -87,29 +87,29 @@ namespace nsK2EngineLow {
 					m_skycubeBox,
 					m_expandSRV[i]->m_structuredBuffer
 				);
-				// PSO‚ğì¬B
+				// PSOã‚’ä½œæˆã€‚
 				m_pipelineStateObject[i].Init(m_descriptorHeaps[i]);
-				// ƒVƒF[ƒ_[ƒe[ƒuƒ‹‚ğì¬B
+				// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œæˆã€‚
 				m_shaderTable[i].Init(i, m_world, m_pipelineStateObject[i], m_descriptorHeaps[i]); 
 			}
 			
-			// ƒ_[ƒeƒBƒtƒ‰ƒO‚ğƒIƒt‚É‚·‚éB
+			// ãƒ€ãƒ¼ãƒ†ã‚£ãƒ•ãƒ©ã‚°ã‚’ã‚ªãƒ•ã«ã™ã‚‹ã€‚
 			m_isDirty = false;
 		}
 		void Engine::Dispatch(RenderContext& rc)
 		{
 			if (m_world.GetNumInstance() == 0) {
-				// ƒCƒ“ƒXƒ^ƒ“ƒX‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚¢B
+				// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã€‚
 				return;
 			}
 			
 			CommitRegistGeometry(rc);
 
 			int backBufferNo = g_graphicsEngine->GetBackBufferIndex();
-			// ƒŒƒCƒgƒŒƒ[ƒ‹ƒh‚ğ\’z‚·‚éB
+			// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚’æ§‹ç¯‰ã™ã‚‹ã€‚
 			m_world.Build(rc);
 
-			// ƒJƒƒ‰‚ğXVB
+			// ã‚«ãƒ¡ãƒ©ã‚’æ›´æ–°ã€‚
 			Camera cam;
 			cam.pos = g_camera3D->GetPosition();
 			cam.mViewProjInv = g_camera3D->GetViewProjectionMatrixInv();
@@ -118,7 +118,7 @@ namespace nsK2EngineLow {
 			cam.fFar = g_camera3D->GetFar();
 			m_rayGenerationCB[backBufferNo].CopyToVRAM(cam);
 
-			// Šg’£ƒXƒgƒ‰ƒNƒ`ƒƒ[ƒhƒoƒbƒtƒ@‚ğXVB
+			// æ‹¡å¼µã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ã‚’æ›´æ–°ã€‚
 			m_expandSRV[backBufferNo]->m_structuredBuffer.Update(m_expandSRV[backBufferNo]->m_srcData);
 
 			D3D12_RESOURCE_BARRIER barrier = {};
@@ -140,27 +140,27 @@ namespace nsK2EngineLow {
 			auto numMissShader = m_shaderTable[backBufferNo].GetNumMissShader();
 			auto numHitShader = m_shaderTable[backBufferNo].GetNumHitShader();
 
-			// ƒŒƒC¶¬ƒVƒF[ƒ_[‚ÌƒVƒF[ƒ_[ƒe[ƒuƒ‹‚ÌŠJnƒAƒhƒŒƒX‚ÆƒTƒCƒY‚ğİ’èB
+			// ãƒ¬ã‚¤ç”Ÿæˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ã®é–‹å§‹ã‚¢ãƒ‰ãƒ¬ã‚¹ã¨ã‚µã‚¤ã‚ºã‚’è¨­å®šã€‚
 			raytraceDesc.RayGenerationShaderRecord.StartAddress = m_shaderTable[backBufferNo].GetGPUVirtualAddress();
 			raytraceDesc.RayGenerationShaderRecord.SizeInBytes = shaderTableEntrySize;
 
-			// ƒ~ƒXƒVƒF[ƒ_[‚ÌƒVƒF[ƒ_[ƒe[ƒuƒ‹‚ÌŠJnƒAƒhƒŒƒX‚ÆƒTƒCƒY‚ğİ’èB
+			// ãƒŸã‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ã®é–‹å§‹ã‚¢ãƒ‰ãƒ¬ã‚¹ã¨ã‚µã‚¤ã‚ºã‚’è¨­å®šã€‚
 			size_t missOffset = numRayGenShader * shaderTableEntrySize;
 			raytraceDesc.MissShaderTable.StartAddress = m_shaderTable[backBufferNo].GetGPUVirtualAddress() + missOffset;
 			raytraceDesc.MissShaderTable.StrideInBytes = shaderTableEntrySize;
 			raytraceDesc.MissShaderTable.SizeInBytes = shaderTableEntrySize * numMissShader;
 
-			// ƒqƒbƒgƒOƒ‹[ƒvƒVƒF[ƒ_[‚ÌŠJnƒAƒhƒŒƒX‚ÆƒTƒCƒY‚ğİ’èB
+			// ãƒ’ãƒƒãƒˆã‚°ãƒ«ãƒ¼ãƒ—ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®é–‹å§‹ã‚¢ãƒ‰ãƒ¬ã‚¹ã¨ã‚µã‚¤ã‚ºã‚’è¨­å®šã€‚
 			size_t hitOffset = (numRayGenShader + numMissShader) * shaderTableEntrySize;
 			raytraceDesc.HitGroupTable.StartAddress = m_shaderTable[backBufferNo].GetGPUVirtualAddress() + hitOffset;
 			raytraceDesc.HitGroupTable.StrideInBytes = shaderTableEntrySize;
 			raytraceDesc.HitGroupTable.SizeInBytes = shaderTableEntrySize * numHitShader * m_world.GetNumInstance();
 
-			// ƒOƒ[ƒoƒ‹ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ğİ’èB
+			// ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã‚’è¨­å®šã€‚
 			rc.SetComputeRootSignature(m_pipelineStateObject[backBufferNo].GetGlobalRootSignature());
 
 			// Dispatch
-			//ƒOƒ[ƒoƒ‹ƒ‹[ƒgƒVƒOƒlƒ`ƒ`ƒƒ‚É“o˜^‚³‚ê‚Ä‚¢‚éƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚ğ“o˜^‚·‚éB
+			//ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒãƒ£ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã‚’ç™»éŒ²ã™ã‚‹ã€‚
 			const DescriptorHeap* descriptorHeaps[] = {
 				&m_descriptorHeaps[backBufferNo].GetSrvUavCbvDescriptorHeap(),
 				&m_descriptorHeaps[backBufferNo].GetSamplerDescriptorHeap()

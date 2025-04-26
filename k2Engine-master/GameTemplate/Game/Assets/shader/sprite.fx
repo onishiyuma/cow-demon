@@ -1,10 +1,10 @@
 /*!
- * @brief	スプライトシェーダー�?
+ * @brief	繧ｹ繝励Λ繧､繝医す繧ｧ繝ｼ繝繝ｼ縲?
  */
 
 cbuffer cb : register(b0){
-	float4x4 mvp;		// モ�?ルビュープロジェクション行�??
-	float4 mulColor;	// 乗算カラー。ピクセルシェーダーの出力結果に乗算されます�?
+	float4x4 mvp;		// 繝｢繝?繝ｫ繝薙Η繝ｼ繝励Ο繧ｸ繧ｧ繧ｯ繧ｷ繝ｧ繝ｳ陦悟??
+	float4 mulColor;	// 荵礼ｮ励き繝ｩ繝ｼ縲ゅヴ繧ｯ繧ｻ繝ｫ繧ｷ繧ｧ繝ｼ繝繝ｼ縺ｮ蜃ｺ蜉帷ｵ先棡縺ｫ荵礼ｮ励＆繧後∪縺吶?
 };
 struct VSInput{
 	float4 pos : POSITION;

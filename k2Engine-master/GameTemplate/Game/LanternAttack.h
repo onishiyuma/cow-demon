@@ -13,19 +13,19 @@ class SpritePush;
 class LanternAttack:public IGameObject
 {
 public:
-	//ƒƒ“ƒoŠÖ”
+	//ãƒ¡ãƒ³ãƒé–¢æ•°
 	LanternAttack();
 	~LanternAttack();
 
 	bool Start();
-	//XVˆ—
+	//æ›´æ–°å‡¦ç†
 	void Update();
-	//•`‰æˆ—
+	//æç”»å‡¦ç†
 	void Render(RenderContext& rc);
 
-	//ƒƒ“ƒo•Ï”
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°
 	ModelRender m_modelRender;
-	Vector3 m_firstPosition; //Å‰‚ÌÀ•W
+	Vector3 m_firstPosition; //æœ€åˆã®åº§æ¨™
 	Vector3 m_position;
 	Player* m_player;
 	Stone* m_stone;
@@ -37,11 +37,11 @@ public:
 	Line* m_line;
 	SpritePush* m_spritePush;
 
-	int m_lanternCount = 0; //‰Î‚ğ“”‚µ‚½ƒJƒEƒ“ƒg
-	bool m_lightUI = false; //“”âÄ‚Ì‹ß‚­‚É‚¢‚é‚©H
-	bool m_noStoneUI = false; //‰Î‘ÅÎ‚ª‚È‚©‚Á‚½‚ç
-	bool m_lanternAttackAction = false; //uA:‰Î‚ğ“”‚·v‚ğ‰Ÿ‚µ‚½‚ç
-	bool m_lightFlag = false;//‰Î‚ª“”‚Á‚Ä‚¢‚é‚©H
+	int m_lanternCount = 0; //ç«ã‚’ç¯ã—ãŸã‚«ã‚¦ãƒ³ãƒˆ
+	bool m_lightUI = false; //ç¯ç± ã®è¿‘ãã«ã„ã‚‹ã‹ï¼Ÿ
+	bool m_noStoneUI = false; //ç«æ‰“çŸ³ãŒãªã‹ã£ãŸã‚‰
+	bool m_lanternAttackAction = false; //ã€ŒA:ç«ã‚’ç¯ã™ã€ã‚’æŠ¼ã—ãŸã‚‰
+	bool m_lightFlag = false;//ç«ãŒç¯ã£ã¦ã„ã‚‹ã‹ï¼Ÿ
 	int m_buttonAState = 0;
 };
 
