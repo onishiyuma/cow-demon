@@ -13,75 +13,75 @@ namespace nsK2EngineLow {
 	namespace raytracing {
 
 		/// <summary>
-		/// ƒŒƒCƒgƒŒƒ[ƒ‹ƒh
+		/// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰
 		/// </summary>
 		class World : public Noncopyable
 		{
 		public:
 			/// <summary>
-			/// ƒWƒIƒƒgƒŠ‚ğ“o˜^B
+			/// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚’ç™»éŒ²ã€‚
 			/// </summary>
-			/// <param name="model">ƒWƒIƒƒgƒŠ‚ÌŒ³‚Æ‚È‚éƒ‚ƒfƒ‹</param>
+			/// <param name="model">ã‚¸ã‚ªãƒ¡ãƒˆãƒªã®å…ƒã¨ãªã‚‹ãƒ¢ãƒ‡ãƒ«</param>
 			void RegistGeometry(Model& model);
 			/// <summary>
-			/// ƒWƒIƒƒgƒŠ‚ğíœ
+			/// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚’å‰Šé™¤
 			/// </summary>
-			/// <param name="model">ƒWƒIƒƒgƒŠ‚ÌŒ³‚Æ‚È‚Á‚½ƒ‚ƒfƒ‹</param>
+			/// <param name="model">ã‚¸ã‚ªãƒ¡ãƒˆãƒªã®å…ƒã¨ãªã£ãŸãƒ¢ãƒ‡ãƒ«</param>
 			void RemoveGeometry(Model& model);
 			/// <summary>
-			/// ƒWƒIƒƒgƒŠ‚Ì“o˜^‚ğŠm’èB
+			/// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã®ç™»éŒ²ã‚’ç¢ºå®šã€‚
 			/// </summary>
 			void CommitRegistGeometry(RenderContext& rc);
 			
 			/// <summary>
-			/// ƒŒƒCƒgƒŒƒ[ƒ‹ƒh‚ğ\’zB
+			/// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚’æ§‹ç¯‰ã€‚
 			/// </summary>
 			void Build( RenderContext& rc );
 
 			/// <summary>
-			/// ƒŒƒCƒgƒŒƒ[ƒ‹ƒh‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚É‘Î‚µ‚ÄƒNƒGƒŠ‚ğs‚¤B
+			/// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«å¯¾ã—ã¦ã‚¯ã‚¨ãƒªã‚’è¡Œã†ã€‚
 			/// </summary>
-			/// <param name="bufferNo">ƒoƒbƒtƒ@‚Ì”Ô†</param>
-			/// <param name="queryFunc">ƒNƒGƒŠŠÖ”</param>
+			/// <param name="bufferNo">ãƒãƒƒãƒ•ã‚¡ã®ç•ªå·</param>
+			/// <param name="queryFunc">ã‚¯ã‚¨ãƒªé–¢æ•°</param>
 			void QueryInstances(int bufferNo, std::function<void(Instance&)> queryFunc) const;
 			
 			/// <summary>
-			/// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ì”‚ğæ“¾B
+			/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ•°ã‚’å–å¾—ã€‚
 			/// </summary>
 			/// <returns></returns>
 			int GetNumInstance() const;
 			
 			/// <summary>
-			/// BLASƒoƒbƒtƒ@[‚ğæ“¾B
+			/// BLASãƒãƒƒãƒ•ã‚¡ãƒ¼ã‚’å–å¾—ã€‚
 			/// </summary>
 			/// <returns></returns>
 			const BLASBuffer& GetBLASBuffer(int bufferNo);
 			
 			/// <summary>
-			/// TLASƒoƒbƒtƒ@[‚ğæ“¾B
+			/// TLASãƒãƒƒãƒ•ã‚¡ãƒ¼ã‚’å–å¾—ã€‚
 			/// </summary>
 			/// <returns></returns>
 			TLASBuffer& GetTLASBuffer(int bufferNo);
 			
 		private:
 			/// <summary>
-			/// ƒŒƒCƒgƒŒ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬B
+			/// ãƒ¬ã‚¤ãƒˆãƒ¬ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã€‚
 			/// </summary>
 			void CreateRaytracingInstance(Model& model, int bufferNo);
 		private:
 			/// <summary>
-			/// ƒJƒƒ‰
+			/// ã‚«ãƒ¡ãƒ©
 			/// </summary>
 			struct Camera {
-				Matrix mRot;	//‰ñ“]s—ñ
-				Vector3 pos;	//‹“_B
-				float aspect;	//ƒAƒXƒyƒNƒg”äB
-				float fFar;		//‰“•½–ÊB
-				float fNear;	//‹ß•½–ÊB
+				Matrix mRot;	//å›è»¢è¡Œåˆ—
+				Vector3 pos;	//è¦–ç‚¹ã€‚
+				float aspect;	//ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã€‚
+				float fFar;		//é å¹³é¢ã€‚
+				float fNear;	//è¿‘å¹³é¢ã€‚
 			};
 			
-			Camera m_camera;								// ƒŒƒCƒgƒŒƒ[ƒ‹ƒh‚ÌƒJƒƒ‰B
-			std::vector<InstancePtr> m_instances[2];		// ƒŒƒCƒgƒŒƒ[ƒ‹ƒh‚ÌƒCƒ“ƒXƒ^ƒ“‚Ì”z—ñB
+			Camera m_camera;								// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰ã®ã‚«ãƒ¡ãƒ©ã€‚
+			std::vector<InstancePtr> m_instances[2];		// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã®é…åˆ—ã€‚
 			BLASBuffer m_blasBuffer[2];						// BLAS
 			TLASBuffer m_topLevelASBuffers[2];				// TLAS
 		};

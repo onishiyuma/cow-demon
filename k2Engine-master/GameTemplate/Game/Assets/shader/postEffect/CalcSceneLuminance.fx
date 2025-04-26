@@ -1,18 +1,18 @@
 /*!
- * @brief	ƒV[ƒ“‚Ì•½‹Ï‹P“xŒvZ—p‚ÌƒVƒF[ƒ_[B
+ * @brief	ã‚·ãƒ¼ãƒ³ã®å¹³å‡è¼åº¦è¨ˆç®—ç”¨ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚
  */
 
 #include "../util/ColorSpace.h"
 
 /*!
- *@brief    ’¸“_ƒVƒF[ƒ_[‚Ö‚Ì“ü—Í
+ *@brief    é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸ã®å…¥åŠ›
  */
 struct VSInput{
 	float4 pos : POSITION;
 	float2 uv  : TEXCOORD0;
 };
 /*!
- *@brief    ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚Ö‚Ì“ü—Í
+ *@brief    ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸ã®å…¥åŠ›
  */
 struct PSInput{
 	float4 pos : SV_POSITION;
@@ -20,24 +20,24 @@ struct PSInput{
 };
 
 /*!
- *@brief    ƒXƒvƒ‰ƒCƒg•`‰æ‚Ì‹¤’Ê’è”ƒoƒbƒtƒ@B
- *@details  SpriteƒNƒ‰ƒX“à‚Åb0ƒŒƒWƒXƒ^‚Éİ’è‚³‚ê‚Ä‚¢‚Ü‚·B
+ *@brief    ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»ã®å…±é€šå®šæ•°ãƒãƒƒãƒ•ã‚¡ã€‚
+ *@details  Spriteã‚¯ãƒ©ã‚¹å†…ã§b0ãƒ¬ã‚¸ã‚¹ã‚¿ã«è¨­å®šã•ã‚Œã¦ã„ã¾ã™ã€‚
  */
 cbuffer cb0 : register(b0)
 {
-    float4x4 mvp;       // MVPs—ñ
-    float4 mulColor;    // æZƒJƒ‰[
+    float4x4 mvp;       // MVPè¡Œåˆ—
+    float4 mulColor;    // ä¹—ç®—ã‚«ãƒ©ãƒ¼
 };
 
 /*!
- *@brief    •½‹Ï‹P“xŒvZ—p‚Ì’è”ƒoƒbƒtƒ@B
+ *@brief    å¹³å‡è¼åº¦è¨ˆç®—ç”¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã€‚
  */
 cbuffer cb1 : register(b1){
-	float deltaTime;    // Œo‰ßŠÔB
+	float deltaTime;    // çµŒéæ™‚é–“ã€‚
 }
 
 /*!
- * @brief	’¸“_ƒVƒF[ƒ_[B
+ * @brief	é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚
  */
 PSInput VSMain(VSInput In) 
 {
@@ -48,22 +48,22 @@ PSInput VSMain(VSInput In)
 }
 
 ////////////////////////////////////////////////////////
-// ‹P“x‚Ì‘Î”•½‹Ï‚ğ‹‚ß‚éB
+// è¼åº¦ã®å¯¾æ•°å¹³å‡ã‚’æ±‚ã‚ã‚‹ã€‚
 ////////////////////////////////////////////////////////
 
-Texture2D<float4> sceneTexture : register(t0);	//ƒV[ƒ“ƒeƒNƒXƒ`ƒƒB
+Texture2D<float4> sceneTexture : register(t0);	//ã‚·ãƒ¼ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
 sampler Sampler : register(s0);
 
 static const int    MAX_SAMPLES = 16;    // Maximum texture grabs
 
 /*!
- * @brief	’è”ƒoƒbƒtƒ@B
+ * @brief	å®šæ•°ãƒãƒƒãƒ•ã‚¡ã€‚
  */
 cbuffer cbCalcLuminanceLog : register(b0){
 	float4 g_avSampleOffsets[MAX_SAMPLES];
 };
 /*!
- *@brief	‹P“x‚Ì‘Î”•½‹Ï‚ğ‹‚ß‚éB
+ *@brief	è¼åº¦ã®å¯¾æ•°å¹³å‡ã‚’æ±‚ã‚ã‚‹ã€‚
  */
 float4 PSCalcLuminanceLogAvarage(PSInput In) : SV_Target0
 {
@@ -83,10 +83,10 @@ float4 PSCalcLuminanceLogAvarage(PSInput In) : SV_Target0
     return float4(fLogLumSum, fLogLumSum, fLogLumSum, 1.0f);
 }
 ////////////////////////////////////////////////////////
-// ‹P“x‚Ì•½‹Ï‚ğ‹‚ß‚éB
+// è¼åº¦ã®å¹³å‡ã‚’æ±‚ã‚ã‚‹ã€‚
 ////////////////////////////////////////////////////////
 /*!
- *@brief	•½‹Ï‹P“xŒvZƒsƒNƒZƒ‹ƒVƒF[ƒ_[B
+ *@brief	å¹³å‡è¼åº¦è¨ˆç®—ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚
  */
 float4 PSCalcLuminanceAvarage(PSInput In) : SV_Target0
 {
@@ -105,10 +105,10 @@ float4 PSCalcLuminanceAvarage(PSInput In) : SV_Target0
 }
 
 /////////////////////////////////////////////////////////
-// w”ŠÖ”‚ğg—p‚µ‚Ä•½‹Ï‹P“x‚ğ‹‚ß‚é
+// æŒ‡æ•°é–¢æ•°ã‚’ä½¿ç”¨ã—ã¦å¹³å‡è¼åº¦ã‚’æ±‚ã‚ã‚‹
 /////////////////////////////////////////////////////////
 /*!
- *@brief	w”ŠÖ”‚ğg—p‚µ‚Ä•½‹Ï‹P“x‚ğ‹‚ß‚éƒsƒNƒZƒ‹ƒVƒF[ƒ_[B
+ *@brief	æŒ‡æ•°é–¢æ•°ã‚’ä½¿ç”¨ã—ã¦å¹³å‡è¼åº¦ã‚’æ±‚ã‚ã‚‹ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚
  */
 float4 PSCalcLuminanceExpAvarage( PSInput In ) : SV_Target0
 {
@@ -128,22 +128,22 @@ float4 PSCalcLuminanceExpAvarage( PSInput In ) : SV_Target0
 }
 
 /////////////////////////////////////////////////////////
-// –¾ˆÃ‡‰
+// æ˜æš—é †å¿œ
 /////////////////////////////////////////////////////////
 
-Texture2D<float4> lumAvgTexture : register(t0);		                // Œ»İ‚ÌƒtƒŒ[ƒ€‚Ì•½‹Ï‹P“xB
-Texture2D<float4> lumAvgInTonemapLastFrameTexture : register(t1);	// ‚PƒtƒŒ[ƒ€‘O‚Ìƒg[ƒ“ƒ}ƒbƒv‚Åg—p‚µ‚½•½‹Ï‹P“xB
+Texture2D<float4> lumAvgTexture : register(t0);		                // ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®å¹³å‡è¼åº¦ã€‚
+Texture2D<float4> lumAvgInTonemapLastFrameTexture : register(t1);	// ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ãƒˆãƒ¼ãƒ³ãƒãƒƒãƒ—ã§ä½¿ç”¨ã—ãŸå¹³å‡è¼åº¦ã€‚
 
 /*!
- *@brief	–¾ˆÃ‡‰‚Ì‚½‚ß‚Ì•½‹Ï‹P“x‚Ì“K‡‚³‚¹‚éƒsƒNƒZƒ‹ƒVƒF[ƒ_[B
+ *@brief	æ˜æš—é †å¿œã®ãŸã‚ã®å¹³å‡è¼åº¦ã®é©åˆã•ã›ã‚‹ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚
  */
 float4 PSCalcAdaptedLuminance( PSInput In ) : SV_Target0
 {
-	// 1ƒtƒŒ[ƒ€‘O‚Ìƒg[ƒ“ƒ}ƒbƒv‚Åg—p‚µ‚½•½‹Ï‹P“x‚ğƒTƒ“ƒvƒŠƒ“ƒOB
+	// 1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ãƒˆãƒ¼ãƒ³ãƒãƒƒãƒ—ã§ä½¿ç”¨ã—ãŸå¹³å‡è¼åº¦ã‚’ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã€‚
 	float lumAvgLastFrame = lumAvgInTonemapLastFrameTexture.Sample(Sampler, float2( 0.5f, 0.5f));
-    // Œ»İ‚ÌƒtƒŒ[ƒ€‚Ì•½‹Ï‹P“x‚ğƒTƒ“ƒvƒŠƒ“ƒOB
+    // ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®å¹³å‡è¼åº¦ã‚’ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã€‚
     float lumAvgCurrentFrame = lumAvgTexture.Sample(Sampler, float2(0.5f, 0.5f));
-    // üŒ`•âŠÔ‚Å‚¿‚å‚Á‚Æ‚¸‚Â•½‹Ï‹P“x‚ğ•Ï‰»‚³‚¹‚Ä‚¢‚­B
+    // ç·šå½¢è£œé–“ã§ã¡ã‚‡ã£ã¨ãšã¤å¹³å‡è¼åº¦ã‚’å¤‰åŒ–ã•ã›ã¦ã„ãã€‚
     float newLumAvg = lerp( lumAvgLastFrame, lumAvgCurrentFrame, 0.02f);
     return float4(newLumAvg, newLumAvg, newLumAvg, 1.0f);
 }

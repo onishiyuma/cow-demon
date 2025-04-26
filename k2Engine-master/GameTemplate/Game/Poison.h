@@ -39,7 +39,7 @@
 			m_enEnemy = enenemy;
 		}
 	private:
-		//ƒƒ“ƒo•Ï”
+		//ãƒ¡ãƒ³ãƒå¤‰æ•°
 		Player* m_player;
 		LittleEnemy* m_littleenemy;
 		CollisionObject* m_collisionObj;

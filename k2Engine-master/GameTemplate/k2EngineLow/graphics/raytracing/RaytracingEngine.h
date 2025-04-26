@@ -13,15 +13,15 @@ namespace nsK2EngineLow {
 	namespace raytracing {
 
 		/// <summary>
-		/// ‰Šú‰»î•ñ
+		/// åˆæœŸåŒ–æƒ…å ±
 		/// </summary>
 		struct InitData {
-			void*	m_expandShaderResource;			// Šg’£ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚Ì”z—ñB
-			int		m_expandShaderResourceSize;		// Šg’£ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚ÌƒTƒCƒY‚Ì”z—ñB
-			DXGI_FORMAT m_outputColorBufferFormat = DXGI_FORMAT_R16G16B16A16_FLOAT;	// ƒŒƒCƒgƒŒ‚ÌŒ‹‰Ê‚ğo—Í‚·‚éƒJƒ‰[ƒoƒbƒtƒ@‚ÌƒtƒH[ƒ}ƒbƒgB
+			void*	m_expandShaderResource;			// æ‹¡å¼µã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã®é…åˆ—ã€‚
+			int		m_expandShaderResourceSize;		// æ‹¡å¼µã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã®ã‚µã‚¤ã‚ºã®é…åˆ—ã€‚
+			DXGI_FORMAT m_outputColorBufferFormat = DXGI_FORMAT_R16G16B16A16_FLOAT;	// ãƒ¬ã‚¤ãƒˆãƒ¬ã®çµæœã‚’å‡ºåŠ›ã™ã‚‹ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã€‚
 		};
 		/// <summary>
-		/// Šg’£ƒVƒF[ƒ_[ƒŠƒ\[ƒX
+		/// æ‹¡å¼µã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹
 		/// </summary>
 		struct ExpanadSRV {
 			void Init(void* srcData, int srcDataSize)
@@ -30,9 +30,9 @@ namespace nsK2EngineLow {
 				m_srcDataSize = srcDataSize;
 				m_structuredBuffer.Init(srcDataSize, 1, srcData, false);
 			}
-			void* m_srcData = nullptr;				// ƒ\[ƒXƒf[ƒ^B
-			int m_srcDataSize = 0;					// ƒ\[ƒXƒf[ƒ^‚ÌƒTƒCƒYB
-			StructuredBuffer m_structuredBuffer;	// ƒXƒgƒ‰ƒNƒ`ƒƒ[ƒhƒoƒbƒtƒ@B
+			void* m_srcData = nullptr;				// ã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã€‚
+			int m_srcDataSize = 0;					// ã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºã€‚
+			StructuredBuffer m_structuredBuffer;	// ã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ã€‚
 		};
 		using ExpanadSRVPtr = std::unique_ptr< ExpanadSRV>;
 
@@ -41,43 +41,43 @@ namespace nsK2EngineLow {
 		public:
 			
 			/// <summary>
-			/// ‰Šú‰»B
+			/// åˆæœŸåŒ–ã€‚
 			/// </summary>
-			/// <param name="initData">‰Šú‰»ƒf[ƒ^</param>
+			/// <param name="initData">åˆæœŸåŒ–ãƒ‡ãƒ¼ã‚¿</param>
 			void Init(const InitData& initData);
 			/// <summary>
-			/// ƒŒƒCƒgƒŒ[ƒVƒ“ƒO‚ğƒfƒBƒXƒpƒbƒ`B
+			/// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¼ã‚·ãƒ³ã‚°ã‚’ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒã€‚
 			/// </summary>
-			/// <param name="rc">ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg</param>
+			/// <param name="rc">ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ</param>
 			void Dispatch(RenderContext& rc);
 			/// <summary>
-			/// ƒŒƒCƒgƒŒƒ[ƒ‹ƒh‚ÌÄ\’zƒŠƒNƒGƒXƒg
+			/// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰ã®å†æ§‹ç¯‰ãƒªã‚¯ã‚¨ã‚¹ãƒˆ
 			/// </summary>
 			void RequestRebuildRaytracingWorld()
 			{
 				m_isDirty = true;
 			}
 			/// <summary>
-			/// ƒWƒIƒƒgƒŠ‚ğ“o˜^B
+			/// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚’ç™»éŒ²ã€‚
 			/// </summary>
-			/// <param name="model">ƒWƒIƒƒgƒŠ‚ÌŒ³‚Æ‚È‚éƒ‚ƒfƒ‹</param>
+			/// <param name="model">ã‚¸ã‚ªãƒ¡ãƒˆãƒªã®å…ƒã¨ãªã‚‹ãƒ¢ãƒ‡ãƒ«</param>
 			void RegistGeometry(Model& model)
 			{
-				//ƒŒƒCƒgƒŒƒ[ƒ‹ƒh‚ÉƒWƒIƒƒgƒŠ‚ğ“o˜^B
+				//ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰ã«ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚’ç™»éŒ²ã€‚
 				m_world.RegistGeometry(model);
 				RequestRebuildRaytracingWorld();
 			}
 			/// <summary>
-			/// ƒWƒIƒƒgƒŠ‚ğíœ
+			/// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚’å‰Šé™¤
 			/// </summary>
-			/// <param name="model">ƒWƒIƒƒgƒŠ‚ÌŒ³‚Æ‚È‚Á‚½ƒ‚ƒfƒ‹</param>
+			/// <param name="model">ã‚¸ã‚ªãƒ¡ãƒˆãƒªã®å…ƒã¨ãªã£ãŸãƒ¢ãƒ‡ãƒ«</param>
 			void RemoveGeometry(Model& model)
 			{
 				m_world.RemoveGeometry(model);
 				RequestRebuildRaytracingWorld();
 			}
 			/// <summary>
-			/// ƒXƒJƒCƒLƒ…[ƒuƒ{ƒbƒNƒX‚ğİ’èB
+			/// ã‚¹ã‚«ã‚¤ã‚­ãƒ¥ãƒ¼ãƒ–ãƒœãƒƒã‚¯ã‚¹ã‚’è¨­å®šã€‚
 			/// </summary>
 			/// <param name="skycubeBox"></param>
 			void SetSkyCubeBox(Texture& skycubeBox)
@@ -88,7 +88,7 @@ namespace nsK2EngineLow {
 				}
 			}
 			/// <summary>
-			/// ƒŒƒCƒgƒŒ‚ÌŒ‹‰Ê‚Ìo—Íæ‚Æ‚È‚éƒeƒNƒXƒ`ƒƒ‚ğæ“¾B
+			/// ãƒ¬ã‚¤ãƒˆãƒ¬ã®çµæœã®å‡ºåŠ›å…ˆã¨ãªã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å–å¾—ã€‚
 			/// </summary>
 			/// <returns></returns>
 			Texture& GetOutputTexture()
@@ -97,31 +97,31 @@ namespace nsK2EngineLow {
 			}
 		private:
 			/// <summary>
-			/// ƒWƒIƒƒgƒŠ‚Ì“o˜^‚ğŠm’èB
+			/// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã®ç™»éŒ²ã‚’ç¢ºå®šã€‚
 			/// </summary>
 			void CommitRegistGeometry(RenderContext& rc);
 			/// <summary>
-			/// ƒŒƒCƒgƒŒ[ƒVƒ“ƒO‚Åg—p‚·‚éƒJƒƒ‰\‘¢‘ÌB
-			/// ‚±‚Ì’†g‚ğ•ÏX‚µ‚½‚çAAssets/shader/raytracing.fx‚à•ÏX‚·‚é‚æ‚¤‚ÉB
+			/// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¼ã‚·ãƒ³ã‚°ã§ä½¿ç”¨ã™ã‚‹ã‚«ãƒ¡ãƒ©æ§‹é€ ä½“ã€‚
+			/// ã“ã®ä¸­èº«ã‚’å¤‰æ›´ã—ãŸã‚‰ã€Assets/shader/raytracing.fxã‚‚å¤‰æ›´ã™ã‚‹ã‚ˆã†ã«ã€‚
 			/// </summary>
 			struct Camera {
-				Matrix mViewProjInv;	// ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚Ì‹ts—ñ
-				Vector3 pos;			// ‹“_B
-				float aspect;			// ƒAƒXƒyƒNƒg”äB
-				float fFar;				// ‰“•½–ÊB
-				float fNear;			// ‹ß•½–ÊB
-				float pad[2];			// ƒpƒfƒBƒ“ƒOB
+				Matrix mViewProjInv;	// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã®é€†è¡Œåˆ—
+				Vector3 pos;			// è¦–ç‚¹ã€‚
+				float aspect;			// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã€‚
+				float fFar;				// é å¹³é¢ã€‚
+				float fNear;			// è¿‘å¹³é¢ã€‚
+				float pad[2];			// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã€‚
 			};
-			ExpanadSRVPtr m_expandSRV[2];						// Šg’£ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[B
-			ConstantBuffer m_rayGenerationCB[2];				// ƒŒƒCƒWƒFƒlƒŒ[ƒVƒ‡ƒ“‚Ì’è”ƒoƒbƒtƒ@B
-			World m_world;										// ƒŒƒCƒgƒŒƒ[ƒ‹ƒhB
-			PSO m_pipelineStateObject[2];						// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg
-			ShaderTable m_shaderTable[2];						// ƒVƒF[ƒ_[ƒe[ƒuƒ‹B
-			DescriptorHeaps m_descriptorHeaps[2];				// ƒŒƒCƒgƒŒ‚Åg—p‚·‚éƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚ÌŠÇ—ÒB
-			GPUBuffer m_outputResource;							// ƒŒƒCƒgƒŒ[ƒX‚ÌŒ‹‰Ê‚Ìo—ÍæB
-			Texture m_outputTexture;							// ƒŒƒCƒgƒŒ[ƒX‚ÌŒ‹‰Ê‚Ìo—Íæ(ƒeƒNƒXƒ`ƒƒ)
-			Texture m_skycubeBox;								// ƒXƒJƒCƒLƒ…[ƒuƒ{ƒbƒNƒXB
-			bool m_isDirty = false;								// ƒ_[ƒeƒBƒtƒ‰ƒOB
+			ExpanadSRVPtr m_expandSRV[2];						// æ‹¡å¼µã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã€‚
+			ConstantBuffer m_rayGenerationCB[2];				// ãƒ¬ã‚¤ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã€‚
+			World m_world;										// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰ã€‚
+			PSO m_pipelineStateObject[2];						// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+			ShaderTable m_shaderTable[2];						// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ã€‚
+			DescriptorHeaps m_descriptorHeaps[2];				// ãƒ¬ã‚¤ãƒˆãƒ¬ã§ä½¿ç”¨ã™ã‚‹ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®ç®¡ç†è€…ã€‚
+			GPUBuffer m_outputResource;							// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¼ã‚¹ã®çµæœã®å‡ºåŠ›å…ˆã€‚
+			Texture m_outputTexture;							// ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¼ã‚¹ã®çµæœã®å‡ºåŠ›å…ˆ(ãƒ†ã‚¯ã‚¹ãƒãƒ£)
+			Texture m_skycubeBox;								// ã‚¹ã‚«ã‚¤ã‚­ãƒ¥ãƒ¼ãƒ–ãƒœãƒƒã‚¯ã‚¹ã€‚
+			bool m_isDirty = false;								// ãƒ€ãƒ¼ãƒ†ã‚£ãƒ•ãƒ©ã‚°ã€‚
 		};
 	}//namespace raytracing
 }//namespace nsK2EngineLow 

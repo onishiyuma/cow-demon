@@ -8,12 +8,12 @@ namespace nsK2EngineLow {
 	}
 	void StructuredBuffer::Release()
 	{
-		//ƒAƒ“ƒ}[ƒbƒv
+		//ã‚¢ãƒ³ãƒãƒ¼ãƒƒãƒ—
 		CD3DX12_RANGE readRange(0, 0);
 		for (int i = 0; i < 2; i++) {
 			if (m_buffersOnGPU[i]) {
 				if (m_buffersOnCPU[i]) {
-					// ƒƒCƒ“ƒƒ‚ƒŠ‚Éƒ}ƒbƒv‚µ‚Ä‚¢‚é‚Ì‚ÅƒAƒ“ƒ}ƒbƒv‚ğs‚¤B
+					// ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ¢ãƒªã«ãƒãƒƒãƒ—ã—ã¦ã„ã‚‹ã®ã§ã‚¢ãƒ³ãƒãƒƒãƒ—ã‚’è¡Œã†ã€‚
 					m_buffersOnGPU[i]->Unmap(0, &readRange);
 				}
 				ReleaseD3D12Object(m_buffersOnGPU[i]);
@@ -46,8 +46,8 @@ namespace nsK2EngineLow {
 			);
 
 
-			//\‘¢‰»ƒoƒbƒtƒ@‚ğCPU‚©‚çƒAƒNƒZƒX‰Â”\‚È‰¼‘zƒAƒhƒŒƒX‹óŠÔ‚Éƒ}ƒbƒsƒ“ƒO‚·‚éB
-			//ƒ}ƒbƒvAƒAƒ“ƒ}ƒbƒv‚ÌƒI[ƒo[ƒwƒbƒh‚ğŒyŒ¸‚·‚é‚½‚ß‚É‚Í‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ª¶‚«‚Ä‚¢‚éŠÔ‚Ís‚í‚È‚¢B
+			//æ§‹é€ åŒ–ãƒãƒƒãƒ•ã‚¡ã‚’CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ãªä»®æƒ³ã‚¢ãƒ‰ãƒ¬ã‚¹ç©ºé–“ã«ãƒãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹ã€‚
+			//ãƒãƒƒãƒ—ã€ã‚¢ãƒ³ãƒãƒƒãƒ—ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ˜ãƒƒãƒ‰ã‚’è»½æ¸›ã™ã‚‹ãŸã‚ã«ã¯ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒç”Ÿãã¦ã„ã‚‹é–“ã¯è¡Œã‚ãªã„ã€‚
 			{
 				CD3DX12_RANGE readRange(0, 0);        //     intend to read from this resource on the CPU.
 				m_buffersOnGPU[bufferNo]->Map(0, &readRange, reinterpret_cast<void**>(&m_buffersOnCPU[bufferNo]));
@@ -64,7 +64,7 @@ namespace nsK2EngineLow {
 		m_sizeOfElement = vb.GetStrideInBytes();
 		m_numElement = vb.GetSizeInBytes() / m_sizeOfElement;
 		if (isUpdateByCPU) {
-			//–¢‘Î‰B
+			//æœªå¯¾å¿œã€‚
 			std::abort();
 		}
 		else {
@@ -72,7 +72,7 @@ namespace nsK2EngineLow {
 				gpuBuffer = vb.GetID3DResourceAddress();
 				gpuBuffer->AddRef();
 			}
-			//CPU‚©‚ç‚Í•ÏX‚Å‚«‚È‚¢‚Ì‚Åƒ}ƒbƒv‚µ‚È‚¢B
+			//CPUã‹ã‚‰ã¯å¤‰æ›´ã§ããªã„ã®ã§ãƒãƒƒãƒ—ã—ãªã„ã€‚
 			for (auto& cpuBuffer : m_buffersOnCPU) {
 				cpuBuffer = nullptr;
 			}
@@ -116,10 +116,10 @@ namespace nsK2EngineLow {
 	int StructuredBuffer::GetBackBufferNo() const
 	{
 		if (m_isDoubleBuffer) {
-			// “à•”‚Åƒ_ƒuƒ‹ƒoƒbƒtƒ@‰»‚µ‚Ä‚¢‚éê‡‚ÍƒGƒ“ƒWƒ“‚ÌƒoƒbƒNƒoƒbƒtƒ@‚Ì”Ô†‚Æ‡‚í‚¹‚éB
+			// å†…éƒ¨ã§ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡åŒ–ã—ã¦ã„ã‚‹å ´åˆã¯ã‚¨ãƒ³ã‚¸ãƒ³ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®ç•ªå·ã¨åˆã‚ã›ã‚‹ã€‚
 			return g_graphicsEngine->GetBackBufferIndex();
 		}
-		// ƒ_ƒuƒ‹ƒoƒbƒtƒ@‰»‚µ‚Ä‚¢‚È‚¢B
+		// ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡åŒ–ã—ã¦ã„ãªã„ã€‚
 		return 0;
 	}
 }

@@ -1,28 +1,28 @@
 /*!
- * @brief �V���h�E�}�b�v�`��p�̃V�F�[�_�[
+ * @brief シャドウマップ描画用のシェーダー
  */
 
-// �s�N�Z���V�F�[�_�[�ւ̓���
+// ピクセルシェーダーへの入力
 struct SPSIn
 {
-    float4 pos : SV_POSITION;   // �X�N���[����Ԃł̃s�N�Z���̍��W
-    float2 depth : TEXCOORD1;   // ���C�g��Ԃł̐[�x���
+    float4 pos : SV_POSITION;   // スクリーン空間でのピクセルの座標
+    float2 depth : TEXCOORD1;   // ライト空間での深度情報
 };
 
 static const int INFINITY = 40.0f; 
 
 ///////////////////////////////////////
-// ���_�V�F�[�_�[�̋��ʏ������C���N���[�h����B
+// 頂点シェーダーの共通処理をインクルードする。
 ///////////////////////////////////////
 
 #include "../ModelVSCommon.h"
 
 
 ///////////////////////////////////////////////////
-// �O���[�o���ϐ�
+// グローバル変数
 ///////////////////////////////////////////////////
 
-// ���f���p�̒��_�V�F�[�_�[�̃G���g���[�|�C���g
+// モデル用の頂点シェーダーのエントリーポイント
 SPSIn VSMainCore(SVSIn vsIn, float4x4 mWorldLocal, uniform bool isUsePreComputedVertexBuffer)
 {
     SPSIn psIn;
@@ -34,7 +34,7 @@ SPSIn VSMainCore(SVSIn vsIn, float4x4 mWorldLocal, uniform bool isUsePreComputed
     return psIn;
 }
 /// <summary>
-/// �V���h�E�}�b�v�`��p�̃s�N�Z���V�F�[�_�[
+/// シャドウマップ描画用のピクセルシェーダー
 /// </summary>
 float4 PSMain(SPSIn psIn) : SV_Target0
 {

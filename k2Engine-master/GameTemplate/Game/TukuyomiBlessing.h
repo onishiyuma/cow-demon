@@ -12,38 +12,38 @@ public:
 	bool Start();
 	void Render(RenderContext& rc);
 	void Update();
-	//ƒRƒŠƒWƒ‡ƒ“ì¬—pŠÖ”
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ä½œæˆç”¨é–¢æ•°
 	void CreateCollision();
-	//ƒGƒtƒFƒNƒgì¬—pŠÖ”B
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆä½œæˆç”¨é–¢æ•°ã€‚
 	void CreateEffect();
-	//Œp‘±ŠÔB
+	//ç¶™ç¶šæ™‚é–“ã€‚
 	void DeleteTime();
 	void Move();
 
-	//À•W‚ğƒZƒbƒg‚·‚éB
+	//åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 	void SetPosition(const Vector3& position)
 	{
 		m_position = position;
 	}
 
-	//Œ»İ‚ÌÀ•W‚ğæ“¾‚µ‘±‚¯‚éB
+	//ç¾åœ¨ã®åº§æ¨™ã‚’å–å¾—ã—ç¶šã‘ã‚‹ã€‚
 	void RealTimeSetPosition(Vector3& position)
 	{
 		m_position = position;
 	}
 
-	//À•W‚ğæ“¾‚·‚éB
+	//åº§æ¨™ã‚’å–å¾—ã™ã‚‹ã€‚
 	const Vector3& GetPosition()const
 	{
 		return m_position;
 	}
 
-	//ƒƒ“ƒo•Ï”
-	CollisionObject* m_collisionObject;//ƒRƒŠƒWƒ‡ƒ“ƒIƒuƒWƒFƒNƒg
-	Player* m_player;//ƒvƒŒƒCƒ„[B
-	EffectEmitter* m_effectEmitter;//ƒGƒtƒFƒNƒgB
-	Vector3 m_position;//À•WB
-	float m_deleteTimer=0.0f;//íœ‚Ü‚Å‚ÌŠÔB
-	float m_tukuyomiBlessingTimer;//Œ“Ç‚Ì‰ÁŒì‚ÌŒp‘±ŠÔB
-	const float m_duration=10.0f;//Œp‘±ŠÔB
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°
+	CollisionObject* m_collisionObject;//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	Player* m_player;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã€‚
+	EffectEmitter* m_effectEmitter;//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã€‚
+	Vector3 m_position;//åº§æ¨™ã€‚
+	float m_deleteTimer=0.0f;//å‰Šé™¤ã¾ã§ã®æ™‚é–“ã€‚
+	float m_tukuyomiBlessingTimer;//æœˆèª­ã®åŠ è­·ã®ç¶™ç¶šæ™‚é–“ã€‚
+	const float m_duration=10.0f;//ç¶™ç¶šæ™‚é–“ã€‚
 };

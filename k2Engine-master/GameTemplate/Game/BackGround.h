@@ -2,20 +2,20 @@
 class BackGround : public IGameObject
 {
 public:
-	//ƒƒ“ƒoŠÖ”
+	//ãƒ¡ãƒ³ãƒé–¢æ•°
 	BackGround();
 	~BackGround();
 	void Update();
 	bool Start();
-	//ƒRƒŠƒWƒ‡ƒ“‚Ìì¬B
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®ä½œæˆã€‚
 	void CreateCollision();
 	void Render(RenderContext& rc);
 
-	//ƒƒ“ƒo•Ï”
-	ModelRender m_modelRender;//ƒ‚ƒfƒ‹ƒŒƒ“ƒ_[B
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°
+	ModelRender m_modelRender;//ãƒ¢ãƒ‡ãƒ«ãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
 	PhysicsStaticObject m_physicsStaticObject;
-	CollisionObject*m_collisionObject;//ƒRƒŠƒWƒ‡ƒ“
-	Vector3 m_position = Vector3{ 0.0f, 95.0f, -1325.0f };//À•WB
-	const Vector3 m_collisionScale = Vector3{ 400.0f,50.0f,190.0f };//ƒRƒŠƒWƒ‡ƒ“‚Ì‘å‚«‚³B
+	CollisionObject*m_collisionObject;//ã‚³ãƒªã‚¸ãƒ§ãƒ³
+	Vector3 m_position = Vector3{ 0.0f, 95.0f, -1325.0f };//åº§æ¨™ã€‚
+	const Vector3 m_collisionScale = Vector3{ 400.0f,50.0f,190.0f };//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®å¤§ãã•ã€‚
 };
 

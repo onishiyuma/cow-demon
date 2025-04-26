@@ -17,8 +17,8 @@
 
 		SpriteRender m_skillSprite;
 		SpriteRender m_skillGageSprite;
-		int m_skillGage = 0.0f;//ƒXƒLƒ‹ƒQ[ƒWB
-		int m_skillMax=0.0f;//ƒXƒLƒ‹‚ªƒ}ƒbƒNƒX‚É‚È‚Á‚½‚çB
+		int m_skillGage = 0.0f;//ã‚¹ã‚­ãƒ«ã‚²ãƒ¼ã‚¸ã€‚
+		int m_skillMax=0.0f;//ã‚¹ã‚­ãƒ«ãŒãƒãƒƒã‚¯ã‚¹ã«ãªã£ãŸã‚‰ã€‚
 
 		float m_runaTimer = 0.0f;
 	

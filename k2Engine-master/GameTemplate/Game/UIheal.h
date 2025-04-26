@@ -20,7 +20,7 @@ public:
 	SpriteRender m_soulSprite2;
 	SpriteRender m_soulSprite3;
 
-	int m_useHeal = 0;//‰ñ•œ‰ñ”B
-	bool m_deleteFlag=false;//Á‹ƒtƒ‰ƒOB
+	int m_useHeal = 0;//å›å¾©å›æ•°ã€‚
+	bool m_deleteFlag=false;//æ¶ˆå»ãƒ•ãƒ©ã‚°ã€‚
 };
 

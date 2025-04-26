@@ -13,9 +13,9 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	//ƒƒ“ƒo•Ï”B
-	Game* m_game;//ƒQ[ƒ€B
-	SpriteRender m_spriteRender;//ƒXƒvƒ‰ƒCƒgƒŒƒ“ƒ_[B
-	int m_timeLimit;//ƒQ[ƒ€‚Ì§ŒÀŠÔB
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚
+	Game* m_game;//ã‚²ãƒ¼ãƒ ã€‚
+	SpriteRender m_spriteRender;//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
+	int m_timeLimit;//ã‚²ãƒ¼ãƒ ã®åˆ¶é™æ™‚é–“ã€‚
 };
 

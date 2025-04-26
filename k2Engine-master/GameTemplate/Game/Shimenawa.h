@@ -10,40 +10,40 @@ public:
 
 	bool Start();
 	void Update();
-	//ƒRƒŠƒWƒ‡ƒ“‚Ìì¬B
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®ä½œæˆã€‚
 	void CreateCollision();
-	//íœŠÔB
+	//å‰Šé™¤æ™‚é–“ã€‚
 	void DurationTime();
-	//İ’u‚·‚éŠÖ”B
+	//è¨­ç½®ã™ã‚‹é–¢æ•°ã€‚
 	void Put();
 	void Render(RenderContext& rc);
 
-	//‚µ‚ß“êƒŠƒZƒbƒg—pŠÖ”B
+	//ã—ã‚ç¸„ãƒªã‚»ãƒƒãƒˆç”¨é–¢æ•°ã€‚
 	void ResetShimenawa()
 	{
 		m_shimenawa = nullptr;
 	}
 
-	//À•W‚ğƒZƒbƒgB
+	//åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã€‚
 	void SetPosition(const Vector3& position)
 	{
 		m_position=position;
 	}
 
-	//À•W‚ğæ“¾B
+	//åº§æ¨™ã‚’å–å¾—ã€‚
 	const Vector3& GetPosition()const
 	{
 		return m_position;
 	}
 
 
-	//ƒƒ“ƒo•Ï”B
-	CollisionObject* m_collisionObject;//ƒRƒŠƒWƒ‡ƒ“ƒIƒuƒWƒFƒNƒgB
-	Shimenawa* m_shimenawa;//‚µ‚ß“êB
-	Player* m_player;//ƒvƒŒƒCƒ„[B
-	ModelRender m_modelRender;//ƒ‚ƒfƒ‹ƒŒƒ“ƒ_[B
-	Vector3 m_position;//À•WB
-	float m_durationTimer = 0.0f;//íœ‚Ü‚Å‚ÌŠÔB
-	const float m_duration=5.0f;//Œp‘±ŠÔB
-	Vector3 m_placePosition;//İ’uÀ•WB
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚
+	CollisionObject* m_collisionObject;//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
+	Shimenawa* m_shimenawa;//ã—ã‚ç¸„ã€‚
+	Player* m_player;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã€‚
+	ModelRender m_modelRender;//ãƒ¢ãƒ‡ãƒ«ãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
+	Vector3 m_position;//åº§æ¨™ã€‚
+	float m_durationTimer = 0.0f;//å‰Šé™¤ã¾ã§ã®æ™‚é–“ã€‚
+	const float m_duration=5.0f;//ç¶™ç¶šæ™‚é–“ã€‚
+	Vector3 m_placePosition;//è¨­ç½®åº§æ¨™ã€‚
 };

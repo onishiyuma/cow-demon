@@ -5,19 +5,19 @@ class Player;
 class PlayerLight:public IGameObject
 {
 public:
-	//ƒƒ“ƒoŠÖ”
+	//ãƒ¡ãƒ³ãƒé–¢æ•°
 	PlayerLight();
 	~PlayerLight();
 	bool Start();
-	//XVˆ—
+	//æ›´æ–°å‡¦ç†
 	void Update();
-	//•`‰æˆ—
+	//æç”»å‡¦ç†
 	void Render(RenderContext& rc);
 
-	//ƒƒ“ƒo•Ï”
-	Vector3 m_position; //ƒ‰ƒCƒg‚ÌÀ•W
-	Vector3 m_direction; //ƒ‰ƒCƒg‚ÌŒü‚«
-	Player* m_player; //ƒvƒŒƒCƒ„[
-	SpotLight m_spotLight; //ƒXƒ|ƒbƒgƒ‰ƒCƒg
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°
+	Vector3 m_position; //ãƒ©ã‚¤ãƒˆã®åº§æ¨™
+	Vector3 m_direction; //ãƒ©ã‚¤ãƒˆã®å‘ã
+	Player* m_player; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	SpotLight m_spotLight; //ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆ
 };
 

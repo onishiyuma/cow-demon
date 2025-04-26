@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////
-// IBL�֌W�̏���
+// IBL関係の処理
 ////////////////////////////////////////////////
 
 #ifndef _IBL_H_
@@ -8,20 +8,20 @@
 #include "Sampler.h"
 
 /// <summary>
-/// IBL�J���[���X�J�C�L���[�u�}�b�v����T���v�����O
+/// IBLカラーをスカイキューブマップからサンプリング
 /// </summary>
 /// <remark>
-/// ���̊֐��ł̓T�[�t�F�C�X�̊��炩�����g���āA
-/// �T���v�����O����X�J�C�L���[�u�}�b�v��mipmap���x�����v�Z���Ă��܂��B
-/// �T�[�t�F�C�X�����炩�ł���΁A���𑜓x�̃X�J�C�L���[�u�}�b�v�A
-/// ���炩�����Ⴏ��΁A��𑜓x�̃X�J�C�L���[�u�}�b�v����IBL�J���[���T���v�����O����܂��B
-/// ���̂悤�ɂ��邱�ƂŊ��炩�ȃT�[�t�F�C�X�ł���΁A�Y��ȉf�荞�݂��������A
-/// �e���T�[�t�F�C�X�ł���΁A�g�U�����f�荞�݂���������悤�ɂȂ�܂��B
+/// この関数ではサーフェイスの滑らかさを使って、
+/// サンプリングするスカイキューブマップのmipmapレベルを計算しています。
+/// サーフェイスが滑らかであれば、高解像度のスカイキューブマップ、
+/// 滑らかさが低ければ、低解像度のスカイキューブマップからIBLカラーがサンプリングされます。
+/// このようにすることで滑らかなサーフェイスであれば、綺麗な映り込みが発生し、
+/// 粗いサーフェイスであれば、拡散した映り込みが発生するようになります。
 /// </remark>
-/// <param name="skyCubeMap">�X�J�C�L���[�u�}�b�v</param>
-/// <param name="reflection">���˃x�N�g���B</param>
-/// <param name="smooth">�T�[�t�F�C�X�̊��炩��(0.0�`1.0)</param>
-/// <param name="iblIntencity">IBL�̋��x�B</param>
+/// <param name="skyCubeMap">スカイキューブマップ</param>
+/// <param name="reflection">反射ベクトル。</param>
+/// <param name="smooth">サーフェイスの滑らかさ(0.0～1.0)</param>
+/// <param name="iblIntencity">IBLの強度。</param>
 float4 SampleIBLColorFromSkyCube( 
     TextureCube<float4> skyCubeMap, 
     float3 reflection, 
@@ -33,17 +33,17 @@ float4 SampleIBLColorFromSkyCube(
     return skyCubeMap.SampleLevel(Sampler, reflection, level) * iblIntencity;
 }
 /// <summary>
-/// IBL�J���[���X�J�C�L���[�u�}�b�v����T���v�����O
+/// IBLカラーをスカイキューブマップからサンプリング
 /// </summary>
 /// <remark>
-/// �A���S���Y���͓����Ȃ̂ŏȗ��B
+/// アルゴリズムは同じなので省略。
 /// </remark>
-/// <param name="skyCubeMap">�X�J�C�L���[�u�}�b�v</param>
-/// <param name="samper">�T���v��</param>
-/// <param name="toEye">���_�ւ̐��K�����ꂽ�x�N�g��</param>
-/// <param name="normal">�T�[�t�F�C�X�̖@��</param>
-/// <param name="smooth">�T�[�t�F�C�X�̊��炩��(0.0�`1.0)</param>
-/// <param name="iblIntencity">IBL�̋��x�B</param>
+/// <param name="skyCubeMap">スカイキューブマップ</param>
+/// <param name="samper">サンプラ</param>
+/// <param name="toEye">視点への正規化されたベクトル</param>
+/// <param name="normal">サーフェイスの法線</param>
+/// <param name="smooth">サーフェイスの滑らかさ(0.0～1.0)</param>
+/// <param name="iblIntencity">IBLの強度。</param>
 float4 SampleIBLColorFromSkyCube( 
     TextureCube<float4> skyCubeMap,
     float3 toEye, 
@@ -52,7 +52,7 @@ float4 SampleIBLColorFromSkyCube(
     float iblIntencity
 )
 {
-    // ���˃x�N�g�����v�Z����B
+    // 反射ベクトルを計算する。
     float3 v = reflect(toEye * -1.0f, normal);
     return SampleIBLColorFromSkyCube(skyCubeMap, v, smooth, iblIntencity);
 }

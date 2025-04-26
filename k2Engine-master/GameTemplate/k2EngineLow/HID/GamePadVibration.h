@@ -10,18 +10,18 @@ namespace nsK2EngineLow {
 	{
 	public:
 		/// <summary>
-		/// ‰Šú‰»
+		/// åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="padNo">ƒpƒbƒh”Ô†</param>
-		/// <param name="durationSec">ƒoƒCƒuƒŒ[ƒVƒ‡ƒ“‚ğŒp‘±‚³‚¹‚éŠÔ(’PˆÊ:•b)</param>
-		/// <param name="normalizedPower">ƒoƒCƒuƒŒ[ƒVƒ‡ƒ“‚Ì³‹K‰»‚³‚ê‚½—ÍB</param>
+		/// <param name="padNo">ãƒ‘ãƒƒãƒ‰ç•ªå·</param>
+		/// <param name="durationSec">ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ç¶™ç¶šã•ã›ã‚‹æ™‚é–“(å˜ä½:ç§’)</param>
+		/// <param name="normalizedPower">ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®æ­£è¦åŒ–ã•ã‚ŒãŸåŠ›ã€‚</param>
 		void Init(int padNo, float durationSec, float normalizedPower);
 		bool Start() override;
 		void Update() override;
 	private:
-		float m_durationSec = 0;				// ƒoƒCƒuƒŒ[ƒVƒ‡ƒ“‚ğŒp‘±‚·‚éŠÔ(’PˆÊ:•b)B
-		float m_timerSec = 0;					// ƒ^ƒCƒ}[(’PˆÊ:•b)B
-		int m_padNo = 0;						// ƒpƒbƒh”Ô†B
-		XINPUT_VIBRATION m_xinputVibration;		// XINPUT‚É“n‚·ƒoƒCƒuƒŒ[ƒVƒ‡ƒ“‚Ìî•ñB
+		float m_durationSec = 0;				// ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ç¶™ç¶šã™ã‚‹æ™‚é–“(å˜ä½:ç§’)ã€‚
+		float m_timerSec = 0;					// ã‚¿ã‚¤ãƒãƒ¼(å˜ä½:ç§’)ã€‚
+		int m_padNo = 0;						// ãƒ‘ãƒƒãƒ‰ç•ªå·ã€‚
+		XINPUT_VIBRATION m_xinputVibration;		// XINPUTã«æ¸¡ã™ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®æƒ…å ±ã€‚
 	};
 }

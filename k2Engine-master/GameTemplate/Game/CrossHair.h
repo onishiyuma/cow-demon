@@ -15,9 +15,9 @@ public:
 		m_position = position;
 	}
 
-	//ƒƒ“ƒo•Ï”B
-	CrossHair* m_crosshair;//ƒNƒƒXƒwƒA[B
-	SpriteRender m_spriteRender;//ƒXƒvƒ‰ƒCƒgƒŒƒ“ƒ_[B
-	Vector3 m_position=Vector3::Zero;//À•WB
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚
+	CrossHair* m_crosshair;//ã‚¯ãƒ­ã‚¹ãƒ˜ã‚¢ãƒ¼ã€‚
+	SpriteRender m_spriteRender;//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
+	Vector3 m_position=Vector3::Zero;//åº§æ¨™ã€‚
 };
 

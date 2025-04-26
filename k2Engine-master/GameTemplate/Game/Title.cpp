@@ -5,10 +5,10 @@
 
 bool Title::Start()
 {
-	//ƒ^ƒCƒgƒ‹‚Ì‰æ‘œ‚ğ“Ç‚İ‚ŞB
+	//ã‚¿ã‚¤ãƒˆãƒ«ã®ç”»åƒã‚’èª­ã¿è¾¼ã‚€ã€‚
 	m_spriteRender.Init("Assets/sprite/cowDemonTitle.DDS", 1920.0f, 1080.0f);
 	
-	//•¶š‚Ì•\¦B
+	//æ–‡å­—ã®è¡¨ç¤ºã€‚
 	m_fontRender.SetText(L"Please Press AnyKey");
 	m_fontRender.SetPosition({ -250.0f,-300.0f,0.0f });
 	m_fontRender.SetColor(g_vec4White);
@@ -30,12 +30,12 @@ void Title::Update()
 {
 	m_timer+= g_gameTime->GetFrameDeltaTime();
 
-	//ƒ^ƒCƒgƒ‹‚©‚çƒCƒ“ƒQ[ƒ€‚ÖˆÚsB
+	//ã‚¿ã‚¤ãƒˆãƒ«ã‹ã‚‰ã‚¤ãƒ³ã‚²ãƒ¼ãƒ ã¸ç§»è¡Œã€‚
 	if (m_timer>0.1f&&g_pad[0]->IsPressAnyKey())
 	{
 		NewGO<Game>(0, "game");
 		m_spriteRender.Update();
-		//©g‚ğíœ‚·‚éB
+		//è‡ªèº«ã‚’å‰Šé™¤ã™ã‚‹ã€‚
 		DeleteGO(this);
 	}
 }

@@ -4,8 +4,8 @@
 
 cbuffer cb : register(b0)
 {
-    float4x4 mvp;       // MVPs—ñ
-    float4 mulColor;    // æZƒJƒ‰[
+    float4x4 mvp;       // MVPè¡Œåˆ—
+    float4 mulColor;    // ä¹—ç®—ã‚«ãƒ©ãƒ¼
 };
 
 struct VSInput
@@ -21,24 +21,24 @@ struct PSInput
 };
 
 cbuffer ssrCb : register(b1){
-	float4x4 mViewProjInv;				//ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚Ì‹ts—ñB
-	float4x4 mViewProj;					//ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñB
-	float4 cameraPosInWorld;			//ƒ[ƒ‹ƒhÀ•WŒn‚Å‚ÌƒJƒƒ‰‚Ì‹“_B
+	float4x4 mViewProjInv;				//ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã®é€†è¡Œåˆ—ã€‚
+	float4x4 mViewProj;					//ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã€‚
+	float4 cameraPosInWorld;			//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ã§ã®ã‚«ãƒ¡ãƒ©ã®è¦–ç‚¹ã€‚
 };
 
 
-Texture2D<float4> sceneTexture : register(t0); 			// ƒV[ƒ“‚ÌƒeƒNƒXƒ`ƒƒ
-Texture2D<float4> depthTexture : register(t1);			//[“xƒeƒNƒXƒ`ƒƒB
-Texture2D<float4> normalTexture : register(t2);			//–@üƒeƒNƒXƒ`ƒƒB
-Texture2D<float4> metallicSmoothTexture : register(t3);	//ƒƒ^ƒŠƒbƒNƒXƒ€[ƒXƒeƒNƒXƒ`ƒƒB
+Texture2D<float4> sceneTexture : register(t0); 			// ã‚·ãƒ¼ãƒ³ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£
+Texture2D<float4> depthTexture : register(t1);			//æ·±åº¦ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
+Texture2D<float4> normalTexture : register(t2);			//æ³•ç·šãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
+Texture2D<float4> metallicSmoothTexture : register(t3);	//ãƒ¡ã‚¿ãƒªãƒƒã‚¯ã‚¹ãƒ ãƒ¼ã‚¹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
 
 sampler Sampler : register(s0);
 
 /*!
- * @brief	UVÀ•W‚Æ[“x’l‚©‚çƒ[ƒ‹ƒhÀ•W‚ğŒvZ‚·‚éB
- *@param[in]	uv				uvÀ•W
- *@param[in]	zInScreen		ƒXƒNƒŠ[ƒ“À•WŒn‚Ì[“x’l
- *@param[in]	mViewProjInv	ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚Ì‹ts—ñB
+ * @brief	UVåº§æ¨™ã¨æ·±åº¦å€¤ã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’è¨ˆç®—ã™ã‚‹ã€‚
+ *@param[in]	uv				uvåº§æ¨™
+ *@param[in]	zInScreen		ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã®æ·±åº¦å€¤
+ *@param[in]	mViewProjInv	ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã®é€†è¡Œåˆ—ã€‚
  */
 float3 CalcWorldPosFromUVZ( float2 uv, float zInScreen, float4x4 mViewProjInv )
 {
@@ -55,7 +55,7 @@ float GetRandomNumber(float2 texCoord, float Seed)
 	return frac(sin(dot(texCoord.xy, float2(12.9898, 78.233)) + Seed) * 43758.5453);
 }
 /*!
- * @brief ’¸“_ƒVƒF[ƒ_[
+ * @brief é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
  */
 PSInput VSMain(VSInput In)
 {
@@ -66,11 +66,11 @@ PSInput VSMain(VSInput In)
 }
 float4 PSMain(PSInput In) : SV_Target0
 {
-	//‹à‘®“x‚ÆƒXƒ€[ƒX‚ğæ“¾B
+	//é‡‘å±åº¦ã¨ã‚¹ãƒ ãƒ¼ã‚¹ã‚’å–å¾—ã€‚
 	float4 metallicSmooth = metallicSmoothTexture.Sample(Sampler, In.uv);
-	// ƒXƒ€[ƒX0.5ˆÈã‚ÌƒT[ƒtƒFƒCƒX‚Å‚Ì‚İ‰f‚è‚İ‚ğ‹N‚±‚·‚æ‚¤‚É‚·‚éB
+	// ã‚¹ãƒ ãƒ¼ã‚¹0.5ä»¥ä¸Šã®ã‚µãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã§ã®ã¿æ˜ ã‚Šè¾¼ã¿ã‚’èµ·ã“ã™ã‚ˆã†ã«ã™ã‚‹ã€‚
 	clip( metallicSmooth.a - 0.5f);
-	//ƒsƒNƒZƒ‹‚Ìƒ[ƒ‹ƒhÀ•W‚ğŒvZ‚·‚éB
+	//ãƒ”ã‚¯ã‚»ãƒ«ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’è¨ˆç®—ã™ã‚‹ã€‚
 	float3 worldPos = CalcWorldPosFromUVZ(
 		In.uv,
 		depthTexture.Sample(Sampler, In.uv).r,
@@ -79,54 +79,54 @@ float4 PSMain(PSInput In) : SV_Target0
 
 	float4 sceneColor = sceneTexture.Sample(Sampler, In.uv);
 	
-	//ƒsƒNƒZƒ‹‚Ì–@ü‚ğæ“¾B
+	//ãƒ”ã‚¯ã‚»ãƒ«ã®æ³•ç·šã‚’å–å¾—ã€‚
 	float3 normal = normalTexture.Sample(Sampler, In.uv).xyz;
 	
-	//ƒJƒƒ‰‚Ì‹“_‚©‚çƒsƒNƒZƒ‹‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹‚ğŒvZ‚·‚éB
+	//ã‚«ãƒ¡ãƒ©ã®è¦–ç‚¹ã‹ã‚‰ãƒ”ã‚¯ã‚»ãƒ«ã«å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã™ã‚‹ã€‚
 	float3 toPixelDir = normalize( worldPos - cameraPosInWorld.xyz );
-	//”½ËƒxƒNƒgƒ‹‚ğ‹‚ß‚éB
+	//åå°„ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹ã€‚
 	float3 toPixelDirReflect = reflect( toPixelDir, normal );
 	float depth = depthTexture.Sample(Sampler, In.uv).r;
 
-	//”½ËƒxƒNƒgƒ‹‚ğg‚Á‚ÄAƒŒƒCƒ}[ƒ`ƒ“ƒO‚ğs‚¤B
-	//ƒŒƒCƒ}[ƒ`ƒ“ƒO‚ÌƒCƒeƒŒ[ƒVƒ‡ƒ“‰ñ”‚Æü•ª‚ğL‚Î‚·‹——£‚Í
-	//Œã‚Å’è”ƒoƒbƒtƒ@‚É‚·‚é‚ñ‚â‚ÅH
+	//åå°„ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä½¿ã£ã¦ã€ãƒ¬ã‚¤ãƒãƒ¼ãƒãƒ³ã‚°ã‚’è¡Œã†ã€‚
+	//ãƒ¬ã‚¤ãƒãƒ¼ãƒãƒ³ã‚°ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³å›æ•°ã¨ç·šåˆ†ã‚’ä¼¸ã°ã™è·é›¢ã¯
+	//å¾Œã§å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«ã™ã‚‹ã‚“ã‚„ã§ï¼Ÿ
 	int maxRayNum = 20;
 	float3 raystep = 800.0f/ maxRayNum * toPixelDirReflect;
 	float maxThickness = 0.001f / maxRayNum;
-	for( int step = 1; step < maxRayNum; step++){ //©•ª©g‚Æ‚Ô‚Â‚©‚é‚Ì‚ÅAstep‚Í1‚©‚çi‚ß‚éB
+	for( int step = 1; step < maxRayNum; step++){ //è‡ªåˆ†è‡ªèº«ã¨ã¶ã¤ã‹ã‚‹ã®ã§ã€stepã¯1ã‹ã‚‰é€²ã‚ã‚‹ã€‚
 		float3 rayPos = worldPos + step * raystep * lerp( 0.8f, 1.0f, GetRandomNumber(In.uv, 1.0f));
 		float4 posInProj = float4(rayPos, 1.0f);
-		//ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“‹óŠÔ‚É•ÏŠ·‚·‚éB
+		//ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ç©ºé–“ã«å¤‰æ›ã™ã‚‹ã€‚
 		posInProj = mul(mViewProj, posInProj);
 		posInProj.xyz /= posInProj.w;
 		float2 reflectUV = posInProj.xy * float2(0.5f, -0.5f) + 0.5f;
-		// ƒŒƒC‚ği‚ß‚½æ‚ÌƒsƒNƒZƒ‹‚ÌZ’l‚ğæ“¾
+		// ãƒ¬ã‚¤ã‚’é€²ã‚ãŸå…ˆã®ãƒ”ã‚¯ã‚»ãƒ«ã®Zå€¤ã‚’å–å¾—
 		float pixelZ = depthTexture.Sample(Sampler, reflectUV).r;
-		if ( depth < pixelZ 						// ‚»‚à‚»‚àƒXƒ^[ƒg’n“_‚ÌZ’l‚ª‚Ô‚Â‚©‚Á‚½ƒsƒNƒZƒ‹‚æ‚èè‘OB
-			&& pixelZ < posInProj.z    				// ƒŒƒC‚ÌZ’l‚æ‚èAƒsƒNƒZƒ‹‚ÌZ’l‚Ì•û‚ª¬‚³‚¢ -> ‚Â‚Ü‚èƒŒƒC‚ª‚Ô‚Â‚©‚Á‚½‰Â”\«‚ª‚ ‚éB
-			&& posInProj.z - pixelZ < maxThickness	// ‚Ô‚Â‚©‚Á‚½ƒIƒuƒWƒFƒNƒg‚É‚ ‚é’ö“x‚Ì‰œs‚«‚ª‚ ‚é‚Æ‰¼’è‚µ‚ÄA‚»‚Ì‰œs‚«‚Ì”ÍˆÍ“àB
+		if ( depth < pixelZ 						// ãã‚‚ãã‚‚ã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã®Zå€¤ãŒã¶ã¤ã‹ã£ãŸãƒ”ã‚¯ã‚»ãƒ«ã‚ˆã‚Šæ‰‹å‰ã€‚
+			&& pixelZ < posInProj.z    				// ãƒ¬ã‚¤ã®Zå€¤ã‚ˆã‚Šã€ãƒ”ã‚¯ã‚»ãƒ«ã®Zå€¤ã®æ–¹ãŒå°ã•ã„ -> ã¤ã¾ã‚Šãƒ¬ã‚¤ãŒã¶ã¤ã‹ã£ãŸå¯èƒ½æ€§ãŒã‚ã‚‹ã€‚
+			&& posInProj.z - pixelZ < maxThickness	// ã¶ã¤ã‹ã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚ã‚‹ç¨‹åº¦ã®å¥¥è¡ŒããŒã‚ã‚‹ã¨ä»®å®šã—ã¦ã€ãã®å¥¥è¡Œãã®ç¯„å›²å†…ã€‚
 		) {
-			// ƒŒƒC‚ª‚Ô‚Â‚©‚Á‚½‚Æ”»’f‚·‚éB
-			// ‚±‚±‚©‚ç‚Q•ª’Tõ‚Å¸“x‚ğã‚°‚éB
-			float sign = -1.0; 	// ‚±‚ê‚ÍƒŒƒC‚Ìis•ûŒüB
+			// ãƒ¬ã‚¤ãŒã¶ã¤ã‹ã£ãŸã¨åˆ¤æ–­ã™ã‚‹ã€‚
+			// ã“ã“ã‹ã‚‰ï¼’åˆ†æ¢ç´¢ã§ç²¾åº¦ã‚’ä¸Šã’ã‚‹ã€‚
+			float sign = -1.0; 	// ã“ã‚Œã¯ãƒ¬ã‚¤ã®é€²è¡Œæ–¹å‘ã€‚
 			for (int m = 1; m <= 8; ++m) {
-				// 0.5‚ğmæ‚·‚éB‚±‚ê‚Åm‚ª1‚È‚çƒŒƒCƒXƒeƒbƒv‚Ì1/2Am‚ª2‚È‚çƒŒƒCƒXƒeƒbƒv‚Ì1/4i‚Ş‚±‚Æ‚É‚È‚éB
-				// ‚±‚Ì2•ª’Tõ‚Å‚ÍA‚Ô‚Â‚©‚Á‚½’n“_‚©‚çA0.5->0.25->0.125->0.0625‚ÆƒXƒeƒbƒv‚ği‚ß‚Ä‚¢‚«A
-				// ‚Ô‚Â‚©‚Á‚½ƒsƒNƒZƒ‹‚Ì¸“x‚ğã‚°‚Ä‚¢‚­B
+				// 0.5ã‚’mä¹—ã™ã‚‹ã€‚ã“ã‚Œã§mãŒ1ãªã‚‰ãƒ¬ã‚¤ã‚¹ãƒ†ãƒƒãƒ—ã®1/2ã€mãŒ2ãªã‚‰ãƒ¬ã‚¤ã‚¹ãƒ†ãƒƒãƒ—ã®1/4é€²ã‚€ã“ã¨ã«ãªã‚‹ã€‚
+				// ã“ã®2åˆ†æ¢ç´¢ã§ã¯ã€ã¶ã¤ã‹ã£ãŸåœ°ç‚¹ã‹ã‚‰ã€0.5->0.25->0.125->0.0625ã¨ã‚¹ãƒ†ãƒƒãƒ—ã‚’é€²ã‚ã¦ã„ãã€
+				// ã¶ã¤ã‹ã£ãŸãƒ”ã‚¯ã‚»ãƒ«ã®ç²¾åº¦ã‚’ä¸Šã’ã¦ã„ãã€‚
 				rayPos += raystep * (sign * pow(0.5, m));
-				// 0.5^mi‚ß‚½ƒŒƒC‚ÌƒXƒNƒŠ[ƒ“‹óŠÔã‚ÌÀ•W‚ğ‹‚ß‚éB
+				// 0.5^mé€²ã‚ãŸãƒ¬ã‚¤ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ç©ºé–“ä¸Šã®åº§æ¨™ã‚’æ±‚ã‚ã‚‹ã€‚
 				posInProj = mul(mViewProj, float4(rayPos, 1.0f));
 				posInProj.xyz /= posInProj.w;
 				reflectUV = posInProj.xy * float2(0.5f, -0.5f) + 0.5f;
 				float pixelZ = depthTexture.Sample(Sampler, reflectUV).r;
-				// Õ“Ë‚µ‚È‚­‚È‚Á‚½‚çAƒŒƒC‚Ìis•ûŒü‚ğ”½“]‚³‚¹‚éB
-				// Õ“Ë‚µ‚Ä‚¢‚½‚çA‚»‚Ì‚Ü‚Üi‚ß‚éB
+				// è¡çªã—ãªããªã£ãŸã‚‰ã€ãƒ¬ã‚¤ã®é€²è¡Œæ–¹å‘ã‚’åè»¢ã•ã›ã‚‹ã€‚
+				// è¡çªã—ã¦ã„ãŸã‚‰ã€ãã®ã¾ã¾é€²ã‚ã‚‹ã€‚
 				sign = posInProj.z - pixelZ > 0 ? -1 : 1;
 			}
 			float4 reflectColor = sceneTexture.Sample(Sampler, reflectUV);
-			// SSR‚ÍƒeƒNƒXƒ`ƒƒ‚Ì”ÍˆÍŠO‚ğƒTƒ“ƒvƒŠƒ“ƒO‚·‚é‚ÆA³‚µ‚¢Œ‹‰Ê‚ğ“¾‚é‚±‚Æ‚Í‚Å‚«‚È‚¢‚Ì‚ÅA
-			// ”ÍˆÍŠO‚É‹ß‚Ã‚­‚Ù‚Ç”½Ë‚ªã‚­‚È‚é‚æ‚¤‚ÈŒvZ‚ğ“ü‚ê‚éB
+			// SSRã¯ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç¯„å›²å¤–ã‚’ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã™ã‚‹ã¨ã€æ­£ã—ã„çµæœã‚’å¾—ã‚‹ã“ã¨ã¯ã§ããªã„ã®ã§ã€
+			// ç¯„å›²å¤–ã«è¿‘ã¥ãã»ã©åå°„ãŒå¼±ããªã‚‹ã‚ˆã†ãªè¨ˆç®—ã‚’å…¥ã‚Œã‚‹ã€‚
 			float t = 0.8f;
 			t *= pow( 1.0f - min( 1.0f, abs(posInProj.x) ), 0.5f );
 			t *= pow( 1.0f - min( 1.0f, abs(posInProj.y) ), 0.5f );
@@ -138,10 +138,10 @@ float4 PSMain(PSInput In) : SV_Target0
 	return float4(sceneColor.xyz, 0.0f);
 }
 
-Texture2D<float4> reflectTexture : register(t1);	// ”½ËƒeƒNƒXƒ`ƒƒB
-Texture2D<float4> albedoTexture : register(t2);		// ƒAƒ‹ƒxƒhƒeƒNƒXƒ`ƒƒB
+Texture2D<float4> reflectTexture : register(t1);	// åå°„ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
+Texture2D<float4> albedoTexture : register(t2);		// ã‚¢ãƒ«ãƒ™ãƒ‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
 
-//ÅI‡¬B
+//æœ€çµ‚åˆæˆã€‚
 float4 PSFinal(PSInput In) : SV_Target0
 {
 	

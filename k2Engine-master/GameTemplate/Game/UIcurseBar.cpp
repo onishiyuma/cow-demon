@@ -5,17 +5,17 @@
 
 namespace
 {
-	//HPƒQ[ƒW
+	//HPã‚²ãƒ¼ã‚¸
 	Vector3 HP_POSITION = Vector3(-245.0f, -450.0f, 0.0f);
-	//HPƒtƒŒ[ƒ€
+	//HPãƒ•ãƒ¬ãƒ¼ãƒ 
 	Vector3 HP_FREME_POSITION = Vector3(0.0f, -450.0f, 0.0f);
-	//HPƒtƒŒ[ƒ€ƒXƒP[ƒ‹
+	//HPãƒ•ãƒ¬ãƒ¼ãƒ ã‚¹ã‚±ãƒ¼ãƒ«
 	Vector3 HP_FRAME_SCAL = Vector3(0.5f, 0.5f, 0.5f);
-	//HPƒQ[ƒWƒXƒP[ƒ‹
+	//HPã‚²ãƒ¼ã‚¸ã‚¹ã‚±ãƒ¼ãƒ«
 	Vector3 HP_SCAL = Vector3(0.2f, 0.5f, 0.5f);
-	//HPƒQ[ƒWƒsƒ{ƒbƒg
+	//HPã‚²ãƒ¼ã‚¸ãƒ”ãƒœãƒƒãƒˆ
 	Vector2 HP_PIVOT = Vector2(0.0f, 0.5f);
-	//•
+	//é»’
 	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
@@ -32,13 +32,13 @@ UIcurseBar::~UIcurseBar()
 bool UIcurseBar::Start()
 {
 	m_player = FindGO<Player>("player");
-	//ô‚Ì’ïRƒtƒŒ[ƒ€
+	//å‘ªã®æŠµæŠ—ãƒ•ãƒ¬ãƒ¼ãƒ 
 	m_curseFrame.Init("Assets/UI/Red.DDS", 1024, 128);
 	m_curseFrame.SetPosition(HP_FREME_POSITION);
 	m_curseFrame.SetScale(HP_FRAME_SCAL);
 	m_curseFrame.SetMulColor(BLACK);
 
-	//ô‚¢‚Ì’ïRƒQ[ƒW
+	//å‘ªã„ã®æŠµæŠ—ã‚²ãƒ¼ã‚¸
 	m_curseSprit.Init("Assets/UI/Red.DDS", 102.4, 50);
 	m_curseSprit.SetPosition(HP_POSITION);
 

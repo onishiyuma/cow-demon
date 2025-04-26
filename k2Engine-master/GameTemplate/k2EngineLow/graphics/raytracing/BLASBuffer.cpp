@@ -17,11 +17,11 @@ namespace nsK2EngineLow {
 				D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS inputs = {};
 				inputs.DescsLayout = D3D12_ELEMENTS_LAYOUT_ARRAY;
 				if (isUpdate) {
-					// XV‚Ì‚Ý‚ÅOKB
+					// æ›´æ–°ã®ã¿ã§OKã€‚
 					inputs.Flags = D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_ALLOW_UPDATE | D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_PERFORM_UPDATE;				
 				}
 				else {
-					// BLAS‚ÌÄ\’z‚ª•K—vB
+					// BLASã®å†æ§‹ç¯‰ãŒå¿…è¦ã€‚
 					inputs.Flags = D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_ALLOW_UPDATE;
 					
 				}
@@ -54,17 +54,17 @@ namespace nsK2EngineLow {
 				asDesc.DestAccelerationStructureData = instance->m_blasStructuredBuffers.pResult->GetGPUVirtualAddress();
 				asDesc.ScratchAccelerationStructureData = instance->m_blasStructuredBuffers.pScratch->GetGPUVirtualAddress();
 				if (isUpdate) {
-					// XV‚Å‚ ‚ê‚ÎAŒ³ƒf[ƒ^‚ðŽg—p‚·‚éB
+					// æ›´æ–°ã§ã‚ã‚Œã°ã€å…ƒãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ç”¨ã™ã‚‹ã€‚
 					asDesc.SourceAccelerationStructureData = instance->m_blasStructuredBuffers.pResult->GetGPUVirtualAddress();
 					
 				}
 				else {
-					// Ä\’z‚ª•K—v‚È‚Ì‚ÅŒ³ƒf[ƒ^‚Í‚¢‚ç‚È‚¢‚Ì‚Ånullptr‚ðÝ’è‚·‚éB
+					// å†æ§‹ç¯‰ãŒå¿…è¦ãªã®ã§å…ƒãƒ‡ãƒ¼ã‚¿ã¯ã„ã‚‰ãªã„ã®ã§nullptrã‚’è¨­å®šã™ã‚‹ã€‚
 					asDesc.SourceAccelerationStructureData = 0;
 				}
 				rc.BuildRaytracingAccelerationStructure(asDesc);
 
-				//ƒŒƒCƒgƒŒ[ƒVƒ“ƒOƒAƒNƒZƒ‰ƒŒ[ƒVƒ‡ƒ“\‘¢‚Ìƒrƒ‹ƒhŠ®—¹‘Ò‚¿‚ÌƒoƒŠƒA‚ð“ü‚ê‚éB
+				//ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¼ã‚·ãƒ³ã‚°ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³æ§‹é€ ã®ãƒ“ãƒ«ãƒ‰å®Œäº†å¾…ã¡ã®ãƒãƒªã‚¢ã‚’å…¥ã‚Œã‚‹ã€‚
 				D3D12_RESOURCE_BARRIER uavBarrier = {};
 				uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
 				uavBarrier.UAV.pResource = instance->m_blasStructuredBuffers.pResult;
