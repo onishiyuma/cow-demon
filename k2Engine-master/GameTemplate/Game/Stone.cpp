@@ -14,7 +14,7 @@ bool Stone::Start()
 	m_spriteCollection = FindGO<SpriteCollection>("spriteCollection");
 
 	//モデルを読み込む
-	m_modelRender.Init("Assets/modelData/stone/stone.test.tkm");
+	m_modelRender.Init("Assets/modelData/stone/stone.tkm");
 	m_modelRender.SetScale(0.5f, 0.5f, 0.5f);
 	
 	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
@@ -45,8 +45,9 @@ void Stone::Update()
 
 	//m_modelRender.SetPosition(m_player->GetPosition());
 	m_modelRender.Update();
+	m_modelRender.SetPosition(m_position);
 
-	Move();
+	
 	
 	//プレイヤーから火打石に向かうベクトルを計算。
 	Vector3 diff = m_player->m_position - m_position;
@@ -78,15 +79,14 @@ void Stone::Update()
 
 		m_collectionFlag = false;
 
-		DeleteGO(m_spriteCollection);
+		if (m_spriteCollection != nullptr) {
+			DeleteGO(m_spriteCollection);
+			m_spriteCollection = nullptr;
+		}
+		
 	}
 	
 	
-}
-
-void Stone::Move() 
-{
-	m_modelRender.SetPosition(m_position);
 }
 
 ////コリジョンを作成。

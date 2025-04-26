@@ -54,7 +54,7 @@ Player::Player()
 Player::~Player()
 {
 	DeleteGO(m_playerLight);
-	DeleteGO(this);
+	//DeleteGO(this);
 }
 
 void Player::Update()

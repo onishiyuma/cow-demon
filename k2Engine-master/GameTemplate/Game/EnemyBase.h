@@ -3,12 +3,12 @@ class Player;
 class Game;
 
 
-class EnemyBase :public IGameObject, Noncopyable
+class EnemyBase :public IGameObject
 {
 public:
 
-	EnemyBase() {};
-	~EnemyBase() {};
+	EnemyBase();
+	virtual ~EnemyBase();
 
 	bool Start();
 	void EnemySpeed();

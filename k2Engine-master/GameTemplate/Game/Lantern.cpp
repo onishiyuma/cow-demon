@@ -162,11 +162,27 @@ void Lantern::Update()
 			m_lanternAction = false;
 			m_buttonAState = 0;
 
-			DeleteGO(m_spriteLight);
-			DeleteGO(m_spriteNoStone);
-			DeleteGO(m_timingBarB);
-			DeleteGO(m_line);
-			DeleteGO(m_spritePush);
+			if (m_spriteLight != nullptr) {
+				DeleteGO(m_spriteLight);
+				m_spriteLight = nullptr;
+			}
+			if (m_spriteNoStone != nullptr) {
+				DeleteGO(m_spriteNoStone);
+				m_spriteNoStone = nullptr;
+			}
+			if (m_timingBarB != nullptr) {
+				DeleteGO(m_timingBarB);
+				m_timingBarB = nullptr;
+			}
+			if (m_line != nullptr) {
+				DeleteGO(m_line);
+				m_line = nullptr;
+			}
+			if (m_spritePush != nullptr) {
+				DeleteGO(m_spritePush);
+				m_spritePush = nullptr;
+			}
+			
 		}
 	}
 	
