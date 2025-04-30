@@ -19,7 +19,7 @@
 #include "RingBell.h"
 #include "GameClear.h"
 #include "GameOver.h"
-
+#include "random"
 
 bool Game::Start()
 {
@@ -67,7 +67,7 @@ bool Game::Start()
 	m_uiSimenawa = NewGO<UISimenawa>(0, "m_uisimenawa");
 	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
 	//ミニマップ
-	m_miniMap = NewGO<MiniMap>(0,"minimap");
+	/*m_miniMap = NewGO<MiniMap>(0,"minimap");*/
 	//呪ゲージ
 	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
 	//回復
@@ -138,7 +138,7 @@ Game::~Game()
 	DeleteGO(m_uiCurseBar);
 	DeleteGO(m_uiHeal);
 	DeleteGO(m_uiStone);
-	DeleteGO(m_miniMap);
+	//DeleteGO(m_miniMap);
 }
 
 void Game::Update()
@@ -159,18 +159,30 @@ void Game::Update()
 	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
-
+	
+	CreateUI();
 	GameManager();
 }
 
 Vector3 Game::Random()
 {
-	Vector3 m_position;
-	//ランダムにポジションを当てはめる
-	m_position.x = rand() % 800 - 400;
-	m_position.y = 0.0f;
-	m_position.z = rand() % 1000 + 500;
-	return m_position;
+	Vector3 position;
+	int m_spawnRandom = rand() % 3;
+
+	switch (m_spawnRandom)
+	{
+	case 0:
+		position = { 0.0f, -10.0f, 3000.0f };
+		break;
+	case 1:
+		position = { 800.0f, -10.0f, 3000.0f };
+		break;
+	case 2:
+		position = { -800.0f, -10.0f, 3000.0f };
+		break;
+	}
+
+	return position;
 }
 
 
@@ -280,39 +292,54 @@ void Game::CreateAttackLantern()
 void Game::CreateUI()
 {
 
-	for (int i = 0; i < 20; i++)
+	//タイマーを減らす処理。
+	m_timer += g_gameTime->GetFrameDeltaTime();
+	//1分目
+	if (m_timer>120.0f&&m_timer<180.0f)
 	{
-
+		m_maxCount = 5;
+	}
+	//2分目
+	else if (m_timer>180.0f&&m_timer<240.0f)
+	{
+		m_maxCount = 10;
+	}
+	//3分目
+	else
+	{
+		m_maxCount = 20;
+	}
+	m_totalCount = m_enemyList.size() +m_littleEnemyList.size();
+	/*while (m_enemyList.size()+m_littleEnemyList.size()<m_maxCount)*/
+	if(m_totalCount<m_maxCount)
+	{
 		int ram = rand() % 100;
-		if (ram > 30)
-		{
-			Enemy* enemy = NewGO<Enemy>(1, "enmy");
+		if (ram > 30) {
+			Enemy* enemy = NewGO<Enemy>(1, "enemy");
 			enemy->SetPosition(Random());
 			m_enemyList.push_back(enemy);//敵リストに追加
 		}
-		else
-		{
-			LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-			littleEnemy->SetPosition(Random());
-			m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
+		else {
+			LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
+			m_littleEnemy->SetPosition(Random());
+			m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
 		}
 	}
 
-
-	//月読の加護のUI
-	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
-	//スキルUI
-	m_uiSkill = NewGO<UIskill>(0, "uiskill");
-	//しめ縄UI
-	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
-	//ミニマップ
-	m_miniMap = NewGO<MiniMap>(0, "minimap");
-	//呪ゲージ
-	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
-	//回復
-	m_uiHeal = NewGO <UIheal>(0, "uiheal");
+ //   //月読の加護のUI
+	//m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
+	////スキルUI
+	//m_uiSkill = NewGO<UIskill>(0, "uiskill");
+	////しめ縄UI
+	//m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
+	////ミニマップ
+	///*m_miniMap = NewGO<MiniMap>(0, "minimap");*/
+	////呪ゲージ
+	//m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
+	////回復
+	//m_uiHeal = NewGO <UIheal>(0, "uiheal");
 }
-
+	
 
 void Game::Render(RenderContext& rc)
 {
