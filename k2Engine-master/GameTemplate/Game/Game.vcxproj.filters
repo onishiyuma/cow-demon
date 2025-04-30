@@ -43,6 +43,7 @@
     <ClCompile Include="LittleEnemy.cpp" />
     <ClCompile Include="Poison.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
+    <ClCompile Include="AnnoyingEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="LittleEnemy.h" />
     <ClInclude Include="Poison.h" />
     <ClInclude Include="BossEnemy.h" />
+    <ClInclude Include="AnnoyingEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
