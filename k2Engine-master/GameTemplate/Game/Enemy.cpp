@@ -566,9 +566,6 @@ void Enemy::ProcessCommonStateTransition()
 
 	if (SearchHonden() == true)
 	{
-
-
-
 		if (SearchPlayer() == true)
 		{
 			Vector3 diff = m_player->GetPosition() - m_position;
