@@ -1,18 +1,18 @@
 /*!
- * @brief	ƒg[ƒ“ƒ}ƒbƒvB
+ * @brief	ãƒˆãƒ¼ãƒ³ãƒãƒƒãƒ—ã€‚
  */
 
 #include "../util/ColorSpace.h"
 
 /*!
- *@brief    ’¸“_ƒVƒF[ƒ_[‚Ö‚Ì“ü—Í
+ *@brief    é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸ã®å…¥åŠ›
  */
 struct VSInput{
 	float4 pos : POSITION;
 	float2 uv  : TEXCOORD0;
 };
 /*!
- *@brief    ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚Ö‚Ì“ü—ÍB
+ *@brief    ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸ã®å…¥åŠ›ã€‚
  */
 struct PSInput{
 	float4 pos : SV_POSITION;
@@ -20,25 +20,25 @@ struct PSInput{
 };
 
 /*!
- *@brief    ƒXƒvƒ‰ƒCƒg•`‰æ‚Ì‹¤’Ê’è”ƒoƒbƒtƒ@B
- *@details  SpriteƒNƒ‰ƒX“à‚Åb0ƒŒƒWƒXƒ^‚Éİ’è‚³‚ê‚Ä‚¢‚Ü‚·B
+ *@brief    ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»ã®å…±é€šå®šæ•°ãƒãƒƒãƒ•ã‚¡ã€‚
+ *@details  Spriteã‚¯ãƒ©ã‚¹å†…ã§b0ãƒ¬ã‚¸ã‚¹ã‚¿ã«è¨­å®šã•ã‚Œã¦ã„ã¾ã™ã€‚
  */
 cbuffer SpriteCommonCb : register(b0)
 {
-    float4x4 mvp;       // MVPs—ñ
-    float4 mulColor;    // æZƒJƒ‰[
+    float4x4 mvp;       // MVPè¡Œåˆ—
+    float4 mulColor;    // ä¹—ç®—ã‚«ãƒ©ãƒ¼
 };
 
 
 /*!
- *@brief    ƒg[ƒ“ƒ}ƒbƒvê—p‚Ì’è”ƒoƒbƒtƒ@B
+ *@brief    ãƒˆãƒ¼ãƒ³ãƒãƒƒãƒ—å°‚ç”¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã€‚
  */
 cbuffer cb2 : register(b1){
 	float middleGray;   
 }
 
 /*!
- * @brief	’¸“_ƒVƒF[ƒ_[B
+ * @brief	é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚
  */
 PSInput VSMain(VSInput In) 
 {
@@ -49,12 +49,12 @@ PSInput VSMain(VSInput In)
 }
 
 
-Texture2D<float4> sceneTexture : register(t0);	            // ƒV[ƒ“ƒeƒNƒXƒ`ƒƒB
-Texture2D<float4> lumAvgInTonemapTexture : register(t1);    // ‹P“xƒeƒNƒXƒ`ƒƒB
+Texture2D<float4> sceneTexture : register(t0);	            // ã‚·ãƒ¼ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
+Texture2D<float4> lumAvgInTonemapTexture : register(t1);    // è¼åº¦ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
 sampler Sampler : register(s0);
 
 /*!
- *@brief    ACES‚ğg‚Á‚½ƒg[ƒ“ƒ}ƒbƒp[
+ *@brief    ACESã‚’ä½¿ã£ãŸãƒˆãƒ¼ãƒ³ãƒãƒƒãƒ‘ãƒ¼
  */
 float ACESFilm(float x)
 {
@@ -67,26 +67,26 @@ float ACESFilm(float x)
 }
 
 /*!
- *@brief	•½‹Ï‹P“x‚©‚çƒg[ƒ“ƒ}ƒbƒv‚ğs‚¤ƒsƒNƒZƒ‹ƒVƒF[ƒ_[B
+ *@brief	å¹³å‡è¼åº¦ã‹ã‚‰ãƒˆãƒ¼ãƒ³ãƒãƒƒãƒ—ã‚’è¡Œã†ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚
  */
 float4 PSFinal( PSInput In) : SV_Target0
 {
-	// ƒV[ƒ“‚ÌƒJƒ‰[‚ğƒTƒ“ƒvƒŠƒ“ƒO‚·‚éB
+	// ã‚·ãƒ¼ãƒ³ã®ã‚«ãƒ©ãƒ¼ã‚’ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã™ã‚‹ã€‚
 	float4 sceneColor = sceneTexture.Sample(Sampler, In.uv );
-    // ƒV[ƒ“‚ÌƒJƒ‰[‚ğRGBŒn‚©‚çHSVŒn‚É•ÏŠ·‚·‚éB
+    // ã‚·ãƒ¼ãƒ³ã®ã‚«ãƒ©ãƒ¼ã‚’RGBç³»ã‹ã‚‰HSVç³»ã«å¤‰æ›ã™ã‚‹ã€‚
     float3 hsv = Rgb2Hsv(sceneColor);
 
 	float avgLum = lumAvgInTonemapTexture.Sample(Sampler, float2( 0.5f, 0.5f)).r;
     
-    // •½‹Ï‹P“x‚ğmiddleGray‚Ì’l‚É‚·‚é‚½‚ß‚ÌƒXƒP[ƒ‹’l‚ğ‹‚ß‚éB
+    // å¹³å‡è¼åº¦ã‚’middleGrayã®å€¤ã«ã™ã‚‹ãŸã‚ã®ã‚¹ã‚±ãƒ¼ãƒ«å€¤ã‚’æ±‚ã‚ã‚‹ã€‚
     float k = ( middleGray / ( max(avgLum, 0.001f )));
-    // ƒXƒP[ƒ‹’l‚ğg‚Á‚ÄA‹P“x‚ğƒXƒP[ƒ‹ƒ_ƒEƒ“B
+    // ã‚¹ã‚±ãƒ¼ãƒ«å€¤ã‚’ä½¿ã£ã¦ã€è¼åº¦ã‚’ã‚¹ã‚±ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ã€‚
     hsv.z *= k;
     
-    // ACESƒg[ƒ“ƒ}ƒbƒp[‚ğg‚Á‚Ä‹P“x‚Ì•Ï‰»‚ğ”ñüŒ`‚É‚·‚éB
+    // ACESãƒˆãƒ¼ãƒ³ãƒãƒƒãƒ‘ãƒ¼ã‚’ä½¿ã£ã¦è¼åº¦ã®å¤‰åŒ–ã‚’éç·šå½¢ã«ã™ã‚‹ã€‚
     hsv.z = ACESFilm(hsv.z);
 
-    // HSVŒn‚©‚çRGBŒn‚É–ß‚·B
+    // HSVç³»ã‹ã‚‰RGBç³»ã«æˆ»ã™ã€‚
     sceneColor.xyz = Hsv2Rgb(hsv);
     
 	return sceneColor;

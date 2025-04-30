@@ -5,7 +5,7 @@
 
 namespace 
 {
-	//ÉcÉNÉàÉ~
+	//„ÉÑ„ÇØ„É®„Éü
 	Vector3 RUNA_FREME_POSITION = Vector3(815.0f, -425.0f, 0.0f);
 }
 
@@ -22,12 +22,12 @@ UItukuyomi::~UItukuyomi()
 bool UItukuyomi::Start()
 {
 	m_player = FindGO<Player>("player");
-	//ÉcÉNÉàÉ~ÉQÅ[ÉW0
+	//„ÉÑ„ÇØ„É®„Éü„Ç≤„Éº„Ç∏0
 	m_runaSprite.Init("Assets/UI/Tukuyomi 1.DDS", 230, 230);
 	m_runaSprite.SetPosition(RUNA_FREME_POSITION);
 	m_runaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, 0.5f));
 
-	//ÉcÉNÉàÉ~MAX
+	//„ÉÑ„ÇØ„É®„ÉüMAX
 	m_runaSprite2.Init("Assets/UI/TukuyomiMax 1.DDS", 230, 230);
 	m_runaSprite2.SetPosition(RUNA_FREME_POSITION);
 	m_runaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, 0.5f));

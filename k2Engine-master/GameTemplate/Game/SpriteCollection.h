@@ -2,17 +2,17 @@
 class SpriteCollection:public IGameObject
 {
 public:
-	//メンバ関数
+	//繝｡繝ｳ繝宣未謨ｰ
 	SpriteCollection();
 	~SpriteCollection();
 
 	bool Start();
-	//更新処理
+	//譖ｴ譁ｰ蜃ｦ逅�
 	void Update();
-	//描画処理
+	//謠冗判蜃ｦ逅�
 	void Render(RenderContext& rc);
 
-	//メンバ変数
+	//繝｡繝ｳ繝仙､画焚
 	SpriteRender m_spriteRender;
 	Vector3 m_firstPosition;
 	Vector3 m_position;

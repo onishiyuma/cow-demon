@@ -33,11 +33,11 @@ namespace nsK2EngineLow {
 			IID_PPV_ARGS(&m_indexBuffer));
 
 		
-		//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìƒrƒ…[‚ğì¬B
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã€‚
 		m_indexBufferView.BufferLocation = m_indexBuffer->GetGPUVirtualAddress();
 
 
-		//ƒXƒgƒ‰ƒCƒh‚Í‚SƒoƒCƒgŒÅ’èB
+		//ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰ã¯ï¼”ãƒã‚¤ãƒˆå›ºå®šã€‚
 		m_strideInBytes = 4;
 		m_indexBufferView.Format = DXGI_FORMAT_R32_UINT;
 		m_indexBufferView.SizeInBytes = m_sizeInBytes;
@@ -49,7 +49,7 @@ namespace nsK2EngineLow {
 		uint8_t* pData;
 		uint32_t* pData32;
 		m_indexBuffer->Map(0, nullptr, reinterpret_cast<void**>(&pData));
-		// ƒRƒs[ŠJnˆÊ’u‚ğƒIƒtƒZƒbƒg‚·‚éB
+		// ã‚³ãƒ”ãƒ¼é–‹å§‹ä½ç½®ã‚’ã‚ªãƒ•ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 		pData += copyStartAddrOffset;
 		pData32 = (uint32_t*)pData;
 		numCopy = numCopy == 0 ? m_count : numCopy;
@@ -63,7 +63,7 @@ namespace nsK2EngineLow {
 		uint8_t* pData;
 		uint32_t* pData32;
 		m_indexBuffer->Map(0, nullptr, reinterpret_cast<void**>(&pData));
-		// ƒRƒs[ŠJnˆÊ’u‚ğƒIƒtƒZƒbƒg‚·‚éB
+		// ã‚³ãƒ”ãƒ¼é–‹å§‹ä½ç½®ã‚’ã‚ªãƒ•ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 		pData += copyStartAddrOffset;
 		pData32 = (uint32_t*)pData;
 		numCopy = numCopy == 0 ? m_count : numCopy;

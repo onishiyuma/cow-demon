@@ -9,12 +9,12 @@ namespace nsK2EngineLow {
 	}
 	void RWStructuredBuffer::Release()
 	{
-		//ƒAƒ“ƒ}ƒbƒv
+		//ã‚¢ãƒ³ãƒãƒƒãƒ—
 		CD3DX12_RANGE readRange(0, 0);
 		for( int i = 0; i < 2; i++){
 			if (m_buffersOnGPU[i]) {
 				if (m_buffersOnCPU[i]) {
-					// ƒƒCƒ“ƒƒ‚ƒŠ‚Éƒ}ƒbƒv‚µ‚Ä‚¢‚é‚Ì‚ÅƒAƒ“ƒ}ƒbƒv‚ğs‚¤B
+					// ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ¢ãƒªã«ãƒãƒƒãƒ—ã—ã¦ã„ã‚‹ã®ã§ã‚¢ãƒ³ãƒãƒƒãƒ—ã‚’è¡Œã†ã€‚
 					m_buffersOnGPU[i]->Unmap(0, &readRange);
 				}
 				ReleaseD3D12Object(m_buffersOnGPU[i]);
@@ -35,7 +35,7 @@ namespace nsK2EngineLow {
 
 		D3D12_HEAP_PROPERTIES prop{};
 		if (m_isAccessCPU) {
-			// CPUƒAƒNƒZƒX‚·‚éH
+			// CPUã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹ï¼Ÿ
 			prop.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
 			prop.CreationNodeMask = 1;
 			prop.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
@@ -43,15 +43,15 @@ namespace nsK2EngineLow {
 			prop.VisibleNodeMask = 1;
 		}
 		else {
-			// CPUƒAƒNƒZƒX‚µ‚È‚¢B
+			// CPUã‚¢ã‚¯ã‚»ã‚¹ã—ãªã„ã€‚
 			prop.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
 			prop.CreationNodeMask = 1;
 			prop.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
 			prop.Type = D3D12_HEAP_TYPE_DEFAULT;
 			prop.VisibleNodeMask = 1;
 		}
-		// CPU‚©‚çƒAƒNƒZƒX‚·‚éê‡‚ÍGPU‚ªƒAƒNƒZƒX‚µ‚Ä‚¢‚éƒoƒbƒtƒ@‚ğ‘‚«Š·‚¦‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅA
-		// ƒ_ƒuƒ‹ƒoƒbƒtƒ@‚É‚·‚éB
+		// CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹å ´åˆã¯GPUãŒã‚¢ã‚¯ã‚»ã‚¹ã—ã¦ã„ã‚‹ãƒãƒƒãƒ•ã‚¡ã‚’æ›¸ãæ›ãˆã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ã€
+		// ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡ã«ã™ã‚‹ã€‚
 		int numBuffer = m_isAccessCPU ? 2 : 1;
 		for (int bufferNo = 0; bufferNo < numBuffer; bufferNo++ ) {
 			auto& buffer = m_buffersOnGPU[bufferNo];
@@ -63,11 +63,11 @@ namespace nsK2EngineLow {
 				nullptr,
 				IID_PPV_ARGS(&buffer)
 			);
-			//\‘¢‰»ƒoƒbƒtƒ@‚ğCPU‚©‚çƒAƒNƒZƒX‰Â”\‚È‰¼‘zƒAƒhƒŒƒX‹óŠÔ‚Éƒ}ƒbƒsƒ“ƒO‚·‚éB
-			//ƒ}ƒbƒvAƒAƒ“ƒ}ƒbƒv‚ÌƒI[ƒo[ƒwƒbƒh‚ğŒyŒ¸‚·‚é‚½‚ß‚É‚Í‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ª¶‚«‚Ä‚¢‚éŠÔ‚Ís‚í‚È‚¢B
+			//æ§‹é€ åŒ–ãƒãƒƒãƒ•ã‚¡ã‚’CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ãªä»®æƒ³ã‚¢ãƒ‰ãƒ¬ã‚¹ç©ºé–“ã«ãƒãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹ã€‚
+			//ãƒãƒƒãƒ—ã€ã‚¢ãƒ³ãƒãƒƒãƒ—ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ˜ãƒƒãƒ‰ã‚’è»½æ¸›ã™ã‚‹ãŸã‚ã«ã¯ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒç”Ÿãã¦ã„ã‚‹é–“ã¯è¡Œã‚ãªã„ã€‚
 			if(m_isAccessCPU)
 			{
-				// ‰Šúƒf[ƒ^‚ÌƒRƒs[‚ª‚Å‚«‚é‚Ì‚Í
+				// åˆæœŸãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼ãŒã§ãã‚‹ã®ã¯
 				CD3DX12_RANGE readRange(0, 0);        //     intend to read from this resource on the CPU.
 				buffer->Map(0, &readRange, reinterpret_cast<void**>(&m_buffersOnCPU[bufferNo]));
 				memcpy(m_buffersOnCPU[bufferNo], initData, m_sizeOfElement * m_numElement);
@@ -83,7 +83,7 @@ namespace nsK2EngineLow {
 		m_sizeOfElement = vb.GetStrideInBytes();
 		m_numElement = vb.GetSizeInBytes() / m_sizeOfElement;
 		if (isUpdateByCPU) {
-			//–¢‘Î‰B
+			//æœªå¯¾å¿œã€‚
 			std::abort();
 		}
 		else {
@@ -92,7 +92,7 @@ namespace nsK2EngineLow {
 				gpuBuffer = vb.GetID3DResourceAddress();
 				gpuBuffer->AddRef();
 			}
-			//CPU‚©‚ç‚Í•ÏX‚Å‚«‚È‚¢‚Ì‚Åƒ}ƒbƒv‚µ‚È‚¢B
+			//CPUã‹ã‚‰ã¯å¤‰æ›´ã§ããªã„ã®ã§ãƒãƒƒãƒ—ã—ãªã„ã€‚
 			for (auto& cpuBuffer : m_buffersOnCPU) {
 				cpuBuffer = nullptr;
 			}
@@ -104,7 +104,7 @@ namespace nsK2EngineLow {
 		m_sizeOfElement = ib.GetStrideInBytes();
 		m_numElement = ib.GetSizeInBytes() / m_sizeOfElement;
 		if (isUpdateByCPU) {
-			//–¢‘Î‰B
+			//æœªå¯¾å¿œã€‚
 			std::abort();
 		}
 		else {
@@ -113,7 +113,7 @@ namespace nsK2EngineLow {
 				gpuBuffer = ib.GetID3DResourceAddress();
 				gpuBuffer->AddRef();
 			}
-			//CPU‚©‚ç‚Í•ÏX‚Å‚«‚È‚¢‚Ì‚Åƒ}ƒbƒv‚µ‚È‚¢B
+			//CPUã‹ã‚‰ã¯å¤‰æ›´ã§ããªã„ã®ã§ãƒãƒƒãƒ—ã—ãªã„ã€‚
 			for (auto& cpuBuffer : m_buffersOnCPU) {
 				cpuBuffer = nullptr;
 			}
@@ -123,14 +123,14 @@ namespace nsK2EngineLow {
 	ID3D12Resource* RWStructuredBuffer::GetD3DResoruce()
 	{
 		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
-		// CPU‚©‚çƒAƒNƒZƒX‚ª‚Å‚«‚È‚¢ê‡‚Í0”Ô–Ú‚µ‚©g‚í‚È‚¢B
+		// CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ãŒã§ããªã„å ´åˆã¯0ç•ªç›®ã—ã‹ä½¿ã‚ãªã„ã€‚
 		backBufferIndex = m_isAccessCPU ? backBufferIndex : 0;
 		return m_buffersOnGPU[backBufferIndex];
 	}
 	void* RWStructuredBuffer::GetResourceOnCPU()
 	{
 		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
-		// CPU‚©‚çƒAƒNƒZƒX‚ª‚Å‚«‚È‚¢ê‡‚Í0”Ô–Ú‚µ‚©g‚í‚È‚¢B
+		// CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ãŒã§ããªã„å ´åˆã¯0ç•ªç›®ã—ã‹ä½¿ã‚ãªã„ã€‚
 		backBufferIndex = m_isAccessCPU ? backBufferIndex : 0;
 		return m_buffersOnCPU[backBufferIndex];
 	}
@@ -139,7 +139,7 @@ namespace nsK2EngineLow {
 		if (!m_isInited) {
 			return;
 		}
-		// CPU‚©‚çƒAƒNƒZƒX‚ª‚Å‚«‚È‚¢ê‡‚Í0”Ô–Ú‚µ‚©g‚í‚È‚¢B
+		// CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ãŒã§ããªã„å ´åˆã¯0ç•ªç›®ã—ã‹ä½¿ã‚ãªã„ã€‚
 		bufferNo = m_isAccessCPU ? bufferNo : 0;
 		auto device = g_graphicsEngine->GetD3DDevice();
 		D3D12_UNORDERED_ACCESS_VIEW_DESC desc{};
@@ -159,7 +159,7 @@ namespace nsK2EngineLow {
 		if (!m_isInited) {
 			return;
 		}
-		// CPU‚©‚çƒAƒNƒZƒX‚ª‚Å‚«‚È‚¢ê‡‚Í0”Ô–Ú‚µ‚©g‚í‚È‚¢B
+		// CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ãŒã§ããªã„å ´åˆã¯0ç•ªç›®ã—ã‹ä½¿ã‚ãªã„ã€‚
 		bufferNo = m_isAccessCPU ? bufferNo : 0;
 		auto device = g_graphicsEngine->GetD3DDevice();
 		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc;

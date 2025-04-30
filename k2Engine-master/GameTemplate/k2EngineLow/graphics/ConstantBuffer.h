@@ -4,15 +4,15 @@ namespace nsK2EngineLow {
 	class ConstantBuffer : public Noncopyable {
 	public:
 		/// <summary>
-		/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		/// </summary>
 		ConstantBuffer() {}
 		/// <summary>
-		/// ƒfƒXƒgƒ‰ƒNƒ^B
+		/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
 		/// </summary>
 		~ConstantBuffer();
 		/// <summary>
-		/// ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		/// ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		/// </summary>
 		/// <param name="r"></param>
 		ConstantBuffer(ConstantBuffer&& r)
@@ -31,14 +31,14 @@ namespace nsK2EngineLow {
 			r.m_constBufferCPU[1] = nullptr;
 		}
 		/// <summary>
-		/// ‰Šú‰»B
+		/// åˆæœŸåŒ–ã€‚
 		/// </summary>
-		/// <param name="size">’è”ƒoƒbƒtƒ@‚ÌƒTƒCƒYB</param>
-		/// <param name="srcData">ƒ\[ƒXƒf[ƒ^Bnull‚ğw’è‚·‚é‚±‚Æ‚à‰Â”\B</param>
-		/// <param name="isDoubleBuffer">“à•”‚Åƒ_ƒuƒ‹ƒoƒbƒtƒ@‰»‚·‚éH</param>
+		/// <param name="size">å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºã€‚</param>
+		/// <param name="srcData">ã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã€‚nullã‚’æŒ‡å®šã™ã‚‹ã“ã¨ã‚‚å¯èƒ½ã€‚</param>
+		/// <param name="isDoubleBuffer">å†…éƒ¨ã§ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡åŒ–ã™ã‚‹ï¼Ÿ</param>
 		void Init(int size, const void* srcData = nullptr, bool isDoubleBuffer = true);
 		/// <summary>
-		/// —˜—p‰Â”\‚Èƒoƒbƒtƒ@‚©‚Ç‚¤‚©‚ğ”»’èB
+		/// åˆ©ç”¨å¯èƒ½ãªãƒãƒƒãƒ•ã‚¡ã‹ã©ã†ã‹ã‚’åˆ¤å®šã€‚
 		/// </summary>
 		/// <returns></returns>
 		bool IsValid() const
@@ -46,7 +46,7 @@ namespace nsK2EngineLow {
 			return m_isValid;
 		}
 		/// <summary>
-		/// ƒf[ƒ^‚ğVRAM‚ÉƒRƒs[‚·‚éB
+		/// ãƒ‡ãƒ¼ã‚¿ã‚’VRAMã«ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
 		/// </summary>
 		/// <param name="data"></param>
 		void CopyToVRAM(void* data);
@@ -56,32 +56,32 @@ namespace nsK2EngineLow {
 			CopyToVRAM(&data);
 		}
 		/// <summary>
-		/// ƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚ÉConstantBufferView‚ğ“o˜^B
+		/// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã«ConstantBufferViewã‚’ç™»éŒ²ã€‚
 		/// </summary>
 		/// <param name="descriptorHandle"></param>
 		void RegistConstantBufferView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle);
 		void RegistConstantBufferView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo);
 		/// <summary>
-		/// VRAMã‚Ì‰¼‘zƒAƒhƒŒƒX‚ğæ“¾‚·‚éB
+		/// VRAMä¸Šã®ä»®æƒ³ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã™ã‚‹ã€‚
 		/// </summary>
 		/// <returns></returns>
 		D3D12_GPU_VIRTUAL_ADDRESS GetGPUVirtualAddress();
 	private:
 		/// <summary>
-		/// ‰ğ•úB
+		/// è§£æ”¾ã€‚
 		/// </summary>
 		void Release();
 		/// <summary>
-		/// ƒoƒbƒNƒoƒbƒtƒ@‚Ì”Ô†‚ğæ“¾B
+		/// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®ç•ªå·ã‚’å–å¾—ã€‚
 		/// </summary>
 		/// <returns></returns>
 		int GetBackBufferNo() const;
 	private:
-		ID3D12Resource* m_constantBuffer[2] = { nullptr };	// ’è”ƒoƒbƒtƒ@B
-		void* m_constBufferCPU[2] = { nullptr };			// CPU‘¤‚©‚çƒAƒNƒZƒX‚Å‚«‚é‚·‚é’è”ƒoƒbƒtƒ@‚ÌƒAƒhƒŒƒXB
-		int m_size = 0;										// ’è”ƒoƒbƒtƒ@‚ÌƒTƒCƒYB
+		ID3D12Resource* m_constantBuffer[2] = { nullptr };	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã€‚
+		void* m_constBufferCPU[2] = { nullptr };			// CPUå´ã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹ã™ã‚‹å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚
+		int m_size = 0;										// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºã€‚
 		int m_allocSize = 0;
-		bool m_isValid = false;								// —˜—p‰Â”\H
-		bool m_isDoubleBuffer = false;						// ’è”ƒoƒbƒtƒ@‚ğƒ_ƒuƒ‹ƒoƒbƒtƒ@‚É‚·‚éH
+		bool m_isValid = false;								// åˆ©ç”¨å¯èƒ½ï¼Ÿ
+		bool m_isDoubleBuffer = false;						// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡ã«ã™ã‚‹ï¼Ÿ
 	};
 }

@@ -13,14 +13,14 @@ bool Stone::Start()
 
 	m_spriteCollection = FindGO<SpriteCollection>("spriteCollection");
 
-	//ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
-	m_modelRender.Init("Assets/modelData/stone/stone.test.tkm");
-	m_modelRender.SetScale(0.5f, 0.5f, 0.5f);
+	//ãƒ¢ãƒ‡ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
+	m_modelRender.SetScale(0.0f, 0.0f, 0.0f);
 	
 	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
-	//ƒRƒŠƒWƒ‡ƒ“ì¬—pŠÖ”‚ğŒÄ‚Ño‚·B
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ä½œæˆç”¨é–¢æ•°ã‚’å‘¼ã³å‡ºã™ã€‚
 	//CreateCollision();
-	//ƒRƒŠƒWƒ‡ƒ“‚ÉÀ•W‚ğƒZƒbƒgB
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã«åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã€‚
 	//m_collisionObject->SetPosition(m_position);
 	//m_collisionObject->Update();
 	
@@ -45,12 +45,13 @@ void Stone::Update()
 
 	//m_modelRender.SetPosition(m_player->GetPosition());
 	m_modelRender.Update();
+	m_modelRender.SetPosition(m_position);
 
-	Move();
 	
-	//ƒvƒŒƒCƒ„[‚©‚ç‰Î‘ÅÎ‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹‚ğŒvZB
+	
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ç«æ‰“çŸ³ã«å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã€‚
 	Vector3 diff = m_player->m_position - m_position;
-	//ƒxƒNƒgƒ‹‚Ì’·‚³‚ª120.0f‚æ‚è¬‚³‚©‚Á‚½‚ç
+	//ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ãŒ120.0fã‚ˆã‚Šå°ã•ã‹ã£ãŸã‚‰
 	if (diff.Length() <= 50.0f) {
 
 		if (m_collectionFlag ==false) {
@@ -62,13 +63,13 @@ void Stone::Update()
 			
 			
 		}
-		//Aƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ç
+		//Aãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸã‚‰
 		if (g_pad[0]->IsTrigger(enButtonA)) {
 
-			//‰Î‘ÅÎ‚ÌƒAƒCƒeƒ€ƒJƒEƒ“ƒg‚ğ1‘‚â‚·B
+			//ç«æ‰“çŸ³ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚«ã‚¦ãƒ³ãƒˆã‚’1å¢—ã‚„ã™ã€‚
 			m_player->m_stoneCount += 1;
 
-			//©g‚ğíœ‚·‚éB
+			//è‡ªèº«ã‚’å‰Šé™¤ã™ã‚‹ã€‚
 			DeleteGO(this);
 			
 		}
@@ -78,29 +79,28 @@ void Stone::Update()
 
 		m_collectionFlag = false;
 
-		DeleteGO(m_spriteCollection);
+		if (m_spriteCollection != nullptr) {
+			DeleteGO(m_spriteCollection);
+			m_spriteCollection = nullptr;
+		}
+		
 	}
 	
 	
 }
 
-void Stone::Move() 
-{
-	m_modelRender.SetPosition(m_position);
-}
-
-////ƒRƒŠƒWƒ‡ƒ“‚ğì¬B
+////ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆã€‚
 //void Stone::CreateCollision()
 //{
 //	m_collisionObject = NewGO<CollisionObject>(0);
 //
-//	//” ó‚ÌƒRƒŠƒWƒ‡ƒ“‚ğì¬B
+//	//ç®±çŠ¶ã®ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆã€‚
 //	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { m_collisionScale });
 //
-//	//ƒRƒŠƒWƒ‡ƒ“‚É–¼‘O‚ğ‚Â‚¯‚éB
+//	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã«åå‰ã‚’ã¤ã‘ã‚‹ã€‚
 //	m_collisionObject->SetName("gameover_collision");
 //
-//	//ƒIƒuƒWƒFƒNƒg‚ª©“®‚Åíœ‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚éB
+//	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè‡ªå‹•ã§å‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹ã€‚
 //	m_collisionObject->SetIsEnableAutoDelete(false);
 //}
 

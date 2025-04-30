@@ -4,7 +4,7 @@ class Player;
 class GameCamera;
 
 
-//’ÊíUŒ‚ƒNƒ‰ƒXB
+//é€šå¸¸æ”»æ’ƒã‚¯ãƒ©ã‚¹ã€‚
 class Purification:public IGameObject
 {
 public:
@@ -12,29 +12,29 @@ public:
 	~Purification();
 	void Update();
 	bool Start();
-	//ƒRƒŠƒWƒ‡ƒ“‚Ìì¬B
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®ä½œæˆã€‚
 	void CreateCollision();
-	//ƒGƒtƒFƒNƒg‚Ìì¬B
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ä½œæˆã€‚
 	void CreateEffect();
 
-	//À•W‚ğƒZƒbƒgB
+	//åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã€‚
 	void SetPosition(const Vector3& position)
 	{
 		m_position = position;
 	}
 
-	//À•W‚ğæ“¾B
+	//åº§æ¨™ã‚’å–å¾—ã€‚
 	const Vector3& GetPosition()const
 	{
 		return m_position;
 	}
 
-	//ˆÚ“®•ûŒüB
+	//ç§»å‹•æ–¹å‘ã€‚
 	void SetVelocity(const Vector3& velocity)
 	{
 		m_velocity = velocity;
 	}
-	//‰ñ“]‚ğƒZƒbƒgB
+	//å›è»¢ã‚’ã‚»ãƒƒãƒˆã€‚
 	void SetRotation(const Quaternion& rotation)
 	{
 		m_rotation = rotation;
@@ -42,19 +42,19 @@ public:
 
 	
 
-	//ƒƒ“ƒo•Ï”B
-	Player* m_player;//ƒvƒŒƒCƒ„[B
-	GameCamera* m_gameCamera;//ƒJƒƒ‰B
-	CollisionObject* m_collisionObj;//ƒRƒŠƒWƒ‡ƒ“ƒIƒuƒWƒFƒNƒgB
-	EffectEmitter* m_effectEmitter;//ƒGƒtƒFƒNƒgB
-	Vector3 m_toCameraPos;//’‹“_‚©‚ç‹“_‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹B
-	Vector3 m_velocity;//‘¬“xB
-	Vector3 m_position;//À•WB
-	Vector3 m_direction;//ˆÚ“®•ûŒüB
-	Vector3 m_moveSpeed;//ˆÚ“®‘¬“xB
-	Vector3 m_scale = Vector3::One;//‘å‚«‚³B(“™”{)
-	Vector3 m_moveVec;//ˆÚ“®‚·‚éƒxƒNƒgƒ‹B
-	Quaternion m_rotation;//‰ñ“]B
-	const float m_purificationSpeed = 2000.0f;//‚¨âP‚¢‚ÌˆÚ“®‘¬“xB
-	float m_deleteTimer = 0.0f;//íœ‚ğŠÇ—‚·‚éƒ^ƒCƒ}[B
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚
+	Player* m_player;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã€‚
+	GameCamera* m_gameCamera;//ã‚«ãƒ¡ãƒ©ã€‚
+	CollisionObject* m_collisionObj;//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
+	EffectEmitter* m_effectEmitter;//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã€‚
+	Vector3 m_toCameraPos;//æ³¨è¦–ç‚¹ã‹ã‚‰è¦–ç‚¹ã«å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ã€‚
+	Vector3 m_velocity;//é€Ÿåº¦ã€‚
+	Vector3 m_position;//åº§æ¨™ã€‚
+	Vector3 m_direction;//ç§»å‹•æ–¹å‘ã€‚
+	Vector3 m_moveSpeed;//ç§»å‹•é€Ÿåº¦ã€‚
+	Vector3 m_scale = Vector3::One;//å¤§ãã•ã€‚(ç­‰å€)
+	Vector3 m_moveVec;//ç§»å‹•ã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«ã€‚
+	Quaternion m_rotation;//å›è»¢ã€‚
+	const float m_purificationSpeed = 2000.0f;//ãŠç¥“ã„ã®ç§»å‹•é€Ÿåº¦ã€‚
+	float m_deleteTimer = 0.0f;//å‰Šé™¤ã‚’ç®¡ç†ã™ã‚‹ã‚¿ã‚¤ãƒãƒ¼ã€‚
 };

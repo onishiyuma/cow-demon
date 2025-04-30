@@ -22,7 +22,7 @@ public:
 	};
 
 	LittleEnemy();
-	~LittleEnemy();
+	virtual ~LittleEnemy();
 
 	bool Start()override;
 	void Update()override;

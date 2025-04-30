@@ -5,7 +5,7 @@
 namespace nsK2Engine {
 	void MapChip2DRender::Init(Level2DObjectData* objData)
 	{
-		//‰Šú‰»B
+		//åˆæœŸåŒ–ã€‚
 		m_spriteRender.Init(
 			objData->ddsFilePath,
 			static_cast<float>(objData->width),

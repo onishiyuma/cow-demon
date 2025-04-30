@@ -5,13 +5,13 @@
 
 bool Shimenawa::Start()
 {
-	//ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚ŞB
+	//ãƒ¢ãƒ‡ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã€‚
 	m_modelRender.Init("Assets/modelData/rope/rope.tkm");
 
-	//ƒvƒŒƒCƒ„[‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğŒŸõ‚·‚éB
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æ¤œç´¢ã™ã‚‹ã€‚
 	m_player = FindGO<Player>("player");
 
-	//À•W‚ğæ“¾B
+	//åº§æ¨™ã‚’å–å¾—ã€‚
 	m_position = m_player->GetPosition();
 
 	CreateCollision();
@@ -31,13 +31,13 @@ Shimenawa::~Shimenawa()
 
 void Shimenawa::Update()
 {
-	//İ’uB
+	//è¨­ç½®ã€‚
 	Put();
-	//Œp‘±ŠÔB
+	//ç¶™ç¶šæ™‚é–“ã€‚
 	DurationTime();
 }
 
-//İ’u‚·‚éŠÖ”
+//è¨­ç½®ã™ã‚‹é–¢æ•°
 void Shimenawa::Put()
 {
 	m_collisionObject->SetPosition(m_position);
@@ -46,15 +46,15 @@ void Shimenawa::Put()
 	m_modelRender.Update();
 }
 
-//ƒRƒŠƒWƒ‡ƒ“‚ğì¬B
+//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆã€‚
 void Shimenawa::CreateCollision()
 {
 	m_collisionObject = NewGO<CollisionObject>(0);
-	//” ó‚ÌƒRƒŠƒWƒ‡ƒ“‚ğì¬B
+	//ç®±çŠ¶ã®ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆã€‚
 	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { 500.0f,1.0f,500.0f });
-	//–¼‘O‚ğ•t‚¯‚éB
+	//åå‰ã‚’ä»˜ã‘ã‚‹ã€‚
 	m_collisionObject->SetName("Shimenawa");;
-	//ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚éB
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹ã€‚
 	m_collisionObject->SetIsEnableAutoDelete(false);
 }
 

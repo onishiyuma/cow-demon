@@ -1,12 +1,12 @@
 ///////////////////////////////////////
-// PBR�x�[�X�̃f�B�t�@�[�h���C�e�B���O��CAV���W�X�^�ݒ�
+// PBRベースのディファードライティングのCAVレジスタ設定
 ///////////////////////////////////////
 
 
 #ifndef _DEFERREDLIGHTING_CAV_REGISTER_H_
 #define _DEFERREDLIGHTING_CAV_REGISTER_H_
 
-//���ʒ萔�o�b�t�@
+//共通定数バッファ
 cbuffer cb : register(b0)
 {
     float4x4 mvp; 

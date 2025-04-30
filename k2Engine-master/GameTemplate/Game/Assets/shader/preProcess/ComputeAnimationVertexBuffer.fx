@@ -1,28 +1,28 @@
 /*!
- * @brief ƒAƒjƒ[ƒVƒ‡ƒ“Ï‚İ’¸“_ƒoƒbƒtƒ@‚ğŒvZ‚·‚éˆ—B
+ * @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ¸ˆã¿é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’è¨ˆç®—ã™ã‚‹å‡¦ç†ã€‚
  */
 
 
 struct SVertex{
-    float3 pos;			// À•WB
-    float3 normal;		// –@üB
-    float3 tangent;		// ÚƒxƒNƒgƒ‹B
-    float3 binormal;	// ]ƒxƒNƒgƒ‹B
-    float2 uv;			// UVÀ•WB
-    int4 indices;		// ƒXƒLƒ“ƒCƒ“ƒfƒbƒNƒXB
-    float4 skinWeights;	// ƒXƒLƒ“ƒEƒFƒCƒgB
+    float3 pos;			// åº§æ¨™ã€‚
+    float3 normal;		// æ³•ç·šã€‚
+    float3 tangent;		// æ¥ãƒ™ã‚¯ãƒˆãƒ«ã€‚
+    float3 binormal;	// å¾“ãƒ™ã‚¯ãƒˆãƒ«ã€‚
+    float2 uv;			// UVåº§æ¨™ã€‚
+    int4 indices;		// ã‚¹ã‚­ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã€‚
+    float4 skinWeights;	// ã‚¹ã‚­ãƒ³ã‚¦ã‚§ã‚¤ãƒˆã€‚
 };
 
 cbuffer cbParam : register(b0)
 {
-    float4x4 worldMatrix;   // ƒ[ƒ‹ƒhs—ñB
-    int numVertex ;         // ’¸“_”B    
-    int numInstance;        // ƒCƒ“ƒXƒ^ƒ“ƒX‚ÌÅ‘å”B
+    float4x4 worldMatrix;   // ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã€‚
+    int numVertex ;         // é ‚ç‚¹æ•°ã€‚    
+    int numInstance;        // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æœ€å¤§æ•°ã€‚
 }
 
 StructuredBuffer<SVertex> g_iputVertexBuffer : register(t0);
-StructuredBuffer<float4x4> g_boneMatrix         : register(t1);	    // ƒ{[ƒ“s—ñB
-StructuredBuffer<float4x4> g_worldMatrixArray   : register(t2);     // ƒ[ƒ‹ƒhs—ñ‚Ì”z—ñBƒCƒ“ƒXƒ^ƒ“ƒVƒ“ƒOƒfƒBƒXƒpƒbƒ`‚ÌÛ‚Ég‚í‚ê‚éB
+StructuredBuffer<float4x4> g_boneMatrix         : register(t1);	    // ãƒœãƒ¼ãƒ³è¡Œåˆ—ã€‚
+StructuredBuffer<float4x4> g_worldMatrixArray   : register(t2);     // ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®é…åˆ—ã€‚ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒã®éš›ã«ä½¿ã‚ã‚Œã‚‹ã€‚
 RWStructuredBuffer<SVertex> g_outputVertexBuffer : register(u0);
 
 #define NUM_THREAD_X        256
@@ -44,7 +44,7 @@ void CSMain(
         SVertex inVertex = g_iputVertexBuffer[vertexNo];
         float4x4 worldMatrixLocal = 0;	
         if( inVertex.skinWeights[0] > 0.0f){
-            // ƒXƒLƒ“‚ ‚èB            
+            // ã‚¹ã‚­ãƒ³ã‚ã‚Šã€‚            
             float4x4 skinMatrix = 0;
             float w = 0.0f;
             [unroll]
@@ -56,16 +56,16 @@ void CSMain(
 
             skinMatrix += g_boneMatrix[inVertex.indices[3]] * (1.0f - w);
             if( numInstance == 1){
-                // ˆê‘Ì‚Ì•`‰æ‚Ìê‡‚ÍCPP‘¤‚ÅƒXƒLƒ“s—ñ‚ªƒ[ƒ‹ƒh‹óŠÔ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚é‚Ì‚ÅA
-                // ‚»‚Ì‚Ü‚Üg‚¤B
+                // ä¸€ä½“ã®æç”»ã®å ´åˆã¯CPPå´ã§ã‚¹ã‚­ãƒ³è¡Œåˆ—ãŒãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ã«å¤‰æ›ã•ã‚Œã¦ã„ã‚‹ã®ã§ã€
+                // ãã®ã¾ã¾ä½¿ã†ã€‚
                 worldMatrixLocal = skinMatrix;
             }else{
-                // •¡”‚ÌƒIƒuƒWƒFƒNƒg‚ğ•`‰æ‚·‚éê‡‚Í’Êí‚Ì•`‰æ‚ÅƒXƒLƒ“s—ñ‚Íƒ‚ƒfƒ‹‹óŠÔ‚Ì‚Ü‚Ü‚È‚Ì‚ÅA
-                // ‚±‚±‚Åƒ[ƒ‹ƒh‹óŠÔ‚É•ÏŠ·‚·‚éB
+                // è¤‡æ•°ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æç”»ã™ã‚‹å ´åˆã¯é€šå¸¸ã®æç”»ã§ã‚¹ã‚­ãƒ³è¡Œåˆ—ã¯ãƒ¢ãƒ‡ãƒ«ç©ºé–“ã®ã¾ã¾ãªã®ã§ã€
+                // ã“ã“ã§ãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ã«å¤‰æ›ã™ã‚‹ã€‚
                 worldMatrixLocal = mul( g_worldMatrixArray[instanceNo], skinMatrix);
             }
         }else{
-            // ƒXƒLƒ“‚È‚µB
+            // ã‚¹ã‚­ãƒ³ãªã—ã€‚
             if( numInstance == 1){
                 worldMatrixLocal = worldMatrix;
             }else{

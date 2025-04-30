@@ -3,13 +3,24 @@
 #include "Game.h"
 #include "Player.h"
 
+
+EnemyBase::EnemyBase()
+{
+
+}
+
+EnemyBase::~EnemyBase()
+{
+	
+}
+
 bool EnemyBase::Start()
 {
-	//ƒQ[ƒ€‚ğ’T‚·
+	//ã‚²ãƒ¼ãƒ ã‚’æ¢ã™
 	m_game = FindGO<Game>("game");
-	//ƒvƒŒƒCƒ„[‚ğ’T‚·
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ¢ã™
 	m_player = FindGO<Player>("player");
-	//ƒQ[ƒ€‘S”Ê‚Ìİ’è
+	//ã‚²ãƒ¼ãƒ å…¨èˆ¬ã®è¨­å®š
 
 
 	return true;
@@ -17,31 +28,31 @@ bool EnemyBase::Start()
 
 void EnemyBase::Update()
 {
-
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.SetRotation(m_rotation);
+	//m_modelRender.Update();
 }
 
 void EnemyBase::BaseAction()
 {
-	////’ÇÕˆ—
+	////è¿½è·¡å‡¦ç†
 	//Chase();
-	////–{“a’ÇÕˆ—
+	////æœ¬æ®¿è¿½è·¡å‡¦ç†
 	///*Goal();*/
-	////‰ñ“]ˆ—
+	////å›è»¢å‡¦ç†
 	//Rotation();
-	////“–‚½‚è”»’è
+	////å½“ãŸã‚Šåˆ¤å®š
 	//Collision();
-	////UŒ‚ˆ—
+	////æ”»æ’ƒå‡¦ç†
 	//Attack();
-	////‰“‹——£UŒ‚ˆ—
+	////é è·é›¢æ”»æ’ƒå‡¦ç†
 	//MakePoison();
-	////ƒXƒe[ƒg‚Ì‘JˆÚˆ—
+	////ã‚¹ãƒ†ãƒ¼ãƒˆã®é·ç§»å‡¦ç†
 	//ManageState();
-	////ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶
+	////ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿ
 	//PlayAnimation();
 
-	m_modelRender.SetPosition(m_position);
-	m_modelRender.SetRotation(m_rotation);
-	m_modelRender.Update();
+	
 }
 
 

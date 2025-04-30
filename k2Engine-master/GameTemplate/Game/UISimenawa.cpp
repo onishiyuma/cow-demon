@@ -5,13 +5,13 @@
 
 namespace
 {
-	//‚µ‚ß“ê
+	//ã—ã‚ç¸„
 	Vector3 ROPE_FREME_POSITION = Vector3(435.0f, -425.0f, 0.0f);
-	//‚µ‚ß“êƒQ[ƒW
+	//ã—ã‚ç¸„ã‚²ãƒ¼ã‚¸
 	Vector3 ROPE_GAUGE_POSITION = Vector3(435.0f, -486.0f, 0.0f);
-	//—Î
+	//ç·‘
 	Vector4 GREEN = Vector4(0.0f,1.0f,0.0f,1.0f);
-	//”–‚¢—Î
+	//è–„ã„ç·‘
 	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
 }
 
@@ -27,15 +27,15 @@ UISimenawa::~UISimenawa()
 
 bool UISimenawa::Start()
 {
-	//ƒCƒ“ƒXƒ^ƒ“ƒXƒAƒhƒŒƒX‚ğŒŸõB
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ¤œç´¢ã€‚
 	m_player=FindGO<Player>("player");
 
-	//ƒ[ƒvƒQ[ƒW
+	//ãƒ­ãƒ¼ãƒ—ã‚²ãƒ¼ã‚¸
 	m_ropeGage.Init("Assets/UI/White.DDS", 120, 14);
 	m_ropeGage.SetPosition(ROPE_GAUGE_POSITION);
 	m_ropeGage.SetPivot(Vector2{ 0.5f, 0.0f });
 
-	//ƒ[ƒv‚Ì‰æ‘œ
+	//ãƒ­ãƒ¼ãƒ—ã®ç”»åƒ
 	m_ropeSprite.Init("Assets/UI/aitemskil1.DDS", 130, 130);
 	m_ropeSprite.SetPosition(ROPE_FREME_POSITION);
 	

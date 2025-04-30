@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "Player.h"
 #include "Purification.h"
 #include "Amulet.h"
@@ -54,7 +54,7 @@ Player::Player()
 Player::~Player()
 {
 	DeleteGO(m_playerLight);
-	DeleteGO(this);
+	//DeleteGO(this);
 }
 
 void Player::Update()

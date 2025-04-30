@@ -12,7 +12,7 @@
 
 bool Lantern::Start() 
 {
-	//ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
+	//ãƒ¢ãƒ‡ãƒ«ã‚’èª­ã¿è¾¼ã‚€
 	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
 	m_modelRender.SetScale(0.6f, 0.6f, 0.6f);
 
@@ -50,50 +50,50 @@ void Lantern::Update()
 {
 	m_modelRender.Update();
 
-	m_modelRender.SetPosition(m_position);//À•W‚ÌXV
+	m_modelRender.SetPosition(m_position);//åº§æ¨™ã®æ›´æ–°
 
-	//ƒvƒŒƒCƒ„[‚©‚ç“”âÄ‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹‚ğŒvZB
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ç¯ç± ã«å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã€‚
 	Vector3 diff = m_player->m_position - m_position;
 
-	//“”âÄ‚É‰Î‚ª“”‚Á‚Ä‚¢‚È‚©‚Á‚½‚ç
+	//ç¯ç± ã«ç«ãŒç¯ã£ã¦ã„ãªã‹ã£ãŸã‚‰
 	if (m_lightFlag == false) {
 
-		//ƒxƒNƒgƒ‹‚Ì’·‚³‚ª120.0f‚æ‚è¬‚³‚©‚Á‚½‚çB
+		//ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ãŒ120.0fã‚ˆã‚Šå°ã•ã‹ã£ãŸã‚‰ã€‚
 		if (diff.Length() <= 50.0f)
 		{
 			if (m_lightUI==false) {
 
 				m_lightUI = true;
 
-				//u‚`F‰Î‚ğ“”‚·v‚ğ“Ç‚İ‚Ş
+				//ã€Œï¼¡ï¼šç«ã‚’ç¯ã™ã€ã‚’èª­ã¿è¾¼ã‚€
 				m_spriteLight = NewGO<SpriteLight>(0, "spriteLight");
 			}
 			if (m_buttonAState == 0) {
 
-				//Aƒ{ƒ^ƒ“‚ğ“ü—Í‚µ‚½‚ç
+				//Aãƒœã‚¿ãƒ³ã‚’å…¥åŠ›ã—ãŸã‚‰
 				if (g_pad[0]->IsTrigger(enButtonA)) {
 
 					
-					//‰Î‘ÅÎ‚ğ‚Ğ‚Æ‚ÂˆÈã‚Á‚Ä‚¢‚½‚ç
+					//ç«æ‰“çŸ³ã‚’ã²ã¨ã¤ä»¥ä¸ŠæŒã£ã¦ã„ãŸã‚‰
 					if (m_player->m_stoneCount > 0) {
 
-						//ƒ~ƒjƒQ[ƒ€‚ğ‚µ‚Ä‚¢‚È‚©‚Á‚½‚ç
+						//ãƒŸãƒ‹ã‚²ãƒ¼ãƒ ã‚’ã—ã¦ã„ãªã‹ã£ãŸã‚‰
 						if (m_lanternAction == false) {
 
-							//ƒ~ƒjƒQ[ƒ€’†‚É‚·‚é
+							//ãƒŸãƒ‹ã‚²ãƒ¼ãƒ ä¸­ã«ã™ã‚‹
 							m_lanternAction = true;
 
-							//uA:‰Î‚ğ“”‚·v
+							//ã€ŒA:ç«ã‚’ç¯ã™ã€
 							DeleteGO(m_spriteLight);
 
-							//ƒ^ƒCƒ~ƒ“ƒOƒo[‚ğ“Ç‚İ‚Ş
+							//ã‚¿ã‚¤ãƒŸãƒ³ã‚°ãƒãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 							m_timingBarB = NewGO<TimingBarB>(0, "timingBarB");
 
-							//ƒo[‚Ìƒ‰ƒCƒ“‚ğ“Ç‚İ‚Ş
+							//ãƒãƒ¼ã®ãƒ©ã‚¤ãƒ³ã‚’èª­ã¿è¾¼ã‚€
 							m_line = NewGO<Line>(0, "line");
 
 
-							//uAFƒ^ƒCƒ~ƒ“ƒO‚æ‚­ƒ{ƒ^ƒ“‚ğ‰Ÿ‚¹v‚ğ“Ç‚İ‚Ş
+							//ã€ŒAï¼šã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚ˆããƒœã‚¿ãƒ³ã‚’æŠ¼ã›ã€ã‚’èª­ã¿è¾¼ã‚€
 							m_spritePush = NewGO<SpritePush>(0, "spritePush");
 
 							m_buttonAState = 1;
@@ -103,43 +103,43 @@ void Lantern::Update()
 						}
 
 					}
-					//‰Î‘ÅÎ‚ğ‚Ğ‚Æ‚Â‚à‚Á‚Ä‚¢‚È‚©‚Á‚½‚ç
+					//ç«æ‰“çŸ³ã‚’ã²ã¨ã¤ã‚‚æŒã£ã¦ã„ãªã‹ã£ãŸã‚‰
 					else {
 						if (!m_noStoneUI) {
 
 							m_noStoneUI = true;
 
-							//uA:‰Î‘ÅÎ‚ª‘«‚è‚È‚¢v‚ğ“Ç‚İ‚Ş
+							//ã€ŒA:ç«æ‰“çŸ³ãŒè¶³ã‚Šãªã„ã€ã‚’èª­ã¿è¾¼ã‚€
 							m_spriteNoStone = NewGO<SpriteNoStone>(0, "spriteNoStone");
 						}
 					}
 				}
 			    if (m_buttonAState == 1) {
 
-					//Aƒ{ƒ^ƒ“‚ğ‚¨‚µ‚½‚ç
+					//Aãƒœã‚¿ãƒ³ã‚’ãŠã—ãŸã‚‰
 					if (g_pad[0]->IsTrigger(enButtonA)) {
 
 						//m_line->m_moving = true;
 						m_buttonAState = 0;
 						m_lanternAction = false;
 
-						//ƒo[‚Ìƒ‰ƒCƒ“‚ªA-10.0‚†ˆÈã10.0‚†ˆÈ‰ºi¬Œ÷‚ÌêŠj‚¾‚Á‚½‚ç
+						//ãƒãƒ¼ã®ãƒ©ã‚¤ãƒ³ãŒã€-10.0ï½†ä»¥ä¸Š10.0ï½†ä»¥ä¸‹ï¼ˆæˆåŠŸã®å ´æ‰€ï¼‰ã ã£ãŸã‚‰
 						if (m_line->m_position.x <= 10.0f && m_line->m_position.x >= -10.0f) {
 
-							//—z‚ª“”‚Á‚Ä‚¢‚é“”âÄ‚ÌƒJƒEƒ“ƒg‚ğ‘‚â‚·
+							//é™½ãŒç¯ã£ã¦ã„ã‚‹ç¯ç± ã®ã‚«ã‚¦ãƒ³ãƒˆã‚’å¢—ã‚„ã™
 							m_player->m_lanternCount++;
 
-							//‰Î‘ÅÎ‚Ì”‚ğ1Œ¸‚ç‚·
+							//ç«æ‰“çŸ³ã®æ•°ã‚’1æ¸›ã‚‰ã™
 							m_player->m_stoneCount--;
 
-							//‰æ‘œ‚ğíœ‚·‚é
+							//ç”»åƒã‚’å‰Šé™¤ã™ã‚‹
 							DeleteGO(m_timingBarB);
 							DeleteGO(m_line);
 							DeleteGO(m_spritePush);
 
 							
 
-							//“”âÄ‚É‰Î‚ª“”‚Á‚Ä‚¢‚é”»’è‚É‚·‚é
+							//ç¯ç± ã«ç«ãŒç¯ã£ã¦ã„ã‚‹åˆ¤å®šã«ã™ã‚‹
 							m_lightFlag = true;
 						}
 						else {
@@ -154,7 +154,7 @@ void Lantern::Update()
 			
 
 		}
-		//“”âÄ‚©‚ç—£‚ê‚½‚ç
+		//ç¯ç± ã‹ã‚‰é›¢ã‚ŒãŸã‚‰
 		else {
 
 			m_lightUI = false;
@@ -162,11 +162,27 @@ void Lantern::Update()
 			m_lanternAction = false;
 			m_buttonAState = 0;
 
-			DeleteGO(m_spriteLight);
-			DeleteGO(m_spriteNoStone);
-			DeleteGO(m_timingBarB);
-			DeleteGO(m_line);
-			DeleteGO(m_spritePush);
+			if (m_spriteLight != nullptr) {
+				DeleteGO(m_spriteLight);
+				m_spriteLight = nullptr;
+			}
+			if (m_spriteNoStone != nullptr) {
+				DeleteGO(m_spriteNoStone);
+				m_spriteNoStone = nullptr;
+			}
+			if (m_timingBarB != nullptr) {
+				DeleteGO(m_timingBarB);
+				m_timingBarB = nullptr;
+			}
+			if (m_line != nullptr) {
+				DeleteGO(m_line);
+				m_line = nullptr;
+			}
+			if (m_spritePush != nullptr) {
+				DeleteGO(m_spritePush);
+				m_spritePush = nullptr;
+			}
+			
 		}
 	}
 	

@@ -5,7 +5,7 @@ namespace nsK2Engine {
 	
 	void VolumePointLight::Update()
 	{
-		// ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚Ìî•ñ‚ğ‚à‚Æ‚Éƒ[ƒ‹ƒhs—ñ‚ğXV‚·‚éB
+		// ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã®æƒ…å ±ã‚’ã‚‚ã¨ã«ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’æ›´æ–°ã™ã‚‹ã€‚
 		Vector3 pos = m_lightData->GetPosition();
 		Vector3 scale;
 		scale.x = m_lightData->GetRange();

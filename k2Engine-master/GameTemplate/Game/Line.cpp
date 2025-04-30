@@ -14,9 +14,9 @@ Line::~Line()
 
 bool Line::Start() 
 {
-	m_spriteRender.Init("Assets/sprite/line.DDS", 600.0f, 400.0f); //‰æ‘œ‚ğ“Ç‚İ‚Ş
-	m_spriteRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f)); //À•W‚Ìİ’è
-	m_spriteRender.SetScale({ 1.0f,1.0f,1.0f }); //‘å‚«‚³‚Ìİ’è
+	m_spriteRender.Init("Assets/sprite/line.DDS", 600.0f, 400.0f); //ç”»åƒã‚’èª­ã¿è¾¼ã‚€
+	m_spriteRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f)); //åº§æ¨™ã®è¨­å®š
+	m_spriteRender.SetScale({ 1.0f,1.0f,1.0f }); //å¤§ãã•ã®è¨­å®š
 	m_spriteRender.Update();
 
 	m_lantern1 = FindGO<Lantern>("lantern1");
@@ -32,29 +32,29 @@ void Line::Move()
 
 	
 	
-	//moveState‚ª0‚ÌB
+	//moveStateãŒ0ã®æ™‚ã€‚
 	if (m_moveState == 0)
 	{
-			//‰E‚ÉˆÚ“®‚·‚éB
+			//å³ã«ç§»å‹•ã™ã‚‹ã€‚
 			m_position.x += 10.0f;
 	}
-	//moveState‚ª1‚ÌB
+	//moveStateãŒ1ã®æ™‚ã€‚
 	else if (m_moveState == 1)
 	{
-		//¶‚ÉˆÚ“®‚·‚éB
+		//å·¦ã«ç§»å‹•ã™ã‚‹ã€‚
 		m_position.x -= 10.0f;
 	}
 
-	//yÀ•W‚ª‰ŠúÀ•Wy+100.0f‚ğ’´‚¦‚½‚çB
+	//yåº§æ¨™ãŒåˆæœŸåº§æ¨™y+100.0fã‚’è¶…ãˆãŸã‚‰ã€‚
 	if (m_position.x >= m_firstPosition.x + 400.0f)
 	{
-		//moveState‚ğ1‚É‚·‚é(‰º‚ÉˆÚ“®‚·‚é‚æ‚¤‚É‚·‚é)B
+		//moveStateã‚’1ã«ã™ã‚‹(ä¸‹ã«ç§»å‹•ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹)ã€‚
 		m_moveState = 1;
 	}
-	//yÀ•W‚ª‰ŠúÀ•W-100.0f‚æ‚è‰º‚É‚È‚Á‚½‚çB
+	//yåº§æ¨™ãŒåˆæœŸåº§æ¨™-100.0fã‚ˆã‚Šä¸‹ã«ãªã£ãŸã‚‰ã€‚
 	else if (m_position.x <= m_firstPosition.x - 400.0f)
 	{
-		//moveState‚ğ0‚É‚·‚é(ã‚ÉˆÚ“®‚·‚é‚æ‚¤‚É‚·‚é)B
+		//moveStateã‚’0ã«ã™ã‚‹(ä¸Šã«ç§»å‹•ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹)ã€‚
 		m_moveState = 0;
 	}
 

@@ -3,21 +3,21 @@
 
 namespace nsK2EngineLow {
 	/// <summary>
-	/// ƒAƒjƒ[ƒVƒ‡ƒ“Ï‚İ’¸“_ƒoƒbƒtƒ@‚ğŒvZ‚·‚éˆ—B
+	/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ¸ˆã¿é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’è¨ˆç®—ã™ã‚‹å‡¦ç†ã€‚
 	/// </summary>
 	class ComputeAnimationVertexBuffer : Noncopyable {
 	public:
 		/// <summary>
-		/// ‰Šú‰»
+		/// åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="tkmFilePath">tkmƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹ƒpƒX</param>
-		/// <param name="numBone">ƒ{[ƒ“‚Ì”</param>
-		/// <param name="boneMatrixTopAddress">ƒ{[ƒ“s—ñ‚Ì”z—ñ</param>
-		/// <param name="enModelUpAxis">ƒ‚ƒfƒ‹‚Ìã•ûŒü</param>
-		/// <param name="numInstance">ƒCƒ“ƒXƒ^ƒ“ƒX‚Ì”</param>
+		/// <param name="tkmFilePath">tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹</param>
+		/// <param name="numBone">ãƒœãƒ¼ãƒ³ã®æ•°</param>
+		/// <param name="boneMatrixTopAddress">ãƒœãƒ¼ãƒ³è¡Œåˆ—ã®é…åˆ—</param>
+		/// <param name="enModelUpAxis">ãƒ¢ãƒ‡ãƒ«ã®ä¸Šæ–¹å‘</param>
+		/// <param name="numInstance">ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ•°</param>
 		/// <param name="worldMatrixArraySB">
-		/// ƒ[ƒ‹ƒhs—ñ‚Ì”z—ñ‚ÌƒXƒgƒ‰ƒNƒ`ƒƒ[ƒhƒoƒbƒtƒ@B
-		/// ƒCƒ“ƒXƒ^ƒ“ƒVƒ“ƒOƒfƒBƒXƒpƒbƒ`‚ğs‚¤Û‚Íw’è‚µ‚Ä‚­‚¾‚³‚¢B
+		/// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®é…åˆ—ã®ã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ã€‚
+		/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒã‚’è¡Œã†éš›ã¯æŒ‡å®šã—ã¦ãã ã•ã„ã€‚
 		/// </param>
 		void Init(
 			const char* tkmFilePath,
@@ -29,11 +29,11 @@ namespace nsK2EngineLow {
 		);
 		
 		/// <summary>
-		/// ƒfƒBƒXƒpƒbƒ`
+		/// ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒ
 		/// </summary>
-		/// <param name="rc">ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg</param>
-		/// <param name="worldMatrix">ƒ[ƒ‹ƒhs—ñ</param>
-		/// <param name="instanceNo">ƒCƒ“ƒXƒ^ƒ“ƒX”Ô†</param>
+		/// <param name="rc">ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ</param>
+		/// <param name="worldMatrix">ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—</param>
+		/// <param name="instanceNo">ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç•ªå·</param>
 		void Dispatch(
 			RenderContext& rc,
 			const Matrix& worldMatrix,
@@ -41,10 +41,10 @@ namespace nsK2EngineLow {
 		);
 		
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“ŒvZÏ‚İ’¸“_ƒoƒbƒtƒ@‚ğæ“¾B
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¨ˆç®—æ¸ˆã¿é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’å–å¾—ã€‚
 		/// </summary>
-		/// <param name="meshNo">ƒƒbƒVƒ…‚Ì”Ô†</param>
-		/// <returns>’¸“_ƒoƒbƒtƒ@</returns>
+		/// <param name="meshNo">ãƒ¡ãƒƒã‚·ãƒ¥ã®ç•ªå·</param>
+		/// <returns>é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡</returns>
 		const VertexBuffer& GetAnimatedVertexBuffer(int meshNo) const
 		{
 			return m_meshArray[meshNo].m_animatedVertexBuffer;
@@ -54,11 +54,11 @@ namespace nsK2EngineLow {
 			return m_meshArray[meshNo].m_animatedVertexBuffer;
 		}
 		/// <summary>
-		/// –‘OŒvZÏ‚İƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğæ“¾B
+		/// äº‹å‰è¨ˆç®—æ¸ˆã¿ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’å–å¾—ã€‚
 		/// </summary>
-		/// <param name="meshNo">ƒƒbƒVƒ…”Ô†B</param>
-		/// <param name="matNo">ƒ}ƒeƒŠƒAƒ‹”Ô†</param>
-		/// <returns>–‘OŒvZÏ‚İƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@</returns>
+		/// <param name="meshNo">ãƒ¡ãƒƒã‚·ãƒ¥ç•ªå·ã€‚</param>
+		/// <param name="matNo">ãƒãƒ†ãƒªã‚¢ãƒ«ç•ªå·</param>
+		/// <returns>äº‹å‰è¨ˆç®—æ¸ˆã¿ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡</returns>
 		const IndexBuffer& GetAnimatedIndexBuffer(int meshNo, int matNo) const
 		{
 			return m_meshArray[meshNo].m_animatedIndexBufferArray[matNo];
@@ -69,41 +69,41 @@ namespace nsK2EngineLow {
 		}
 	private:
 		/// <summary>
-		/// ƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚ğ‰Šú‰»B
+		/// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã‚’åˆæœŸåŒ–ã€‚
 		/// </summary>
 		void CreateDescriptorHeaps(StructuredBuffer* worldMatrixArraySB);
 	private:
 		/// <summary>
-		/// b0ƒŒƒWƒXƒ^‚ÉƒoƒCƒ“ƒh‚³‚ê‚éƒf[ƒ^B
+		/// b0ãƒ¬ã‚¸ã‚¹ã‚¿ã«ãƒã‚¤ãƒ³ãƒ‰ã•ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã€‚
 		/// </summary>
 		struct CB_0 {
-			Matrix worldMatrix;		// ƒ[ƒ‹ƒhs—ñB
-			int numVertex;			// ’¸“_”B
-			int outputOffset = 0;	// o—ÍƒIƒtƒZƒbƒgB
+			Matrix worldMatrix;		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã€‚
+			int numVertex;			// é ‚ç‚¹æ•°ã€‚
+			int outputOffset = 0;	// å‡ºåŠ›ã‚ªãƒ•ã‚»ãƒƒãƒˆã€‚
 		};
 		/// <summary>
-		/// ƒƒbƒVƒ…’PˆÊ‚Ìî•ñ‚ğ‚Ğ‚Æ‚Ü‚Æ‚ß‚·‚é‚½‚ß‚Ì\‘¢‘ÌB
+		/// ãƒ¡ãƒƒã‚·ãƒ¥å˜ä½ã®æƒ…å ±ã‚’ã²ã¨ã¾ã¨ã‚ã™ã‚‹ãŸã‚ã®æ§‹é€ ä½“ã€‚
 		/// </summary>
 		struct SMeshLocal {
-			ConstantBuffer m_cb0;											// b0ƒŒƒWƒXƒ^‚ÉƒoƒCƒ“ƒh‚³‚ê‚é’è”ƒoƒbƒtƒ@B
-			RootSignature m_rootSignature;									// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒB
-			PipelineState m_pipelineState;									// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgB
-			VertexBuffer m_vertexBuffer;									// ’¸“_ƒoƒbƒtƒ@B
-			VertexBuffer m_animatedVertexBuffer;							// ƒAƒjƒ[ƒVƒ‡ƒ“ŒvZÏ‚İ‚Ì’¸“_ƒoƒbƒtƒ@B
-			StructuredBuffer m_vertexBufferSB;								// ’¸“_ƒoƒbƒtƒ@‚ÌƒXƒgƒ‰ƒNƒ`ƒƒ[ƒhƒoƒbƒtƒ@B
-			RWStructuredBuffer m_animatedVertexBufferRWSB;					// ƒAƒjƒ[ƒVƒ‡ƒ“ŒvZÏ‚İ‚Ì’¸“_ƒoƒbƒtƒ@‚ÌRWƒXƒgƒ‰ƒNƒ`ƒƒ[ƒhƒoƒbƒtƒ@B
-			std::unique_ptr< IndexBuffer[] > m_animatedIndexBufferArray;	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ì”z—ñB
-			std::unique_ptr< int[] > m_originalIndexBufferSize;				// ƒIƒŠƒWƒiƒ‹‚ÌƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒTƒCƒYB
-			int m_numMaterial = 0;											// ƒ}ƒeƒŠƒAƒ‹‚Ì”B
+			ConstantBuffer m_cb0;											// b0ãƒ¬ã‚¸ã‚¹ã‚¿ã«ãƒã‚¤ãƒ³ãƒ‰ã•ã‚Œã‚‹å®šæ•°ãƒãƒƒãƒ•ã‚¡ã€‚
+			RootSignature m_rootSignature;									// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã€‚
+			PipelineState m_pipelineState;									// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã€‚
+			VertexBuffer m_vertexBuffer;									// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã€‚
+			VertexBuffer m_animatedVertexBuffer;							// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¨ˆç®—æ¸ˆã¿ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã€‚
+			StructuredBuffer m_vertexBufferSB;								// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ã€‚
+			RWStructuredBuffer m_animatedVertexBufferRWSB;					// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¨ˆç®—æ¸ˆã¿ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®RWã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ã€‚
+			std::unique_ptr< IndexBuffer[] > m_animatedIndexBufferArray;	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®é…åˆ—ã€‚
+			std::unique_ptr< int[] > m_originalIndexBufferSize;				// ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºã€‚
+			int m_numMaterial = 0;											// ãƒãƒ†ãƒªã‚¢ãƒ«ã®æ•°ã€‚
 		};
 		bool m_isFirstDispatch = true;
-		int m_numMesh = 0;									// ƒƒbƒVƒ…‚Ì”B
-		int m_numInstance = 0;								// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ì”B
-		void* m_boneMatrixArray = nullptr;					// ƒ{[ƒ“s—ñ‚Ì”z—ñ‚Ìæ“ªƒAƒhƒŒƒXB
-		DescriptorHeap m_descriptorHeap;					// ƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒvB
-		Shader* m_shader;									// ƒVƒF[ƒ_[B
-		TkmFile m_tkmFile;									// tkmƒtƒ@ƒCƒ‹B
-		StructuredBuffer m_boneMatricesStructureBuffer;		// ƒ{[ƒ“s—ñ‚Ì\‘¢‰»ƒoƒbƒtƒ@B
-		std::unique_ptr< SMeshLocal[] > m_meshArray;		// ƒƒbƒVƒ…B
+		int m_numMesh = 0;									// ãƒ¡ãƒƒã‚·ãƒ¥ã®æ•°ã€‚
+		int m_numInstance = 0;								// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ•°ã€‚
+		void* m_boneMatrixArray = nullptr;					// ãƒœãƒ¼ãƒ³è¡Œåˆ—ã®é…åˆ—ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚
+		DescriptorHeap m_descriptorHeap;					// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã€‚
+		Shader* m_shader;									// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚
+		TkmFile m_tkmFile;									// tkmãƒ•ã‚¡ã‚¤ãƒ«ã€‚
+		StructuredBuffer m_boneMatricesStructureBuffer;		// ãƒœãƒ¼ãƒ³è¡Œåˆ—ã®æ§‹é€ åŒ–ãƒãƒƒãƒ•ã‚¡ã€‚
+		std::unique_ptr< SMeshLocal[] > m_meshArray;		// ãƒ¡ãƒƒã‚·ãƒ¥ã€‚
 	};
 }

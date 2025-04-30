@@ -10,7 +10,7 @@ namespace nsK2Engine {
 		}
 	}
 	/// <summary>
-	/// ‰Šú‰»B
+	/// åˆæœŸåŒ–ã€‚
 	/// </summary>
 	void PointLight::Init()
 	{

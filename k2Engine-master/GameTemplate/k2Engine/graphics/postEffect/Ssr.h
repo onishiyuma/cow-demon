@@ -4,18 +4,18 @@
 
 namespace nsK2Engine {
 	/// <summary>
-	/// �X�N���[���X�y�[�X���t���N�V����
+	/// スクリーンスペースリフレクション
 	/// </summary>
 	/// <remark>
-	/// ���C�}�[�`���O�@�ɂ��SSR�B
-	/// ���˂���������̂́AG-Buffer�ɏ������܂ꂽSmooth�p�����[�^�[�Ɉˑ�����B
-	/// Smooth��0.0�̃s�N�Z���ł͔��˂͔������Ȃ��B�ł��������˂�smooth�̒l��1.0�̂Ƃ��ƂȂ�B
-	/// Smooth�̈����́A�{�G���W����PBR�̃��[�N�t���[���Q�ƁB
+	/// レイマーチング法によるSSR。
+	/// 反射が発生するのは、G-Bufferに書き込まれたSmoothパラメーターに依存する。
+	/// Smoothが0.0のピクセルでは反射は発生しない。最も強い反射はsmoothの値が1.0のときとなる。
+	/// Smoothの扱いは、本エンジンのPBRのワークフローを参照。
 	/// </reamrk>
 	class Ssr : public PostEffectComponentBase {
 	public:
 		/// <summary>
-		/// �������B
+		/// 初期化。
 		/// </summary>
 		void OnInit(
 			RenderTarget& mainRenderTarget,
@@ -25,48 +25,48 @@ namespace nsK2Engine {
 			RenderTarget& albedoRenderTarget
 		) override;
 		/// <summary>
-		/// �`��
+		/// 描画
 		/// </summary>
-		/// <param name="rc">�����_�����O�R���e�L�X�g</param>
-		/// <param name="mainRenderTarget">���C�������_�����O�^�[�Q�b�g</param>
+		/// <param name="rc">レンダリングコンテキスト</param>
+		/// <param name="mainRenderTarget">メインレンダリングターゲット</param>
 		void OnRender(RenderContext& rc, RenderTarget& mainRenderTarget) override;
 		/// <summary>
-		/// �|�X�g�̌��ʂ̉摜�����C�������_�����O�^�[�Q�b�g�ɃR�s�[����H
+		/// ポストの結果の画像をメインレンダリングターゲットにコピーする？
 		/// </summary>
 		/// <returns>
-		/// true��Ԃ��ƁAGetResultTexture()�֐����Ԃ��Ă���A
-		/// �|�X�g�G�t�F�N�g�̌��ʂƂȂ�e�N�X�`�������C�������_�����O�^�[�Q�b�g�ɃR�s�[���܂��B
-		/// OnRender()�֐��̒��ŁA���łɌ��ʂ����C�������_�����O�^�[�Q�b�g�ɏ������ݍς݂ł���Ȃ�A
-		/// false��Ԃ��Ă��������B
+		/// trueを返すと、GetResultTexture()関数が返してくる、
+		/// ポストエフェクトの結果となるテクスチャをメインレンダリングターゲットにコピーします。
+		/// OnRender()関数の中で、すでに結果をメインレンダリングターゲットに書き込み済みであるなら、
+		/// falseを返してください。
 		/// </returns>
 		bool IsCopyResultTextureToMainRenderTarget() const override
 		{
 			return true;
 		}
 		/// <summary>
-		/// �|�X�g�G�t�F�N�g�����s�������ʂƂȂ�e�N�X�`�����擾�B
+		/// ポストエフェクトを実行した結果となるテクスチャを取得。
 		/// </summary>
 		/// <returns>
-		/// �|�X�g�G�t�F�N�g�̎��s���ʂƂȂ�e�N�X�`���B
-		/// IsCopyResultTextureToMainRenderTarget()�֐���true��Ԃ��ꍇ�A
-		/// OnRender()�֐��̎��s��Ƀ��C�������_�����O�^�[�Q�b�g�ɁA���̃e�N�X�`���̓��e��
-		/// �\��t�����܂��B
-		/// IsCopyResultTextureToMainRenderTarget()�֐���false��Ԃ��ꍇ�́A
-		/// �{�֐��͗��p����܂���B
+		/// ポストエフェクトの実行結果となるテクスチャ。
+		/// IsCopyResultTextureToMainRenderTarget()関数がtrueを返す場合、
+		/// OnRender()関数の実行後にメインレンダリングターゲットに、このテクスチャの内容が
+		/// 貼り付けられます。
+		/// IsCopyResultTextureToMainRenderTarget()関数がfalseを返す場合は、
+		/// 本関数は利用されません。
 		/// </returns>
 		Texture& GetResultTexture() override
 		{
 			return m_finalRt.GetRenderTargetTexture();
 		}
 		/// <summary>
-		/// SSR��L���ɂ���B
+		/// SSRを有効にする。
 		/// </summary>
 		void Enable()
 		{
 			m_isEnable = true;
 		}
 		/// <summary>
-		/// SSR�𖳌��ɂ���B
+		/// SSRを無効にする。
 		/// </summary>
 		void Disable()
 		{
@@ -74,19 +74,19 @@ namespace nsK2Engine {
 		}
 	private:
 		/// <summary>
-		/// GPU�ɓ]������f�[�^�\���́B
+		/// GPUに転送するデータ構造体。
 		/// </summary>
 		struct SsrCb {
-			Matrix mViewProjInv;				// �r���[�v���W�F�N�V�����s��̋t�s��B
-			Matrix mViewProj;					// �r���[�v���W�F�N�V�����s��B
-			Vector3 cameraPosInWorld;			// ���[���h���W�n�ł̃J�����̎��_�B
+			Matrix mViewProjInv;				// ビュープロジェクション行列の逆行列。
+			Matrix mViewProj;					// ビュープロジェクション行列。
+			Vector3 cameraPosInWorld;			// ワールド座標系でのカメラの視点。
 		};
-		RenderTarget m_reflectionRt;			// �f�荞�݂����������ނ��߂̃����_�����O�^�[�Q�b�g�B
-		RenderTarget m_finalRt;					// �ŏI�����X�v���C�g
-		GaussianBlur m_blur;					// �u���[
-		SsrCb m_ssrCb;							// GPU�ɓ]������f�[�^�B
-		Sprite m_reflectionSprite;				// �f�荞�݉摜���쐬���邽�߂̃X�v���C�g
-		Sprite m_finalSprite;					// �ŏI�����X�v���C�g�B
-		bool m_isEnable = true;					// SSR�̗L���A�����B
+		RenderTarget m_reflectionRt;			// 映り込みをを書きこむためのレンダリングターゲット。
+		RenderTarget m_finalRt;					// 最終合成スプライト
+		GaussianBlur m_blur;					// ブラー
+		SsrCb m_ssrCb;							// GPUに転送するデータ。
+		Sprite m_reflectionSprite;				// 映り込み画像を作成するためのスプライト
+		Sprite m_finalSprite;					// 最終合成スプライト。
+		bool m_isEnable = true;					// SSRの有効、無効。
 	};
 }

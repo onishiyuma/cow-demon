@@ -142,6 +142,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>$(Platform)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -193,6 +194,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>$(Platform)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -213,6 +215,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>$(Platform)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -225,6 +228,7 @@
   <ItemGroup>
     <ClCompile Include="Amulet.cpp" />
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="DebugScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -273,6 +277,7 @@
     <ClInclude Include="Amulet.h" />
     <ClInclude Include="Assets\shader\util\ColorSpace.h" />
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="DebugScene.h" />
     <ClInclude Include="Enemy.h" />

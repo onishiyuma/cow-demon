@@ -30,7 +30,7 @@ namespace nsK2EngineLow {
 	{
 		Release();
 
-		// äeéÌÉÅÉìÉoïœêîÇèâä˙âªÇ∑ÇÈÅB
+		// ÂêÑÁ®Æ„É°„É≥„ÉêÂ§âÊï∞„ÇíÂàùÊúüÂåñ„Åô„Çã„ÄÇ
 		m_descriptorHeap = nullptr;
 		m_numSRV = 0;
 		m_numConstantBuffer = 0;
@@ -70,7 +70,7 @@ namespace nsK2EngineLow {
 
 		auto hr = d3dDevice->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&m_descriptorHeap));
 		if (FAILED(hr)) {
-			MessageBox(nullptr, L"DescriptorHeap::Commit ÉfÉBÉXÉNÉäÉvÉ^ÉqÅ[ÉvÇÃçÏê¨Ç…é∏îsÇµÇ‹ÇµÇΩÅB", L"ÉGÉâÅ[", MB_OK);
+			MessageBox(nullptr, L"DescriptorHeap::Commit „Éá„Ç£„Çπ„ÇØ„É™„Éó„Çø„Éí„Éº„Éó„ÅÆ‰ΩúÊàê„Å´Â§±Êïó„Åó„Åæ„Åó„Åü„ÄÇ", L"„Ç®„É©„Éº", MB_OK);
 			std::abort();
 		}
 
@@ -79,7 +79,7 @@ namespace nsK2EngineLow {
 			auto cpuHandle = m_descriptorHeap->GetCPUDescriptorHandleForHeapStart();
 			auto gpuHandle = m_descriptorHeap->GetGPUDescriptorHandleForHeapStart();
 			for (int i = 0; i < m_numSamplerDesc; i++) {
-				//ÉTÉìÉvÉâÉXÉeÅ[ÉgÇÉfÉBÉXÉNÉäÉvÉ^ÉqÅ[ÉvÇ…ìoò^ÇµÇƒÇ¢Ç≠ÅB
+				//„Çµ„É≥„Éó„É©„Çπ„ÉÜ„Éº„Éà„Çí„Éá„Ç£„Çπ„ÇØ„É™„Éó„Çø„Éí„Éº„Éó„Å´ÁôªÈå≤„Åó„Å¶„ÅÑ„Åè„ÄÇ
 				d3dDevice->CreateSampler(&m_samplerDescs[i], cpuHandle);
 				cpuHandle.ptr += g_graphicsEngine->GetSapmerDescriptorSize();
 			}
@@ -90,10 +90,10 @@ namespace nsK2EngineLow {
 	int DescriptorHeap::GetBackBufferNo() const
 	{
 		if (m_isDoubleBuffer) {
-			// ì‡ïîÇ≈É_ÉuÉãÉoÉbÉtÉ@âªÇµÇƒÇ¢ÇÈèÍçáÇÕÉGÉìÉWÉìÇÃÉoÉbÉNÉoÉbÉtÉ@ÇÃî‘çÜÇ∆çáÇÌÇπÇÈÅB
+			// ÂÜÖÈÉ®„Åß„ÉÄ„Éñ„É´„Éê„ÉÉ„Éï„Ç°Âåñ„Åó„Å¶„ÅÑ„ÇãÂ†¥Âêà„ÅØ„Ç®„É≥„Ç∏„É≥„ÅÆ„Éê„ÉÉ„ÇØ„Éê„ÉÉ„Éï„Ç°„ÅÆÁï™Âè∑„Å®Âêà„Çè„Åõ„Çã„ÄÇ
 			return g_graphicsEngine->GetBackBufferIndex();
 		}
-		// É_ÉuÉãÉoÉbÉtÉ@âªÇµÇƒÇ¢Ç»Ç¢ÅB
+		// „ÉÄ„Éñ„É´„Éê„ÉÉ„Éï„Ç°Âåñ„Åó„Å¶„ÅÑ„Å™„ÅÑ„ÄÇ
 		return 0;
 	}
 	void DescriptorHeap::Commit(bool isDoubleBuffer)
@@ -111,49 +111,49 @@ namespace nsK2EngineLow {
 		auto hr = d3dDevice->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&m_descriptorHeap));
 		
 		if (FAILED(hr)) {
-			MessageBox(nullptr, L"DescriptorHeap::Commit ÉfÉBÉXÉNÉäÉvÉ^ÉqÅ[ÉvÇÃçÏê¨Ç…é∏îsÇµÇ‹ÇµÇΩÅB", L"ÉGÉâÅ[", MB_OK);
+			MessageBox(nullptr, L"DescriptorHeap::Commit „Éá„Ç£„Çπ„ÇØ„É™„Éó„Çø„Éí„Éº„Éó„ÅÆ‰ΩúÊàê„Å´Â§±Êïó„Åó„Åæ„Åó„Åü„ÄÇ", L"„Ç®„É©„Éº", MB_OK);
 			std::abort();
 		}
 
-		//íËêîÉoÉbÉtÉ@Ç‚ÉVÉFÅ[É_Å[ÉäÉ\Å[ÉXÇÃÉfÉBÉXÉNÉäÉvÉ^ÇÉqÅ[ÉvÇ…èëÇ´çûÇÒÇ≈Ç¢Ç≠ÅB
+		//ÂÆöÊï∞„Éê„ÉÉ„Éï„Ç°„ÇÑ„Ç∑„Çß„Éº„ÉÄ„Éº„É™„ÇΩ„Éº„Çπ„ÅÆ„Éá„Ç£„Çπ„ÇØ„É™„Éó„Çø„Çí„Éí„Éº„Éó„Å´Êõ∏„ÅçËæº„Çì„Åß„ÅÑ„Åè„ÄÇ
 		auto cpuHandle = m_descriptorHeap->GetCPUDescriptorHandleForHeapStart();
 		auto gpuHandle = m_descriptorHeap->GetGPUDescriptorHandleForHeapStart();
 
 		int numBuffer = isDoubleBuffer ? 2 : 1;
 		for (int bufferNo = 0; bufferNo < numBuffer; bufferNo++) {
-			//íËêîÉoÉbÉtÉ@Çìoò^ÇµÇƒÇ¢Ç≠ÅB
+			//ÂÆöÊï∞„Éê„ÉÉ„Éï„Ç°„ÇíÁôªÈå≤„Åó„Å¶„ÅÑ„Åè„ÄÇ
 			for (int i = 0; i < m_numConstantBuffer; i++) {
 				if (m_constantBuffers[i] != nullptr) {
 					m_constantBuffers[i]->RegistConstantBufferView(cpuHandle, bufferNo);
 				}
-				//éüÇ…êiÇﬂÇÈÅB
+				//Ê¨°„Å´ÈÄ≤„ÇÅ„Çã„ÄÇ
 				cpuHandle.ptr += g_graphicsEngine->GetCbrSrvDescriptorSize();
 			}
 
-			//ë±Ç¢ÇƒÉVÉFÅ[É_Å[ÉäÉ\Å[ÉXÅB
+			//Á∂ö„ÅÑ„Å¶„Ç∑„Çß„Éº„ÉÄ„Éº„É™„ÇΩ„Éº„Çπ„ÄÇ
 			for (int i = 0; i < m_numSRV; i++) {
 				if (m_shaderResources[i] != nullptr) {
 					m_shaderResources[i]->RegistShaderResourceView(cpuHandle, bufferNo);
 				}
-				//éüÇ…êiÇﬂÇÈÅB
+				//Ê¨°„Å´ÈÄ≤„ÇÅ„Çã„ÄÇ
 				cpuHandle.ptr += g_graphicsEngine->GetCbrSrvDescriptorSize();
 			}
 
-			//ë±Ç¢ÇƒUAVÅB
+			//Á∂ö„ÅÑ„Å¶UAV„ÄÇ
 			for (int i = 0; i < m_numUAV; i++) {
 				if (m_uavResoruces[i] != nullptr) {
 					m_uavResoruces[i]->RegistUnorderAccessView(cpuHandle, bufferNo);
 				}
-				//éüÇ…êiÇﬂÇÈÅB
+				//Ê¨°„Å´ÈÄ≤„ÇÅ„Çã„ÄÇ
 				cpuHandle.ptr += g_graphicsEngine->GetCbrSrvDescriptorSize();
 			}
 
-			//íËêîÉoÉbÉtÉ@ÇÃÉfÉBÉXÉNÉäÉvÉ^ÉqÅ[ÉvÇÃäJénÉnÉìÉhÉãÇåvéZÅB
+			//ÂÆöÊï∞„Éê„ÉÉ„Éï„Ç°„ÅÆ„Éá„Ç£„Çπ„ÇØ„É™„Éó„Çø„Éí„Éº„Éó„ÅÆÈñãÂßã„Éè„É≥„Éâ„É´„ÇíË®àÁÆó„ÄÇ
 			m_cbGpuDescriptorStart[bufferNo] = gpuHandle;
-			//ÉVÉFÅ[É_Å[ÉäÉ\Å[ÉXÇÃÉfÉBÉXÉNÉäÉvÉ^ÉqÅ[ÉvÇÃäJénÉnÉìÉhÉãÇåvéZÅB
+			//„Ç∑„Çß„Éº„ÉÄ„Éº„É™„ÇΩ„Éº„Çπ„ÅÆ„Éá„Ç£„Çπ„ÇØ„É™„Éó„Çø„Éí„Éº„Éó„ÅÆÈñãÂßã„Éè„É≥„Éâ„É´„ÇíË®àÁÆó„ÄÇ
 			m_srGpuDescriptorStart[bufferNo] = gpuHandle;
 			m_srGpuDescriptorStart[bufferNo].ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * m_numConstantBuffer;
-			//UAVÉäÉ\Å[ÉXÇÃÉfÉBÉXÉNÉäÉvÉ^ÉqÅ[ÉvÇÃäJénÉnÉìÉhÉãÇåvéZÅB
+			//UAV„É™„ÇΩ„Éº„Çπ„ÅÆ„Éá„Ç£„Çπ„ÇØ„É™„Éó„Çø„Éí„Éº„Éó„ÅÆÈñãÂßã„Éè„É≥„Éâ„É´„ÇíË®àÁÆó„ÄÇ
 			m_uavGpuDescriptorStart[bufferNo] = gpuHandle;
 			m_uavGpuDescriptorStart[bufferNo].ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * (m_numSRV + m_numConstantBuffer);
 

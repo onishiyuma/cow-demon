@@ -1,6 +1,6 @@
 
 ////////////////////////////////////////////////
-// PBRƒ‰ƒCƒeƒBƒ“ƒO
+// PBRãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 ////////////////////////////////////////////////
 #include "PBRLighting.h"
 
@@ -10,14 +10,14 @@
 #include "IBL.h"
 
 ///////////////////////////////////////
-// ƒTƒ“ƒvƒ‰
+// ã‚µãƒ³ãƒ—ãƒ©
 ///////////////////////////////////////
 #include "Sampler.h"
 
 static const int MAX_RAY_DEPTH = 2;
 
-// ’¸“_\‘¢
-// ƒtƒH[ƒ}ƒbƒg‚ÍTkmFile.h‚ÌSVertex‚Æ“¯‚¶‚É‚È‚Á‚Ä‚¢‚é•K—v‚ª‚ ‚é
+// é ‚ç‚¹æ§‹é€ 
+// ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã¯TkmFile.hã®SVertexã¨åŒã˜ã«ãªã£ã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹
 struct SVertex
 {
     float3 pos;
@@ -29,55 +29,55 @@ struct SVertex
     float4 skinweigths;
 };
 
-// ƒJƒƒ‰\‘¢‘Ì
-// ’è”ƒoƒbƒtƒ@[‚È‚Ì‚Å16ƒoƒCƒgƒAƒ‰ƒCƒƒ“ƒg‚É‹C‚ğ•t‚¯‚é‚±‚Æ
+// ã‚«ãƒ¡ãƒ©æ§‹é€ ä½“
+// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ¼ãªã®ã§16ãƒã‚¤ãƒˆã‚¢ãƒ©ã‚¤ãƒ¡ãƒ³ãƒˆã«æ°—ã‚’ä»˜ã‘ã‚‹ã“ã¨
 struct Camera
 {
-    float4x4 mViewProjInv;  // ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚Ì‹ts—ñ
-    float3 pos;             // ƒJƒƒ‰À•W
-    float aspect;           // ƒAƒXƒyƒNƒg”ä
-    float far;              // ‰“•½–Ê
-    float near;             // ‹ß•½–Ê
-    float pad[2];           // ƒpƒfƒBƒ“ƒO
+    float4x4 mViewProjInv;  // ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã®é€†è¡Œåˆ—
+    float3 pos;             // ã‚«ãƒ¡ãƒ©åº§æ¨™
+    float aspect;           // ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”
+    float far;              // é å¹³é¢
+    float near;             // è¿‘å¹³é¢
+    float pad[2];           // ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
 };
 
-// ƒŒƒCƒgƒŒ—p‚Ìƒ‰ƒCƒgî•ñ
+// ãƒ¬ã‚¤ãƒˆãƒ¬ç”¨ã®ãƒ©ã‚¤ãƒˆæƒ…å ±
 struct RaytracingLight{
-    DirectionalLight directionalLight;  // ƒfƒBƒŒƒNƒVƒ‡ƒiƒ‹ƒ‰ƒCƒgB
-    float3 ambientLight;                // ŠÂ‹«ŒõBIBLƒeƒNƒXƒ`ƒƒ‚ªw’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚É—˜—p‚³‚ê‚éB
-    float iblIntencity;                 // IBL‹­“xB
-    int enableIBLTexture;               // IBLƒeƒNƒXƒ`ƒƒ‚ªw’è‚³‚ê‚Ä‚¢‚éH  
+    DirectionalLight directionalLight;  // ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒŠãƒ«ãƒ©ã‚¤ãƒˆã€‚
+    float3 ambientLight;                // ç’°å¢ƒå…‰ã€‚IBLãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„å ´åˆã«åˆ©ç”¨ã•ã‚Œã‚‹ã€‚
+    float iblIntencity;                 // IBLå¼·åº¦ã€‚
+    int enableIBLTexture;               // IBLãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ï¼Ÿ  
 };
 
 cbuffer rayGenCB :register(b0)
 {
-    Camera g_camera;    // ƒJƒƒ‰B
+    Camera g_camera;    // ã‚«ãƒ¡ãƒ©ã€‚
 };
 
-RaytracingAccelerationStructure g_raytracingWorld : register(t0);   // ƒŒƒCƒgƒŒƒ[ƒ‹ƒh
-Texture2D<float4> gAlbedoTexture : register(t1);                    // ƒAƒ‹ƒxƒhƒ}ƒbƒv
-Texture2D<float4> g_normalMap : register(t2);                       // –@üƒ}ƒbƒv
-Texture2D<float4> g_specularMap : register(t3);                     // ƒXƒyƒLƒ…ƒ‰ƒ}ƒbƒv
-Texture2D<float4> g_reflectionMap : register(t4);                   // ƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒ}ƒbƒv
-Texture2D<float4> g_refractionMap : register(t5);                   // ‹üÜƒ}ƒbƒv
-StructuredBuffer<SVertex> g_vertexBuffers : register(t6);           // ’¸“_ƒoƒbƒtƒ@[B
-StructuredBuffer<int> g_indexBuffers : register(t7);                // ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@[B
-TextureCube<float4> g_skyCubeMap : register(t8);                    // ƒXƒJƒCƒLƒ…[ƒuƒ}ƒbƒvB
-StructuredBuffer<RaytracingLight> g_light : register(t9);          // ƒ‰ƒCƒgB
+RaytracingAccelerationStructure g_raytracingWorld : register(t0);   // ãƒ¬ã‚¤ãƒˆãƒ¬ãƒ¯ãƒ¼ãƒ«ãƒ‰
+Texture2D<float4> gAlbedoTexture : register(t1);                    // ã‚¢ãƒ«ãƒ™ãƒ‰ãƒãƒƒãƒ—
+Texture2D<float4> g_normalMap : register(t2);                       // æ³•ç·šãƒãƒƒãƒ—
+Texture2D<float4> g_specularMap : register(t3);                     // ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒãƒƒãƒ—
+Texture2D<float4> g_reflectionMap : register(t4);                   // ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—
+Texture2D<float4> g_refractionMap : register(t5);                   // å±ˆæŠ˜ãƒãƒƒãƒ—
+StructuredBuffer<SVertex> g_vertexBuffers : register(t6);           // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ¼ã€‚
+StructuredBuffer<int> g_indexBuffers : register(t7);                // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ¼ã€‚
+TextureCube<float4> g_skyCubeMap : register(t8);                    // ã‚¹ã‚«ã‚¤ã‚­ãƒ¥ãƒ¼ãƒ–ãƒãƒƒãƒ—ã€‚
+StructuredBuffer<RaytracingLight> g_light : register(t9);          // ãƒ©ã‚¤ãƒˆã€‚
 
 RWTexture2D<float4> gOutput : register(u0);
 
 
 struct RayPayload
 {
-    float3 color;               // ƒJƒ‰[
-    int hit;                    // Õ“Ë‚µ‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒOB
-    int depth;                  // [“xB
-    float smooth;               // Õ“Ë–Ê‚ÌŠŠ‚ç‚©‚³B
-    float3 cameraPos;           // ƒJƒƒ‰À•WB
+    float3 color;               // ã‚«ãƒ©ãƒ¼
+    int hit;                    // è¡çªã—ãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã€‚
+    int depth;                  // æ·±åº¦ã€‚
+    float smooth;               // è¡çªé¢ã®æ»‘ã‚‰ã‹ã•ã€‚
+    float3 cameraPos;           // ã‚«ãƒ¡ãƒ©åº§æ¨™ã€‚
 
 };
-// ƒŒƒC‚ªÕ“Ë‚µ‚½“_‚Ìƒ[ƒ‹ƒhÀ•W‚ğŒvZ‚·‚éB
+// ãƒ¬ã‚¤ãŒè¡çªã—ãŸç‚¹ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’è¨ˆç®—ã™ã‚‹ã€‚
 float3 GetHitPosInWorld()
 {
     float hitT = RayTCurrent();
@@ -88,15 +88,15 @@ float3 GetHitPosInWorld()
     return posW;
 
 }
-// UVÀ•W‚ğæ“¾
+// UVåº§æ¨™ã‚’å–å¾—
 float2 GetUV(BuiltInTriangleIntersectionAttributes attribs)
 {
     float3 barycentrics = float3(1.0 - attribs.barycentrics.x - attribs.barycentrics.y, attribs.barycentrics.x, attribs.barycentrics.y);
 
-    // ƒvƒŠƒ~ƒeƒBƒuID‚ğæ“¾
+    // ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–IDã‚’å–å¾—
     uint primID = PrimitiveIndex();
 
-    // ƒvƒŠƒ~ƒeƒBƒuID‚©‚ç’¸“_”Ô†‚ğæ“¾‚·‚é
+    // ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–IDã‹ã‚‰é ‚ç‚¹ç•ªå·ã‚’å–å¾—ã™ã‚‹
     uint v0_id = g_indexBuffers[primID * 3];
     uint v1_id = g_indexBuffers[primID * 3 + 1];
     uint v2_id = g_indexBuffers[primID * 3 + 2];
@@ -108,15 +108,15 @@ float2 GetUV(BuiltInTriangleIntersectionAttributes attribs)
     return uv;
 }
 
-// –@ü‚ğæ“¾
+// æ³•ç·šã‚’å–å¾—
 float3 GetNormal(BuiltInTriangleIntersectionAttributes attribs, float2 uv)
 {
     float3 barycentrics = float3(1.0 - attribs.barycentrics.x - attribs.barycentrics.y, attribs.barycentrics.x, attribs.barycentrics.y);
 
-    // ƒvƒŠƒ~ƒeƒBƒuID‚ğæ“¾
+    // ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–IDã‚’å–å¾—
     uint primID = PrimitiveIndex();
 
-    // ƒvƒŠƒ~ƒeƒBƒuID‚©‚ç’¸“_”Ô†‚ğæ“¾‚·‚é
+    // ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–IDã‹ã‚‰é ‚ç‚¹ç•ªå·ã‚’å–å¾—ã™ã‚‹
     uint v0_id = g_indexBuffers[primID * 3];
     uint v1_id = g_indexBuffers[primID * 3 + 1];
     uint v2_id = g_indexBuffers[primID * 3 + 2];
@@ -147,7 +147,7 @@ float3 GetNormal(BuiltInTriangleIntersectionAttributes attribs, float2 uv)
     return newNormal;
 }
 
-// ŒõŒ¹‚ÉŒü‚¯‚ÄƒŒƒC‚ğ”ò‚Î‚·
+// å…‰æºã«å‘ã‘ã¦ãƒ¬ã‚¤ã‚’é£›ã°ã™
 void TraceLightRay(inout RayPayload raypayload, float3 normal)
 {
     float hitT = RayTCurrent();
@@ -175,14 +175,14 @@ void TraceLightRay(inout RayPayload raypayload, float3 normal)
     );
 }
 
-// ”½ËƒŒƒC‚ğ”ò‚Î‚·
+// åå°„ãƒ¬ã‚¤ã‚’é£›ã°ã™
 void TraceReflectionRay(inout RayPayload raypayload, float3 normal)
 {
     float hitT = RayTCurrent();
     float3 rayDirW = WorldRayDirection();
     float3 rayOriginW = WorldRayOrigin();
 
-    // ”½ËƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+    // åå°„ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
     float3 refDir = reflect(rayDirW, normal);
 
     // Find the world-space hit position
@@ -221,7 +221,7 @@ void rayGen()
     worldPos = mul( g_camera.mViewProjInv, worldPos );
     worldPos.xyz /= worldPos.w;
 
-    // ƒsƒNƒZƒ‹•ûŒü‚É‘Å‚¿o‚·ƒŒƒC‚ğì¬‚·‚é
+    // ãƒ”ã‚¯ã‚»ãƒ«æ–¹å‘ã«æ‰“ã¡å‡ºã™ãƒ¬ã‚¤ã‚’ä½œæˆã™ã‚‹
     RayDesc ray;
     ray.Origin = g_camera.pos;
     ray.Direction = normalize( worldPos.xyz - ray.Origin);
@@ -249,7 +249,7 @@ void rayGen()
 void miss(inout RayPayload payload)
 {
     if( g_light[0].enableIBLTexture == 1){
-        // IBLƒeƒNƒXƒ`ƒƒ‚ªw’è‚³‚ê‚Ä‚¢‚éB
+        // IBLãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã€‚
         float3 rayDirW = WorldRayDirection();
         payload.color = SampleIBLColorFromSkyCube( 
             g_skyCubeMap,
@@ -258,7 +258,7 @@ void miss(inout RayPayload payload)
             g_light[0].iblIntencity
         );
     }else{
-        // ŠÂ‹«Œõ‚ğg‚¤B
+        // ç’°å¢ƒå…‰ã‚’ä½¿ã†ã€‚
         payload.color = g_light[0].ambientLight;
     }
 }
@@ -268,25 +268,25 @@ void chs(inout RayPayload payload, in BuiltInTriangleIntersectionAttributes attr
 {
     payload.depth++;
     if(payload.depth > MAX_RAY_DEPTH){
-        // ‚±‚êˆÈã‚Í’²‚×‚È‚¢B
+        // ã“ã‚Œä»¥ä¸Šã¯èª¿ã¹ãªã„ã€‚
         miss(payload);
         return ;
     }
-    // ƒqƒbƒg‚µ‚½ƒvƒŠƒ~ƒeƒBƒu‚ÌUVÀ•W‚ğæ“¾
+    // ãƒ’ãƒƒãƒˆã—ãŸãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®UVåº§æ¨™ã‚’å–å¾—
     float2 uv = GetUV(attribs);
 
-    // ƒqƒbƒg‚µ‚½ƒvƒŠƒ~ƒeƒBƒu‚Ì–@ü‚ğæ“¾
+    // ãƒ’ãƒƒãƒˆã—ãŸãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®æ³•ç·šã‚’å–å¾—
     float3 normal = GetNormal(attribs, uv);
-    // ƒAƒ‹ƒxƒhƒJƒ‰[
+    // ã‚¢ãƒ«ãƒ™ãƒ‰ã‚«ãƒ©ãƒ¼
     float3 albedoColor = gAlbedoTexture.SampleLevel(Sampler, uv, 0.0f).rgb;
     
     float4 metallicSmooth = g_specularMap.SampleLevel(Sampler, uv, 0.0f);
-    // ŒõŒ¹‚É‚Ş‚©‚Á‚ÄƒŒƒC‚ğ”ò‚Î‚·
+    // å…‰æºã«ã‚€ã‹ã£ã¦ãƒ¬ã‚¤ã‚’é£›ã°ã™
     TraceLightRay(payload, normal);
 
-    // ƒ[ƒ‹ƒhÀ•W‚ğŒvZB
+    // ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’è¨ˆç®—ã€‚
     float3 worldPos = GetHitPosInWorld();
-    // ƒJƒƒ‰‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹‚ğŒvZB
+    // ã‚«ãƒ¡ãƒ©ã«å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã€‚
     float3 toEye = normalize( payload.cameraPos - worldPos);
 
     // 
@@ -306,19 +306,19 @@ void chs(inout RayPayload payload, in BuiltInTriangleIntersectionAttributes attr
         );
     }
     
-    // ŠÂ‹«Œõ
+    // ç’°å¢ƒå…‰
     RayPayload refPayload;
     refPayload.depth = payload.depth;
     refPayload.color = 0;
     refPayload.smooth = metallicSmooth.a;
     
-    // ”½ËƒŒƒC
+    // åå°„ãƒ¬ã‚¤
     TraceReflectionRay(refPayload, normal);
     if( payload.depth == 1){
-        // ‚±‚ê‚ÍˆêŸ”½Ë‚È‚Ì‚ÅA‰f‚è‚İ‰æ‘œ‚ğ‚»‚Ì‚Ü‚Üg‚¤B
+        // ã“ã‚Œã¯ä¸€æ¬¡åå°„ãªã®ã§ã€æ˜ ã‚Šè¾¼ã¿ç”»åƒã‚’ãã®ã¾ã¾ä½¿ã†ã€‚
         payload.color = refPayload.color;
     }else{
-        // ”½Ë‚µ‚Ä‚«‚½Œõ‚ğ‘«‚µZ‚·‚éB
+        // åå°„ã—ã¦ããŸå…‰ã‚’è¶³ã—ç®—ã™ã‚‹ã€‚
         payload.color = lig + refPayload.color * albedoColor ;
     }
     

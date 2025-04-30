@@ -7,32 +7,30 @@ class SpriteCollection;
 class Stone: public IGameObject
 {
 public:
-	//ƒƒ“ƒoŠÖ”	
+	//ãƒ¡ãƒ³ãƒé–¢æ•°	
 	Stone();
 	~Stone();
 
 
 	bool Start();
-	//ˆÚ“®ˆ—
-	void Move();
-	//XVˆ—
+	//æ›´æ–°å‡¦ç†
 	void Update();
-	//ƒRƒŠƒWƒ‡ƒ“‚Ìì¬B
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®ä½œæˆã€‚
 	//void CreateCollision();
-	//•`‰æˆ—
+	//æç”»å‡¦ç†
 	void Render(RenderContext& rc);
 
-	//ƒƒ“ƒo•Ï”
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°
 	ModelRender m_modelRender;
-	Vector3 m_firstPosition; //Å‰‚ÌÀ•W
+	Vector3 m_firstPosition; //æœ€åˆã®åº§æ¨™
 	Vector3 m_position;
-	SoundSource* m_bgm; //Œø‰Ê‰¹
-	Player* m_player ; //ƒvƒŒƒCƒ„[
-	SpriteCollection* m_spriteCollection;//uAFÌ‚év‚Ì‰æ‘œ
+	SoundSource* m_bgm; //åŠ¹æœéŸ³
+	Player* m_player ; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	SpriteCollection* m_spriteCollection;//ã€ŒAï¼šæ¡ã‚‹ã€ã®ç”»åƒ
 	//PhysicsStaticObject m_physicsStaticObject;
-	//CollisionObject* m_collisionObject;//ƒRƒŠƒWƒ‡ƒ“
-	//Vector3 m_position = Vector3{ 0.0f, 95.0f, -1325.0f };//À•WB
-	//const Vector3 m_collisionScale = Vector3{ 400.0f,50.0f,190.0f };//ƒRƒŠƒWƒ‡ƒ“‚Ì‘å‚«‚³B
-	bool m_collectionFlag = false;//‰Î‘ÅÎ‚Ì‹ß‚­‚É‚¢‚é‚©H
+	//CollisionObject* m_collisionObject;//ã‚³ãƒªã‚¸ãƒ§ãƒ³
+	//Vector3 m_position = Vector3{ 0.0f, 95.0f, -1325.0f };//åº§æ¨™ã€‚
+	//const Vector3 m_collisionScale = Vector3{ 400.0f,50.0f,190.0f };//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®å¤§ãã•ã€‚
+	bool m_collectionFlag = false;//ç«æ‰“çŸ³ã®è¿‘ãã«ã„ã‚‹ã‹ï¼Ÿ
 };
 

@@ -19,7 +19,7 @@ Poison::~Poison()
 
 bool Poison::Start()
 {
-	//ƒCƒ“ƒXƒ^ƒ“ƒXƒAƒhƒŒƒX‚ğŒŸõ
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ¤œç´¢
 	m_littleenemy = FindGO<LittleEnemy>("littleEnemy");
 	m_player = FindGO<Player>("player");
 	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/Effect/Poison.efk");
@@ -28,19 +28,19 @@ bool Poison::Start()
 	m_position += m_moveSpeed * 50.0f;
 	m_moveSpeed *= 1200.0f;
 	m_rotation.AddRotationDegY(360.0f);
-	//‰ñ“]‚ğİ’è‚·‚é
+	//å›è»¢ã‚’è¨­å®šã™ã‚‹
 
-	//ƒRƒŠƒWƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚é
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹
 	m_collisionObj = NewGO<CollisionObject>(0);
-	//‹…ê‚ÌƒRƒŠƒWƒ‡ƒ“‚ğì¬‚·‚é
+	//çƒå ´ã®ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆã™ã‚‹
 	m_collisionObj->CreateSphere(m_position, Quaternion::Identity, 10.0f * m_scale.z);
 	if (m_enEnemy == enPoison_LittleEnemy)
 	{
-		//–¼‘O‚ğLittleEnemy_Poison‚É‚·‚é
+		//åå‰ã‚’LittleEnemy_Poisonã«ã™ã‚‹
 		m_collisionObj->SetName("LittleEnemy_Poison");
 	}
 
-	//ƒRƒŠƒWƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ª©“®‚Åíœ‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè‡ªå‹•ã§å‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 	m_collisionObj->SetIsEnableAutoDelete(false);
 
 	/*m_littleenemy = FindGO <LittleEnemy>("littleenemy");*/
@@ -50,24 +50,24 @@ void Poison::CreatEffect()
 {
 	m_effectEmitter = NewGO<EffectEmitter>(0);
 	m_effectEmitter->Init(0);
-	//ƒGƒtƒFƒNƒg‚Ì‘å‚«‚³
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®å¤§ãã•
 	Vector3 scale(1.0f, 1.0f, 1.0f);
 	m_effectEmitter->SetScale(scale);
-	//ƒGƒtƒFƒNƒg‚ÌÀ•W‚ğƒZƒbƒg‚·‚é
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	m_effectEmitter->SetPosition(m_position);
 	m_effectEmitter->Play();
 }
 
 void Poison::Update()
 {
-	//À•W‚ğˆÚ“®‚³‚¹‚é
+	//åº§æ¨™ã‚’ç§»å‹•ã•ã›ã‚‹
 	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime();
 
-	//ƒRƒŠƒWƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ÉÀ•W‚ğİ’è‚·‚é
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«åº§æ¨™ã‚’è¨­å®šã™ã‚‹
 	m_collisionObj->SetPosition(m_position);
 	m_collisionObj->SetRotation(m_rotation);
 	m_timer += g_gameTime->GetFrameDeltaTime();
-	//ƒ^ƒCƒ}[‚ª0.7fˆÈã‚¾‚Á‚½‚ç
+	//ã‚¿ã‚¤ãƒãƒ¼ãŒ0.7fä»¥ä¸Šã ã£ãŸã‚‰
 	if (m_timer >= 2.0f)
 	{
 		DeleteGO(this);
