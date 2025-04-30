@@ -6,6 +6,7 @@ class Player;
 class GameCamera;
 class BackGround;
 class Enemy;
+class BossEnemy;
 class CrossHair;
 class Shimenawa;
 class Stone;
@@ -31,6 +32,8 @@ public:
 
 	bool Start();
 	void Update();
+	//オブジェクトを作成。
+	void CreateObject();
 	//火打石の生成。
 	void CreateStone();
 	//灯籠の作成。
@@ -43,6 +46,7 @@ public:
 	void CreateEnemy();
 	//ゲームオーバー、ゲームクリアーを呼ぶ関数。
 	void GameManager();
+
 	void Render(RenderContext& rc);
 
 
@@ -53,7 +57,8 @@ public:
 	GameCamera* m_gameCamera;//ゲームカメラ。
 	Player*m_player;//プレイヤー。
 	Enemy* m_enemy ;//敵。
-	LittleEnemy* m_littleEnemy;
+	LittleEnemy* m_littleEnemy;//小さい敵。
+	BossEnemy* m_bossEnemy;//ボス。
 	CrossHair*m_crossHair;//クロスヘアー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Shimenawa* m_shimenawa;//しめ縄。
@@ -102,6 +107,7 @@ public:
 
 	std::vector<Enemy*>   m_enemyList;
 	std::vector<LittleEnemy*> m_littleEnemyList;
+	std::vector<BossEnemy*>m_BossEnemyList;
 
   	float m_timer = 120.0f;
 	bool m_lanternAction = false; 
