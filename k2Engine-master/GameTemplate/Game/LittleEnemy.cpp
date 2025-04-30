@@ -185,6 +185,7 @@ void LittleEnemy::Collision()
 	}
 
 	{
+		//しめ縄のスキル用コリジョンを取得する。
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Shimenawa");
 		//for文で配列を回す
 		for (auto collision : collisions)
