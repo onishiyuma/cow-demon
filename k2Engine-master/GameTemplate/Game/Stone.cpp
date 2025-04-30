@@ -15,7 +15,7 @@ bool Stone::Start()
 
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
-	m_modelRender.SetScale(0.0f, 0.0f, 0.0f);
+	m_modelRender.SetScale(0.1f, 0.1f, 0.1f);
 	
 	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	//コリジョン作成用関数を呼び出す。

@@ -63,17 +63,6 @@ public:
 	CrossHair*m_crossHair;//クロスヘアー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Shimenawa* m_shimenawa;//しめ縄。
-	//繝｡繝ｳ繝仙､画焚縲・
-	GameClear*m_gameClear;//繧ｲ繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ縲・
-	RingBell* m_ringBell;//驤ｴ縲・
-	BackGround* m_backGround;//閭梧勹縲・
-	GameCamera* m_gameCamera;//繧ｲ繝ｼ繝繧ｫ繝｡繝ｩ縲・
-	Player*m_player;//繝励Ξ繧､繝､繝ｼ縲・
-	Enemy* m_enemy ;//謨ｵ縲・
-	LittleEnemy* m_littleEnemy;
-	CrossHair*m_crossHair;//繧ｯ繝ｭ繧ｹ繝倥い繝ｼ縲・
-	ModelRender m_modelRender;//繝｢繝・Ν繝ｬ繝ｳ繝繝ｼ縲・
-	Shimenawa* m_shimenawa;//縺励ａ邵・・
 
 	Stone* m_stone1; //轣ｫ謇鍋浹
 	Stone* m_stone2; //轣ｫ謇鍋浹
