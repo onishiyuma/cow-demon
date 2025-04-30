@@ -227,6 +227,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Amulet.cpp" />
+    <ClCompile Include="AnnoyingEnemy.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="CrossHair.cpp" />
@@ -275,6 +276,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
+    <ClInclude Include="AnnoyingEnemy.h" />
     <ClInclude Include="Assets\shader\util\ColorSpace.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BossEnemy.h" />

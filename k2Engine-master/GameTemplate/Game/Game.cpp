@@ -20,7 +20,7 @@
 #include "UIheal.h"
 #include "GameClear.h"
 #include "GameOver.h"
-
+#include "random"
 
 bool Game::Start()
 {
@@ -56,6 +56,24 @@ bool Game::Start()
 	//デバック用。
 	//m_timeLimit = 3.0f;
 
+		
+	//�X�e�[�W�I�u�W�F�N�g�̍쐬
+	m_backGround = NewGO<BackGround>(0);
+		
+	m_uiTukuyomi = NewGO<UItukuyomi>(0,"uitukuyomi");
+	//スキルUI
+	m_uiSkill = NewGO<UIskill>(0, "uiskill");
+	//しめ縄UI
+	m_uiSimenawa = NewGO<UISimenawa>(0, "m_uisimenawa");
+	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
+	//ミニマップ
+	/*m_miniMap = NewGO<MiniMap>(0,"minimap");*/
+	//呪ゲージ
+	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
+	//回復
+	m_uiHeal = NewGO <UIheal>(0, "uiheal");
+		
+	//��̔w�i�쐬
 	//空の作成
 	//SkyCube* skyCube = NewGO<SkyCube>(0);
 	//skyCube->SetType(enSkyCubeType_NightToon);
@@ -142,6 +160,7 @@ Game::~Game()
 	DeleteGO(m_uiCurseBar);
 	DeleteGO(m_uiHeal);
 	DeleteGO(m_uiStone);
+	//DeleteGO(m_miniMap);
 	DeleteGO(m_miniMap);
 
 	
@@ -167,7 +186,8 @@ void Game::Update()
 	m_timerFontRender.SetScale(1.5f);
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
-
+	
+	CreateUI();
 	GameManager();
 }
 
@@ -195,6 +215,23 @@ void Game::CreateObject()
 
 Vector3 Game::Random()
 {
+	Vector3 position;
+	int m_spawnRandom = rand() % 3;
+
+	switch (m_spawnRandom)
+	{
+	case 0:
+		position = { 0.0f, -10.0f, 3000.0f };
+		break;
+	case 1:
+		position = { 800.0f, -10.0f, 3000.0f };
+		break;
+	case 2:
+		position = { -800.0f, -10.0f, 3000.0f };
+		break;
+	}
+
+	return position;
 	Vector3 m_position;
 	//ランダムにポジションを当てはめる
 	m_position.x = rand() % 800 - 400;
@@ -309,6 +346,30 @@ void Game::CreateAttackLantern()
 //敵を生成用関数。
 void Game::CreateEnemy()
 {
+
+	//タイマーを減らす処理。
+	m_timer += g_gameTime->GetFrameDeltaTime();
+	//1分目
+	if (m_timer>120.0f&&m_timer<180.0f)
+	{
+		m_maxCount = 5;
+	}
+	//2分目
+	else if (m_timer>180.0f&&m_timer<240.0f)
+	{
+		m_maxCount = 10;
+	}
+	//3分目
+	else
+	{
+		m_maxCount = 20;
+	}
+	m_totalCount = m_enemyList.size() +m_littleEnemyList.size();
+	/*while (m_enemyList.size()+m_littleEnemyList.size()<m_maxCount)*/
+	if(m_totalCount<m_maxCount)
+	{
+		int ram = rand() % 100;
+		if (ram > 30) {
 	for (int i = 0; i < 5; i++)
 	{
 		int ram = rand() % 100;
@@ -320,6 +381,11 @@ void Game::CreateEnemy()
 			m_enemyList.push_back(enemy);//敵リストに追加
 		}
 		if(ram> 70)
+		else {
+			LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
+			m_littleEnemy->SetPosition(Random());
+			m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
+		if(ram>30)
 		{
 			LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 			littleEnemy->SetPosition(Random());
@@ -334,6 +400,20 @@ void Game::CreateEnemy()
 	}
 }
 
+ //   //月読の加護のUI
+	//m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
+	////スキルUI
+	//m_uiSkill = NewGO<UIskill>(0, "uiskill");
+	////しめ縄UI
+	//m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
+	////ミニマップ
+	///*m_miniMap = NewGO<MiniMap>(0, "minimap");*/
+	////呪ゲージ
+	//m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
+	////回復
+	//m_uiHeal = NewGO <UIheal>(0, "uiheal");
+}
+	
 //UI作成用関数。
 void Game::CreateUI()
 {

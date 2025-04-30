@@ -86,7 +86,7 @@ public:
 	UItukuyomi* m_uiTukuyomi;
 	UIskill* m_uiSkill;
 	UISimenawa* m_uiSimenawa;
-	MiniMap* m_miniMap;
+	/*MiniMap* m_miniMap;*/
 	UIcurseBar* m_uiCurseBar;
 	UIheal* m_uiHeal;
 
@@ -110,6 +110,9 @@ public:
 	std::vector<LittleEnemy*> m_littleEnemyList;
 	std::vector<BossEnemy*>m_BossEnemyList;
 
+	//敵の最大数
+	int m_maxCount = 0;
+	int m_totalCount = 0;
   	float m_timer = 120.0f;
 	bool m_lanternAction = false; 
 	float m_timeLimit=0;//蛻ｶ髯先凾髢・
