@@ -30,13 +30,11 @@ bool Game::Start()
 
 	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
-	//制限時間の設定。
+	//制限時間の設定
+	//m_timeLimit =120.0f;
 
 	//オブジェクトの作成。
 	CreateObject();
-  
-	////蛻ｶ髯先凾髢薙・險ｭ螳壹・
-	//m_timeLimit =120.0f;
 
 	////背景の作成。
 	//m_backGround = NewGO<BackGround>(0);
@@ -55,25 +53,20 @@ bool Game::Start()
 
 	//デバック用。
 	//m_timeLimit = 3.0f;
-
 		
-	//�X�e�[�W�I�u�W�F�N�g�̍쐬
-	m_backGround = NewGO<BackGround>(0);
+	//m_uiTukuyomi = NewGO<UItukuyomi>(0,"uitukuyomi");
+	////スキルUI
+	//m_uiSkill = NewGO<UIskill>(0, "uiskill");
+	////しめ縄UI
+	////m_uiSimenawa = NewGO<UISimenawa>(0, "m_uisimenawa");
+	//m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
+	////ミニマップ
+	///*m_miniMap = NewGO<MiniMap>(0,"minimap");*/
+	////呪ゲージ
+	//m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
+	////回復
+	//m_uiHeal = NewGO <UIheal>(0, "uiheal");
 		
-	m_uiTukuyomi = NewGO<UItukuyomi>(0,"uitukuyomi");
-	//スキルUI
-	m_uiSkill = NewGO<UIskill>(0, "uiskill");
-	//しめ縄UI
-	m_uiSimenawa = NewGO<UISimenawa>(0, "m_uisimenawa");
-	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
-	//ミニマップ
-	/*m_miniMap = NewGO<MiniMap>(0,"minimap");*/
-	//呪ゲージ
-	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
-	//回復
-	m_uiHeal = NewGO <UIheal>(0, "uiheal");
-		
-	//��̔w�i�쐬
 	//空の作成
 	//SkyCube* skyCube = NewGO<SkyCube>(0);
 	//skyCube->SetType(enSkyCubeType_NightToon);
@@ -90,8 +83,6 @@ bool Game::Start()
 	CreateAttackLantern();
 
 	//火打石のカウントを表示。
-
-	//UIの作成
 	//m_uiStone = NewGO<UIStone>(0, "uiStone");
 
 	//UIの作成
@@ -126,11 +117,11 @@ Game::~Game()
 		DeleteGO(bossEnemy);
 	}
 
-	DeleteGO(m_player); //プレイヤー
-	DeleteGO(m_gameCamera); //ゲームカメラ
-	DeleteGO(m_backGround); //ステージ
-	DeleteGO(m_crossHair); //クロスヘアー
-	DeleteGO(m_ringBell); //ベル
+	DeleteGO(m_player); //プレイヤー。
+	DeleteGO(m_gameCamera); //ゲームカメラ。
+	DeleteGO(m_backGround); //ステージ。
+	DeleteGO(m_crossHair); //クロスヘアー。
+	DeleteGO(m_ringBell); //ベル。
 
 	//火打石。
 	DeleteGO(m_stone1);
@@ -161,7 +152,6 @@ Game::~Game()
 	DeleteGO(m_uiHeal);
 	DeleteGO(m_uiStone);
 	//DeleteGO(m_miniMap);
-	DeleteGO(m_miniMap);
 
 	
 }
@@ -176,7 +166,13 @@ void Game::Update()
 	swprintf_s(wcsbuf, 256, L"AM%01d:%02d", minute, sec);
 
 
-	//表示するテキストを表示
+	//表示するテキストを表示。
+	m_timerFontRender.SetText(wcsbuf);
+	//フォントの位置を設定。
+	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
+	//フォントの色を設定。
+	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	//フォントの大きさを設定。
 	m_timerFontRender.SetText(wcsbuf);
 	//フォントの位置を設定
 	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
@@ -187,7 +183,6 @@ void Game::Update()
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
 	
-	CreateUI();
 	GameManager();
 }
 
@@ -366,52 +361,43 @@ void Game::CreateEnemy()
 	}
 	m_totalCount = m_enemyList.size() +m_littleEnemyList.size();
 	/*while (m_enemyList.size()+m_littleEnemyList.size()<m_maxCount)*/
-	if(m_totalCount<m_maxCount)
+	if (m_totalCount < m_maxCount)
 	{
 		int ram = rand() % 100;
 		if (ram > 30) {
-	for (int i = 0; i < 5; i++)
-	{
-		int ram = rand() % 100;
+			for (int i = 0; i < 5; i++)
+			{
+				int ram = rand() % 100;
 
-		if (ram > 30)
-		{
-			Enemy* enemy = NewGO<Enemy>(1, "enemy");
-			enemy->SetPosition(Random());
-			m_enemyList.push_back(enemy);//敵リストに追加
-		}
-		if(ram> 70)
-		else {
-			LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-			m_littleEnemy->SetPosition(Random());
-			m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
-		if(ram>30)
-		{
-			LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-			littleEnemy->SetPosition(Random());
-			m_littleEnemyList.push_back(littleEnemy);//雑魚敵を敵のリストに追加する
-		}
-		if (ram > 90)
-		{
-			BossEnemy* bossEnemy = NewGO<BossEnemy>(1, "bossEnemy");
-			bossEnemy->SetPosition(Random());
-			m_BossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する
+				if (ram > 30)
+				{
+					Enemy* enemy = NewGO<Enemy>(1, "enemy");
+					enemy->SetPosition(Random());
+					m_enemyList.push_back(enemy);//敵リストに追加
+					m_enemyList.push_back(enemy);//敵リストに追加する。
+					m_enemyList.push_back(enemy);//謨ｵ繝ｪ繧ｹ繝医↓霑ｽ蜉
+				}
+				else {
+					LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
+					m_littleEnemy->SetPosition(Random());
+					m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
+					if (ram > 30)
+					{
+						LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
+						littleEnemy->SetPosition(Random());
+						m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
+						m_littleEnemyList.push_back(littleEnemy);//雑魚敵を敵のリストに追加する。
+					}
+					if (ram > 30)
+					{
+						BossEnemy* bossEnemy = NewGO<BossEnemy>(1, "bossEnemy");
+						bossEnemy->SetPosition(Random());
+						m_BossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する。
+					}
+				}
+			}
 		}
 	}
-}
-
- //   //月読の加護のUI
-	//m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
-	////スキルUI
-	//m_uiSkill = NewGO<UIskill>(0, "uiskill");
-	////しめ縄UI
-	//m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
-	////ミニマップ
-	///*m_miniMap = NewGO<MiniMap>(0, "minimap");*/
-	////呪ゲージ
-	//m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
-	////回復
-	//m_uiHeal = NewGO <UIheal>(0, "uiheal");
 }
 	
 //UI作成用関数。
