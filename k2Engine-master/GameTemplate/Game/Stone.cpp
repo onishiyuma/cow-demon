@@ -14,8 +14,8 @@ bool Stone::Start()
 	m_spriteCollection = FindGO<SpriteCollection>("spriteCollection");
 
 	//モデルを読み込む
-	m_modelRender.Init("Assets/modelData/stone/stone.tkm");
-	m_modelRender.SetScale(0.5f, 0.5f, 0.5f);
+	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
+	m_modelRender.SetScale(0.0f, 0.0f, 0.0f);
 	
 	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	//コリジョン作成用関数を呼び出す。

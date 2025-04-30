@@ -30,11 +30,12 @@
 bool Game::Start()
 {
 
-	//繧ｹ繝・・繧ｸ蜈ｨ菴薙ｒ證励￥縺吶ｋ縲・
+	//ステージ全体を暗くする。
 	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
 
 	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
+	//制限時間の設定。
 
 	//オブジェクトの作成。
 	CreateObject();
@@ -42,48 +43,49 @@ bool Game::Start()
 	//蛻ｶ髯先凾髢薙・險ｭ螳壹・
 	m_timeLimit =120.0f;
 
-	//閭梧勹縺ｮ菴懈・縲・
+	//背景の作成。
 	m_backGround = NewGO<BackGround>(0);
 
-	//繝吶Ν縺ｮ菴懈・縲・
+	//ベルの作成。
 	m_ringBell = NewGO<RingBell>(0, "ringbell");
 
-	//繝励Ξ繧､繝､繝ｼ縺ｮ菴懈・縲・
+	//プレイヤーの作成。
 	m_player = NewGO<Player>(0, "player");
 
-	//繧ｲ繝ｼ繝繧ｫ繝｡繝ｩ縺ｮ菴懈・縲・
+	//ゲームカメラの作成。
 	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
 
-	//繧ｯ繝ｭ繧ｹ繝倥い繝ｼ繧定｡ｨ遉ｺ縲・
+	//クロスヘアーを表示。
 	m_crossHair = NewGO<CrossHair>(0);
 
-	//繝・ヰ繝・け逕ｨ縲・
+	//デバック用。
 	//m_timeLimit = 3.0f;
 
-	//・ｽ・ｽﾌ背・ｽi・ｽ・ｬ
+	//空の作成
 	//SkyCube* skyCube = NewGO<SkyCube>(0);
 	//skyCube->SetType(enSkyCubeType_NightToon);
 	//skyCube->SetScale(1000.0f);
 
 	
-	//轣ｫ謇鍋浹縺ｮ菴懈・縲・
+	//火打石の作成。
 	CreateStone();
 
-	//轣ｯ邀縺ｮ菴懈・縲・
+	//灯籠の作成。
 	CreateLantern();
 
-	//謾ｻ謦・畑轣ｯ邀縺ｮ菴懈・縲・
+	//攻撃用灯籠の作成。
 	CreateAttackLantern();
 
+	//火打石のカウントを表示。
 
 	//UIの作成
 	//轣ｫ謇鍋浹縺ｮ繧ｫ繧ｦ繝ｳ繝医ｒ陦ｨ遉ｺ縲・
 	m_uiStone = NewGO<UIStone>(0, "uiStone");
 
-	//UI縺ｮ菴懈・
+	//UIの作成
 	CreateUI();
 
-	//Enemy縺ｮ菴懈・
+	//Enemyの作成
 	CreateEnemy();
 	
 	return true;
@@ -96,6 +98,7 @@ Game::Game()
 
 Game::~Game()
 {
+	//牛鬼
 	//牛鬼。
 
 	//迚幃ｬｼ
@@ -103,6 +106,7 @@ Game::~Game()
 		DeleteGO(enemy);
 	}
 
+	//ミニ牛鬼
 	//ミニ牛鬼。
 
 	//繝溘ル迚幃ｬｼ
@@ -110,6 +114,11 @@ Game::~Game()
 		DeleteGO(littleEnemy);
 	}
 
+	DeleteGO(m_player); //プレイヤー
+	DeleteGO(m_gameCamera); //ゲームカメラ
+	DeleteGO(m_backGround); //ステージ
+	DeleteGO(m_crossHair); //クロスヘアー
+	DeleteGO(m_ringBell); //ベル
 	//ボス牛鬼。
 	for (auto* bossEnemy : m_BossEnemyList)
 	{
@@ -127,7 +136,7 @@ Game::~Game()
 	DeleteGO(m_crossHair); //繧ｯ繝ｭ繧ｹ繝倥い繝ｼ
 	DeleteGO(m_ringBell); //繝吶Ν
 
-	//轣ｫ謇鍋浹縲・
+	//火打石。
 	DeleteGO(m_stone1);
 	DeleteGO(m_stone2);
 	DeleteGO(m_stone3);
@@ -136,18 +145,18 @@ Game::~Game()
 	DeleteGO(m_stone6);
 	DeleteGO(m_stone7);
 
-	//轣ｯ邀縲・
+	//灯籠。
 	DeleteGO(m_lantern1);
 	DeleteGO(m_lantern2);
 	DeleteGO(m_lantern3);
 	DeleteGO(m_lantern4);
 
-	//謾ｻ謦・畑轣ｯ邀縲・
+	//攻撃用灯籠。
 	DeleteGO(m_lanternAttack1);
 	DeleteGO(m_lanternAttack2);
 	DeleteGO(m_lanternAttack3);
 
-	//UI髢｢騾｣縲・
+	//UI関連。
 	DeleteGO(m_littleEnemy);
 	DeleteGO(m_uiTukuyomi);
 	DeleteGO(m_uiSkill);
@@ -170,6 +179,7 @@ void Game::Update()
 	swprintf_s(wcsbuf, 256, L"AM%01d:%02d", minute, sec);
 
 
+	//表示するテキストを表示
 	//表示するテキストを表示。
 	m_timerFontRender.SetText(wcsbuf);
 	//フォントの位置を設定。
@@ -179,11 +189,11 @@ void Game::Update()
 	//フォントの大きさを設定。
 	//陦ｨ遉ｺ縺吶ｋ繝・く繧ｹ繝医ｒ陦ｨ遉ｺ
 	m_timerFontRender.SetText(wcsbuf);
-	//繝輔か繝ｳ繝医・菴咲ｽｮ繧定ｨｭ螳・
+	//フォントの位置を設定
 	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
-	//繝輔か繝ｳ繝医・濶ｲ繧定ｨｭ螳・
+	//フォントの色を設定
 	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	//繝輔か繝ｳ繝医・螟ｧ縺阪＆繧定ｨｭ螳・
+	//フォントの大きさを設定
 	m_timerFontRender.SetScale(1.5f);
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
@@ -216,6 +226,7 @@ void Game::CreateObject()
 Vector3 Game::Random()
 {
 	Vector3 m_position;
+	//ランダムにポジションを当てはめる
 	//ランダムにポジションを当てはめる。
 	//繝ｩ繝ｳ繝繝縺ｫ繝昴ず繧ｷ繝ｧ繝ｳ繧貞ｽ薙※縺ｯ繧√ｋ
 	m_position.x = rand() % 800 - 400;
@@ -225,13 +236,13 @@ Vector3 Game::Random()
 }
 
 
-//繧ｲ繝ｼ繝繧ｯ繝ｪ繧｢縲√ご繝ｼ繝繧ｪ繝ｼ繝舌・縺ｮ蛻､螳壼・逅・・
+//ゲームクリア、ゲームオーバーの判定処理。
 void Game::GameManager()
 {
-	//繧ｿ繧､繝槭・繧呈ｸ帙ｉ縺吝・逅・・
+	//タイマーを減らす処理。
 	m_timeLimit -= g_gameTime->GetFrameDeltaTime();
 
-	//謨ｵ縺九ｉ譛ｬ谿ｿ繧貞ｮ医ｊ蛻・▲縺溘ｉ繧ｲ繝ｼ繝繧ｯ繝ｪ繧｢縲・
+	//敵から本殿を守り切ったらゲームクリア。
 	if (m_timeLimit <= 0)
 	{
 		NewGO<GameClear>(0);
@@ -239,7 +250,7 @@ void Game::GameManager()
 	}
 
 
-	//蜻ｪ縺・・謚ｵ謚怜､縺後↑縺上↑縺｣縺溘ｉ縲・
+	//呪いの抵抗値がなくなったら。
 	if (m_player->m_playerHP <= 0)
 	{
 		NewGO<GameOver>(0);
@@ -247,10 +258,10 @@ void Game::GameManager()
 	}
 }
 
-//轣ｫ謇鍋浹菴懈・逕ｨ髢｢謨ｰ縲・
+//火打石作成用関数。
 void Game::CreateStone()
 {
-	// 轣ｫ謇鍋浹繧定｡ｨ遉ｺ縲・
+	// 火打石を表示。
 	m_stone1 = NewGO<Stone>(0, "stone1");
 	m_stone1->m_position = { 1000.0f,0.0f,-500.0f };
 	m_stone1->m_firstPosition = m_stone1->m_position;
@@ -282,9 +293,10 @@ void Game::CreateStone()
 	m_stone7->m_firstPosition = m_stone7->m_position;
 }
 
-//轣ｯ邀菴懈・逕ｨ髢｢謨ｰ縲・
+//灯籠作成用関数。
 void Game::CreateLantern()
 {
+	//灯籠のモデルを表示
 	//灯籠のモデルを表示。
 	//轣ｯ邀縺ｮ繝｢繝・Ν繧定｡ｨ遉ｺ
 	m_lantern1 = NewGO<Lantern>(0, "lantern1");
@@ -308,11 +320,12 @@ void Game::CreateLantern()
 	//m_lantern4 = FindGO<Lantern>("lantern4");
 }
 
+//攻撃灯籠の作成用関数
 //攻撃灯籠の作成用関数。
 //謾ｻ謦・・邀縺ｮ菴懈・逕ｨ髢｢謨ｰ
 void Game::CreateAttackLantern()
 {
-	//謾ｻ謦・畑轣ｯ邀縺ｮ繝｢繝・Ν繧定｡ｨ遉ｺ
+	//攻撃用灯籠のモデルを表示
 	m_lanternAttack1 = NewGO<LanternAttack>(0, "lanternAttack1");
 	m_lanternAttack1->m_position = { 700.0f,-50.0f,2000.0f };
 	m_lanternAttack1->m_firstPosition = m_lanternAttack1->m_position;
@@ -340,6 +353,7 @@ void Game::CreateEnemy()
 		{
 			Enemy* enemy = NewGO<Enemy>(1, "enemy");
 			enemy->SetPosition(Random());
+			m_enemyList.push_back(enemy);//敵リストに追加
 			m_enemyList.push_back(enemy);//敵リストに追加する。
 			m_enemyList.push_back(enemy);//謨ｵ繝ｪ繧ｹ繝医↓霑ｽ蜉
 		}
@@ -347,6 +361,7 @@ void Game::CreateEnemy()
 		{
 			LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 			littleEnemy->SetPosition(Random());
+			m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
 			m_littleEnemyList.push_back(littleEnemy);//雑魚敵を敵のリストに追加する。
 		}
 		if (ram > 30)
@@ -359,9 +374,10 @@ void Game::CreateEnemy()
 	}
 }
 
-//UI菴懈・逕ｨ髢｢謨ｰ縲・
+//UI作成用関数。
 void Game::CreateUI()
 {
+	//月読の加護のUI
 	//月読の加護のUI。
 	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
 	//スキルUI。
@@ -375,15 +391,15 @@ void Game::CreateUI()
 	//回復。
 	//譛郁ｪｭ縺ｮ蜉隴ｷ縺ｮUI
 	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
-	//繧ｹ繧ｭ繝ｫUI
+	//スキルUI
 	m_uiSkill = NewGO<UIskill>(0, "uiskill");
-	//縺励ａ邵ФI
+	//しめ縄UI
 	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
-	//繝溘ル繝槭ャ繝・
+	//ミニマップ
 	//m_miniMap = NewGO<MiniMap>(0, "minimap");
-	//蜻ｪ繧ｲ繝ｼ繧ｸ
+	//呪ゲージ
 	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
-	//蝗槫ｾｩ
+	//回復
 	m_uiHeal = NewGO <UIheal>(0, "uiheal");
 	//火打石のカウントを表示。
 	m_uiStone = NewGO<UIStone>(0, "uiStone");
