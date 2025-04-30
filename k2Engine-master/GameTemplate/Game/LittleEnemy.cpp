@@ -185,6 +185,7 @@ void LittleEnemy::Collision()
 	}
 
 	{
+		//‚µ‚ß“ê‚ÌƒXƒLƒ‹—pƒRƒŠƒWƒ‡ƒ“‚ğæ“¾‚·‚éB
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Shimenawa");
 		//foræ–‡ã§é…åˆ—ã‚’å›ã™
 		for (auto collision : collisions)

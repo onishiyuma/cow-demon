@@ -6,6 +6,7 @@ class Player;
 class GameCamera;
 class BackGround;
 class Enemy;
+class BossEnemy;
 class CrossHair;
 class Shimenawa;
 class Stone;
@@ -31,6 +32,9 @@ public:
 
 	bool Start();
 	void Update();
+	//オブジェクトを作成。
+	void CreateObject();
+	//火打石の生成。
 	//轣ｫ謇鍋浹縺ｮ逕滓・縲・
 	void CreateStone();
 	//轣ｯ邀縺ｮ菴懈・縲・
@@ -43,9 +47,22 @@ public:
 	void CreateEnemy();
 	//繧ｲ繝ｼ繝繧ｪ繝ｼ繝舌・縲√ご繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ繧貞他縺ｶ髢｢謨ｰ縲・
 	void GameManager();
+
 	void Render(RenderContext& rc);
 
 
+	//メンバ変数。
+	GameClear*m_gameClear;//ゲームクリアー。
+	RingBell* m_ringBell;//鈴。
+	BackGround* m_backGround;//背景。
+	GameCamera* m_gameCamera;//ゲームカメラ。
+	Player*m_player;//プレイヤー。
+	Enemy* m_enemy ;//敵。
+	LittleEnemy* m_littleEnemy;//小さい敵。
+	BossEnemy* m_bossEnemy;//ボス。
+	CrossHair*m_crossHair;//クロスヘアー。
+	ModelRender m_modelRender;//モデルレンダー。
+	Shimenawa* m_shimenawa;//しめ縄。
 	//繝｡繝ｳ繝仙､画焚縲・
 	GameClear*m_gameClear;//繧ｲ繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ縲・
 	RingBell* m_ringBell;//驤ｴ縲・
@@ -102,6 +119,7 @@ public:
 
 	std::vector<Enemy*>   m_enemyList;
 	std::vector<LittleEnemy*> m_littleEnemyList;
+	std::vector<BossEnemy*>m_BossEnemyList;
 
   	float m_timer = 120.0f;
 	bool m_lanternAction = false; 
