@@ -41,7 +41,7 @@ namespace nsK2Engine {
 			&& vMin.y < 1.0f
 			&& vMin.z < 1.0f
 			) {
-			//��ʂɉf��B
+			//画面に映る。
 			m_isInViewFrustum = true;
 		}
 	}
@@ -53,7 +53,7 @@ namespace nsK2Engine {
 	{
 		m_modelRender = modelRender;
 		m_instanceId = instanceId;
-		// tkm�t�@�C�����烂�f���̍ŏ����W�ƍő���W�𒲂ׂ�B
+		// tkmファイルからモデルの最小座標と最大座標を調べる。
 		Vector3 vMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
 		Vector3 vMin = { FLT_MAX,  FLT_MAX,  FLT_MAX };
 

@@ -5,14 +5,14 @@
 
 namespace 
 {
-	//ƒXƒLƒ‹
+	//ã‚¹ã‚­ãƒ«
 	Vector3 SKILL_FREME_POSITION = Vector3(600.0f, -425.0f, 0.0f);
 
-	//ƒXƒLƒ‹ƒQ[ƒW
+	//ã‚¹ã‚­ãƒ«ã‚²ãƒ¼ã‚¸
 	Vector3 SKILL_GAUGE_POSITION = Vector3(600.0f, -485.0f, 0.0f);
-	//—Î
+	//ç·‘
 	Vector4 GREEN = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-	//”–‚¢—Î
+	//è–„ã„ç·‘
 	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
 }
 
@@ -29,12 +29,12 @@ UIskill::~UIskill()
 bool UIskill::Start()
 {
 	m_player = FindGO<Player>("player");
-	//ƒXƒLƒ‹ƒQ[ƒW
+	//ã‚¹ã‚­ãƒ«ã‚²ãƒ¼ã‚¸
 	m_skillGageSprite.Init("Assets/UI/White.DDS", 120, 14);
 	m_skillGageSprite.SetPosition(SKILL_GAUGE_POSITION);
 	m_skillGageSprite.SetPivot(Vector2{ 0.5f,0.0f });
 
-	//ƒXƒLƒ‹ƒXƒvƒ‰ƒCƒg
+	//ã‚¹ã‚­ãƒ«ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	m_skillSprite.Init("Assets/UI/skilmax.DDS", 130, 130);
 	m_skillSprite.SetPosition(SKILL_FREME_POSITION);
 	return true;

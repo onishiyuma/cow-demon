@@ -85,7 +85,7 @@ protected:
 	Quaternion m_rotation;
 	CharacterController m_charaCon;
 	/*EnEnemyState m_enemyState = enEnemyState_Idle;*/
-	//”h¶ƒNƒ‰ƒX‚©‚ç‚¢‚¶‚é•Ï”
+	//æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã‹ã‚‰ã„ã˜ã‚‹å¤‰æ•°
 
 	float m_enemyHP = 0;
 	float m_enemyHPMax = 0;

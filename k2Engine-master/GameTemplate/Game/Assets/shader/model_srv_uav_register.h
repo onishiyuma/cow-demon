@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
-// ƒtƒHƒ[ƒhƒŒƒ“ƒ_ƒŠƒ“ƒO‚Åg—p‚³‚ê‚éƒ‚ƒfƒ‹ƒVƒF[ƒ_[‚ÌSRV_UAVƒŒƒWƒXƒ^İ’è
+// ãƒ•ã‚©ãƒ¯ãƒ¼ãƒ‰ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã§ä½¿ç”¨ã•ã‚Œã‚‹ãƒ¢ãƒ‡ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®SRV_UAVãƒ¬ã‚¸ã‚¹ã‚¿è¨­å®š
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef _MODEL_SRV_UAV_REGISTER_H_
@@ -7,10 +7,10 @@
 
 #include "Shadowing_const.h"
 
-Texture2D<float4> albedoTexture : register(t0);                 // ƒAƒ‹ƒxƒh
-Texture2D<float4> normalTexture : register(t1);                 // –@ü
-Texture2D<float4> metallicShadowSmoothTexture : register(t2);   // ƒƒ^ƒŠƒbƒNAƒVƒƒƒhƒEAƒXƒ€[ƒXƒeƒNƒXƒ`ƒƒBr‚É‹à‘®“xAg‚É‰eƒpƒ‰ƒ[ƒ^Aa‚ÉŠŠ‚ç‚©‚³B
-TextureCube<float4> g_skyCubeMap : register(t11);               // ƒXƒJƒCƒLƒ…[ƒu
-Texture2D<float4> g_shadowMap[NUM_DIRECTIONAL_LIGHT][NUM_SHADOW_MAP] : register(t12);  //ƒVƒƒƒhƒEƒ}ƒbƒvB
+Texture2D<float4> albedoTexture : register(t0);                 // ã‚¢ãƒ«ãƒ™ãƒ‰
+Texture2D<float4> normalTexture : register(t1);                 // æ³•ç·š
+Texture2D<float4> metallicShadowSmoothTexture : register(t2);   // ãƒ¡ã‚¿ãƒªãƒƒã‚¯ã€ã‚·ãƒ£ãƒ‰ã‚¦ã€ã‚¹ãƒ ãƒ¼ã‚¹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚rã«é‡‘å±åº¦ã€gã«å½±ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã€aã«æ»‘ã‚‰ã‹ã•ã€‚
+TextureCube<float4> g_skyCubeMap : register(t11);               // ã‚¹ã‚«ã‚¤ã‚­ãƒ¥ãƒ¼ãƒ–
+Texture2D<float4> g_shadowMap[NUM_DIRECTIONAL_LIGHT][NUM_SHADOW_MAP] : register(t12);  //ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã€‚
 
 #endif // _MODEL_SRV_UAV_REGISTER_H_

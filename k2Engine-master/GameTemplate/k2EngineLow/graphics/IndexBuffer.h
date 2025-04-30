@@ -2,56 +2,56 @@
 
 namespace nsK2EngineLow {
 	/// <summary>
-	/// �C���f�b�N�X�o�b�t�@�B
+	/// インデックスバッファ。
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
 	class IndexBuffer : public Noncopyable {
 	public:
 		/// <summary>
-		/// �f�X�g���N�^�B
+		/// デストラクタ。
 		/// </summary>
 		~IndexBuffer();
 		/// <summary>
-		/// �������B
+		/// 初期化。
 		/// </summary>
-		/// <param name="size">�C���f�b�N�X�o�b�t�@�̃T�C�Y�B</param>
-		/// <param name="stride">�X�g���C�h�B</param>
+		/// <param name="size">インデックスバッファのサイズ。</param>
+		/// <param name="stride">ストライド。</param>
 		void Init(int size, int stride);
 		/// <summary>
-		/// �C���f�b�N�X�f�[�^���C���f�b�N�X�o�b�t�@�ɃR�s�[�B
+		/// インデックスデータをインデックスバッファにコピー。
 		/// </summary>
-		/// <param name="srcIndecies">�R�s�[���̃C���f�b�N�X�f�[�^�B</param>
-		/// <param name="numCopy">�R�s�[���鐔�B�O���w�肷��ƃR�s�[��̃C���f�b�N�X�̐��Ɠ��������R�s�[����܂��B</param>
-		/// <param name="copyStartAddrOffset">�R�s�[�J�n�A�h���X�̃I�t�Z�b�g</param>
-		/// <param name="srcIndexBias">�R�s�[���C���f�b�N�X���グ����l�B</param>
+		/// <param name="srcIndecies">コピー元のインデックスデータ。</param>
+		/// <param name="numCopy">コピーする数。０を指定するとコピー先のインデックスの数と同じだけコピーされます。</param>
+		/// <param name="copyStartAddrOffset">コピー開始アドレスのオフセット</param>
+		/// <param name="srcIndexBias">コピー元インデックスを底上げする値。</param>
 		/// <remark>
-		/// �قƂ�ǂ̏ꍇ�ŁA��Q�����`��S������0���w�肵�Ă��������B
-		/// �����I�ȃR�s�[���s�������ꍇ�̓R�s�[���鐔���w�肷��A
-		/// numCopy��R�s�[��̃A�h���X���I�t�Z�b�g����copyStartAddrOffset�ɒl��ݒ肵�Ă��������B
-		/// �܂��A�R�s�[���̃C���f�b�N�X�̒l���ꗥ�Œ�グ���s�������ꍇ��srcIndexBias�ɒl��ݒ肵�Ă��������B
-		/// �Ⴆ�΁AsrcIndexBias��10���w�肳��Ă���ƁAsrcIndecies�ɋL������Ă���l��+10���Z�������̂��R�s�[����Ă����܂��B
+		/// ほとんどの場合で、第２引数～第４引数は0を指定してください。
+		/// 部分的なコピーを行いたい場合はコピーする数を指定する、
+		/// numCopyやコピー先のアドレスをオフセットするcopyStartAddrOffsetに値を設定してください。
+		/// また、コピー元のインデックスの値を一律で底上げを行いたい場合はsrcIndexBiasに値を設定してください。
+		/// 例えば、srcIndexBiasに10が指定されていると、srcIndeciesに記憶されている値に+10加算したものがコピーされていきます。
 		/// </remark>
 		void Copy(uint16_t* srcIndecies, int numCopy, uint32_t copyStartAddrOffset, uint32_t srcIndexBias);
 
 		/// <summary>
-		/// �C���f�b�N�X�f�[�^���C���f�b�N�X�o�b�t�@�ɃR�s�[�B
+		/// インデックスデータをインデックスバッファにコピー。
 		/// </summary>
-		/// <param name="srcIndecies">�R�s�[���̃C���f�b�N�X�f�[�^�B</param>
-		/// <param name="numCopy">�R�s�[���鐔�B�O���w�肷��ƃR�s�[��̃C���f�b�N�X�̐��Ɠ��������R�s�[����܂��B</param>
-		/// <param name="copyStartAddrOffset">�R�s�[�J�n�A�h���X�̃I�t�Z�b�g</param>
-		/// <param name="srcIndexBias">�R�s�[���C���f�b�N�X���グ����l�B</param>
+		/// <param name="srcIndecies">コピー元のインデックスデータ。</param>
+		/// <param name="numCopy">コピーする数。０を指定するとコピー先のインデックスの数と同じだけコピーされます。</param>
+		/// <param name="copyStartAddrOffset">コピー開始アドレスのオフセット</param>
+		/// <param name="srcIndexBias">コピー元インデックスを底上げする値。</param>
 		/// <remark>
-		/// �قƂ�ǂ̏ꍇ�ŁA��Q�����`��S������0���w�肵�Ă��������B
-		/// �����I�ȃR�s�[���s�������ꍇ�̓R�s�[���鐔���w�肷��A
-		/// numCopy��R�s�[��̃A�h���X���I�t�Z�b�g����copyStartAddrOffset�ɒl��ݒ肵�Ă��������B
-		/// �܂��A�R�s�[���̃C���f�b�N�X�̒l���ꗥ�Œ�グ���s�������ꍇ��srcIndexBias�ɒl��ݒ肵�Ă��������B
-		/// �Ⴆ�΁AsrcIndexBias��10���w�肳��Ă���ƁAsrcIndecies�ɋL������Ă���l��+10���Z�������̂��R�s�[����Ă����܂��B
+		/// ほとんどの場合で、第２引数～第４引数は0を指定してください。
+		/// 部分的なコピーを行いたい場合はコピーする数を指定する、
+		/// numCopyやコピー先のアドレスをオフセットするcopyStartAddrOffsetに値を設定してください。
+		/// また、コピー元のインデックスの値を一律で底上げを行いたい場合はsrcIndexBiasに値を設定してください。
+		/// 例えば、srcIndexBiasに10が指定されていると、srcIndeciesに記憶されている値に+10加算したものがコピーされていきます。
 		/// </remark>
 		void Copy(uint32_t* srcIndecies, int numCopy, uint32_t copyStartAddrOffset, uint32_t srcIndexBias);
 
 		/// <summary>
-		/// �C���f�b�N�X�o�b�t�@�r���[���擾�B
+		/// インデックスバッファビューを取得。
 		/// </summary>
 		/// <returns></returns>
 		const D3D12_INDEX_BUFFER_VIEW& GetView() const
@@ -59,15 +59,15 @@ namespace nsK2EngineLow {
 			return m_indexBufferView;
 		}
 		/// <summary>
-		/// �C���f�b�N�X�̐����擾�B
+		/// インデックスの数を取得。
 		/// </summary>
-		/// <returns>�C���f�b�N�X�̐��B</returns>
+		/// <returns>インデックスの数。</returns>
 		int GetCount() const
 		{
 			return m_count;
 		}
 		/// <summary>
-		/// �C���f�b�N�X����ݒ�B
+		/// インデックス数を設定。
 		/// </summary>
 		/// <param name="count"></param>
 		void SetCount(int count)
@@ -75,18 +75,18 @@ namespace nsK2EngineLow {
 			m_count = count;
 		}
 		/// <summary>
-		/// �C���f�b�N�X�o�b�t�@�̃X�g���C�h���擾�B
+		/// インデックスバッファのストライドを取得。
 		/// </summary>
-		/// �X�g���C�h�Ƃ����̂́A�P�v�f�̃T�C�Y�̂��ƁB
-		/// �����ł́A��̃C���f�b�N�X�̃T�C�Y���擾���邱�ƂɂȂ�B
-		/// 2��4���Ԃ��Ă��܂��B
+		/// ストライドというのは、１要素のサイズのこと。
+		/// ここでは、一つのインデックスのサイズを取得することになる。
+		/// 2か4が返ってきます。
 		/// <returns></returns>
 		UINT GetStrideInBytes() const
 		{
 			return static_cast<UINT>(m_strideInBytes);
 		}
 		/// <summary>
-		/// �C���f�b�N�X�o�b�t�@�̃T�C�Y(�P�ʁF�o�C�g)���擾�B
+		/// インデックスバッファのサイズ(単位：バイト)を取得。
 		/// </summary>
 		/// <returns></returns>
 		UINT GetSizeInBytes() const
@@ -94,7 +94,7 @@ namespace nsK2EngineLow {
 			return static_cast<UINT>(m_sizeInBytes);
 		}
 		/// <summary>
-		/// ID3D12Resource�̃A�h���X���擾���܂��B
+		/// ID3D12Resourceのアドレスを取得します。
 		/// </summary>
 		/// <returns></returns>
 		ID3D12Resource* GetID3DResourceAddress() const
@@ -104,14 +104,14 @@ namespace nsK2EngineLow {
 	private:
 
 		/// <summary>
-		/// ���
+		/// 解放
 		/// </summary>
 		void Release();
 	private:
-		ID3D12Resource* m_indexBuffer = nullptr;	//�C���f�b�N�X�o�b�t�@�B
-		D3D12_INDEX_BUFFER_VIEW m_indexBufferView;	//�C���f�b�N�X�o�b�t�@�r���[�B
-		int m_count = 0;							//�C���f�b�N�X�̐��B
-		int m_strideInBytes = 0;					//�X�g���C�h(�P�ʁF�o�C�g)�B
-		int m_sizeInBytes = 0;						//�T�C�Y(�P�ʁF�o�C�g)�B
+		ID3D12Resource* m_indexBuffer = nullptr;	//インデックスバッファ。
+		D3D12_INDEX_BUFFER_VIEW m_indexBufferView;	//インデックスバッファビュー。
+		int m_count = 0;							//インデックスの数。
+		int m_strideInBytes = 0;					//ストライド(単位：バイト)。
+		int m_sizeInBytes = 0;						//サイズ(単位：バイト)。
 	};
 }

@@ -12,7 +12,7 @@
 
 bool Lantern::Start() 
 {
-	//���f����ǂݍ���
+	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
 	m_modelRender.SetScale(0.6f, 0.6f, 0.6f);
 
@@ -50,50 +50,50 @@ void Lantern::Update()
 {
 	m_modelRender.Update();
 
-	m_modelRender.SetPosition(m_position);//���W�̍X�V
+	m_modelRender.SetPosition(m_position);//座標の更新
 
-	//�v���C���[���瓔�ĂɌ������x�N�g�����v�Z�B
+	//プレイヤーから灯籠に向かうベクトルを計算。
 	Vector3 diff = m_player->m_position - m_position;
 
-	//���Ăɉ΂������Ă��Ȃ�������
+	//灯籠に火が灯っていなかったら
 	if (m_lightFlag == false) {
 
-		//�x�N�g���̒�����120.0f��菬����������B
+		//ベクトルの長さが120.0fより小さかったら。
 		if (diff.Length() <= 50.0f)
 		{
 			if (m_lightUI==false) {
 
 				m_lightUI = true;
 
-				//�u�`�F�΂𓔂��v��ǂݍ���
+				//「Ａ：火を灯す」を読み込む
 				m_spriteLight = NewGO<SpriteLight>(0, "spriteLight");
 			}
 			if (m_buttonAState == 0) {
 
-				//A�{�^������͂�����
+				//Aボタンを入力したら
 				if (g_pad[0]->IsTrigger(enButtonA)) {
 
 					
-					//�ΑŐ΂��ЂƂȏ㎝���Ă�����
+					//火打石をひとつ以上持っていたら
 					if (m_player->m_stoneCount > 0) {
 
-						//�~�j�Q�[�������Ă��Ȃ�������
+						//ミニゲームをしていなかったら
 						if (m_lanternAction == false) {
 
-							//�~�j�Q�[�����ɂ���
+							//ミニゲーム中にする
 							m_lanternAction = true;
 
-							//�uA:�΂𓔂��v
+							//「A:火を灯す」
 							DeleteGO(m_spriteLight);
 
-							//�^�C�~���O�o�[��ǂݍ���
+							//タイミングバーを読み込む
 							m_timingBarB = NewGO<TimingBarB>(0, "timingBarB");
 
-							//�o�[�̃��C����ǂݍ���
+							//バーのラインを読み込む
 							m_line = NewGO<Line>(0, "line");
 
 
-							//�uA�F�^�C�~���O�悭�{�^���������v��ǂݍ���
+							//「A：タイミングよくボタンを押せ」を読み込む
 							m_spritePush = NewGO<SpritePush>(0, "spritePush");
 
 							m_buttonAState = 1;
@@ -103,43 +103,43 @@ void Lantern::Update()
 						}
 
 					}
-					//�ΑŐ΂��ЂƂ������Ă��Ȃ�������
+					//火打石をひとつも持っていなかったら
 					else {
 						if (!m_noStoneUI) {
 
 							m_noStoneUI = true;
 
-							//�uA:�ΑŐ΂�����Ȃ��v��ǂݍ���
+							//「A:火打石が足りない」を読み込む
 							m_spriteNoStone = NewGO<SpriteNoStone>(0, "spriteNoStone");
 						}
 					}
 				}
 			    if (m_buttonAState == 1) {
 
-					//A�{�^������������
+					//Aボタンをおしたら
 					if (g_pad[0]->IsTrigger(enButtonA)) {
 
 						//m_line->m_moving = true;
 						m_buttonAState = 0;
 						m_lanternAction = false;
 
-						//�o�[�̃��C�����A-10.0���ȏ�10.0���ȉ��i�����̏ꏊ�j��������
+						//バーのラインが、-10.0ｆ以上10.0ｆ以下（成功の場所）だったら
 						if (m_line->m_position.x <= 10.0f && m_line->m_position.x >= -10.0f) {
 
-							//�z�������Ă��铔�ẴJ�E���g�𑝂₷
+							//陽が灯っている灯籠のカウントを増やす
 							m_player->m_lanternCount++;
 
-							//�ΑŐ΂̐���1���炷
+							//火打石の数を1減らす
 							m_player->m_stoneCount--;
 
-							//�摜���폜����
+							//画像を削除する
 							DeleteGO(m_timingBarB);
 							DeleteGO(m_line);
 							DeleteGO(m_spritePush);
 
 							
 
-							//���Ăɉ΂������Ă��锻��ɂ���
+							//灯籠に火が灯っている判定にする
 							m_lightFlag = true;
 						}
 						else {
@@ -154,7 +154,7 @@ void Lantern::Update()
 			
 
 		}
-		//���Ă��痣�ꂽ��
+		//灯籠から離れたら
 		else {
 
 			m_lightUI = false;

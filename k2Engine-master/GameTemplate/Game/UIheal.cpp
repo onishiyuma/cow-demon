@@ -5,11 +5,11 @@
 
 namespace
 {
-	//夞暅夞悢1
+	//鍥炲京鍥炴暟1
 	Vector3 SOUL_POSITION = Vector3(-600.0f, -450.0f, 0.0f);
-	//夞暅夞悢2
+	//鍥炲京鍥炴暟2
 	Vector3 SOUL_POSITION2 = Vector3(-725.0f, -450.0f, 0.0f);
-	//夞暅夞悢3
+	//鍥炲京鍥炴暟3
 	Vector3 SOUL_POSITION3 = Vector3(-850.0f, -450.0f, 0.0f);
 }
 
@@ -27,13 +27,13 @@ UIheal::~UIheal()
 bool UIheal::Start()
 {
 m_player = FindGO<Player>("player");
-	//夞暅夞悢1
+	//鍥炲京鍥炴暟1
 	m_soulSprite1.Init("Assets/UI/gage.DDS", 150, 150);
 	m_soulSprite1.SetPosition(SOUL_POSITION);
-	//夞暅夞悢2
+	//鍥炲京鍥炴暟2
 	m_soulSprite2.Init("Assets/UI/gage.DDS", 150, 150);
 	m_soulSprite2.SetPosition(SOUL_POSITION2);
-	//夞暅夞悢3
+	//鍥炲京鍥炴暟3
 	m_soulSprite3.Init("Assets/UI/gage.DDS", 150, 150);
 	m_soulSprite3.SetPosition(SOUL_POSITION3);
 

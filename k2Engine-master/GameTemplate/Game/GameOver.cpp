@@ -6,7 +6,7 @@
 
 bool GameOver::Start()
 {
-	//ゲームオーバーの画像を読み込む。
+	//繧ｲ繝ｼ繝繧ｪ繝ｼ繝舌�ｼ縺ｮ逕ｻ蜒上ｒ隱ｭ縺ｿ霎ｼ繧縲�
 	m_spriteRender.Init("Assets/sprite/S.DDS", 1920.0f, 1080.0f);
 
 	return true;

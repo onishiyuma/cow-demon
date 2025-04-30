@@ -16,21 +16,21 @@ bool PlayerLight::Start()
 {
 	m_player = FindGO<Player>("player");
 
-	// ƒXƒ|ƒbƒgƒ‰ƒCƒg‚ğ‰Šú‰»B
+	// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã€‚
 	m_spotLight.Init();
-	//ƒ‰ƒCƒg‚Ì‰e‹¿‹——£‚ğİ’èB
+	//ãƒ©ã‚¤ãƒˆã®å½±éŸ¿è·é›¢ã‚’è¨­å®šã€‚
 	m_spotLight.SetRange(800.0f);
-	//ƒ‰ƒCƒg‚Ì‰e‹¿Šp“x‚ğİ’èB
+	//ãƒ©ã‚¤ãƒˆã®å½±éŸ¿è§’åº¦ã‚’è¨­å®šã€‚
 	m_spotLight.SetAngle(Math::DegToRad(75.0f));
-	//ƒ‰ƒCƒg‚Ì‹——£Œ¸Š—¦‚ğİ’èB
+	//ãƒ©ã‚¤ãƒˆã®è·é›¢æ¸›è¡°ç‡ã‚’è¨­å®šã€‚
 	m_spotLight.SetRangeAffectPowParam(10.0f);
-	//ƒ‰ƒCƒg‚ÌŠp“xŒ¸Š—¦‚ğİ’èB
+	//ãƒ©ã‚¤ãƒˆã®è§’åº¦æ¸›è¡°ç‡ã‚’è¨­å®šã€‚
 	m_spotLight.SetAngleAffectPowParam(0.1f);
-	//ƒ‰ƒCƒg‚ÌF‚ğİ’èB
+	//ãƒ©ã‚¤ãƒˆã®è‰²ã‚’è¨­å®šã€‚
 	m_spotLight.SetColor(1.0f, 1.0f, 1.0f);
-	//ƒ‰ƒCƒg‚Ì•ûŒü‚ğİ’èB
+	//ãƒ©ã‚¤ãƒˆã®æ–¹å‘ã‚’è¨­å®šã€‚
 	m_spotLight.SetDirection(0.0f, 5.0f, 1.0f);
-	//ƒ‰ƒCƒg‚ÌÀ•W‚ğİ’èB
+	//ãƒ©ã‚¤ãƒˆã®åº§æ¨™ã‚’è¨­å®šã€‚
 	m_spotLight.SetPosition(0.0f, 10.0f, 0.0f);
 
 	return true;
@@ -38,14 +38,14 @@ bool PlayerLight::Start()
 
 void PlayerLight::Update()
 {
-	//ƒ‰ƒCƒg‚ÌÀ•W‚ğİ’èB
+	//ãƒ©ã‚¤ãƒˆã®åº§æ¨™ã‚’è¨­å®šã€‚
 	m_spotLight.SetPosition(m_player->m_position + Vector3(0.0f, 10.0f, 0.0f));
-	//ƒ‰ƒCƒg‚Ì•ûŒü‚ğİ’èB
+	//ãƒ©ã‚¤ãƒˆã®æ–¹å‘ã‚’è¨­å®šã€‚
 	//m_spotLight.SetDirection(0.0f,1.0f,1.0f);
 	m_direction = g_camera3D->GetForward();
 	m_direction.Normalize();
 	m_spotLight.SetDirection(m_direction);
-	//ƒ‰ƒCƒg‚ğXVB3q
+	//ãƒ©ã‚¤ãƒˆã‚’æ›´æ–°ã€‚3q
 	m_spotLight.Update();
 }
 

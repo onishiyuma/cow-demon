@@ -8,7 +8,7 @@ bool RingBell::Start()
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetScale(0.7f, 0.7f, 0.7f);
 
-	//ƒRƒŠƒWƒ‡ƒ“ì¬—pŠÖ”‚ğŒÄ‚Ño‚·B
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ä½œæˆç”¨é–¢æ•°ã‚’å‘¼ã³å‡ºã™ã€‚
 	CreateCollision();
 
 	m_collisionObject->SetPosition(m_position);
@@ -31,17 +31,17 @@ void RingBell::Update()
 	m_modelRender.Update();
 }
 
-//ƒRƒŠƒWƒ‡ƒ“‚ğì¬B
+//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆã€‚
 void RingBell::CreateCollision()
 {
 	m_collisionObject= NewGO<CollisionObject>(0);
 
-	//” ó‚ÌƒRƒŠƒWƒ‡ƒ“‚ğì¬‚·‚éB
+	//ç®±çŠ¶ã®ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ä½œæˆã™ã‚‹ã€‚
 	m_collisionObject->CreateBox(m_position, Quaternion::Identity, {m_collisionScale});
 
-	//ƒRƒŠƒWƒ‡ƒ“‚É–¼‘O‚ğ‚Â‚¯‚éB
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã«åå‰ã‚’ã¤ã‘ã‚‹ã€‚
 	m_collisionObject->SetName("ringbell");
-	//ƒIƒuƒWƒFƒNƒg‚ª©“®‚Åíœ‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚éB
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè‡ªå‹•ã§å‰Šé™¤ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹ã€‚
 	m_collisionObject->SetIsEnableAutoDelete(false);
 }
 

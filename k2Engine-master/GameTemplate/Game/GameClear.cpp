@@ -6,7 +6,7 @@
 
 bool GameClear::Start()
 {
-	//ƒQ[ƒ€ƒNƒŠƒA‚Ì‰æ‘œ‚ğ“Ç‚İ‚Ş
+	//ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ã®ç”»åƒã‚’èª­ã¿è¾¼ã‚€
 	m_spriteRender.Init("Assets/sprite/S.DDS", 1920.0f, 1080.0f);
 	
 	return true;

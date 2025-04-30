@@ -35,16 +35,17 @@ public:
 	//オブジェクトを作成。
 	void CreateObject();
 	//火打石の生成。
+	//轣ｫ謇鍋浹縺ｮ逕滓・縲・
 	void CreateStone();
-	//灯籠の作成。
+	//轣ｯ邀縺ｮ菴懈・縲・
 	void CreateLantern();
-	//攻撃用灯籠の作成。
+	//謾ｻ謦・畑轣ｯ邀縺ｮ菴懈・縲・
 	void CreateAttackLantern();
-	//UIを関数化。
+	//UI繧帝未謨ｰ蛹悶・
 	void CreateUI();
-	//エネミーの生成。
+	//繧ｨ繝阪Α繝ｼ縺ｮ逕滓・縲・
 	void CreateEnemy();
-	//ゲームオーバー、ゲームクリアーを呼ぶ関数。
+	//繧ｲ繝ｼ繝繧ｪ繝ｼ繝舌・縲√ご繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ繧貞他縺ｶ髢｢謨ｰ縲・
 	void GameManager();
 
 	void Render(RenderContext& rc);
@@ -62,25 +63,36 @@ public:
 	CrossHair*m_crossHair;//クロスヘアー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Shimenawa* m_shimenawa;//しめ縄。
+	//繝｡繝ｳ繝仙､画焚縲・
+	GameClear*m_gameClear;//繧ｲ繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ縲・
+	RingBell* m_ringBell;//驤ｴ縲・
+	BackGround* m_backGround;//閭梧勹縲・
+	GameCamera* m_gameCamera;//繧ｲ繝ｼ繝繧ｫ繝｡繝ｩ縲・
+	Player*m_player;//繝励Ξ繧､繝､繝ｼ縲・
+	Enemy* m_enemy ;//謨ｵ縲・
+	LittleEnemy* m_littleEnemy;
+	CrossHair*m_crossHair;//繧ｯ繝ｭ繧ｹ繝倥い繝ｼ縲・
+	ModelRender m_modelRender;//繝｢繝・Ν繝ｬ繝ｳ繝繝ｼ縲・
+	Shimenawa* m_shimenawa;//縺励ａ邵・・
 
-	Stone* m_stone1; //火打石
-	Stone* m_stone2; //火打石
-	Stone* m_stone3; //火打石
-	Stone* m_stone4; //火打石
-	Stone* m_stone5; //火打石
-	Stone* m_stone6; //火打石
-	Stone* m_stone7; //火打石
+	Stone* m_stone1; //轣ｫ謇鍋浹
+	Stone* m_stone2; //轣ｫ謇鍋浹
+	Stone* m_stone3; //轣ｫ謇鍋浹
+	Stone* m_stone4; //轣ｫ謇鍋浹
+	Stone* m_stone5; //轣ｫ謇鍋浹
+	Stone* m_stone6; //轣ｫ謇鍋浹
+	Stone* m_stone7; //轣ｫ謇鍋浹
 
-	UIStone* m_uiStone; //火打石の数
+	UIStone* m_uiStone; //轣ｫ謇鍋浹縺ｮ謨ｰ
 
-	Lantern* m_lantern1; //灯籠
-	Lantern* m_lantern2; //灯籠
-	Lantern* m_lantern3; //灯籠
-	Lantern* m_lantern4; //灯籠
+	Lantern* m_lantern1; //轣ｯ邀
+	Lantern* m_lantern2; //轣ｯ邀
+	Lantern* m_lantern3; //轣ｯ邀
+	Lantern* m_lantern4; //轣ｯ邀
 
-	LanternAttack* m_lanternAttack1; //攻撃用灯籠
-	LanternAttack* m_lanternAttack2; //攻撃用灯籠
-	LanternAttack* m_lanternAttack3; //攻撃用灯籠
+	LanternAttack* m_lanternAttack1; //謾ｻ謦・畑轣ｯ邀
+	LanternAttack* m_lanternAttack2; //謾ｻ謦・畑轣ｯ邀
+	LanternAttack* m_lanternAttack3; //謾ｻ謦・畑轣ｯ邀
 
 	UItukuyomi* m_uiTukuyomi;
 	UIskill* m_uiSkill;
@@ -90,12 +102,12 @@ public:
 	UIheal* m_uiHeal;
 
 
-	SpriteRender m_spriteRender;//スプライトレンダー
-	FontRender m_timerFontRender;//時計
-	Vector3 m_pos;//座標
-	Vector3 Random(); //エネミーのランダムスポーン
+	SpriteRender m_spriteRender;//繧ｹ繝励Λ繧､繝医Ξ繝ｳ繝繝ｼ
+	FontRender m_timerFontRender;//譎りｨ・
+	Vector3 m_pos;//蠎ｧ讓・
+	Vector3 Random(); //繧ｨ繝阪Α繝ｼ縺ｮ繝ｩ繝ｳ繝繝繧ｹ繝昴・繝ｳ
 
-	//敵の一覧を取得するためのメソッドを取得
+	//謨ｵ縺ｮ荳隕ｧ繧貞叙蠕励☆繧九◆繧√・繝｡繧ｽ繝・ラ繧貞叙蠕・
 	const std::vector<Enemy*>& GetEnemies()const
 	{
 		return m_enemyList;
@@ -111,7 +123,7 @@ public:
 
   	float m_timer = 120.0f;
 	bool m_lanternAction = false; 
-	float m_timeLimit=0;//制限時間
+	float m_timeLimit=0;//蛻ｶ髯先凾髢・
 
 };
 

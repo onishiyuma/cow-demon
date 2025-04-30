@@ -29,7 +29,7 @@ namespace nsK2EngineLow {
 					IndexBuffer* indexBuffer = nullptr;
 					UINT indexCount;
 					if (model.IsComputedAnimationVertexBuffer()) {
-						// ƒAƒjƒ[ƒVƒ‡ƒ“Ï‚İ’¸“_ƒoƒbƒtƒ@‚ÌŒvZ‚ªs‚í‚ê‚Ä‚¢‚éB
+						// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ¸ˆã¿é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨ˆç®—ãŒè¡Œã‚ã‚Œã¦ã„ã‚‹ã€‚
 						vertexBufferView = &model.GetAnimatedVertexBuffer(meshNo).GetView();
 						indexBuffer = &model.GetAnimatedIndexBuffer(meshNo, i);
 					}
@@ -65,7 +65,7 @@ namespace nsK2EngineLow {
 					}
 					
 					if (model.IsComputedAnimationVertexBuffer()	) {
-						// ƒAƒjƒ[ƒVƒ‡ƒ“Ï‚İ’¸“_ƒoƒbƒtƒ@‚ğ—˜—p‚·‚éê‡‚ÍA‚·‚Å‚Éƒ[ƒ‹ƒh‹óŠÔ‚É•ÏŠ·Ï‚İB
+						// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ¸ˆã¿é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’åˆ©ç”¨ã™ã‚‹å ´åˆã¯ã€ã™ã§ã«ãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ã«å¤‰æ›æ¸ˆã¿ã€‚
 						instance->geometoryDesc.Triangles.Transform3x4 = 0;
 					}
 					else {
@@ -81,7 +81,7 @@ namespace nsK2EngineLow {
 		void World::RegistGeometry(Model& model)
 		{
 			for (int bufferNo = 0; bufferNo < 2; bufferNo++) {
-				// ƒŒƒCƒgƒŒ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬‚·‚éB
+				// ãƒ¬ã‚¤ãƒˆãƒ¬ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã™ã‚‹ã€‚
 				CreateRaytracingInstance(model, bufferNo);
 				
 			}
@@ -104,7 +104,7 @@ namespace nsK2EngineLow {
 		void World::CommitRegistGeometry(RenderContext& rc)
 		{
 			isCommit = true;
-			// ƒWƒIƒƒgƒŠ‚ªƒRƒ~ƒbƒg‚³‚ê‚½‚Ì‚ÅABLAS‚ÆTLAS‚ğÄ\’z‚·‚éB
+			// ã‚¸ã‚ªãƒ¡ãƒˆãƒªãŒã‚³ãƒŸãƒƒãƒˆã•ã‚ŒãŸã®ã§ã€BLASã¨TLASã‚’å†æ§‹ç¯‰ã™ã‚‹ã€‚
 			for (int bufferNo = 0; bufferNo < 2; bufferNo++) {
 				m_blasBuffer[bufferNo].Build(rc, m_instances[bufferNo], false);				
 				m_topLevelASBuffers[bufferNo].Build(rc, m_instances[bufferNo], false);
@@ -114,9 +114,9 @@ namespace nsK2EngineLow {
 		{
 			if (isCommit) {
 				int backBufferNo = g_graphicsEngine->GetBackBufferIndex();
-				// BLAS‚ğ\’zB
+				// BLASã‚’æ§‹ç¯‰ã€‚
 				m_blasBuffer[backBufferNo].Build(rc, m_instances[backBufferNo], true);
-				// TLAS‚ğ\’zB
+				// TLASã‚’æ§‹ç¯‰ã€‚
 				m_topLevelASBuffers[backBufferNo].Build(rc, m_instances[backBufferNo], true);
 			}
 		}

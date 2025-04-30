@@ -1,4 +1,4 @@
-﻿#include "k2EngineLowPreCompile.h"
+#include "k2EngineLowPreCompile.h"
 #include "Shader.h"
 #include <stierr.h>
 #include <sstream>

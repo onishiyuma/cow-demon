@@ -22,15 +22,15 @@ MiniMap::~MiniMap()
 
 bool MiniMap::Start()
 {
-	//ƒ}ƒbƒv‚Ì‰º’n
+	//ãƒãƒƒãƒ—ã®ä¸‹åœ°
 	m_spriteRender.Init("Assets/MiniMap/Back.DDS", 450, 450);
 	m_spriteRender.SetPosition(MAP_POSITION);
 
-	//©ƒLƒƒƒ‰
+	//è‡ªã‚­ãƒ£ãƒ©
 	m_playerSprite.Init("Assets/MiniMap/ji.DDS", 60, 60);
 	m_playerSprite.SetPosition(MAP_POSITION);
 
-	//ƒGƒlƒ~[
+	//ã‚¨ãƒãƒŸãƒ¼
 	m_enemySprite.Init("Assets/MiniMap/demon.DDS", 50, 50);
 
 	m_enemy = FindGO<Enemy>("enemy");
@@ -47,18 +47,18 @@ void MiniMap::Update()
 
 	Vector3 mapPosition;
 
-	//ƒ}ƒbƒv‚É•\¦‚·‚é”ÍˆÍ‚É“G‚ª‚¢‚½‚ç
+	//ãƒãƒƒãƒ—ã«è¡¨ç¤ºã™ã‚‹ç¯„å›²ã«æ•µãŒã„ãŸã‚‰
 	if (WouldPositionConvertToMapPosition(playerPosition, enemyPosition, mapPosition))
 	{
-		//ƒ}ƒbƒv‚É•\¦‚·‚é‚æ‚¤‚Éİ’è‚·‚é
+		//ãƒãƒƒãƒ—ã«è¡¨ç¤ºã™ã‚‹ã‚ˆã†ã«è¨­å®šã™ã‚‹
 		m_isImage = true;
-		//ƒXƒvƒ‰ƒCƒgƒŒƒ“ƒ_[‚ÉÀ•W‚ğİ’è
+		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ¼ã«åº§æ¨™ã‚’è¨­å®š
 		m_enemySprite.SetPosition(mapPosition);
 	}
-	//ƒ}ƒbƒv‚É•\¦‚·‚é”ÍˆÍ‚É“G‚ª‚¢‚È‚©‚Á‚½‚ç
+	//ãƒãƒƒãƒ—ã«è¡¨ç¤ºã™ã‚‹ç¯„å›²ã«æ•µãŒã„ãªã‹ã£ãŸã‚‰
 	else
 	{
-		//ƒ}ƒbƒv‚É•\¦‚µ‚È‚¢
+		//ãƒãƒƒãƒ—ã«è¡¨ç¤ºã—ãªã„
 		m_isImage = false;
 	}
 
@@ -69,36 +69,36 @@ void MiniMap::Update()
 
 const bool MiniMap::WouldPositionConvertToMapPosition(Vector3 wouldCenterPosition, Vector3 wouldPosition, Vector3& mapPosition)
 {
-	//YÀ•W‚Íƒ}ƒbƒv‚ÆŠÖŒW‚È‚¢‚Ì‚Å0‚É‚·‚é
+	//Yåº§æ¨™ã¯ãƒãƒƒãƒ—ã¨é–¢ä¿‚ãªã„ã®ã§0ã«ã™ã‚‹
 	wouldCenterPosition.y = 0.0f;
 	wouldPosition.y = 0.0f;
 	Vector3 diff = wouldPosition - wouldCenterPosition;
-	//ƒ}ƒbƒv‚Ì’†S‚Æ‚·‚éƒIƒuƒWƒFƒNƒg‚Æ‚Ì‹——£‚ªˆê’è‚È‚ç‚Î
+	//ãƒãƒƒãƒ—ã®ä¸­å¿ƒã¨ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®è·é›¢ãŒä¸€å®šãªã‚‰ã°
 	if (diff.LengthSq() >= LIMITED_RANGE_IMAGE * LIMITED_RANGE_IMAGE)
 	{
-		//•\¦‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+		//è¡¨ç¤ºã—ãªã„ã‚ˆã†ã«ã™ã‚‹
 		return false;
 	}
 
-	//ƒxƒNƒgƒ‹‚Ì’·‚³‚ğæ“¾
+	//ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã‚’å–å¾—
 	float length = diff.Length();
 
-	//ƒJƒƒ‰‚Ì‘O•ûŒüƒxƒNƒgƒ‹‚©‚ç
-	//ƒNƒ’[ƒ^ƒjƒIƒ“‚ğì¬‚·‚é
+	//ã‚«ãƒ¡ãƒ©ã®å‰æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‹ã‚‰
+	//ã‚¯ãƒ²ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ä½œæˆã™ã‚‹
 	Vector3 forward = g_camera3D->GetForward();
 	Quaternion rot;
 	rot.SetRotationDegY(atan2(-forward.x, forward.z));
 
-	//ƒxƒNƒgƒ‹‚ÉƒJƒƒ‰‚Ì‰ñ“]‚ğ“K—p
+	//ãƒ™ã‚¯ãƒˆãƒ«ã«ã‚«ãƒ¡ãƒ©ã®å›è»¢ã‚’é©ç”¨
 	rot.Apply(diff);
 
-	//ƒxƒNƒgƒ‹‚ğ³‹K‰»‚·‚é
+	//ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–ã™ã‚‹
 	diff.Normalize();
 
-	//ƒxƒNƒgƒ‹‚ğƒ}ƒbƒvÀ•WŒn‚É•ÏŠ·‚·‚é
+	//ãƒ™ã‚¯ãƒˆãƒ«ã‚’ãƒãƒƒãƒ—åº§æ¨™ç³»ã«å¤‰æ›ã™ã‚‹
 	diff *= length * MAP_RADIUS / LIMITED_RANGE_IMAGE;
 
-	//ƒ}ƒbƒv‚Ì’†‰›À•W‚Æã‹L‚ÌƒxƒNƒgƒ‹‚ğ‰ÁZ‚·‚é
+	//ãƒãƒƒãƒ—ã®ä¸­å¤®åº§æ¨™ã¨ä¸Šè¨˜ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’åŠ ç®—ã™ã‚‹
 	mapPosition = Vector3(MAP_POSITION.x + diff.x, MAP_POSITION.y + diff.z, 0.0f);
 	return true;
 }

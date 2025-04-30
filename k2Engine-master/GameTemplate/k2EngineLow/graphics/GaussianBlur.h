@@ -2,35 +2,35 @@
 
 namespace nsK2EngineLow {
 	/// <summary>
-	/// ƒKƒEƒVƒAƒ“ƒuƒ‰[ƒNƒ‰ƒXB
+	/// ã‚¬ã‚¦ã‚·ã‚¢ãƒ³ãƒ–ãƒ©ãƒ¼ã‚¯ãƒ©ã‚¹ã€‚
 	/// </summary>
 	class GaussianBlur : public Noncopyable {
 	public:
 		
 		/// <summary>
-		/// ‰Šú‰»B
+		/// åˆæœŸåŒ–ã€‚
 		/// </summary>
-		/// <param name="originalTexture">ƒKƒEƒVƒAƒ“ƒuƒ‰[‚ğ‚©‚¯‚éƒIƒŠƒWƒiƒ‹ƒeƒNƒXƒ`ƒƒB</param>
+		/// <param name="originalTexture">ã‚¬ã‚¦ã‚·ã‚¢ãƒ³ãƒ–ãƒ©ãƒ¼ã‚’ã‹ã‘ã‚‹ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚</param>
 		void Init(Texture* originalTexture, bool isBlurAlpha = false, bool isDownSample = true);
 		/// <summary>
-		/// ‰Šú‰»
+		/// åˆæœŸåŒ–
 		/// </summary>
 		/// <param name="originalTexture"></param>
-		/// <param name="isBlurAlpha">ƒ¿‚Éƒuƒ‰[‚ğ‚©‚¯‚éH</param>
-		/// <param name="width">ƒuƒ‰[‚ÌŒ‹‰Ê‚ğo—Í‚·‚éƒeƒNƒXƒ`ƒƒ‚Ì•</param>
-		/// <param name="height">ƒuƒ‰[‚ÌŒ‹‰Ê‚ğo—Í‚·‚éƒeƒNƒXƒ`ƒƒ‚Ì‚‚³</param>
+		/// <param name="isBlurAlpha">Î±ã«ãƒ–ãƒ©ãƒ¼ã‚’ã‹ã‘ã‚‹ï¼Ÿ</param>
+		/// <param name="width">ãƒ–ãƒ©ãƒ¼ã®çµæœã‚’å‡ºåŠ›ã™ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å¹…</param>
+		/// <param name="height">ãƒ–ãƒ©ãƒ¼ã®çµæœã‚’å‡ºåŠ›ã™ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é«˜ã•</param>
 		void Init(Texture* originalTexture, bool isBlurAlpha, int width, int height);
 		/// <summary>
-		/// ƒKƒEƒVƒAƒ“ƒuƒ‰[‚ğGPUã‚ÅÀsB
+		/// ã‚¬ã‚¦ã‚·ã‚¢ãƒ³ãƒ–ãƒ©ãƒ¼ã‚’GPUä¸Šã§å®Ÿè¡Œã€‚
 		/// </summary>
 		/// <remarks>
-		/// –{ŠÖ”‚ÌŒÄ‚Ño‚µ‚ÍADirectX12‚ğ—˜—p‚µ‚½•`‰æƒRƒ}ƒ“ƒh¶¬’†‚ÉŒÄ‚Ño‚·•K—v‚ª‚ ‚è‚Ü‚·B
+		/// æœ¬é–¢æ•°ã®å‘¼ã³å‡ºã—ã¯ã€DirectX12ã‚’åˆ©ç”¨ã—ãŸæç”»ã‚³ãƒãƒ³ãƒ‰ç”Ÿæˆä¸­ã«å‘¼ã³å‡ºã™å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
 		/// </remarks>
-		/// <param name="rc">ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg</param>
-		/// <param name="blurPower">ƒuƒ‰[‚Ì‹­‚³B’l‚ª‘å‚«‚¢‚Ù‚Çƒ{ƒP‚ª‹­‚­‚È‚éB</param>
+		/// <param name="rc">ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ</param>
+		/// <param name="blurPower">ãƒ–ãƒ©ãƒ¼ã®å¼·ã•ã€‚å€¤ãŒå¤§ãã„ã»ã©ãƒœã‚±ãŒå¼·ããªã‚‹ã€‚</param>
 		void ExecuteOnGPU(RenderContext& rc, float blurPower);
 		/// <summary>
-		/// ƒ{ƒPƒeƒNƒXƒ`ƒƒ‚ğæ“¾B
+		/// ãƒœã‚±ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å–å¾—ã€‚
 		/// </summary>
 		/// <returns></returns>
 		Texture& GetBokeTexture()
@@ -39,26 +39,26 @@ namespace nsK2EngineLow {
 		}
 	private:
 		/// <summary>
-		/// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğ‰Šú‰»B
+		/// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’åˆæœŸåŒ–ã€‚
 		/// </summary>
 		void InitRenderTargets();
 		/// <summary>
-		/// ƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»B
+		/// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã€‚
 		/// </summary>
 		void InitSprites(bool isBlurAlpha);
 		/// <summary>
-		/// d‚İƒe[ƒuƒ‹‚ğXV‚·‚éB
+		/// é‡ã¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ›´æ–°ã™ã‚‹ã€‚
 		/// </summary>
 		void UpdateWeightsTable(float blurPower);
 	private:
-		enum { NUM_WEIGHTS = 8 };				// d‚İ‚Ì”B
-		float m_weights[NUM_WEIGHTS];			// d‚İƒe[ƒuƒ‹B
-		int m_bokeTextureWidth = 0;				// ƒ{ƒPƒeƒNƒXƒ`ƒƒ‚Ì•B
-		int m_bokeTextureHeight = 0;			// ƒ{ƒPƒeƒNƒXƒ`ƒƒ‚Ì‚‚³B
-		Texture* m_originalTexture = nullptr;	// ƒIƒŠƒWƒiƒ‹ƒeƒNƒXƒ`ƒƒB
-		RenderTarget m_xBlurRenderTarget;		// ‰¡ƒ{ƒP‰æ‘œ‚ğ•`‰æ‚·‚éƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgB
-		RenderTarget m_yBlurRenderTarget;		// cƒ{ƒP‰æ‘œ‚ğ•`‰æ‚·‚éƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgB
-		Sprite m_xBlurSprite;					// ‰¡ƒ{ƒP‰æ‘œ‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒXƒvƒ‰ƒCƒgB
-		Sprite m_yBlurSprite;					// cƒ{ƒP‰æ‘œ‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒXƒvƒ‰ƒCƒgB
+		enum { NUM_WEIGHTS = 8 };				// é‡ã¿ã®æ•°ã€‚
+		float m_weights[NUM_WEIGHTS];			// é‡ã¿ãƒ†ãƒ¼ãƒ–ãƒ«ã€‚
+		int m_bokeTextureWidth = 0;				// ãƒœã‚±ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å¹…ã€‚
+		int m_bokeTextureHeight = 0;			// ãƒœã‚±ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é«˜ã•ã€‚
+		Texture* m_originalTexture = nullptr;	// ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
+		RenderTarget m_xBlurRenderTarget;		// æ¨ªãƒœã‚±ç”»åƒã‚’æç”»ã™ã‚‹ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã€‚
+		RenderTarget m_yBlurRenderTarget;		// ç¸¦ãƒœã‚±ç”»åƒã‚’æç”»ã™ã‚‹ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã€‚
+		Sprite m_xBlurSprite;					// æ¨ªãƒœã‚±ç”»åƒã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã€‚
+		Sprite m_yBlurSprite;					// ç¸¦ãƒœã‚±ç”»åƒã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã€‚
 	};
 }

@@ -1,5 +1,5 @@
 /*!
-*@brief	パッド。
+*@brief	繝代ャ繝峨�
 */
 #include "k2EngineLowPreCompile.h"
 #include "GamePadVibration.h"
@@ -22,7 +22,7 @@ namespace nsK2EngineLow {
 	{
 		m_timerSec += g_gameTime->GetFrameDeltaTime();
 		if (m_timerSec > m_durationSec) {
-			// 終わり。
+			// 邨ゅｏ繧翫�
 			m_xinputVibration.wLeftMotorSpeed = 0;
 			m_xinputVibration.wRightMotorSpeed = 0;
 			XInputSetState(m_padNo, &m_xinputVibration);

@@ -53,23 +53,23 @@ public:
 
 
 //private:
-	//’Ç‚¢‚©‚¯‚é
+	//è¿½ã„ã‹ã‘ã‚‹
 	void Chase()override;
-	//ƒvƒŒƒCƒ„[”­Œ©
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç™ºè¦‹
 	const bool SearchPlayer() const override;
-	//–{“a”­Œ©
+	//æœ¬æ®¿ç™ºè¦‹
 	const bool SearchHonden()const;
 
-	//ƒXƒe[ƒgŠÇ—
+	//ã‚¹ãƒ†ãƒ¼ãƒˆç®¡ç†
 	void ManageState()override;
 	
-	//–{“a‚ğ–Úw‚·
+	//æœ¬æ®¿ã‚’ç›®æŒ‡ã™
 	void IsHonden();
-	//ƒRƒŠƒWƒ‡ƒ“
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³
 	void Collision()override;
-	//UŒ‚
+	//æ”»æ’ƒ
 	void Attack();
-	//UŒ‚—pƒRƒŠƒWƒ‡ƒ“
+	//æ”»æ’ƒç”¨ã‚³ãƒªã‚¸ãƒ§ãƒ³
 	void MakeAttackCollision();
 
 	void OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName);
@@ -92,7 +92,7 @@ public:
 
 	const bool IsCanAttack() const;
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	enum EnAnimationClip {
 		enAnimationClip_Idle,
 		enAnimationClip_Walk,
@@ -122,9 +122,9 @@ public:
 	float m_idleTimer = 0.0f;
 	int m_isUnderAttack = false;
 	int m_FangBoneId = -1;
-	float m_stopTimer=0.0f;//S‘©ŠÔB
+	float m_stopTimer=0.0f;//æ‹˜æŸæ™‚é–“ã€‚
 	float m_hondenTimer = 0.0f;
-	bool m_isStopped = false;//“®‚«‚ğ~‚ß‚éƒtƒ‰ƒOB
-	bool m_gameoverFlag=false;//ƒQ[ƒ€ƒI[ƒo[‚ğŒÄ‚Ô‚½‚ß‚Ì•Ï”B
+	bool m_isStopped = false;//å‹•ãã‚’æ­¢ã‚ã‚‹ãƒ•ãƒ©ã‚°ã€‚
+	bool m_gameoverFlag=false;//ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã‚’å‘¼ã¶ãŸã‚ã®å¤‰æ•°ã€‚
 };
 

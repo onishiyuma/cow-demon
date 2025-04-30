@@ -9,7 +9,7 @@ public:
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
-	//ƒRƒŠƒWƒ‡ƒ“‚Ìì¬B
+	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®ä½œæˆã€‚
 	void CreateCollision();
 
 	const Vector3& GetPosition()const
@@ -17,10 +17,10 @@ public:
 		return m_position;
 	}
 
-	//ƒƒ“ƒo•Ï”B
-	PhysicsStaticObject m_physicsStaticObject;//”»’èB
-	CollisionObject*m_collisionObject;//ƒRƒŠƒWƒ‡ƒ“ƒIƒuƒWƒFƒNƒgB
-	ModelRender m_modelRender;//ƒ‚ƒfƒ‹ƒŒƒ“ƒ_[B
-	Vector3 m_position = Vector3{ 70.0f, 90.0f, -1345.0f };//À•W
-	Vector3 m_collisionScale = Vector3{ 240.0f,50.0f,200.0f };//ƒRƒŠƒWƒ‡ƒ“‚Ì‘å‚«‚³B
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚
+	PhysicsStaticObject m_physicsStaticObject;//åˆ¤å®šã€‚
+	CollisionObject*m_collisionObject;//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
+	ModelRender m_modelRender;//ãƒ¢ãƒ‡ãƒ«ãƒ¬ãƒ³ãƒ€ãƒ¼ã€‚
+	Vector3 m_position = Vector3{ 70.0f, 90.0f, -1345.0f };//åº§æ¨™
+	Vector3 m_collisionScale = Vector3{ 240.0f,50.0f,200.0f };//ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®å¤§ãã•ã€‚
 };
