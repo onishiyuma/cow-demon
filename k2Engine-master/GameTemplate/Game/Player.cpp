@@ -69,7 +69,7 @@ void Player::Update()
 	//m_modelRender.Update();
 	/////////////////////コメントアウト解除を忘れずに/////////////////////////////
 	//灯籠に火が灯っていれば攻撃できる。
-	if (m_enemyIsCanAttack)
+	if (m_enemyIsCanAttack==true)
 	{
 		//通常攻撃。
 		NormalAttack();

@@ -16,6 +16,7 @@ public:
 
 	//メンバ変数
 	Vector3 m_position; //ライトの座標
+	
 	Vector3 m_direction; //ライトの向き
 	Player* m_player; //プレイヤー
 	SpotLight m_spotLight; //スポットライト

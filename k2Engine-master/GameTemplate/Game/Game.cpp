@@ -33,46 +33,14 @@ bool Game::Start()
 	//制限時間の設定
 	//m_timeLimit =120.0f;
 
+	//空の作成
+	/*SkyCube* skyCube = NewGO<SkyCube>(0);
+	skyCube->SetType(enSkyCubeType_NightToon);
+	skyCube->SetScale(1000.0f);*/
+
 	//オブジェクトの作成。
 	CreateObject();
 
-	////背景の作成。
-	//m_backGround = NewGO<BackGround>(0);
-
-	////ベルの作成。
-	//m_ringBell = NewGO<RingBell>(0, "ringbell");
-
-	////プレイヤーの作成。
-	//m_player = NewGO<Player>(0, "player");
-
-	////ゲームカメラの作成。
-	//m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
-
-	////クロスヘアーを表示。
-	//m_crossHair = NewGO<CrossHair>(0);
-
-	//デバック用。
-	//m_timeLimit = 3.0f;
-		
-	//m_uiTukuyomi = NewGO<UItukuyomi>(0,"uitukuyomi");
-	////スキルUI
-	//m_uiSkill = NewGO<UIskill>(0, "uiskill");
-	////しめ縄UI
-	////m_uiSimenawa = NewGO<UISimenawa>(0, "m_uisimenawa");
-	//m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
-	////ミニマップ
-	///*m_miniMap = NewGO<MiniMap>(0,"minimap");*/
-	////呪ゲージ
-	//m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
-	////回復
-	//m_uiHeal = NewGO <UIheal>(0, "uiheal");
-		
-	//空の作成
-	//SkyCube* skyCube = NewGO<SkyCube>(0);
-	//skyCube->SetType(enSkyCubeType_NightToon);
-	//skyCube->SetScale(1000.0f);
-
-	
 	//火打石の作成。
 	CreateStone();
 
@@ -82,15 +50,9 @@ bool Game::Start()
 	//攻撃用灯籠の作成。
 	CreateAttackLantern();
 
-	//火打石のカウントを表示。
-	//m_uiStone = NewGO<UIStone>(0, "uiStone");
-
 	//UIの作成
 	CreateUI();
 
-	//Enemyの作成
-	CreateEnemy();
-	
 	return true;
 }
 
@@ -168,14 +130,8 @@ void Game::Update()
 
 	//表示するテキストを表示。
 	m_timerFontRender.SetText(wcsbuf);
-	//フォントの位置を設定。
-	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
-	//フォントの色を設定。
-	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	//フォントの大きさを設定。
-	m_timerFontRender.SetText(wcsbuf);
 	//フォントの位置を設定
-	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
+	m_timerFontRender.SetPosition(Vector3(-100.0f, 500.0f, 0.0f));
 	//フォントの色を設定
 	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 	//フォントの大きさを設定
@@ -184,13 +140,19 @@ void Game::Update()
 	m_timer += g_gameTime->GetFrameDeltaTime();
 	
 	GameManager();
+
+	//プレイヤーが四つ灯籠に火を灯したら
+	if (m_player->m_enemyIsCanAttack != false) {
+		CreateEnemy();
+	}
+
 }
 
 //オブジェクト作成用関数。
 void Game::CreateObject()
 {
 	//制限時間の設定。
-	m_timeLimit = 120.0f;
+	m_timeLimit = 180.0f;
 
 	//背景の作成。
 	m_backGround = NewGO<BackGround>(0);
@@ -256,6 +218,7 @@ void Game::GameManager()
 		NewGO<GameOver>(0);
 		DeleteGO(this);
 	}
+
 }
 
 //火打石作成用関数。
@@ -323,17 +286,17 @@ void Game::CreateAttackLantern()
 {
 	//攻撃用灯籠のモデルを表示
 	m_lanternAttack1 = NewGO<LanternAttack>(0, "lanternAttack1");
-	m_lanternAttack1->m_position = { 700.0f,-50.0f,2000.0f };
+	m_lanternAttack1->m_position = { 700.0f,-50.0f,4000.0f };
 	m_lanternAttack1->m_firstPosition = m_lanternAttack1->m_position;
 	//m_lantern1 = FindGO<Lantern>("lantern1");
 
 	m_lanternAttack2 = NewGO<LanternAttack>(0, "lanternAttack2");
-	m_lanternAttack2->m_position = { -700.0f,-50.0f,2000.0f };
+	m_lanternAttack2->m_position = { -700.0f,-50.0f,4000.0f };
 	m_lanternAttack2->m_firstPosition = m_lanternAttack2->m_position;
 	//m_lantern2 = FindGO<Lantern>("lantern2");
 
 	m_lanternAttack3 = NewGO<LanternAttack>(0, "lanternAttack3");
-	m_lanternAttack3->m_position = { 100.0f,-50.0f,1600.0f };
+	m_lanternAttack3->m_position = { 100.0f,-50.0f,3000.0f };
 	m_lanternAttack3->m_firstPosition = m_lanternAttack3->m_position;
 	//m_lantern3= FindGO<Lantern>("lantern3");
 }
@@ -341,63 +304,63 @@ void Game::CreateAttackLantern()
 //敵を生成用関数。
 void Game::CreateEnemy()
 {
-
-	//タイマーを減らす処理。
-	m_timer += g_gameTime->GetFrameDeltaTime();
-	//1分目
-	if (m_timer>120.0f&&m_timer<180.0f)
-	{
-		m_maxCount = 5;
-	}
-	//2分目
-	else if (m_timer>180.0f&&m_timer<240.0f)
-	{
-		m_maxCount = 10;
-	}
-	//3分目
-	else
-	{
-		m_maxCount = 20;
-	}
-	m_totalCount = m_enemyList.size() +m_littleEnemyList.size();
-	/*while (m_enemyList.size()+m_littleEnemyList.size()<m_maxCount)*/
-	if (m_totalCount < m_maxCount)
-	{
-		int ram = rand() % 100;
-		if (ram > 30) {
-			for (int i = 0; i < 5; i++)
-			{
-				int ram = rand() % 100;
-
-				if (ram > 30)
+		//タイマーを減らす処理。
+		m_timer += g_gameTime->GetFrameDeltaTime();
+		//1分目
+		if (m_timer > 120.0f && m_timer < 180.0f)
+		{
+			m_maxCount = 5;
+		}
+		//2分目
+		else if (m_timer > 180.0f && m_timer < 240.0f)
+		{
+			m_maxCount = 10;
+		}
+		//3分目
+		else
+		{
+			m_maxCount = 20;
+		}
+		m_totalCount = m_enemyList.size() + m_littleEnemyList.size();
+		/*while (m_enemyList.size()+m_littleEnemyList.size()<m_maxCount)*/
+		if (m_totalCount < m_maxCount)
+		{
+			int ram = rand() % 100;
+			if (ram > 30) {
+				for (int i = 0; i < 5; i++)
 				{
-					Enemy* enemy = NewGO<Enemy>(1, "enemy");
-					enemy->SetPosition(Random());
-					m_enemyList.push_back(enemy);//敵リストに追加
-					m_enemyList.push_back(enemy);//敵リストに追加する。
-					m_enemyList.push_back(enemy);//謨ｵ繝ｪ繧ｹ繝医↓霑ｽ蜉
-				}
-				else {
-					LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-					m_littleEnemy->SetPosition(Random());
-					m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
+					int ram = rand() % 100;
+
 					if (ram > 30)
 					{
-						LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-						littleEnemy->SetPosition(Random());
-						m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
-						m_littleEnemyList.push_back(littleEnemy);//雑魚敵を敵のリストに追加する。
+						Enemy* enemy = NewGO<Enemy>(1, "enemy");
+						enemy->SetPosition(Random());
+						m_enemyList.push_back(enemy);//敵リストに追加
+						m_enemyList.push_back(enemy);//敵リストに追加する。
+						m_enemyList.push_back(enemy);//謨ｵ繝ｪ繧ｹ繝医↓霑ｽ蜉
 					}
-					if (ram > 30)
-					{
-						BossEnemy* bossEnemy = NewGO<BossEnemy>(1, "bossEnemy");
-						bossEnemy->SetPosition(Random());
-						m_BossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する。
+					else {
+						LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
+						m_littleEnemy->SetPosition(Random());
+						m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
+						if (ram > 30)
+						{
+							LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
+							littleEnemy->SetPosition(Random());
+							m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
+							m_littleEnemyList.push_back(littleEnemy);//雑魚敵を敵のリストに追加する。
+						}
+						if (ram > 30)
+						{
+							BossEnemy* bossEnemy = NewGO<BossEnemy>(1, "bossEnemy");
+							bossEnemy->SetPosition(Random());
+							m_BossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する。
+						}
 					}
 				}
 			}
 		}
-	}
+	
 }
 	
 //UI作成用関数。
