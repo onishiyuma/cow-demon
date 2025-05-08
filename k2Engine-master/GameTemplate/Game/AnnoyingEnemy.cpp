@@ -16,11 +16,6 @@ AnnoyingEnemy::AnnoyingEnemy()
 
 }
 
-AnnoyingEnemy::AnnoyingEnemy()
-{
-
-}
-
 bool AnnoyingEnemy::Start()
 {
 	//待機。

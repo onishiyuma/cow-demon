@@ -57,7 +57,7 @@ void LanternAttack::Update()
 	if (m_lightFlag == false) {
 
 		//ベクトルの長さが120.0fより小さかったら。
-		if (diff.Length() <= 50.0f)
+		if (diff.Length() <= 100.0f)
 		{
 			if (m_lightUI == false) {
 
