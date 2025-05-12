@@ -1,13 +1,13 @@
 #pragma once
 
-class Lantern;//灯籠クラス
+class LanternAttack;
 
-class LanternLight:public IGameObject
+class LanternAttackLight:public IGameObject
 {
 public:
 	//メンバ関数
-	LanternLight();
-	~LanternLight();
+	LanternAttackLight();
+	~LanternAttackLight();
 	bool Start();
 	//更新処理
 	void Update();
@@ -18,7 +18,7 @@ public:
 	Vector3 m_firstPosition;//初期座標
 	Vector3 m_position;//座標
 	Vector3 m_direction;//ライトの向き
-	Lantern* m_lantern;//灯籠
+	LanternAttack* m_lanternAttack;//攻撃灯籠
 	PointLight m_pointLight;//ポイントライト
 
 };

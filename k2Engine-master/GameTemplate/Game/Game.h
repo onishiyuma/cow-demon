@@ -13,6 +13,8 @@ class Stone;
 class UIStone;
 class Lantern;
 class LanternAttack;
+class LanternLight;
+class LanternAttackLight;
 class RingBell;
 class GameClear;
 class GameOver;
@@ -47,6 +49,14 @@ public:
 	void CreateEnemy();
 	//繧ｲ繝ｼ繝繧ｪ繝ｼ繝舌・縲√ご繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ繧貞他縺ｶ髢｢謨ｰ縲・
 	void GameManager();
+	//灯籠用ライトのステート
+	void LanternLightState();
+	//灯籠用ライトの作成
+	void CreateLanternLight();
+	//攻撃灯籠用ライトのステート
+	void LanternAttackLightState();
+	//攻撃灯籠用ライトの作成
+	void CreateLanternAttackLight();
 
 	void Render(RenderContext& rc);
 
@@ -74,14 +84,24 @@ public:
 
 	UIStone* m_uiStone; //轣ｫ謇鍋浹縺ｮ謨ｰ
 
+	Lantern* m_lantern;
 	Lantern* m_lantern1; //轣ｯ邀
 	Lantern* m_lantern2; //轣ｯ邀
 	Lantern* m_lantern3; //轣ｯ邀
 	Lantern* m_lantern4; //轣ｯ邀
 
+	LanternLight* m_lanternLight1;
+	LanternLight* m_lanternLight2;
+	LanternLight* m_lanternLight3;
+	LanternLight* m_lanternLight4;
+
 	LanternAttack* m_lanternAttack1; //謾ｻ謦・畑轣ｯ邀
 	LanternAttack* m_lanternAttack2; //謾ｻ謦・畑轣ｯ邀
 	LanternAttack* m_lanternAttack3; //謾ｻ謦・畑轣ｯ邀
+
+	LanternAttackLight* m_lanternAttackLight1;
+	LanternAttackLight* m_lanternAttackLight2;
+	LanternAttackLight* m_lanternAttackLight3;
 
 	UItukuyomi* m_uiTukuyomi;
 	UIskill* m_uiSkill;
@@ -116,6 +136,17 @@ public:
   	float m_timer = 120.0f;
 	bool m_lanternAction = false; 
 	float m_timeLimit=0;//蛻ｶ髯先凾髢・
+	int m_lanternLightState = 0;
+	int m_lanternAttackLightState = 0;
+	//灯籠用ライトのフラグ
+	bool m_lanternLightFlag1 = false;
+	bool m_lanternLightFlag2 = false;
+	bool m_lanternLightFlag3 = false;
+	bool m_lanternLightFlag4 = false;
+	//攻撃灯籠用ライトのフラグ
+	bool m_lanternAttackLightFlag1 = false;
+	bool m_lanternAttackLightFlag2 = false;
+	bool m_lanternAttackLightFlag3 = false;
 
 };
 
