@@ -35,7 +35,7 @@ void Title::Update()
 	//タイトルからインゲームへ移行。
 	if (m_timer>0.1f&&g_pad[0]->IsPressAnyKey())
 	{
-		NewGO<Fade>(0, "fade");
+		NewGO<Fade>(1, "fade");
 		m_spriteRender.Update();
 		//自身を削除する。
 		DeleteGO(this);
