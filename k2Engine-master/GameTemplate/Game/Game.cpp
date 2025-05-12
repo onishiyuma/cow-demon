@@ -38,7 +38,6 @@ bool Game::Start()
 
 	//制限時間の設定
 	//m_timeLimit =120.0f;
-
 	//空の作成
 	SkyCube* skyCube = NewGO<SkyCube>(0);
 	skyCube->SetType(enSkyCubeType_NightToon_2);
@@ -169,6 +168,18 @@ void Game::Update()
 
 	//攻撃灯籠用ライトのステート
 	LanternAttackLightState();
+	//攻撃灯籠用ライトの作成
+	CreateLanternAttackLight();
+
+	//灯籠用ライトのステート
+	LanternLightState();
+
+	//灯籠用ライトの作成
+	CreateLanternLight();
+
+	//攻撃灯籠用ライトのステート
+	LanternAttackLightState();
+
 	//攻撃灯籠用ライトの作成
 	CreateLanternAttackLight();
 

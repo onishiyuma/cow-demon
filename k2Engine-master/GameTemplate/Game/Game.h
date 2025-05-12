@@ -63,7 +63,7 @@ public:
 	void CreateLanternAttackLight();
 	//本殿の方を見る。
 	void LookingMain();
-
+  
 	void Render(RenderContext& rc);
 
 
