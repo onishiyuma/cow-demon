@@ -22,7 +22,7 @@ public:
 		enEnemyState_Down
 	};
 
-	//ƒƒ“ƒoŠÖ”B
+	//ãƒ¡ãƒ³ãƒé–¢æ•°ã€‚
 	BossEnemy();
 	virtual~BossEnemy();
 	
@@ -52,25 +52,25 @@ public:
 
 
 
-	//À•W‚ğƒZƒbƒg‚·‚éŠÖ”B
+	//åº§æ¨™ã‚’ã‚»ãƒƒãƒˆã™ã‚‹é–¢æ•°ã€‚
 	void SetPosition(const Vector3& position)
 	{
 		m_position = position;
 	}
 
-	//‰ñ“]‚ğƒZƒbƒg‚·‚éŠÖ”B
+	//å›è»¢ã‚’ã‚»ãƒƒãƒˆã™ã‚‹é–¢æ•°ã€‚
 	void SetRotation(const Quaternion& rotation)
 	{
 		m_rotation = rotation;
 	}
 
-	//‘å‚«‚³‚ğƒZƒbƒg‚·‚éŠÖ”B
+	//å¤§ãã•ã‚’ã‚»ãƒƒãƒˆã™ã‚‹é–¢æ•°ã€‚
 	void SetScale(const Vector3& scale)
 	{
 		m_scale = scale;
 	}
 
-	//HP‚ğƒZƒbƒg‚·‚éŠÖ”B
+	//HPã‚’ã‚»ãƒƒãƒˆã™ã‚‹é–¢æ•°ã€‚
 	void SetHP(const int& hp)
 	{
 		m_enemyHP = hp;
@@ -88,7 +88,7 @@ public:
 	};
 
 
-	//ƒƒ“ƒo•Ï”B
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚
 	AnimationClip m_animationClips[enAnimationClip_Num];
 	EnEnemyState m_enemyState = enEnemyState_Idle;
 	float m_leaveTimer = 0.0f;

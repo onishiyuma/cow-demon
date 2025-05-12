@@ -38,10 +38,7 @@ public:
 	TimingBarC* m_timingBarC;
 	Line* m_line;
 	SpritePush* m_spritePush;
-	LanternLight* m_lanternLight1;
-	LanternLight* m_lanternLight2;
-	LanternLight* m_lanternLight3;
-	LanternLight* m_lanternLight4;
+	LanternLight* m_lanternLight = nullptr;
 
 	int m_lanternCount = 0; //火を灯したカウント
 	bool m_lightUI = false; //灯籠の近くにいるか？
