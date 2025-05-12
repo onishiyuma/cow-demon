@@ -9,6 +9,7 @@
 #include "TimingBarC.h"
 #include "Line.h"
 #include "SpritePush.h"
+#include "LanternLight.h"
 
 bool Lantern::Start() 
 {
@@ -25,6 +26,9 @@ bool Lantern::Start()
 	m_timingBarC = FindGO<TimingBarC>("timingBarC");
 	m_line = FindGO<Line>("line");
 	m_spritePush = FindGO<SpritePush>("spritePush");
+	m_lanternLight1 = FindGO<LanternLight>("lanternLight");
+
+	m_lanternLight1 = nullptr; // 火を灯すまでライトは生成しない
 
 	return true;
 }
@@ -41,6 +45,7 @@ Lantern::~Lantern()
 	DeleteGO(m_timingBarA);
 	DeleteGO(m_line);
 	DeleteGO(m_spritePush);
+	DeleteGO(m_lanternLight1);
 	//DeleteGO(this);
 }
 
@@ -59,7 +64,7 @@ void Lantern::Update()
 	if (m_lightFlag == false) {
 
 		//ベクトルの長さが120.0fより小さかったら。
-		if (diff.Length() <= 50.0f)
+		if (diff.Length() <= 100.0f)
 		{
 			if (m_lightUI==false) {
 
@@ -136,6 +141,13 @@ void Lantern::Update()
 							DeleteGO(m_timingBarB);
 							DeleteGO(m_line);
 							DeleteGO(m_spritePush);
+
+							if (m_lanternLight1 == nullptr) {
+								//灯籠を光らせる
+								m_lanternLight1 = NewGO<LanternLight>(0, "lanternLight");
+								m_lanternLight1->m_lantern = this;
+							}
+							
 
 							
 

@@ -9,6 +9,7 @@ class TimingBarB;
 class TimingBarC;
 class Line;
 class SpritePush;
+class LanternLight;
 
 class Lantern : public IGameObject
 {
@@ -37,6 +38,10 @@ public:
 	TimingBarC* m_timingBarC;
 	Line* m_line;
 	SpritePush* m_spritePush;
+	LanternLight* m_lanternLight1;
+	LanternLight* m_lanternLight2;
+	LanternLight* m_lanternLight3;
+	LanternLight* m_lanternLight4;
 
 	int m_lanternCount = 0; //火を灯したカウント
 	bool m_lightUI = false; //灯籠の近くにいるか？

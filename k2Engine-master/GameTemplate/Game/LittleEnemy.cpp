@@ -247,6 +247,23 @@ const bool LittleEnemy::SearchPlayer()const
 	m_modelRender.SetPosition(modelPosition);
 }
 
+//void LittleEnemy::Leave()
+//{
+//	//騾謨｣繧ｹ繝・・繝亥・縺ｪ縺・↑繧・騾謨｣蜃ｦ逅・・縺励↑縺・
+//	if (m_enemyState != enEnemyState_Leave)
+//	{
+//		return;
+//	}
+//
+//	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+//	if (m_charaCon.IsOnGround())
+//	{
+//		m_moveSpeed.y = 0.0f;
+//	}
+//	Vector3 modelPosition = m_position;
+//	m_modelRender.SetPosition(modelPosition);
+//}
+//
 void LittleEnemy::PoisonAttack()
 {
 	//謾ｻ謦・せ繝・・繝医〒縺ｪ縺・↑繧牙・逅・・縺励↑縺・
@@ -263,6 +280,9 @@ void LittleEnemy::PoisonAttack()
 		MakePoison()
 	}
 }*/
+		MakePoison();
+	}
+}
 
 void LittleEnemy::MakePoison()
 {
@@ -293,11 +313,14 @@ void LittleEnemy::ProcessChaseStateTransition()
 {
 	//謾ｻ謦・′縺ｧ縺阪ｋ霍晞屬縺ｪ繧・
 	/*if (IsCanAttack() == true)
+	////謾ｻ謦・′縺ｧ縺阪ｋ霍晞屬縺ｪ繧・
+	if (IsCanAttack() == true)
 	{
 		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
 		ProcessCommonStateTransition();
 		return;
 	}*/
+	}
 	m_chaseTimer += g_gameTime->GetFrameDeltaTime();
 	//霑ｽ霍｡譎る俣縺後≠繧狗ｨ句ｺｦ邨碁℃縺励◆繧・
 	if (m_chaseTimer >= 0.8f)
@@ -324,6 +347,23 @@ void LittleEnemy::ProcessChaseStateTransition()
 		ProcessCommonStateTransition();
 	}
 }*/
+//void LittleEnemy::ProcessLeaveStateTransition()
+//{
+//	//霍晞屬縺瑚ｿ代＞縺ｪ繧・
+//	if (IsLeave() == true)
+//	{
+//		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
+//		ProcessCommonStateTransition();
+//		return;
+//	}
+//	m_leaveTimer += g_gameTime->GetFrameDeltaTime();
+//		//騾謨｣譎る俣縺後≠繧狗ｨ句ｺｦ邨碁℃縺励◆繧・
+//	if (m_leaveTimer >= 0.8f)
+//	{
+//		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
+//		ProcessCommonStateTransition();
+//	}
+//}
 
 void LittleEnemy::ProcessPoisonAttackStateTransition()
 {
@@ -459,6 +499,11 @@ void LittleEnemy::PlayAnimation()
 			m_modelRender.SetAnimationSpeed(1.2f);
 			m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 			break;*/
+		//case enEnemyState_Leave:
+		//	//騾謨｣繧ｹ繝・・繝・
+		//	m_modelRender.SetAnimationSpeed(1.2f);
+		//	m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
+		//	break;
 	case enEnemyState_Poison:
 		//驕霍晞屬謾ｻ謦・せ繝・・繝・
 		m_modelRender.SetAnimationSpeed(1.2f);

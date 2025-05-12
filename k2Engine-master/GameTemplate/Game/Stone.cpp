@@ -14,8 +14,8 @@ bool Stone::Start()
 	m_spriteCollection = FindGO<SpriteCollection>("spriteCollection");
 
 	//モデルを読み込む
-	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
-	m_modelRender.SetScale(0.1f, 0.1f, 0.1f);
+	m_modelRender.Init("Assets/modelData/stone/stone.tkm");
+	m_modelRender.SetScale(0.5f, 0.5f, 0.5f);
 	
 	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	//コリジョン作成用関数を呼び出す。
@@ -51,8 +51,8 @@ void Stone::Update()
 	
 	//プレイヤーから火打石に向かうベクトルを計算。
 	Vector3 diff = m_player->m_position - m_position;
-	//ベクトルの長さが120.0fより小さかったら
-	if (diff.Length() <= 50.0f) {
+	//ベクトルの長さが100.0fより小さかったら
+	if (diff.Length() <= 100.0f) {
 
 		if (m_collectionFlag ==false) {
 

@@ -241,6 +241,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Lantern.cpp" />
     <ClCompile Include="LanternAttack.cpp" />
+    <ClCompile Include="LanternLight.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="LittleEnemy.cpp" />
     <ClCompile Include="main.cpp" />
@@ -292,6 +293,7 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Lantern.h" />
     <ClInclude Include="LanternAttack.h" />
+    <ClInclude Include="LanternLight.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="LittleEnemy.h" />
     <ClInclude Include="MiniMap.h" />
@@ -323,8 +325,57 @@
     <ClInclude Include="UItukuyomi.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
+    <None Include="Assets\modelData\bg.tkm" />
+    <None Include="Assets\modelData\ground.tkm" />
+    <None Include="Assets\modelData\preset\sky.tkm" />
+    <None Include="Assets\modelData\preset\vector.tkm" />
+    <None Include="Assets\modelData\preset\VolumePointLight.tkm" />
+    <None Include="Assets\modelData\preset\VolumeSpotLight.tkm" />
+    <None Include="Assets\modelData\unityChan.fbx" />
+    <None Include="Assets\modelData\unityChan.tkm" />
+    <None Include="Assets\modelData\unityChan.tks" />
     <None Include="dxcompiler.dll" />
     <None Include="dxil.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\modelData\building.DDS" />
+    <Image Include="Assets\modelData\ground.DDS" />
+    <Image Include="Assets\modelData\preset\albedoMap_None.png" />
+    <Image Include="Assets\modelData\preset\miniRed.DDS" />
+    <Image Include="Assets\modelData\preset\miniRed.png" />
+    <Image Include="Assets\modelData\preset\normalMap_None.DDS" />
+    <Image Include="Assets\modelData\preset\NullAlbedoMap.DDS" />
+    <Image Include="Assets\modelData\preset\NullNormalMap.bmp" />
+    <Image Include="Assets\modelData\preset\NullNormalMap.DDS" />
+    <Image Include="Assets\modelData\preset\skyCubeMap.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapDay_Toon.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapDay_Toon_02.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapDay_Toon_03.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapDay_Toon_04.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapEuro.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapGrass.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapNight.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapNight_Toon.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapNight_Toon_02.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapSnow.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapSnow._2dds.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapSnow_2.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapSpace_Toon.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapSpace_Toon_2.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapSunrise_Toon.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapWild.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapWild_2.dds" />
+    <Image Include="Assets\modelData\preset\skyCubeMapWild_Night.dds" />
+    <Image Include="Assets\modelData\preset\specMap_None.DDS" />
+    <Image Include="Assets\modelData\preset\vectorColor.DDS" />
+    <Image Include="Assets\modelData\preset\vectorColor2.DDS" />
+    <Image Include="Assets\modelData\preset\VolumeSpotLight.bmp" />
+    <Image Include="Assets\modelData\preset\VolumeSpotLight.DDS" />
+    <Image Include="Assets\modelData\preset\ZeroValueMap.DDS" />
+    <Image Include="Assets\modelData\utc_all2.DDS" />
+    <Image Include="Assets\modelData\utc_nomal.DDS" />
+    <Image Include="Assets\modelData\utc_spec.DDS" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
