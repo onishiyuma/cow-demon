@@ -16,7 +16,7 @@ AnnoyingEnemy::AnnoyingEnemy()
 
 }
 
-AnnoyingEnemy::AnnoyingEnemy()
+AnnoyingEnemy::~AnnoyingEnemy()
 {
 
 }

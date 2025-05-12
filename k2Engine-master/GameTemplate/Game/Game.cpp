@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "LittleEnemy.h"
 #include "BossEnemy.h"
+#include "AnnoyingEnemy.h"
 #include "Player.h"
 #include "GameCamera.h"
 #include "BackGround.h"
@@ -21,58 +22,22 @@
 #include "GameClear.h"
 #include "GameOver.h"
 #include "random"
+#include "Fade.h"
 
 bool Game::Start()
 {
+	//インスタンスアドレスを検索。
+	m_fade = FindGO<Fade>("fade");
 
 	//ステージ全体を暗くする。
 	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
 
 	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
-	//制限時間の設定
-	//m_timeLimit =120.0f;
 
 	//オブジェクトの作成。
 	CreateObject();
 
-	////背景の作成。
-	//m_backGround = NewGO<BackGround>(0);
-
-	////ベルの作成。
-	//m_ringBell = NewGO<RingBell>(0, "ringbell");
-
-	////プレイヤーの作成。
-	//m_player = NewGO<Player>(0, "player");
-
-	////ゲームカメラの作成。
-	//m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
-
-	////クロスヘアーを表示。
-	//m_crossHair = NewGO<CrossHair>(0);
-
-	//デバック用。
-	//m_timeLimit = 3.0f;
-		
-	//m_uiTukuyomi = NewGO<UItukuyomi>(0,"uitukuyomi");
-	////スキルUI
-	//m_uiSkill = NewGO<UIskill>(0, "uiskill");
-	////しめ縄UI
-	////m_uiSimenawa = NewGO<UISimenawa>(0, "m_uisimenawa");
-	//m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
-	////ミニマップ
-	///*m_miniMap = NewGO<MiniMap>(0,"minimap");*/
-	////呪ゲージ
-	//m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
-	////回復
-	//m_uiHeal = NewGO <UIheal>(0, "uiheal");
-		
-	//空の作成
-	//SkyCube* skyCube = NewGO<SkyCube>(0);
-	//skyCube->SetType(enSkyCubeType_NightToon);
-	//skyCube->SetScale(1000.0f);
-
-	
 	//火打石の作成。
 	CreateStone();
 
@@ -82,15 +47,18 @@ bool Game::Start()
 	//攻撃用灯籠の作成。
 	CreateAttackLantern();
 
-	//火打石のカウントを表示。
-	//m_uiStone = NewGO<UIStone>(0, "uiStone");
+	/*if (m_fade->m_loadingProgress >= 2.0f)
+	{
+		//UIの作成。
+		CreateUI();
+		//Enemyの作成。
+		CreateEnemy();
+	}*/
 
-	//UIの作成
+	//UIの作成。
 	CreateUI();
-
-	//Enemyの作成
+	//Enemyの作成。
 	CreateEnemy();
-	
 	return true;
 }
 
@@ -101,27 +69,35 @@ Game::Game()
 
 Game::~Game()
 {
-	//牛鬼
-	for (auto* enemy : m_enemyList) {
+	//牛鬼。
+	for (auto* enemy : m_enemyList)
+	{
 		DeleteGO(enemy);
 	}
 
-	//ミニ牛鬼
-	for (auto* littleEnemy : m_littleEnemyList) {
+	//ミニ牛鬼。
+	for (auto* littleEnemy : m_littleEnemyList) 
+	{
 		DeleteGO(littleEnemy);
 	}
 
 	//ボス牛鬼。
-	for (auto* bossEnemy : m_BossEnemyList)
+	for (auto* bossEnemy : m_bossEnemyList)
 	{
 		DeleteGO(bossEnemy);
 	}
 
-	DeleteGO(m_player); //プレイヤー。
-	DeleteGO(m_gameCamera); //ゲームカメラ。
-	DeleteGO(m_backGround); //ステージ。
-	DeleteGO(m_crossHair); //クロスヘアー。
-	DeleteGO(m_ringBell); //ベル。
+	//ウザイ敵。
+	for (auto* annoyingEnemy : m_annoyingEnemyList)
+	{
+		DeleteGO(annoyingEnemy);
+	}
+
+	DeleteGO(m_player);//プレイヤー。
+	DeleteGO(m_gameCamera);//ゲームカメラ。
+	DeleteGO(m_backGround);//ステージ。
+	DeleteGO(m_crossHair);//クロスヘアー。
+	DeleteGO(m_ringBell);//ベル。
 
 	//火打石。
 	DeleteGO(m_stone1);
@@ -144,7 +120,6 @@ Game::~Game()
 	DeleteGO(m_lanternAttack3);
 
 	//UI関連。
-	DeleteGO(m_littleEnemy);
 	DeleteGO(m_uiTukuyomi);
 	DeleteGO(m_uiSkill);
 	DeleteGO(m_uiSimenawa);
@@ -152,38 +127,44 @@ Game::~Game()
 	DeleteGO(m_uiHeal);
 	DeleteGO(m_uiStone);
 	//DeleteGO(m_miniMap);
-
-	
 }
 
 void Game::Update()
-{
-	wchar_t wcsbuf[256];
-
-	int minute = (int)m_timer / 60;
-
-	int sec = (int)m_timer % 60;
-	swprintf_s(wcsbuf, 256, L"AM%01d:%02d", minute, sec);
-
-
-	//表示するテキストを表示。
-	m_timerFontRender.SetText(wcsbuf);
-	//フォントの位置を設定。
-	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
-	//フォントの色を設定。
-	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	//フォントの大きさを設定。
-	m_timerFontRender.SetText(wcsbuf);
-	//フォントの位置を設定
-	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
-	//フォントの色を設定
-	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	//フォントの大きさを設定
-	m_timerFontRender.SetScale(1.5f);
-
-	m_timer += g_gameTime->GetFrameDeltaTime();
-	
+{	
+	//タイマーを表示する用関数。
+	UITimer();
+	//ゲームーオーバーやゲームクリアーを呼び出す関数。
 	GameManager();
+}
+
+//ゲームクリア、ゲームオーバーの判定処理。
+void Game::GameManager()
+{
+	//タイマーを減らす処理。
+	m_timeLimit -= g_gameTime->GetFrameDeltaTime();
+
+	//敵から本殿を守り切ったらゲームクリア。
+	if (m_timeLimit <= 0)
+	{
+		NewGO<GameClear>(0);
+		DeleteGO(this);
+	}
+
+
+	//呪いの抵抗値がなくなったら。
+	if (m_player->m_playerHP <= 0)
+	{
+		NewGO<GameOver>(0);
+		DeleteGO(this);
+	}
+}
+
+//本殿の方向を見させる関数。
+void Game::LookingMain()
+{
+
+
+
 }
 
 //オブジェクト作成用関数。
@@ -203,9 +184,6 @@ void Game::CreateObject()
 
 	//ゲームカメラの作成。
 	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
-
-	//クロスヘアーを表示。
-	m_crossHair = NewGO<CrossHair>(0);
 }
 
 Vector3 Game::Random()
@@ -233,29 +211,6 @@ Vector3 Game::Random()
 	m_position.y = 0.0f;
 	m_position.z = rand() % 1000 + 500;
 	return m_position;
-}
-
-
-//ゲームクリア、ゲームオーバーの判定処理。
-void Game::GameManager()
-{
-	//タイマーを減らす処理。
-	m_timeLimit -= g_gameTime->GetFrameDeltaTime();
-
-	//敵から本殿を守り切ったらゲームクリア。
-	if (m_timeLimit <= 0)
-	{
-		NewGO<GameClear>(0);
-		DeleteGO(this);
-	}
-
-
-	//呪いの抵抗値がなくなったら。
-	if (m_player->m_playerHP <= 0)
-	{
-		NewGO<GameOver>(0);
-		DeleteGO(this);
-	}
 }
 
 //火打石作成用関数。
@@ -341,16 +296,15 @@ void Game::CreateAttackLantern()
 //敵を生成用関数。
 void Game::CreateEnemy()
 {
-
-	//タイマーを減らす処理。
+	//タイマーを増やす。
 	m_timer += g_gameTime->GetFrameDeltaTime();
 	//1分目
-	if (m_timer>120.0f&&m_timer<180.0f)
+	if (m_timer > 120.0f && m_timer < 180.0f)
 	{
 		m_maxCount = 5;
 	}
 	//2分目
-	else if (m_timer>180.0f&&m_timer<240.0f)
+	else if (m_timer > 180.0f && m_timer < 240.0f)
 	{
 		m_maxCount = 10;
 	}
@@ -359,42 +313,39 @@ void Game::CreateEnemy()
 	{
 		m_maxCount = 20;
 	}
-	m_totalCount = m_enemyList.size() +m_littleEnemyList.size();
+
+	m_totalCount = m_enemyList.size() + m_littleEnemyList.size();
+
 	/*while (m_enemyList.size()+m_littleEnemyList.size()<m_maxCount)*/
 	if (m_totalCount < m_maxCount)
 	{
-		int ram = rand() % 100;
-		if (ram > 30) {
-			for (int i = 0; i < 5; i++)
-			{
-				int ram = rand() % 100;
+		for (int i = 0; i < 5; ++i)
+		{
+			int r = rand() % 100;
 
-				if (ram > 30)
-				{
-					Enemy* enemy = NewGO<Enemy>(1, "enemy");
-					enemy->SetPosition(Random());
-					m_enemyList.push_back(enemy);//敵リストに追加
-					m_enemyList.push_back(enemy);//敵リストに追加する。
-					m_enemyList.push_back(enemy);//謨ｵ繝ｪ繧ｹ繝医↓霑ｽ蜉
-				}
-				else {
-					LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-					m_littleEnemy->SetPosition(Random());
-					m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
-					if (ram > 30)
-					{
-						LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-						littleEnemy->SetPosition(Random());
-						m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
-						m_littleEnemyList.push_back(littleEnemy);//雑魚敵を敵のリストに追加する。
-					}
-					if (ram > 30)
-					{
-						BossEnemy* bossEnemy = NewGO<BossEnemy>(1, "bossEnemy");
-						bossEnemy->SetPosition(Random());
-						m_BossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する。
-					}
-				}
+			if (r >= 95) {
+				//ボス。
+				BossEnemy* boss = NewGO<BossEnemy>(1, "bossEnemy");
+				boss->SetPosition(Random());
+				m_bossEnemyList.push_back(boss);
+			}
+			else if (r >= 80) {
+				//ウザイ敵
+				AnnoyingEnemy* annoying = NewGO<AnnoyingEnemy>(1, "annoyingEnemy");
+				annoying->SetPosition(Random());
+				m_annoyingEnemyList.push_back(annoying);
+			}
+			else if (r >= 40) {
+				//普通の敵。
+				Enemy* enemy = NewGO<Enemy>(1, "enemy");
+				enemy->SetPosition(Random());
+				m_enemyList.push_back(enemy);
+			}
+			else {
+				//雑魚敵。
+				LittleEnemy* little = NewGO<LittleEnemy>(1, "littleEnemy");
+				little->SetPosition(Random());
+				m_littleEnemyList.push_back(little);
 			}
 		}
 	}
@@ -403,6 +354,10 @@ void Game::CreateEnemy()
 //UI作成用関数。
 void Game::CreateUI()
 {
+	//クロスヘアーを表示。
+	m_crossHair = NewGO<CrossHair>(0);
+
+
 	//月読の加護のUI
 	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
 	//スキルUI
@@ -417,6 +372,28 @@ void Game::CreateUI()
 	m_uiHeal = NewGO <UIheal>(0, "uiheal");
 	//火打石のカウントを表示。
 	m_uiStone = NewGO<UIStone>(0, "uiStone");
+}
+
+void Game::UITimer()
+{
+	//タイマーの表示
+	wchar_t wcsbuf[256];
+
+	int minute = (int)m_timer / 60;
+
+	int sec = (int)m_timer % 60;
+	swprintf_s(wcsbuf, 256, L"AM%01d:%02d", minute, sec);
+
+	//フォントを設定。
+	m_timerFontRender.SetText(wcsbuf);
+	//フォントの大きさを設定。
+	m_timerFontRender.SetScale(1.5f);
+	//フォントの位置を設定。
+	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
+	//フォントの色を設定。
+	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+
+	m_timer += g_gameTime->GetFrameDeltaTime();
 }
 
 void Game::Render(RenderContext& rc)
