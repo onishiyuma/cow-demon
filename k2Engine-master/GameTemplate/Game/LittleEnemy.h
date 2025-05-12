@@ -2,6 +2,7 @@
 #include "graphics/effect/EffectEmitter.h"
 #include "EnemyBase.h"
 #include "Game.h"
+
 class Poison;
 class Collision;
 class EnemyBase;
@@ -26,26 +27,32 @@ public:
 
 	bool Start()override;
 	void Update()override;
-	void Render(RenderContext& rc)override;
+	void Render(RenderContext& rc);
+
+	//座標をセットする関数。
 	void SetPosition(const Vector3& position)
 	{
 		m_position = position;
 	}
 
+	//回転をセットする関数。
 	void SetRotation(const Quaternion& rotation)
 	{
 		m_rotation = rotation;
 	}
 
+	//大きさをセットする関数。
 	void SetScale(const Vector3& scale)
 	{
 		m_scale = scale;
 	}
 
+	//HPをセットする関数。
 	void SetHP(const int hp)
 	{
 		m_enemyHP = hp;
 	}
+
 	void PoisonAttack();
 	void ManageState()override;
 	void Chase()override;
@@ -77,6 +84,7 @@ public:
 		enAnimationClip_Num
 	};
 
+	//メンバ変数。
 	AnimationClip m_animationClips[enAnimationClip_Num];
 	EnEnemyState m_enemyState = enEnemyState_Idle;
 	float m_leaveTimer = 0.0f;

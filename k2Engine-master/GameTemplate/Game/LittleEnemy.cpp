@@ -56,6 +56,7 @@ bool LittleEnemy::Start()
 
 	Vector3  scale(100.0f, 100.0f, 100.0f);
 	SetScale(scale);
+	SetHP(100);
 	//繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧､繝吶Φ繝育畑縺ｮ髢｢謨ｰ繧定ｨｭ螳壹☆繧・
 	m_modelRender.AddAnimationEvent([&](const wchar_t* clipName, const wchar_t* eventName) {
 		OneAnimationEvent(clipName, eventName);
@@ -69,6 +70,7 @@ bool LittleEnemy::Start()
 	srand((unsigned)time(NULL));
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
+
 	return true;
 }
 
@@ -92,10 +94,11 @@ void LittleEnemy::Update()
 
 void LittleEnemy::Rotation()
 {
-	if (fabsf(m_moveSpeed.x) < 0.001f
-		&& fabsf(m_moveSpeed.z) < 0.001f) {
+	if (fabsf(m_moveSpeed.x) < 0.001f&& fabsf(m_moveSpeed.z) < 0.001f) 
+	{
 		return;
 	}
+
 	float angle = atan2(-m_moveSpeed.x, m_moveSpeed.z);
 	m_rotation.SetRotationY(-angle);
 
@@ -117,6 +120,7 @@ void LittleEnemy::Chase()
 	}
 	/*m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();*/
 	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+
 	if (m_charaCon.IsOnGround()) {
 		//蝨ｰ髱｢縺ｫ縺､縺・◆
 		m_moveSpeed.y = 0.0f;
@@ -226,6 +230,23 @@ const bool LittleEnemy::SearchPlayer()const
 	return false;
 }
 
+/*void LittleEnemy::Leave()
+{
+	//騾謨｣繧ｹ繝・・繝亥・縺ｪ縺・↑繧・騾謨｣蜃ｦ逅・・縺励↑縺・
+	if (m_enemyState != enEnemyState_Leave)
+	{
+		return;
+	}
+
+	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+	if (m_charaCon.IsOnGround())
+	{
+		m_moveSpeed.y = 0.0f;
+	}
+	Vector3 modelPosition = m_position;
+	m_modelRender.SetPosition(modelPosition);
+}
+
 //void LittleEnemy::Leave()
 //{
 //	//騾謨｣繧ｹ繝・・繝亥・縺ｪ縺・↑繧・騾謨｣蜃ｦ逅・・縺励↑縺・
@@ -256,6 +277,9 @@ void LittleEnemy::PoisonAttack()
 	if (m_isUnderAttack == true)
 	{
 		//謾ｻ謦・畑縺ｮ繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ繧剃ｽ懈・縺吶ｋ
+		MakePoison()
+	}
+}*/
 		MakePoison();
 	}
 }
@@ -287,12 +311,15 @@ void LittleEnemy::ProcessIdleStateTransition()
 }
 void LittleEnemy::ProcessChaseStateTransition()
 {
+	//謾ｻ謦・′縺ｧ縺阪ｋ霍晞屬縺ｪ繧・
+	/*if (IsCanAttack() == true)
 	////謾ｻ謦・′縺ｧ縺阪ｋ霍晞屬縺ｪ繧・
 	if (IsCanAttack() == true)
 	{
 		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
 		ProcessCommonStateTransition();
 		return;
+	}*/
 	}
 	m_chaseTimer += g_gameTime->GetFrameDeltaTime();
 	//霑ｽ霍｡譎る俣縺後≠繧狗ｨ句ｺｦ邨碁℃縺励◆繧・
@@ -303,6 +330,23 @@ void LittleEnemy::ProcessChaseStateTransition()
 	}
 }
 
+/*void LittleEnemy::ProcessLeaveStateTransition()
+{
+	//霍晞屬縺瑚ｿ代＞縺ｪ繧・
+	if (IsLeave() == true)
+	{
+		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
+		ProcessCommonStateTransition();
+		return;
+	}
+	m_leaveTimer += g_gameTime->GetFrameDeltaTime();
+		//騾謨｣譎る俣縺後≠繧狗ｨ句ｺｦ邨碁℃縺励◆繧・
+	if (m_leaveTimer >= 0.8f)
+	{
+		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
+		ProcessCommonStateTransition();
+	}
+}*/
 //void LittleEnemy::ProcessLeaveStateTransition()
 //{
 //	//霍晞屬縺瑚ｿ代＞縺ｪ繧・
@@ -409,8 +453,6 @@ void LittleEnemy::ProcessCommonStateTransition()
 }
 
 
-
-
 void LittleEnemy::ManageState()
 {
 	switch (m_enemyState)
@@ -452,6 +494,11 @@ void LittleEnemy::PlayAnimation()
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
+		/*case enEnemyState_Leave:
+			//騾謨｣繧ｹ繝・・繝・
+			m_modelRender.SetAnimationSpeed(1.2f);
+			m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
+			break;*/
 		//case enEnemyState_Leave:
 		//	//騾謨｣繧ｹ繝・・繝・
 		//	m_modelRender.SetAnimationSpeed(1.2f);
@@ -503,5 +550,3 @@ void LittleEnemy::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
 }
-
-

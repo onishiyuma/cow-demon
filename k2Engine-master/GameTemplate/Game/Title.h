@@ -1,6 +1,7 @@
 #pragma once
 
 class Game;
+class Fade;
 
 //タイトルクラス。
 class Title:public IGameObject
@@ -17,6 +18,8 @@ public:
 	FontRender m_fontRender;
 	SpriteRender m_spriteRender;//スプライトレンダー。
 	Game* m_game;//ゲーム。
+	Fade* m_fade;//フェード。
+
 	float m_timer;
 
 private:

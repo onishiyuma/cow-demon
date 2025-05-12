@@ -44,6 +44,7 @@
     <ClCompile Include="Poison.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="AnnoyingEnemy.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="LanternLight.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +92,7 @@
     <ClInclude Include="Poison.h" />
     <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="AnnoyingEnemy.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="LanternLight.h" />
   </ItemGroup>
   <ItemGroup>
