@@ -280,9 +280,6 @@ void LittleEnemy::PoisonAttack()
 		MakePoison()
 	}
 }*/
-		MakePoison();
-	}
-}
 
 void LittleEnemy::MakePoison()
 {
@@ -320,7 +317,6 @@ void LittleEnemy::ProcessChaseStateTransition()
 		ProcessCommonStateTransition();
 		return;
 	}*/
-	}
 	m_chaseTimer += g_gameTime->GetFrameDeltaTime();
 	//霑ｽ霍｡譎る俣縺後≠繧狗ｨ句ｺｦ邨碁℃縺励◆繧・
 	if (m_chaseTimer >= 0.8f)
