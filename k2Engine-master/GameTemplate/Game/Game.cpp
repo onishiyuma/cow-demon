@@ -156,8 +156,14 @@ Game::~Game()
 
 void Game::Update()
 {	
+	if (m_fade->isFade())
+	{
+		return;
+	}
+	
 	//タイマーを表示する用関数。
 	UITimer();
+
 	//ゲームーオーバーやゲームクリアーを呼び出す関数。
 	GameManager();
   

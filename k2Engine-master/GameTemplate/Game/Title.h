@@ -14,6 +14,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+private:
 	//メンバ変数。
 	FontRender m_fontRender;
 	SpriteRender m_spriteRender;//スプライトレンダー。
@@ -22,6 +23,5 @@ public:
 
 	float m_timer;
 
-private:
 };
 
