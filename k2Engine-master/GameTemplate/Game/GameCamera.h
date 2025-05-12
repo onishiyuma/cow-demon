@@ -9,10 +9,17 @@ public:
 	~GameCamera();
 	bool Start();
 	void Update();
+	// 本殿方向に補間する処理
+	void LerpToMain();
 	
 	void LockCamera(bool isLock) 
 	{ 
 		m_isLocked = isLock;
+	}
+
+	void StartLerpingToShrine() 
+	{
+		m_isLerping = true; 
 	}
 
 	//繝｡繝ｳ繝仙､画焚縲・
@@ -22,5 +29,9 @@ public:
 	float m_furClip = 20000.0f;//繝輔ぃ繝ｼ繧ｯ繝ｪ繝・・
 	const int m_half=2;//蜊雁・縺ｫ縺吶ｋ
 	bool m_isLocked = false;//繧ｫ繝｡繝ｩ繧貞●豁｢縺吶ｋ繧医≧繝輔Λ繧ｰ縲・
+	bool isCameraLookMain = false;//カメラが本殿に向くか？
+	bool GameOverCalled = false;//ゲームオーバーを呼ぶか。
+	bool  m_isLerping = false;//補完
+	Vector3 cameraTargetLoakAt;
 };
 

@@ -55,6 +55,8 @@ bool BossEnemy::Start()
 	);
 	Vector3 scale(100.0f, 100.0f, 1.00f);
 	SetScale(scale);
+	//HPを設定する。
+	SetHP(100);
 	//アニメーションイベント用の関数を設定する。
 	m_modelRender.AddAnimationEvent([&](const wchar_t* clipName, const wchar_t* eventName) {
 		OneAnimationEvent(clipName, eventName);

@@ -65,6 +65,8 @@ void GameCamera::Update()
 	g_camera3D->SetTarget(target);
 	g_camera3D->SetPosition(pos);
 
+
+
 	//カメラの更新。
 	g_camera3D->Update();
 }
