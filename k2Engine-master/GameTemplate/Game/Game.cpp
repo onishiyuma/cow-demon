@@ -161,6 +161,23 @@ void Game::Update()
 	UITimer();
 	//ゲームーオーバーやゲームクリアーを呼び出す関数。
 	GameManager();
+  
+  //灯籠用ライトのステート
+	LanternLightState();
+	//灯籠用ライトの作成
+	CreateLanternLight();
+
+	//攻撃灯籠用ライトのステート
+	LanternAttackLightState();
+	//攻撃灯籠用ライトの作成
+	CreateLanternAttackLight();
+
+	//プレイヤーが四つ灯籠に火を灯したら
+	if (m_player->m_enemyIsCanAttack != false) {
+		//エネミーの作成
+		CreateEnemy();
+	}
+
 }
 
 //ゲームクリア、ゲームオーバーの判定処理。
@@ -188,37 +205,7 @@ void Game::GameManager()
 //本殿の方向を見させる関数。
 void Game::LookingMain()
 {
-	//表示するテキストを表示。
-	m_timerFontRender.SetText(wcsbuf);
-	//フォントの位置を設定
-	m_timerFontRender.SetPosition(Vector3(-100.0f, 500.0f, 0.0f));
-	//フォントの色を設定
-	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	//フォントの大きさを設定
-	m_timerFontRender.SetScale(1.5f);
-
-	m_timer += g_gameTime->GetFrameDeltaTime();
 	
-	GameManager();
-
-	//灯籠用ライトのステート
-	LanternLightState();
-
-	//灯籠用ライトの作成
-	CreateLanternLight();
-
-	//攻撃灯籠用ライトのステート
-	LanternAttackLightState();
-
-	//攻撃灯籠用ライトの作成
-	CreateLanternAttackLight();
-
-	//プレイヤーが四つ灯籠に火を灯したら
-	if (m_player->m_enemyIsCanAttack != false) {
-		//エネミーの作成
-		CreateEnemy();
-	}
-
 }
 
 //オブジェクト作成用関数。
@@ -265,30 +252,6 @@ Vector3 Game::Random()
 	m_position.y = 0.0f;
 	m_position.z = rand() % 1000 + 500;
 	return m_position;
-}
-
-
-//ゲームクリア、ゲームオーバーの判定処理。
-void Game::GameManager()
-{
-	//タイマーを減らす処理。
-	m_timeLimit -= g_gameTime->GetFrameDeltaTime();
-
-	//敵から本殿を守り切ったらゲームクリア。
-	if (m_timeLimit <= 0)
-	{
-		NewGO<GameClear>(0);
-		DeleteGO(this);
-	}
-
-
-	//呪いの抵抗値がなくなったら。
-	if (m_player->m_playerHP <= 0)
-	{
-		NewGO<GameOver>(0);
-		DeleteGO(this);
-	}
-
 }
 
 //火打石作成用関数。
@@ -592,6 +555,8 @@ void Game::CreateEnemy()
 				LittleEnemy* little = NewGO<LittleEnemy>(1, "littleEnemy");
 				little->SetPosition(Random());
 				m_littleEnemyList.push_back(little);
+			}
+		}
 		//タイマーを減らす処理。
 		m_timer += g_gameTime->GetFrameDeltaTime();
 		//1分目
@@ -614,6 +579,7 @@ void Game::CreateEnemy()
 		if (m_totalCount < m_maxCount)
 		{
 			int ram = rand() % 100;
+
 			if (ram > 30) {
 				for (int i = 0; i < 5; i++)
 				{
@@ -642,13 +608,13 @@ void Game::CreateEnemy()
 						{
 							BossEnemy* bossEnemy = NewGO<BossEnemy>(1, "bossEnemy");
 							bossEnemy->SetPosition(Random());
-							m_BossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する。
+							m_bossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する。
 						}
 					}
 				}
 			}
 		}
-	
+	}
 }
 	
 //UI作成用関数。
@@ -656,7 +622,6 @@ void Game::CreateUI()
 {
 	//クロスヘアーを表示。
 	m_crossHair = NewGO<CrossHair>(0);
-
 
 	//月読の加護のUI
 	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");

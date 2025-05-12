@@ -45,6 +45,7 @@ void UItukuyomi::Update()
 	m_runaSprite2.SetScale(scal);
 
 
+
 	m_runaSprite.Update();
 	m_runaSprite2.Update();
 }
