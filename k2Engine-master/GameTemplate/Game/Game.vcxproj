@@ -229,6 +229,7 @@
     <ClCompile Include="Amulet.cpp" />
     <ClCompile Include="AnnoyingEnemy.cpp" />
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="BlueFlame.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="DebugScene.cpp" />
@@ -240,6 +241,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Lantern.cpp" />
     <ClCompile Include="LanternAttack.cpp" />
+    <ClCompile Include="LanternAttackLight.cpp" />
     <ClCompile Include="LanternLight.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="LittleEnemy.cpp" />
@@ -249,6 +251,7 @@
     <ClCompile Include="PlayerLight.cpp" />
     <ClCompile Include="Poison.cpp" />
     <ClCompile Include="Purification.cpp" />
+    <ClCompile Include="RedFlame.cpp" />
     <ClCompile Include="RingBell.cpp" />
     <ClCompile Include="Shimenawa.cpp" />
     <ClCompile Include="SpriteCollection.cpp" />
@@ -280,6 +283,7 @@
     <ClInclude Include="AnnoyingEnemy.h" />
     <ClInclude Include="Assets\shader\util\ColorSpace.h" />
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="BlueFlame.h" />
     <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="DebugScene.h" />
@@ -291,6 +295,7 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Lantern.h" />
     <ClInclude Include="LanternAttack.h" />
+    <ClInclude Include="LanternAttackLight.h" />
     <ClInclude Include="LanternLight.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="LittleEnemy.h" />
@@ -299,6 +304,7 @@
     <ClInclude Include="PlayerLight.h" />
     <ClInclude Include="Poison.h" />
     <ClInclude Include="Purification.h" />
+    <ClInclude Include="RedFlame.h" />
     <ClInclude Include="RingBell.h" />
     <ClInclude Include="Shimenawa.h" />
     <ClInclude Include="SpriteCollection.h" />

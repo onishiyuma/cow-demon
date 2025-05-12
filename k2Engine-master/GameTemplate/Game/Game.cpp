@@ -10,7 +10,9 @@
 #include "CrossHair.h"
 #include "Stone.h"
 #include "Lantern.h"
+#include "LanternLight.h"
 #include "LanternAttack.h"
+#include "LanternAttackLight.h"
 #include "MiniMap.h"
 #include "UIStone.h"
 #include "UItukuyomi.h"
@@ -32,11 +34,13 @@ bool Game::Start()
 
 	//制限時間の設定
 	//m_timeLimit =120.0f;
-
 	//空の作成
-	/*SkyCube* skyCube = NewGO<SkyCube>(0);
-	skyCube->SetType(enSkyCubeType_NightToon);
-	skyCube->SetScale(1000.0f);*/
+	SkyCube* skyCube = NewGO<SkyCube>(0);
+	skyCube->SetType(enSkyCubeType_NightToon_2);
+	skyCube->SetScale(1000.0f);
+	skyCube->SetLuminance(0.0005f);//空の光の強さ
+
+	g_renderingEngine->SetAmbientByIBLTexture(skyCube->GetTextureFilePath(), 0.0004f);//空の光から影響する環境光の強さ
 
 	//オブジェクトの作成。
 	CreateObject();
@@ -100,10 +104,21 @@ Game::~Game()
 	DeleteGO(m_lantern3);
 	DeleteGO(m_lantern4);
 
+	//灯籠用ライト
+	DeleteGO(m_lanternLight1);
+	DeleteGO(m_lanternLight2);
+	DeleteGO(m_lanternLight3);
+	DeleteGO(m_lanternLight4);
+
 	//攻撃用灯籠。
 	DeleteGO(m_lanternAttack1);
 	DeleteGO(m_lanternAttack2);
 	DeleteGO(m_lanternAttack3);
+
+	//攻撃灯籠用ライト
+	DeleteGO(m_lanternAttackLight1);
+	DeleteGO(m_lanternAttackLight2);
+	DeleteGO(m_lanternAttackLight3);
 
 	//UI関連。
 	DeleteGO(m_littleEnemy);
@@ -141,8 +156,21 @@ void Game::Update()
 	
 	GameManager();
 
+	//灯籠用ライトのステート
+	LanternLightState();
+
+	//灯籠用ライトの作成
+	CreateLanternLight();
+
+	//攻撃灯籠用ライトのステート
+	LanternAttackLightState();
+
+	//攻撃灯籠用ライトの作成
+	CreateLanternAttackLight();
+
 	//プレイヤーが四つ灯籠に火を灯したら
 	if (m_player->m_enemyIsCanAttack != false) {
+		//エネミーの作成
 		CreateEnemy();
 	}
 
@@ -281,6 +309,100 @@ void Game::CreateLantern()
 	//m_lantern4 = FindGO<Lantern>("lantern4");
 }
 
+//灯籠用ライトのステート
+void Game::LanternLightState()
+{
+	//プレイヤーと灯籠の距離をそれぞれ計算する
+	Vector3 m_lanternDiff1 = m_player->m_position - m_lantern1->m_position;//1つ目
+	Vector3 m_lanternDiff2 = m_player->m_position - m_lantern2->m_position;//2つ目
+	Vector3 m_lanternDiff3 = m_player->m_position - m_lantern3->m_position;//3つ目
+	Vector3 m_lanternDiff4 = m_player->m_position - m_lantern4->m_position;//4つ目
+
+	m_lanternLightState = 0;//灯籠用ライトステートを常に初期化
+
+	//1つ目の灯籠に火が灯ったら
+	if (m_lantern1->m_lightFlag == true) {
+		//かつ、1つ目の灯籠と距離が近かったら
+		if (m_lanternDiff1.Length() <= 100.0f) {
+			m_lanternLightState = 1;
+		}
+	}
+	//2つ目の灯籠に火が灯ったら
+	if (m_lantern2->m_lightFlag == true) {
+		//かつ、2つ目の灯籠と距離が近かったら
+		if (m_lanternDiff2.Length() <= 100.0f) {
+			m_lanternLightState = 2;
+		}
+	}
+	//3つ目の灯籠に火が灯ったら
+	if (m_lantern3->m_lightFlag == true) {
+		//かつ、3つ目の灯籠と距離が近かったら
+		if (m_lanternDiff3.Length() <= 100.0f) {
+			m_lanternLightState = 3;
+		}
+	}
+	//4つ目の灯籠に火が灯ったら
+	if (m_lantern4->m_lightFlag == true) {
+		//かつ、4つ目の灯籠と距離が近かったら
+		if (m_lanternDiff4.Length() <= 100.0f) {
+			m_lanternLightState = 4;
+		}
+	}
+	
+}
+
+//灯籠用ライトの作成
+void Game::CreateLanternLight()
+{
+	switch (m_lanternLightState)
+	{
+		//1つ目の灯籠に火が灯ったら
+	case 1:
+			//1つ目の灯籠用ライトが灯っていなかったら
+			if (m_lanternLightFlag1 == false) {
+				//1つ目の灯籠用ライトを作成する
+				m_lanternLight1 = NewGO<LanternLight>(0, "lanternLight1");
+				m_lanternLight1->m_position = { 500.0f,80.0f,500.0f };
+				m_lanternLight1->m_firstPosition = m_lanternLight1->m_position;
+				m_lanternLightFlag1 = true;//灯っている判定にする
+			}
+		break;
+		//2つ目の灯籠に火が灯ったら
+	case 2:
+			//2つ目の灯籠用ライトが灯っていなかったら
+			if (m_lanternLightFlag2 == false) {
+				//2つ目の灯籠用ライトを作成する
+				m_lanternLight2 = NewGO<LanternLight>(0, "lanternLight2");
+				m_lanternLight2->m_position = { 500.0f,80.0f,-500.0f };
+				m_lanternLight2->m_firstPosition = m_lanternLight2->m_position;
+				m_lanternLightFlag2 = true;//灯っている判定にする
+			}
+		break;
+		//3つ目の灯籠に火が灯ったら
+	case 3:	
+			//3つ目の灯籠用ライトが灯っていなかったら
+			if (m_lanternLightFlag3 == false) {
+				//3つ目の灯籠用ライトを作成する
+				m_lanternLight3 = NewGO<LanternLight>(0, "lanternLight3");
+				m_lanternLight3->m_position = { -500.0f,80.0f,500.0f };
+				m_lanternLight3->m_firstPosition = m_lanternLight3->m_position;
+				m_lanternLightFlag3 = true;//灯っている判定にする
+			}
+		break;
+		//4つ目の灯籠に火が灯ったら
+	case 4:
+			//4つ目の灯籠用ライトが灯っていなかったら
+			if (m_lanternLightFlag4 == false) {
+				//4つ目の灯籠用ライトを作成する
+				m_lanternLight4 = NewGO<LanternLight>(0, "lanternLight4");
+				m_lanternLight4->m_position = { -500.0f,80.0f,-500.0f };
+				m_lanternLight4->m_firstPosition = m_lanternLight4->m_position;
+				m_lanternLightFlag4 = true;//灯っている判定にする
+			}
+		break;
+	}
+}
+
 //攻撃灯籠の作成用関数
 void Game::CreateAttackLantern()
 {
@@ -299,6 +421,80 @@ void Game::CreateAttackLantern()
 	m_lanternAttack3->m_position = { 100.0f,-50.0f,3000.0f };
 	m_lanternAttack3->m_firstPosition = m_lanternAttack3->m_position;
 	//m_lantern3= FindGO<Lantern>("lantern3");
+}
+
+//攻撃灯籠用ライトのステート
+void Game::LanternAttackLightState()
+{
+	//プレイヤーと攻撃灯籠の距離をそれぞれ計算する
+	Vector3 LanternAttackDiff1 = m_player->m_position - m_lanternAttack1->m_position;//1つ目
+	Vector3 LanternAttackDiff2 = m_player->m_position - m_lanternAttack2->m_position;//2つ目
+	Vector3 LanternAttackDiff3 = m_player->m_position - m_lanternAttack3->m_position;//3つ目
+
+	m_lanternAttackLightState = 0;//攻撃灯籠用ライトステートを常に初期化
+
+	//1つ目の攻撃灯籠に火が灯ったら
+	if (m_lanternAttack1->m_lightFlag == true) {
+		//かつ、1つ目の攻撃灯籠と距離が近かったら
+		if (LanternAttackDiff1.Length() <= 100.0f) {
+			m_lanternAttackLightState = 1;
+		}
+	}
+	//2つ目の攻撃灯籠に火が灯ったら
+	if (m_lanternAttack2->m_lightFlag == true) {
+		//かつ、2つ目の攻撃灯籠と距離が近かったら
+		if (LanternAttackDiff2.Length() <= 100.0f) {
+			m_lanternAttackLightState = 2;
+		}
+	}
+	//3つ目の攻撃灯籠に火が灯ったら
+	if (m_lanternAttack3->m_lightFlag == true) {
+		//かつ、3つ目の攻撃灯籠と距離が近かったら
+		if (LanternAttackDiff3.Length() <= 100.0f) {
+			m_lanternAttackLightState = 3;
+		}
+	}
+}
+
+//攻撃灯籠用ライトを作成
+void Game::CreateLanternAttackLight()
+{
+	switch (m_lanternAttackLightState)
+	{
+		//1つ目の攻撃灯籠に火が灯ったら
+	case 1:
+		//1つ目の攻撃灯籠用ライトが灯っていなかったら
+		if (m_lanternAttackLightFlag1 == false) {
+			//1つ目の攻撃灯籠用ライトを作成する
+			m_lanternAttackLight1 = NewGO<LanternAttackLight>(0, "lanternAttackLight1");
+			m_lanternAttackLight1->m_position = { 700.0f,80.0f,4000.0f };
+			m_lanternAttackLight1->m_firstPosition = m_lanternAttackLight1->m_position;
+			m_lanternAttackLightFlag1 = true;//灯っている判定にする
+		}
+		break;
+		//2つ目の攻撃灯籠に火が灯ったら
+	case 2:
+		//2つ目の攻撃灯籠用ライトが灯っていなかったら
+		if (m_lanternAttackLightFlag2 == false) {
+			//2つ目の攻撃灯籠用ライトを作成する
+			m_lanternAttackLight2 = NewGO<LanternAttackLight>(0, "lanternAttackLight2");
+			m_lanternAttackLight2->m_position = { -700.0f,80.0f,4000.0f };
+			m_lanternAttackLight2->m_firstPosition = m_lanternAttackLight2->m_position;
+			m_lanternAttackLightFlag2 = true;//灯っている判定にする
+		}
+		break;
+		//3つ目の攻撃灯籠に火が灯ったら
+	case 3:
+		//3つ目の攻撃灯籠用ライトが灯っていなかったら
+		if (m_lanternAttackLightFlag3 == false) {
+			//3つ目の攻撃灯籠用ライトを作成する
+			m_lanternAttackLight3 = NewGO<LanternAttackLight>(0, "lanternAttackLight3");
+			m_lanternAttackLight3->m_position = { 100.0f,80.0f,3000.0f };
+			m_lanternAttackLight3->m_firstPosition = m_lanternAttackLight3->m_position;
+			m_lanternAttackLightFlag3 = true;//灯っている判定にする
+		}
+		break;
+	}
 }
 
 //敵を生成用関数。
