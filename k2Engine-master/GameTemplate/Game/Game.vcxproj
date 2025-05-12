@@ -235,6 +235,7 @@
     <ClCompile Include="DebugScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameClear.cpp" />
@@ -289,6 +290,7 @@
     <ClInclude Include="DebugScene.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBase.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameClear.h" />

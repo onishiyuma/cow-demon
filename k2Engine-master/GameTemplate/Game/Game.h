@@ -19,12 +19,14 @@ class RingBell;
 class GameClear;
 class GameOver;
 class LittleEnemy;
+class AnnoyingEnemy;
 class UItukuyomi;
 class UIskill;
 class UISimenawa;
 class UIcurseBar;
 class UIheal;
 class MiniMap;
+class Fade;
 
 class Game : public IGameObject
 {
@@ -45,6 +47,8 @@ public:
 	void CreateAttackLantern();
 	//UI繧帝未謨ｰ蛹悶・
 	void CreateUI();
+	//UIのタイマー。
+	void UITimer();
 	//繧ｨ繝阪Α繝ｼ縺ｮ逕滓・縲・
 	void CreateEnemy();
 	//繧ｲ繝ｼ繝繧ｪ繝ｼ繝舌・縲√ご繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ繧貞他縺ｶ髢｢謨ｰ縲・
@@ -57,6 +61,8 @@ public:
 	void LanternAttackLightState();
 	//攻撃灯籠用ライトの作成
 	void CreateLanternAttackLight();
+	//本殿の方を見る。
+	void LookingMain();
 
 	void Render(RenderContext& rc);
 
@@ -73,6 +79,7 @@ public:
 	CrossHair*m_crossHair;//クロスヘアー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Shimenawa* m_shimenawa;//しめ縄。
+	Fade* m_fade;//フェード処理。
 
 	Stone* m_stone1; //轣ｫ謇鍋浹
 	Stone* m_stone2; //轣ｫ謇鍋浹
@@ -121,19 +128,30 @@ public:
 	{
 		return m_enemyList;
 	}
+
 	const std::vector<LittleEnemy*>& GetLittleEnemies() const
 	{
 		return m_littleEnemyList;
 	}
+	
+	const std::vector<BossEnemy*>& GetBossEnemy() const
+	{
+		return m_bossEnemyList;
+	}
+
+	const std::vector<AnnoyingEnemy*>& GetAnnoyingEnemy() const
+	{
+		return m_annoyingEnemyList;
+	}
 
 	std::vector<Enemy*>   m_enemyList;
 	std::vector<LittleEnemy*> m_littleEnemyList;
-	std::vector<BossEnemy*>m_BossEnemyList;
+	std::vector<BossEnemy*> m_bossEnemyList;
+	std::vector<AnnoyingEnemy*> m_annoyingEnemyList;
 
-	//敵の最大数
-	int m_maxCount = 0;
-	int m_totalCount = 0;
-  	float m_timer = 120.0f;
+	int m_maxCount = 0;	//敵の最大数。
+	int m_totalCount = 0;//敵の合計。
+  float m_timer = 120.0f;//タイマー。
 	bool m_lanternAction = false; 
 	float m_timeLimit=0;//蛻ｶ髯先凾髢・
 	int m_lanternLightState = 0;
@@ -149,4 +167,5 @@ public:
 	bool m_lanternAttackLightFlag3 = false;
 
 };
+
 

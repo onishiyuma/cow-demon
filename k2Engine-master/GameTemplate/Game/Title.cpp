@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Game.h"
+#include "Fade.h"
 #include "DebugScene.h"
+
 
 bool Title::Start()
 {
@@ -33,7 +35,7 @@ void Title::Update()
 	//タイトルからインゲームへ移行。
 	if (m_timer>0.1f&&g_pad[0]->IsPressAnyKey())
 	{
-		NewGO<Game>(0, "game");
+		NewGO<Fade>(0, "fade");
 		m_spriteRender.Update();
 		//自身を削除する。
 		DeleteGO(this);
