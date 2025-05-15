@@ -24,7 +24,7 @@ public:
 
 	//メンバ関数。
 	AnnoyingEnemy();
-
+	~AnnoyingEnemy();
 
 	bool Start()override;
 	void Update()override;

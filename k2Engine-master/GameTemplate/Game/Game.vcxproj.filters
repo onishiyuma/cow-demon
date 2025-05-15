@@ -44,7 +44,11 @@
     <ClCompile Include="Poison.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="AnnoyingEnemy.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="LanternLight.cpp" />
+    <ClCompile Include="RedFlame.cpp" />
+    <ClCompile Include="BlueFlame.cpp" />
+    <ClCompile Include="LanternAttackLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -91,7 +95,11 @@
     <ClInclude Include="Poison.h" />
     <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="AnnoyingEnemy.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="LanternLight.h" />
+    <ClInclude Include="RedFlame.h" />
+    <ClInclude Include="BlueFlame.h" />
+    <ClInclude Include="LanternAttackLight.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

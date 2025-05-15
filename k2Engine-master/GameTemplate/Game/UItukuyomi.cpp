@@ -84,6 +84,7 @@ void UItukuyomi::Update()
 	wchar_t timerText[16];
 	swprintf(timerText, 16, L"%ds", m_displayTime);
 	m_fontRender.SetText(timerText);
+
 	m_runaSprite.Update();
 	m_runaSprite2.Update();
 }

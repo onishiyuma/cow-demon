@@ -29,9 +29,9 @@ bool PlayerLight::Start()
 	//ライトの色を設定。
 	m_spotLight.SetColor(1.0f, 1.0f, 1.0f);
 	//ライトの方向を設定。
-	m_spotLight.SetDirection(0.0f, 5.0f, 1.0f);
+	m_spotLight.SetDirection(m_direction);
 	//ライトの座標を設定。
-	m_spotLight.SetPosition(0.0f, 10.0f, 0.0f);
+	m_spotLight.SetPosition(m_player->m_position);
 
 	return true;
 }

@@ -332,6 +332,7 @@ void Enemy::Collision()
 		//コリジョンとキャラが衝突したら。
 		if (collision->IsHit(m_charaCon))
 		{
+
 			NewGO<GameOver>(0);
 			DeleteGO(m_game);
 			break;

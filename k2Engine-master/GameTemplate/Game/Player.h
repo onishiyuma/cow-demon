@@ -72,7 +72,7 @@ public:
 	CharacterController m_characterController;//繧ｭ繝｣繝ｩ繧ｳ繝ｳ縲・
 	FontRender m_fontRender;//繝輔か繝ｳ繝医Ξ繝ｳ繝繝ｼ縲・
 	PlayerLight* m_playerLight; //繝励Ξ繧､繝､繝ｼ逕ｨ諛蝉ｸｭ髮ｻ轣ｯ
-	Vector3 m_position = { 0.0f,100.0f,-50.0f };//蠎ｧ讓吶・
+	Vector3 m_position = Vector3::Zero;//蠎ｧ讓吶・
 	Vector3 m_forward = Vector3::AxisZ;//蜑肴婿蜷・
 	Vector3 m_moveSpeed;//遘ｻ蜍暮溷ｺｦ縲・
 	const float m_collectTime = 15.0f;//縺励ａ邵・ｒ險ｭ鄂ｮ縺ｧ縺阪ｋ譎る俣縲・
