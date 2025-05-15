@@ -8,6 +8,7 @@ class Collision;
 class EnemyBase;
 class Player;
 class Game;
+class GameCamera;
 
 class LittleEnemy :public EnemyBase
 {
@@ -85,12 +86,18 @@ public:
 	};
 
 	//メンバ変数。
+	GameCamera* m_gameCamera;
 	AnimationClip m_animationClips[enAnimationClip_Num];
 	EnEnemyState m_enemyState = enEnemyState_Idle;
+	const Vector3 m_stopMove = Vector3::Zero;//動きを完全停止。
 	float m_leaveTimer = 0.0f;
 	float m_idleTimer = 0.0f;
 	float m_ChaseTimer = 0.0f;
 	float m_poisonAttackCoolDown = 0.0f;
+	float m_stopTimer = 0.0f;//拘束時間。
+	float m_hondenTimer = 0.0f;
+	bool m_isStopped = false;//動きを止めるフラグ。
+	bool m_gameoverFlag = false;//ゲームオーバーを呼ぶための変数。
 	bool m_isUnderAttack = false;
 };
 

@@ -7,6 +7,8 @@ class Lantern;
 class UIheal;
 class RingBell;
 class GameCamera;
+class BellSpriteRender;
+class NoHeal;
 
 class Player :public IGameObject
 {
@@ -63,6 +65,8 @@ public:
 	}
 
 	//繝｡繝ｳ繝仙､画焚
+	NoHeal* m_noHeal;//
+	BellSpriteRender* m_bellSpriteRender;//
 	RingBell* m_ringBell;//驤ｴ縲・
 	UIheal* m_uiHeal;//蝗槫ｾｩ縺ｧ縺阪ｋ繧ｲ繝ｼ繧ｸ縲・
 	Lantern* m_lantern;//繝ｩ繝ｳ繧ｿ繝ｳ縲・

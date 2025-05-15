@@ -229,6 +229,7 @@
     <ClCompile Include="Amulet.cpp" />
     <ClCompile Include="AnnoyingEnemy.cpp" />
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="BellSpriteRender.cpp" />
     <ClCompile Include="BlueFlame.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="CrossHair.cpp" />
@@ -248,6 +249,7 @@
     <ClCompile Include="LittleEnemy.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MiniMap.cpp" />
+    <ClCompile Include="NoHeal.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerLight.cpp" />
     <ClCompile Include="Poison.cpp" />
@@ -284,6 +286,7 @@
     <ClInclude Include="AnnoyingEnemy.h" />
     <ClInclude Include="Assets\shader\util\ColorSpace.h" />
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="BellSpriteRender.h" />
     <ClInclude Include="BlueFlame.h" />
     <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="CrossHair.h" />
@@ -302,6 +305,7 @@
     <ClInclude Include="Line.h" />
     <ClInclude Include="LittleEnemy.h" />
     <ClInclude Include="MiniMap.h" />
+    <ClInclude Include="NoHeal.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerLight.h" />
     <ClInclude Include="Poison.h" />

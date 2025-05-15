@@ -49,6 +49,8 @@
     <ClCompile Include="RedFlame.cpp" />
     <ClCompile Include="BlueFlame.cpp" />
     <ClCompile Include="LanternAttackLight.cpp" />
+    <ClCompile Include="BellSpriteRender.cpp" />
+    <ClCompile Include="NoHeal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -100,6 +102,8 @@
     <ClInclude Include="RedFlame.h" />
     <ClInclude Include="BlueFlame.h" />
     <ClInclude Include="LanternAttackLight.h" />
+    <ClInclude Include="BellSpriteRender.h" />
+    <ClInclude Include="NoHeal.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

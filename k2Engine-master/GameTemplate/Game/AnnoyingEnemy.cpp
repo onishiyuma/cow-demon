@@ -5,11 +5,18 @@
 #include "Poison.h"
 #include "EnemyBase.h"
 #include "Game.h"
+#include "GameCamera.h"
 
 
 //#include "collision/CollisionObject.h"
 #include<time.h>
 #include<stdlib.h>
+
+namespace
+{
+	//スキルのチャージの増加量。
+	int CHARGE_INCREASE_AMOUNT = 2;
+}
 
 AnnoyingEnemy::AnnoyingEnemy()
 {
@@ -68,6 +75,7 @@ bool AnnoyingEnemy::Start()
 	EffectEngine::GetInstance()->ResistEffect(1, u"Assets/Effect/Poison.efk");
 
 	m_player = FindGO<Player>("player");
+	m_gameCamera = FindGO<GameCamera>("gamecamera");
 
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
@@ -141,6 +149,10 @@ void AnnoyingEnemy::Collision()
 		return;
 	}
 
+	//-----------------------------------------
+	//プレイヤーの攻撃判定処理。
+	//-----------------------------------------
+
 	{
 		//プレイヤー攻撃用のコリジョンを取得する
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("purification");
@@ -150,18 +162,48 @@ void AnnoyingEnemy::Collision()
 			//コリジョンとキャラコンが衝突したら
 			if (collision->IsHit(m_charaCon))
 			{
-				//HPを減らす
-				m_enemyHP -= 5;
-				//HPが0になったら
-				m_enemyState = enEnemyState_Down;
+				//会心の設定。
+				int ram = rand() % 100;
+				if (ram < m_player->m_criticalRate)
+				{
+					m_enemyHP -= m_player->m_criticalATK;
+
+					if (m_enemyHP <= 0)
+					{
+						//HPが0になったら
+						m_enemyState = enEnemyState_Down;
+					}
+					else {
+						//被ダメージステートに遷移する
+						m_enemyState = enEnemyState_Damage;
+					}
+
+					//スキルを使うため
+					m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
+				}
+				//非会心。
+				else
+				{
+					m_enemyHP -= m_player->m_normalATK;
+
+					if (m_enemyHP <= 0)
+					{
+						//HPが0になったら
+						m_enemyState = enEnemyState_Down;
+					}
+					else {
+						//被ダメージステートに遷移する
+						m_enemyState = enEnemyState_Damage;
+					}
+					return;
+				}
 			}
-			else {
-				//被ダメージステートに遷移する
-				m_enemyState = enEnemyState_Damage;
-			}
-			return;
 		}
 	}
+
+	//-----------------------------------------
+	//プレイヤーのスキル処理。
+	//-----------------------------------------	
 
 	{
 		//プレイヤーのスキル用のコリジョンを取得する
@@ -172,7 +214,11 @@ void AnnoyingEnemy::Collision()
 			//コリジョンとキャラコンが衝突する
 			if (collision->IsHit(m_charaCon))
 			{
-				m_enemyHP -= 10;
+				//スキルのダメージ。
+				m_player->m_skillATK = m_player->m_playerATK * m_player->m_skillMagnification;
+				//敵のHPを減らす。
+				m_enemyHP -= m_player->m_skillATK;
+
 				//HPが0になったら
 				if (m_enemyHP < 0)
 				{
@@ -189,21 +235,98 @@ void AnnoyingEnemy::Collision()
 		}
 	}
 
+	//-----------------------------------------
+	//月読の加護の判定処理。
+	//-----------------------------------------
+
 	{
-		//しめ縄のスキル用コリジョンを取得する。
-		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Shimenawa");
-		//for文で配列を回す
+		//プレイヤーの月読の加護用のコリジョンを取得する。
+		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Tukuyomi");
+		//for文で配列を回す。
 		for (auto collision : collisions)
 		{
-			//コリジョンとキャラコンが衝突する
+			//コリジョンとキャラが衝突する。
 			if (collision->IsHit(m_charaCon))
 			{
+				//月読の加護のダメージ。
+				m_player->m_tukuyomiATK = m_player->m_playerATK * m_player->m_TukuyomiMagnification;
+				//敵のHPを減らす。
+				m_enemyHP -= m_player->m_tukuyomiATK;
 
-				m_enemyState = enEnemyState_Idle;
+				//HPが0になったら
+				if (m_enemyHP < 0)
+				{
+					//ダウンステートに遷移する。
+					m_enemyState = enEnemyState_Down;
+				}
+
+				else
+				{
+					//被ダメージステートに遷移する。
+					m_enemyState = enEnemyState_Damage;
+				}
 				return;
 			}
 		}
 	}
+
+	//-----------------------------------------
+	//しめ縄の判定処理。
+	//-----------------------------------------
+
+	{
+		//プレイヤーのしめ縄用のコリジョンを取得する。
+		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Shimenawa");
+		//for文で配列を回す。
+		for (auto collision : collisions)
+		{
+			//コリジョンとキャラが衝突する。
+			if (collision->IsHit(m_charaCon))
+			{
+				//停止させる準備。
+				if (!m_isStopped)
+				{
+					m_isStopped = true;
+					//動きを止める。
+					m_moveSpeed = m_stopMove;
+					//アニメーションも止める。
+					m_enemyState = enEnemyState_Idle;
+					//時間をリセット。
+					m_stopTimer = 5.0f;
+				}
+			}
+
+			//停止中の処理。
+			else if (m_isStopped)
+			{
+				m_stopTimer -= g_gameTime->GetFrameDeltaTime();
+
+				if (m_stopTimer <= 0.0f)
+				{
+					m_isStopped = false;
+				}
+			}
+		}
+	}
+
+	//-----------------------------------------
+	//本殿に接触したらゲームオーバーする処理。
+	//-----------------------------------------
+
+	//本殿に触れたらゲームオーバー。
+	const auto& collisions = g_collisionObjectManager->FindMatchForwardNameCollisionObjects("gameover_collision");
+	//コリジョンの配列をfor文で回す。
+	for (auto collision : collisions)
+	{
+		//コリジョンとキャラが衝突したら。
+		if (collision->IsHit(m_charaCon))
+		{
+			m_gameCamera->m_isGameOver = true;
+			DeleteGO(this);
+			break;
+		}
+	}
+
 }
 
 const bool AnnoyingEnemy::SearchPlayer()const

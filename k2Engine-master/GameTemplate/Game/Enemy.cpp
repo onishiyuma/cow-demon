@@ -7,9 +7,10 @@
 #include "RingBell.h"
 #include "BackGround.h"
 #include "Game.h"
-#include"collision/CollisionObject.h"
-#include<time.h>
-#include<stdlib.h>
+#include "collision/CollisionObject.h"
+#include "GameCamera.h"
+#include <time.h>
+#include <stdlib.h>
 
 //定数を設定する場所
 namespace
@@ -57,6 +58,7 @@ bool Enemy::Start()
 	m_player = FindGO<Player>("player");
 	m_ringBell = FindGO<RingBell>("ringbell");
 	m_game = FindGO<Game>("game");
+	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	/*m_tou = FindGO<Tou>("tou");*/
 	//乱数を初期化する
 	srand((unsigned)time(NULL));
@@ -152,10 +154,8 @@ void Enemy::IsHonden()
 
 void Enemy::Collision()
 {
-	/*被ダメージ、あるいはダウンステートの時は
-	当たり判定処理はしない*/
-	if (m_enemyState == enEnemyState_Damage ||
-		m_enemyState == enEnemyState_Down)
+	//被ダメージ、あるいはダウンステートの時は当たり判定処理はしない
+	if (m_enemyState == enEnemyState_Damage ||m_enemyState == enEnemyState_Down)
 	{
 		return;
 	}
@@ -167,10 +167,10 @@ void Enemy::Collision()
 	{
 		//プレイヤー攻撃用のコリジョンを取得する
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("purification");
-		//コリジョンの配列をfor文で回す
+		//コリジョンの配列をfor文で回す。
 		for (auto collision : collisions)
 		{
-			//コリジョンとキャラコンが衝突したら
+			//コリジョンとキャラコンが衝突したら。
 			if (collision->IsHit(m_charaCon))
 			{
 				//会心の設定。
@@ -181,7 +181,7 @@ void Enemy::Collision()
 
 					if (m_hp <= 0)
 					{
-						//HPが0になったら
+						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
 					}
 					else {
@@ -189,7 +189,7 @@ void Enemy::Collision()
 						m_enemyState = enEnemyState_Damage;
 					}
 
-					//スキルを使うため
+					//スキルを使うための。
 					m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
 				}
 				//非会心。
@@ -199,11 +199,11 @@ void Enemy::Collision()
 
 					if (m_hp <= 0)
 					{
-						//HPが0になったら
+						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
 					}
 					else {
-						//被ダメージステートに遷移する
+						//被ダメージステートに遷移する。
 						m_enemyState = enEnemyState_Damage;
 					}
 					return;
@@ -217,12 +217,12 @@ void Enemy::Collision()
 	//-----------------------------------------	
 
 	{
-		//プレイヤーのスキル用のコリジョンを取得する
+		//プレイヤーのスキル用のコリジョンを取得する。
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("amulet");
 		//for文で配列を回す
 		for (auto collision : collisions)
 		{
-			//コリジョンとキャラコンが衝突する
+			//コリジョンとキャラコンが衝突する。
 			if (collision->IsHit(m_charaCon))
 			{
 				//スキルのダメージ。
@@ -230,15 +230,15 @@ void Enemy::Collision()
 				//敵のHPを減らす。
 				m_hp -= m_player->m_skillATK;
 
-				//HPが0になったら
+				//HPが0になったら。
 				if (m_hp < 0)
 				{
-					//ダウンステートに遷移する
+					//ダウンステートに遷移する。
 					m_enemyState = enEnemyState_Down;
 				}
 
 				else {
-					//被ダメージステートに遷移する
+					//被ダメージステートに遷移する。
 					m_enemyState = enEnemyState_Damage;
 				}
 				return;
@@ -264,7 +264,7 @@ void Enemy::Collision()
 				//敵のHPを減らす。
 				m_hp -= m_player->m_tukuyomiATK;
 
-				//HPが0になったら
+				//HPが0になったら。
 				if (m_hp < 0)
 				{
 					//ダウンステートに遷移する。
@@ -306,7 +306,6 @@ void Enemy::Collision()
 					m_stopTimer = 5.0f;
 				}
 			}
-
 			//停止中の処理。
 			else if (m_isStopped)
 			{
@@ -332,13 +331,11 @@ void Enemy::Collision()
 		//コリジョンとキャラが衝突したら。
 		if (collision->IsHit(m_charaCon))
 		{
-
-			NewGO<GameOver>(0);
-			DeleteGO(m_game);
+			m_gameCamera->m_isGameOver = true;
+			DeleteGO(this);
 			break;
 		}
 	}
-
 }
 
 void Enemy::Attack()
