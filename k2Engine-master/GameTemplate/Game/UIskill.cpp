@@ -7,13 +7,18 @@ namespace
 {
 	//スキル
 	Vector3 SKILL_FREME_POSITION = Vector3(600.0f, -425.0f, 0.0f);
-
 	//スキルゲージ
 	Vector3 SKILL_GAUGE_POSITION = Vector3(600.0f, -485.0f, 0.0f);
+	//スキルフォント
+	Vector3 SKILL_FONT_POSITION = Vector3(603.0f, -450.0f, 0.0f);
 	//緑
 	Vector4 GREEN = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
 	//薄い緑
 	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
+	//白
+	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	//透明
+	Vector4 TOUMEI = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
 }
 
 UIskill::UIskill()
@@ -37,6 +42,10 @@ bool UIskill::Start()
 	//スキルスプライト
 	m_skillSprite.Init("Assets/UI/skilmax.DDS", 130, 130);
 	m_skillSprite.SetPosition(SKILL_FREME_POSITION);
+
+	//スキルフォント
+	m_fontRender.SetPosition(SKILL_FONT_POSITION);
+	m_fontRender.SetScale(0.8f);
 	return true;
 }
 
@@ -45,22 +54,27 @@ void UIskill::Update()
 	m_skillGage = m_player->m_skillCharge;
 	m_skillMax = m_player->m_skillMax;
 
-	float wari = (float)m_skillGage / m_skillMax;
+	float wari = (float)m_skillGage /(float) m_skillMax;
 
 	Vector3 scale = { 1.0f,8.7,1.0f };
-
+	scale.y*=wari;
 
 	if (m_skillGage>=m_skillMax) 
 	{
 		m_skillGageSprite.SetScale(scale);
 		m_skillGageSprite.SetMulColor(GREEN);
-
+		m_fontRender.SetColor(WHITE);
 	}
 	else 
 	{
 		m_skillGageSprite.SetMulColor(LIGHT_GREEN);
 	}
+	wchar_t wcsbuf[256];
+	int m_skillFont =m_skillGage;
+	swprintf_s(wcsbuf, 256, L"%01d％",m_skillFont);
 
+	m_fontRender.SetText(wcsbuf);
+	m_fontRender.SetColor(WHITE);
 	m_skillSprite.Update();
 	m_skillGageSprite.Update();
 }
@@ -70,8 +84,14 @@ void UIskill::Render(RenderContext& rc)
 	if (m_skillGage>0)
 	{
 		m_skillGageSprite.Draw(rc);
+        
+	}
+
+	if (m_player->m_enemyIsCanAttack == true)
+	{
+      m_fontRender.Draw(rc);
 	}
 
 	m_skillSprite.Draw(rc);
-
+	
 }
