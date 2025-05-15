@@ -11,6 +11,8 @@
 #include "UIheal.h"
 #include "RingBell.h"
 #include "GameCamera.h"
+#include "BellSpriteRender.h"
+#include "NoHeal.h"
 #include<time.h>
 
 bool Player::Start()
@@ -43,6 +45,7 @@ bool Player::Start()
 	m_uiHeal = FindGO<UIheal>("uiheal");
 	m_ringBell = FindGO<RingBell>("ringbell");
 
+
 	return true;
 }
 
@@ -58,7 +61,14 @@ Player::~Player()
 }
 
 void Player::Update()
-{
+{	
+	//呪いの抵抗が0を下回っていたら。
+	if (m_playerHP<=0)
+	{
+		NewGO<GameOver>(0, "gameover");
+		DeleteGO(this);
+	}
+
 	//移動処理。
 	Move();
 
@@ -69,7 +79,7 @@ void Player::Update()
 	//m_modelRender.Update();
 	/////////////////////コメントアウト解除を忘れずに/////////////////////////////
 	//灯籠に火が灯っていれば攻撃できる。
-	if (m_enemyIsCanAttack==true)
+	if (m_enemyIsCanAttack == true)
 	{
 		//通常攻撃。
 		NormalAttack();
@@ -81,14 +91,7 @@ void Player::Update()
 		SkillTukuyomiBlessing();
 
 		//しめ縄。
-	    ItemShimenawa();
-	}
-	
-	//呪いの抵抗が0を下回っていたら。
-	if (m_playerHP<=0)
-	{
-		NewGO<GameOver>(0, "gameover");
-		DeleteGO(this);
+		ItemShimenawa();
 	}
 	else
 	{
@@ -319,59 +322,81 @@ void Player::Collision()
 {
 	// 鈴のコリジョンを取得する。
 	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("ringbell");
+	bool isBellHit = false;
 
 	for (auto collision : collisions)
 	{
-		if (g_pad[0]->IsTrigger(enButtonA))
+		if (collision->IsHit(m_characterController))
 		{
-			Distance();
+			isBellHit = true;
 
-			if (m_distSq <= contactThresholdSq)
+			//コリジョン内に入ったら画像を表示する。
+			if (m_bellSpriteRender == nullptr)
 			{
-				// ヒールUIが有効な場合のみ回転処理
-				if (!m_uiHeal->m_deleteFlag)
+				m_bellSpriteRender = NewGO<BellSpriteRender>(0);
+			}
+			if (g_pad[0]->IsTrigger(enButtonA))
+			{
+				if (m_distSq <= contactThresholdSq)
 				{
-					RotationCamera();
+					Distance();
+					// ヒールUIが有効な場合のみ回転処理。
+					if (!m_uiHeal->m_deleteFlag)
+					{
+						RotationCamera();
+					}
+					else
+					{
+						m_totalRotation = 0.0f;
+					}
+					// 接触中の鈴が見つかったら break。
+					break;
 				}
-				else
-				{
-					m_totalRotation = 0.0f;
-				}
-				// 接触中の鈴が見つかったら break
-				break;
 			}
 		}
-			
 	}
 
-		//累積回転量に加算する。
-		//m_totalRotation += fabsf(delta);
-		// Aボタンを押していない間は回転量と角度をリセット。
-		m_totalRotation = 0.0f;
-		m_prevStickAngle=0.0f;
+	if (!isBellHit)
+	{
+		if (m_bellSpriteRender != nullptr)
+		{
+			DeleteGO(m_bellSpriteRender);
+			m_bellSpriteRender = nullptr;
+		}
+		if (m_noHeal != nullptr)
+		{
+			DeleteGO(m_noHeal);
+			m_noHeal = nullptr;
+		}
+	}
+
+
+	// Aボタンを押していない間は回転量と角度をリセット。
+	m_totalRotation = 0.0f;
+	m_prevStickAngle=0.0f;
 }
 
 void Player::Distance()
 {
 	if (m_ringBell == nullptr) {
-		return; // もしくはログ出力して気づけるように
+		return;
 	}
 
 	//360度回した回復。
 	if (m_totalRotation >= 360.0f)
 	{
-		//HPを回復する
-		HealHP(10);
+		//HPを回復する。
+		HealHP(100);
 		m_totalRotation = 0.0f;
 	}
-	//m_gameCamera->LockCamera(false);
 			
-	// プレイヤーと鈴の位置を取得
+	// プレイヤーと鈴の位置を取得。
 	Vector3 bellPos = m_ringBell->GetPosition();
 	Vector3 playerPos = m_position;
 
-	// 距離を測って接触判定
+	// 距離を測って接触判定。
 	m_distSq = (playerPos - bellPos).LengthSq();
+
 
 }
 
@@ -381,17 +406,17 @@ void Player::RotationCamera()
 	float x = g_pad[0]->GetRStickXF();
 	float y = g_pad[0]->GetRStickYF();
 
-	// 入力が小さいときは無視する（デッドゾーン）
+	// 入力が小さいときは無視する。
 	float stickLengthSq = x * x + y * y;
 	if (stickLengthSq < 0.01f) 
 	{
 		return;
 	}
 
-	// スティックの現在の角度。(ラジアンから度に変換)
+	// スティックの現在の角度。
 	float angle = atan2f(y, x) * (180.0f / 3.14159265f);
 
-	// 角度差分（回転の方向も考慮）
+	// 角度差分。
 	float delta = angle - m_prevStickAngle;
 
 	// -180〜180度の範囲に収める。
@@ -422,6 +447,13 @@ void Player::RotationCamera()
 				m_healCoolDown = 10.0f;
 				HealHP(100);
 				m_uiHeal->m_useHeal--;
+			}
+			else
+			{
+				if (m_noHeal == nullptr)
+				{
+					m_noHeal = NewGO<NoHeal>(0);
+				}
 			}
 		}
 	}

@@ -15,6 +15,10 @@ bool Fade::Start()
     m_spriteLoadGage.Init("Assets/sprite/gauge.dds", 150, 150);
     m_spriteLoadGage.SetPosition(Vector3(850.0f, -430.0f, 0.0f));
 
+    //表示する文字をセットする。
+    m_fontRender.SetText(L"Tips:火打石を集めて灯籠を灯すことによって敵に攻撃できるぞ！");
+    m_fontRender.SetPosition(-500.0f, -300.0f, 0.0f);
+
     m_alpha = 1.0f;
 
 	return true;
@@ -75,6 +79,7 @@ void Fade::LoadingProgress()
     m_spriteMask.SetPosition(Vector3(850.0f, -500.0f + offsetY, 0.0f));
 
 
+
     m_spriteLoadGage.Update();
     m_spriteMask.Update();
 }
@@ -84,6 +89,7 @@ void Fade::Render(RenderContext& rc)
     m_spriteLoad.Draw(rc);
     m_spriteLoadGage.Draw(rc);
     m_spriteMask.Draw(rc);
+    m_fontRender.Draw(rc);
 }
 
 

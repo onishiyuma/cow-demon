@@ -31,13 +31,12 @@ bool Game::Start()
 	//インスタンスアドレスを検索。
 	m_fade = FindGO<Fade>("fade");
 
+
 	//ステージ全体を暗くする。
 	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
 
 	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
-	//制限時間の設定
-	//m_timeLimit =120.0f;
 	//空の作成
 	SkyCube* skyCube = NewGO<SkyCube>(0);
 	skyCube->SetType(enSkyCubeType_NightToon_2);
@@ -58,20 +57,11 @@ bool Game::Start()
 	//攻撃用灯籠の作成。
 	CreateAttackLantern();
 
-	/*if (m_fade->m_loadingProgress >= 2.0f)
-	{
-		//UIの作成。
-		CreateUI();
-		//Enemyの作成。
-		CreateEnemy();
-	}*/
-
 	//UIの作成。
 	CreateUI();
+
 	//Enemyの作成。
-	CreateEnemy();
-	//UIの作成
-	CreateUI();
+	//CreateEnemy();
 
 	return true;
 }

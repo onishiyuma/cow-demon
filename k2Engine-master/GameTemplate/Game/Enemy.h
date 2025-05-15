@@ -6,6 +6,7 @@ class Collision;
 class RingBell;
 class EnemyBase;
 class Game;
+class GameCamera;
 
 class Enemy : public EnemyBase
 {
@@ -102,6 +103,8 @@ public:
 		enAnimationClip_Down,
 		enAnimationClip_Num
 	};
+
+	GameCamera*m_gameCamera;
 	AnimationClip m_animationClips[enAnimationClip_Num];
 	Player* m_player = nullptr;
 	RingBell* m_ringBell = nullptr;

@@ -117,7 +117,6 @@ public:
 	UIcurseBar* m_uiCurseBar;
 	UIheal* m_uiHeal;
 
-
 	SpriteRender m_spriteRender;//繧ｹ繝励Λ繧､繝医Ξ繝ｳ繝繝ｼ
 	FontRender m_timerFontRender;//譎りｨ・
 	Vector3 m_pos;//蠎ｧ讓・

@@ -33,6 +33,7 @@ private:
 	SpriteRender m_spriteLoad;		
 	SpriteRender m_spriteLoadGage;	//ロードゲージ用スプライト。
 	SpriteRender m_spriteMask;		//マスクを動かす。
+	FontRender m_fontRender;		//フォントレンダー。
 
 	float	m_alpha = 1.0f;				//フェード用アルファ値。
 	bool	m_isFadingOut = true;		//最初は暗くする。
