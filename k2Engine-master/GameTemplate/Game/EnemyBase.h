@@ -41,6 +41,11 @@ public:
 
 	float GetHP()const
 	{
+		return m_enemyHP;
+	}
+
+	float GetMaxHP()const
+	{
 		return m_enemyHPMax;
 	}
 
@@ -87,8 +92,8 @@ protected:
 	/*EnEnemyState m_enemyState = enEnemyState_Idle;*/
 	//派生クラスからいじる変数
 
-	float m_enemyHP = 0;
-	float m_enemyHPMax = 0;
+	float m_enemyHP = 100;
+	float m_enemyHPMax = m_enemyHP;
 	float m_enemySpeed = 0;
 	float m_chaseTimer = 0.0f;
 	float m_idleTimer = 0.0f;

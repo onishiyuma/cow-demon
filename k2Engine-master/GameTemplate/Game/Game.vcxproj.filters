@@ -51,6 +51,7 @@
     <ClCompile Include="LanternAttackLight.cpp" />
     <ClCompile Include="BellSpriteRender.cpp" />
     <ClCompile Include="NoHeal.cpp" />
+    <ClCompile Include="EnemyUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -104,6 +105,7 @@
     <ClInclude Include="LanternAttackLight.h" />
     <ClInclude Include="BellSpriteRender.h" />
     <ClInclude Include="NoHeal.h" />
+    <ClInclude Include="EnemyUI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
