@@ -1,4 +1,6 @@
 #pragma once
+
+//ステージの管理を行うクラス。
 class BackGround : public IGameObject
 {
 public:
@@ -7,15 +9,15 @@ public:
 	~BackGround();
 	void Update();
 	bool Start();
+	void Render(RenderContext& rc);
 	//コリジョンの作成。
 	void CreateCollision();
-	void Render(RenderContext& rc);
 
+private:
 	//メンバ変数
-	ModelRender m_modelRender;//モデルレンダー。
-	PhysicsStaticObject m_physicsStaticObject;
-	CollisionObject*m_collisionObject;//コリジョン
-	Vector3 m_position = Vector3{ 0.0f, 95.0f, -1325.0f };//座標。
-	const Vector3 m_collisionScale = Vector3{ 400.0f,50.0f,190.0f };//コリジョンの大きさ。
+	ModelRender				m_modelRender;				//モデルレンダー。
+	PhysicsStaticObject		m_physicsStaticObject;		//静的物理オブジェクト。
+	CollisionObject*		m_collisionObject;			//コリジョンオブジェクト。
+	Vector3					m_position = Vector3{ 0.0f, 95.0f, -1325.0f };			//ステージの配置座標。
+	const Vector3			m_collisionScale = Vector3{ 400.0f,50.0f,190.0f };		//コリジョンの大きさ。
 };
-

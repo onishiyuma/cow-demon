@@ -4,17 +4,20 @@
 
 bool BackGround::Start()
 {
+	//モデルの初期化を行う。
 	m_modelRender.Init("Assets/modelData/stage/stage.tkm");
 
+	//モデルのワールド行列を更新する。
 	m_modelRender.Update();
+	//静的物理オブジェクトの作成。
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	
 	//コリジョン作成用関数を呼び出す。
 	CreateCollision();
+
 	//コリジョンに座標をセット。
 	m_collisionObject->SetPosition(m_position);
 	m_collisionObject->Update();
-	//m_modelRender.;  // ← 存在するなら、必ず呼ぶ！
 
 	return true;
 }
@@ -26,6 +29,7 @@ BackGround::BackGround()
 
 BackGround::~BackGround() 
 {
+	//コリジョンオブジェクトを削除する。
 	DeleteGO(m_collisionObject);
 }
 
@@ -37,6 +41,7 @@ void BackGround::Update()
 //コリジョンを作成。
 void BackGround::CreateCollision()
 {
+	//コリジョンオブジェクトのインスタンスを作成。
 	m_collisionObject = NewGO<CollisionObject>(0);
 
 	//箱状のコリジョンを作成。

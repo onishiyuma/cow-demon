@@ -142,9 +142,8 @@ void AnnoyingEnemy::Chase()
 
 void AnnoyingEnemy::Collision()
 {
-	//被ダメージ、あるいはダウンステートの時は当たり判定処理はしない
-	if (m_enemyState == enEnemyState_Damage ||
-		m_enemyState == enEnemyState_Down)
+	//被ダメージ、あるいはダウンステートの時は当たり判定処理はしない。
+	if (m_enemyState == enEnemyState_Damage ||m_enemyState == enEnemyState_Down)
 	{
 		return;
 	}
@@ -154,12 +153,12 @@ void AnnoyingEnemy::Collision()
 	//-----------------------------------------
 
 	{
-		//プレイヤー攻撃用のコリジョンを取得する
+		//プレイヤー攻撃用のコリジョンを取得する。
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("purification");
-		//コリジョンの配列をfor文で回す
+		//コリジョンの配列をfor文で回す。
 		for (auto collision : collisions)
 		{
-			//コリジョンとキャラコンが衝突したら
+			//コリジョンとキャラコンが衝突したら。
 			if (collision->IsHit(m_charaCon))
 			{
 				//会心の設定。
@@ -170,15 +169,15 @@ void AnnoyingEnemy::Collision()
 
 					if (m_enemyHP <= 0)
 					{
-						//HPが0になったら
+						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
 					}
 					else {
-						//被ダメージステートに遷移する
+						//被ダメージステートに遷移する。
 						m_enemyState = enEnemyState_Damage;
 					}
 
-					//スキルを使うため
+					//スキルを使うため。
 					m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
 				}
 				//非会心。
@@ -188,11 +187,11 @@ void AnnoyingEnemy::Collision()
 
 					if (m_enemyHP <= 0)
 					{
-						//HPが0になったら
+						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
 					}
 					else {
-						//被ダメージステートに遷移する
+						//被ダメージステートに遷移する。
 						m_enemyState = enEnemyState_Damage;
 					}
 					return;
@@ -206,12 +205,12 @@ void AnnoyingEnemy::Collision()
 	//-----------------------------------------	
 
 	{
-		//プレイヤーのスキル用のコリジョンを取得する
+		//プレイヤーのスキル用のコリジョンを取得する。
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("amulet");
 		//for文で配列を回す
 		for (auto collision : collisions)
 		{
-			//コリジョンとキャラコンが衝突する
+			//コリジョンとキャラコンが衝突する。
 			if (collision->IsHit(m_charaCon))
 			{
 				//スキルのダメージ。
@@ -219,15 +218,15 @@ void AnnoyingEnemy::Collision()
 				//敵のHPを減らす。
 				m_enemyHP -= m_player->m_skillATK;
 
-				//HPが0になったら
+				//HPが0になったら。
 				if (m_enemyHP < 0)
 				{
-					//ダウンステートに遷移する
+					//ダウンステートに遷移する。
 					m_enemyState = enEnemyState_Down;
 				}
 
 				else {
-					//被ダメージステートに遷移する
+					//被ダメージステートに遷移する。
 					m_enemyState = enEnemyState_Damage;
 				}
 				return;
@@ -253,7 +252,7 @@ void AnnoyingEnemy::Collision()
 				//敵のHPを減らす。
 				m_enemyHP -= m_player->m_tukuyomiATK;
 
-				//HPが0になったら
+				//HPが0になったら。
 				if (m_enemyHP < 0)
 				{
 					//ダウンステートに遷移する。
@@ -295,7 +294,6 @@ void AnnoyingEnemy::Collision()
 					m_stopTimer = 5.0f;
 				}
 			}
-
 			//停止中の処理。
 			else if (m_isStopped)
 			{
@@ -331,21 +329,22 @@ void AnnoyingEnemy::Collision()
 
 const bool AnnoyingEnemy::SearchPlayer()const
 {
+	//プレイヤーとの方向ベクトルを取得。
 	Vector3 diff = m_player->GetPosition() - m_position;
 
-	//対象に近くなったら
+	//対象に近くなったら。
 	if (diff.LengthSq() <= 700.0f * 700.0f)
 	{
-		//エネミーからプレイヤーに向かうベクトルを正規化する
+		//エネミーからプレイヤーに向かうベクトルを正規化する。
 		diff.Normalize();
-		//内積(cos0)を調べる
+		//内積(cos0)を調べる。
 		float cos = m_forward.Dot(diff);
-		//内積(cos0)から角度を求める
+		//内積(cos0)から角度を求める。
 		float angle = acosf(cos);
-		//角度を(0)が120度より小さければ
+		//角度を(0)が120度より小さければ。
 		if (angle <= (Math::PI / 360.0f) * 360.0f)
 		{
-			//プレイヤーを見つけられた
+			//プレイヤーを見つけられた。
 			return true;
 		}
 
@@ -405,10 +404,10 @@ void AnnoyingEnemy::MakePoison()
 void AnnoyingEnemy::ProcessIdleStateTransition()
 {
 	m_idleTimer += g_gameTime->GetFrameDeltaTime();
-	//待機時間がある程度経過したら
+	//待機時間がある程度経過したら。
 	if (m_idleTimer >= 0.9f)
 	{
-		//他のステートに遷移する
+		//他のステートに遷移する。
 		ProcessCommonStateTransition();
 	}
 }
@@ -424,7 +423,7 @@ if (IsCanAttack() == true)
 }*/
 
 	m_chaseTimer += g_gameTime->GetFrameDeltaTime();
-	//追跡時間がある程度経過したら
+	//追跡時間がある程度経過したら。
 	if (m_chaseTimer >= 0.8f)
 	{
 		ProcessCommonStateTransition();
@@ -452,13 +451,13 @@ if (IsCanAttack() == true)
 
 void AnnoyingEnemy::ProcessPoisonAttackStateTransition()
 {
-	//遠距離攻撃アニメーションの再生が終わったら
+	//遠距離攻撃アニメーションの再生が終わったら。
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
 		ProcessCommonStateTransition();
 		return;
 	}
-	//追跡時間がある程度経過したら
+	//追跡時間がある程度経過したら。
 	if (m_poisonAttackCoolDown >= 0.8f)
 	{
 		ProcessCommonStateTransition();
@@ -469,14 +468,14 @@ void AnnoyingEnemy::ProcessPoisonAttackStateTransition()
 
 void AnnoyingEnemy::ProcessDamageStateTransition()
 {
-	//被ダメージアニメーションの再生が終わったら
+	//被ダメージアニメーションの再生が終わったら。
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
-		//攻撃されたら距離関係なしに退散させる
+		//攻撃されたら距離関係なしに退散させる。
 		m_enemyState = enEnemyState_Chase;
 		Vector3 diff = m_player->GetPosition() - m_position;
 		diff.Normalize();
-		//移動速度を設定する
+		//移動速度を設定する。
 		m_moveSpeed = diff * 10.0f;
 	}
 }
@@ -485,6 +484,7 @@ void AnnoyingEnemy::ProcessDownStateTransition()
 {
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
+		//Gameのインスタンスアドレスを検索
 		Game* game = FindGO<Game>("game");
 		DeleteGO(this);
 	}
@@ -492,21 +492,21 @@ void AnnoyingEnemy::ProcessDownStateTransition()
 
 void AnnoyingEnemy::ProcessCommonStateTransition()
 {
-	//各タイマーを初期化
+	//各タイマーを初期化。
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
 	m_poisonAttackCoolDown = 0.0f;
 
-
+	//プレイヤーとの方向ベクトルを取得。
 	Vector3 diff = m_player->GetPosition() - m_position;
-	//プレイヤーを見つけたら
+	//プレイヤーを見つけたら。
 	if (SearchPlayer() == true)
 	{
-		//ベクトルを正規化する
+		//ベクトルを正規化する。
 		diff.Normalize();
-		//移動速度計算する
+		//移動速度計算する。
 		m_moveSpeed = diff * 100.0f;
-		//攻撃できをる距離なら
+		//攻撃できをる距離なら。
 		if (IsCanAttack() == true)
 		{
 			int ram = rand() % 100;
@@ -530,6 +530,7 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 	}
 	else
 	{
+		//攻撃でき化ければ追跡ステートへ。
 		m_enemyState = enEnemyState_Idle;
 		return;
 	}
@@ -539,24 +540,31 @@ void AnnoyingEnemy::ManageState()
 {
 	switch (m_enemyState)
 	{
+		//何もしない。
 	case enEnemyState_Idle:
 		ProcessIdleStateTransition();
 		break;
+		//追跡処理。
 	case enEnemyState_Chase:
 		ProcessChaseStateTransition();
 		break;
+
 		/*case enEnemyState_Leave:
 			ProcessLeaveStateTransition();
 			break;*/
+		//毒攻撃状態の処理。
 	case enEnemyState_Poison:
 		ProcessPoisonAttackStateTransition();
 		break;
+		//ダメージを受けった時の処理。
 	case enEnemyState_Damage:
 		ProcessDamageStateTransition();
 		break;
+		//ダウン処理。
 	case enEnemyState_Down:
 		ProcessDownStateTransition();
 		break;
+		//何もしない。
 	default:
 		break;
 	}
@@ -567,32 +575,32 @@ void AnnoyingEnemy::PlayAnimation()
 	m_modelRender.SetAnimationSpeed(1.0f);
 	switch (m_enemyState)
 	{
-	case enEnemyState_Idle:
 		//待機ステート
+	case enEnemyState_Idle:
 		m_modelRender.PlayAnimation(enAnimationClip_Idle, 0.5f);
 		break;
-	case enEnemyState_Chase:
 		//追跡ステート
+	case enEnemyState_Chase:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
+		//退散ステート
 		/*case enEnemyState_Leave:
-			//退散ステート
 			m_modelRender.SetAnimationSpeed(1.2f);
 			m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 			break;*/
+			//遠距離攻撃ステート
 	case enEnemyState_Poison:
-		//遠距離攻撃ステート
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Poison, 0.1f);
 		break;
-	case enEnemyState_Damage:
 		//被ダメージステート
+	case enEnemyState_Damage:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Damage, 0.1f);
 		break;
-	case enEnemyState_Down:
 		//ダウンステート
+	case enEnemyState_Down:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Down, 0.1f);
 		break;
@@ -601,6 +609,7 @@ void AnnoyingEnemy::PlayAnimation()
 	}
 }
 
+//アニメーションイベントを受け取った際に呼び出される関数。
 void AnnoyingEnemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
 {
 	(void)clipName;
@@ -612,7 +621,9 @@ void AnnoyingEnemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* ev
 
 const bool AnnoyingEnemy::IsCanAttack()const
 {
+	//プレイヤーとの距離を計算。
 	Vector3 diff = m_player->GetPosition() - m_position;
+
 	//エネミーとプレイヤーの距離が近かったら
 	if (diff.LengthSq() <= 10000.0f * 1000.0f)
 	{

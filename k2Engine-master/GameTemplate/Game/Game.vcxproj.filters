@@ -21,7 +21,6 @@
     <ClCompile Include="Lantern.cpp" />
     <ClCompile Include="LanternAttack.cpp" />
     <ClCompile Include="UIStone.cpp" />
-    <ClCompile Include="DebugScene.cpp" />
     <ClCompile Include="SpriteCollection.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="UIcurseBar.cpp" />
@@ -72,7 +71,6 @@
     <ClInclude Include="Lantern.h" />
     <ClInclude Include="LanternAttack.h" />
     <ClInclude Include="UIStone.h" />
-    <ClInclude Include="DebugScene.h" />
     <ClInclude Include="SpriteCollection.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="UIcurseBar.h" />
