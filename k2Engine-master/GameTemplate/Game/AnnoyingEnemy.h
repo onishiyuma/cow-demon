@@ -5,54 +5,72 @@
 
 class Poison;
 class Collision;
-class EnemyBase;
 class Player;
 class Game;
 class GameCamera;
 
+//ウザイ敵の管理を行うクラス。
 class AnnoyingEnemy : public EnemyBase
 {
 public:
+	//敵の状態を定義する列挙型。
 	enum EnEnemyState {
-		enEnemyState_Idle,
-		/*enenemyState_goal,*/
-		enEnemyState_Chase,
-		enEnemyState_Leave,
-		enEnemyState_Poison,
-		enEnemyState_Damage,
-		enEnemyState_Down
+		enEnemyState_Idle,			//待機中。
+		/*enenemyState_goal,*/		//ゴール。
+		enEnemyState_Chase,			//追跡。
+		enEnemyState_Leave,			//退避行動。
+		enEnemyState_Poison,		//毒攻撃。
+		enEnemyState_Damage,		//ダメージを受けている。
+		enEnemyState_Down			//倒されている状態。
 	};
 
+	//使用するアニメーションクリップを定義。
+	enum EnAnimationClip {
+		enAnimationClip_Idle,
+		enAnimationClip_walk,
+		enAnimationClip_Run,
+		enAnimationClip_Poison,
+		enAnimationClip_Damage,
+		enAnimationClip_Down,
+		enAnimationClip_Num
+	};
+
+public:
 	//メンバ関数。
 	AnnoyingEnemy();
 	~AnnoyingEnemy();
-
-	bool Start()override;
-	void Update()override;
+	// 基本処理。
+	bool Start() override;
+	void Update() override;
 	void Render(RenderContext& rc);
 
-	void PoisonAttack();
-	void ManageState()override;
-	void Chase()override;
-	void Collision()override;
-	void Rotation()override;
-	const bool SearchPlayer() const override;
-	void Leave();
-	const bool IsCanAttack()const;
-	const bool IsLeave()const;
-	void PlayAnimation()override;
-	void MakePoison();
-	void ProcessIdleStateTransition()override;
+	// 各行動処理。
+	void PoisonAttack();                      //毒攻撃のロジック。
+	void ManageState() override;              //状態管理。
+	void Chase() override;                    //追跡行動。
+	void Collision() override;                //衝突処理。
+	void Rotation() override;                 //向きの更新処理。
+	const bool SearchPlayer() const override; //プレイヤーの探索。
+	void Leave();                             //離脱行動。
+	const bool IsCanAttack() const;           //攻撃可能かどうかを判定。
+	const bool IsLeave() const;               //離脱状態かどうかを判定。
+	void PlayAnimation() override;            //アニメーション切り替え。
+	void MakePoison();                        //毒攻撃エフェクト生成。
+
+	//状態ごとの処理。
+	void ProcessIdleStateTransition() override;
 	void ProcessPoisonAttackStateTransition();
-	void ProcessDamageStateTransition()override;
+	void ProcessDamageStateTransition();
 	void ProcessLeaveStateTransition();
-	void ProcessChaseStateTransition()override;
-	void OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)override;
-	void ProcessCommonStateTransition()override;
-	void ProcessDownStateTransition()override;
+	void ProcessChaseStateTransition() override;
+	void ProcessCommonStateTransition() override;
+	void ProcessDownStateTransition() override;
+
+	//アニメーションイベントを処理。
+	void OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName) override;
 
 
-
+public:
 	//座標をセットする関数。
 	void SetPosition(const Vector3& position)
 	{
@@ -78,29 +96,25 @@ public:
 	}
 
 
-	enum EnAnimationClip {
-		enAnimationClip_Idle,
-		enAnimationClip_walk,
-		enAnimationClip_Run,
-		enAnimationClip_Poison,
-		enAnimationClip_Damage,
-		enAnimationClip_Down,
-		enAnimationClip_Num
-	};
 
-
+private:
 	//メンバ変数。
-	GameCamera* m_gameCamera;
-	AnimationClip m_animationClips[enAnimationClip_Num];
-	EnEnemyState m_enemyState = enEnemyState_Idle;
-	const Vector3 m_stopMove = Vector3::Zero;
-	float m_leaveTimer = 0.0f;
-	float m_idleTImer = 0.0f;
-	float m_chaseTimmer = 0.0f;
-	float m_poisonAttackCoolDown = 0.0f;
-	float m_stopTimer = 0.0f;//拘束時間。
-	bool m_isUnderAttack = false;
-	bool m_isStopped = false;//動きを止めるフラグ。
-	bool m_gameoverFlag = false;//ゲームオーバーを呼ぶための変数。
+	GameCamera*		m_gameCamera = nullptr;                     //ゲームカメラへの参照。
+	AnimationClip	m_animationClips[enAnimationClip_Num];		//アニメーションクリップ配列。
+	EnEnemyState	m_enemyState = enEnemyState_Idle;			//現在の状態。
+
+	const Vector3	m_stopMove = Vector3::Zero;					//移動を停止するためのベクトル。
+
+	//各種タイマー。
+	float	m_leaveTimer = 0.0f;              //離脱タイマー。
+	float	m_idleTimer = 0.0f;               //待機タイマー。
+	float	m_chaseTimer = 0.0f;              //追跡タイマー。
+	float	m_poisonAttackCoolDown = 0.0f;    //毒攻撃のクールダウン。
+	float	m_stopTimer = 0.0f;               //拘束（動きが止まる）タイマー。
+
+	//フラグ。
+	bool	m_isUnderAttack = false;          //ダメージを受けているかどうか。
+	bool	m_isStopped = false;              //動きを止められているか。
+	bool	m_isGameOverFlag = false;         //ゲームオーバー呼び出し用フラグ。
 };
 

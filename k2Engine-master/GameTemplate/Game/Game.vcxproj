@@ -233,7 +233,6 @@
     <ClCompile Include="BlueFlame.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="CrossHair.cpp" />
-    <ClCompile Include="DebugScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="Fade.cpp" />
@@ -290,7 +289,6 @@
     <ClInclude Include="BlueFlame.h" />
     <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="CrossHair.h" />
-    <ClInclude Include="DebugScene.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="Fade.h" />
