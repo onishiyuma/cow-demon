@@ -16,7 +16,7 @@ public:
 	/// <returns>フェードの状態。</returns>
 	bool isFade() const
 	{
-		if (m_alpha > 0.0f)
+		if (m_load > 0.0f)
 		{
 			return true;
 		}
@@ -28,16 +28,16 @@ private:
 	/// </summary>
 	void LoadingProgress();
 private:
-	Game*	m_game = nullptr;		//ゲームのインスタンス。
+	Game*				m_game = nullptr;			//ゲームのインスタンス。
 
-	SpriteRender m_spriteLoad;		
-	SpriteRender m_spriteLoadGage;	//ロードゲージ用スプライト。
-	SpriteRender m_spriteMask;		//マスクを動かす。
-	FontRender m_fontRender;		//フォントレンダー。
+	SpriteRender		m_spriteLoad;		
+	SpriteRender		m_spriteLoadGage;			//ロードゲージ用スプライト。
+	SpriteRender		m_spriteMask;				//マスクを動かす。
+	FontRender			m_fontRender;				//フォントレンダー。
 
-	float	m_alpha = 1.0f;				//フェード用アルファ値。
-	bool	m_isFadingOut = true;		//最初は暗くする。
-	float	m_loadingProgress = 0.0f;	//ロード進行状況。
-	bool	m_drawUI = false;			//UIを表示するか？。
+	float				m_load = 1.0f;				//フェード用アルファ値。
+	bool				m_isFadingOut = true;		//最初は暗くする。
+	float				m_loadingProgress = 0.0f;	//ロード進行状況。
+	bool				m_drawUI = false;			//UIを表示するか？。
 };
 

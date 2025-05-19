@@ -19,7 +19,7 @@ bool Fade::Start()
     m_fontRender.SetText(L"Tips:火打石を集めて灯籠を灯すことによって敵に攻撃できるぞ！");
     m_fontRender.SetPosition(-500.0f, -300.0f, 0.0f);
 
-    m_alpha = 1.0f;
+    m_load = 1.0f;
 
 	return true;
 }
@@ -45,23 +45,24 @@ void Fade::LoadingProgress()
     // フェード制御。
     if (m_isFadingOut) 
     {
-        m_alpha -= 0.01f;
-        if (m_alpha <= 0.0f) 
+        m_load -= 0.01f;
+        if (m_load <= 0.0f) 
         {
             NewGO<Game>(0, "game");
-            m_alpha = 0.0f;
+            m_load = 0.0f;
             m_isFadingOut = false;
         }
     }
     else
     {
-        m_alpha += 0.01f;
-        if (m_alpha >= 1.0f)
+        m_load += 0.01f;
+        if (m_load >= 1.0f)
         {
-            m_alpha = 1.0f;
+            m_load = 1.0f;
         }
     }
 
+    //ロードのゲージ処理。
     if (m_loadingProgress < 1.0f)
     {
         m_loadingProgress += 0.1f * g_gameTime->GetFrameDeltaTime();
@@ -78,8 +79,7 @@ void Fade::LoadingProgress()
     float offsetY = m_loadingProgress * fullHeight;
     m_spriteMask.SetPosition(Vector3(850.0f, -500.0f + offsetY, 0.0f));
 
-
-
+    //各種アップデート。
     m_spriteLoadGage.Update();
     m_spriteMask.Update();
 }
