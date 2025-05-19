@@ -10,7 +10,8 @@ bool GameCamera::Start()
 {
 	//注視点から視点までのベクトルを設定。
 	m_toCameraPos.Set(1.0f, 125.0f, -60.0f);
-
+	//m_toCameraPos2はエネミーUI用に作成
+	m_toCameraPos2.Set(1.0f, 125.0f, -60.0f);
 	//プレイヤーのインスタンスを探す。
 	m_player = FindGO<Player>("player");
 	m_ringBell = FindGO<RingBell>("ringbell");
@@ -93,13 +94,20 @@ void GameCamera::Update()
 
 	}
 
+	Vector3 position = target + m_toCameraPos2;
 
+    m_position = position;
+	m_cameraForward = (target - position);
+	m_cameraForward.Normalize();
 
 	//視点を計算する。
 	Vector3 pos = target+m_toCameraPos/m_half;
 	//メインカメラに注視点と座標を設定する。
 	g_camera3D->SetTarget(target);
 	g_camera3D->SetPosition(pos);
+
+	
+
 	//カメラの更新。
 	g_camera3D->Update();
 }

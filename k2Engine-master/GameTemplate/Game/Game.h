@@ -26,6 +26,7 @@ class UISimenawa;
 class UIcurseBar;
 class UIheal;
 class MiniMap;
+class EnemyUI;
 class Fade;
 
 class Game : public IGameObject
@@ -75,11 +76,13 @@ public:
 	Player*m_player;//プレイヤー。
 	Enemy* m_enemy ;//敵。
 	LittleEnemy* m_littleEnemy;//小さい敵。
+	AnnoyingEnemy* m_annoyingEnemy;
 	BossEnemy* m_bossEnemy;//ボス。
 	CrossHair*m_crossHair;//クロスヘアー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Shimenawa* m_shimenawa;//しめ縄。
 	Fade* m_fade;//フェード処理。
+	EnemyUI*m_enemyUI;
 
 	Stone* m_stone1; //轣ｫ謇鍋浹
 	Stone* m_stone2; //轣ｫ謇鍋浹

@@ -20,6 +20,21 @@ public:
 		m_isLocked = isLock;
 	}
 
+	Vector3 GetCameraPos()const
+	{
+		return m_position;
+	}
+
+	Vector3 GetCameraForward()const
+	{
+		return m_cameraForward;
+	}
+
+	//メンバ変数
+	Vector3 m_position = Vector3::Zero;
+	Vector3 m_cameraForward = Vector3::Zero;
+	Vector3 m_toCameraPos2 = Vector3::One;
+
 	//繝｡繝ｳ繝仙､画焚縲・
 	GameOver* m_gameOver;
 	Game* m_game;
