@@ -15,6 +15,7 @@ class Lantern;
 class LanternAttack;
 class LanternLight;
 class LanternAttackLight;
+class BlueFlame;
 class RingBell;
 class GameClear;
 class GameOver;
@@ -58,6 +59,8 @@ public:
 	void LanternLightState();
 	//灯籠用ライトの作成
 	void CreateLanternLight();
+	//灯籠用エフェクトの作成
+	void CreateLanternEffect();
 	//攻撃灯籠用ライトのステート
 	void LanternAttackLightState();
 	//攻撃灯籠用ライトの作成
@@ -104,6 +107,11 @@ public:
 	LanternLight* m_lanternLight2;
 	LanternLight* m_lanternLight3;
 	LanternLight* m_lanternLight4;
+
+	BlueFlame* m_blueFlame1;
+	BlueFlame* m_blueFlame2;
+	BlueFlame* m_blueFlame3;
+	BlueFlame* m_blueFlame4;
 
 	LanternAttack* m_lanternAttack1; //謾ｻ謦・畑轣ｯ邀
 	LanternAttack* m_lanternAttack2; //謾ｻ謦・畑轣ｯ邀
@@ -153,16 +161,22 @@ public:
 
 	int m_maxCount = 0;	//敵の最大数。
 	int m_totalCount = 0;//敵の合計。
-  float m_timer = 120.0f;//タイマー。
+   float m_timer = 120.0f;//タイマー。
 	bool m_lanternAction = false; 
 	float m_timeLimit=0;//蛻ｶ髯先凾髢・
 	int m_lanternLightState = 0;
+	int m_lanternEffectState = 0;
 	int m_lanternAttackLightState = 0;
 	//灯籠用ライトのフラグ
 	bool m_lanternLightFlag1 = false;
 	bool m_lanternLightFlag2 = false;
 	bool m_lanternLightFlag3 = false;
 	bool m_lanternLightFlag4 = false;
+	//灯籠用エフェクトのフラグ
+	bool m_lanternEffectFlag1 = false;
+	bool m_lanternEffectFlag2 = false;
+	bool m_lanternEffectFlag3 = false;
+	bool m_lanternEffectFlag4 = false;
 	//攻撃灯籠用ライトのフラグ
 	bool m_lanternAttackLightFlag1 = false;
 	bool m_lanternAttackLightFlag2 = false;
