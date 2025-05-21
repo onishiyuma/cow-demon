@@ -24,6 +24,7 @@ bool Purification::Start()
 
 	//コリジョンの作成。
 	CreateCollision();
+
 	//エフェクトの作成。
 	CreateEffect();
 
@@ -86,10 +87,14 @@ void Purification::CreateCollision()
 
 void Purification::CreateEffect()
 {
+	//エフェクトのインスタンスを作成。
 	m_effectEmitter = NewGO<EffectEmitter>(0);
+	//読み込み。
 	m_effectEmitter->Init(0);
+	//大きさをセットする。
 	m_effectEmitter->SetScale({ 55.0f,55.0f,55.0f });
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
+	//エフェクトを再生。
 	m_effectEmitter->Play();
 }

@@ -17,7 +17,7 @@ bool Fade::Start()
 
     //表示する文字をセットする。
     m_fontRender.SetText(L"Tips:火打石を集めて灯籠を灯すことによって敵に攻撃できるぞ！");
-    m_fontRender.SetPosition(-500.0f, -300.0f, 0.0f);
+    m_fontRender.SetPosition(-600.0f, -300.0f, 0.0f);
 
     m_load = 1.0f;
 
