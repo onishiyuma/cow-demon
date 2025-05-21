@@ -14,8 +14,8 @@ public:
 	void Render(RenderContext& rc);
 
 	//メンバ変数。
-	Game* m_game;//ゲーム。
-	SpriteRender m_spriteRender;//スプライトレンダー。
-	int m_timeLimit;//ゲームの制限時間。
+	Game*				m_game;				//ゲーム。
+	SpriteRender		m_spriteRender;		//スプライトレンダー。
+	int					m_timeLimit;		//ゲームの制限時間。
 };
 

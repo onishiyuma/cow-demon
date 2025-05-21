@@ -11,7 +11,7 @@ bool GameCamera::Start()
 	//注視点から視点までのベクトルを設定。
 	m_toCameraPos.Set(1.0f, 125.0f, -60.0f);
 	//m_toCameraPos2はエネミーUI用に作成
-	m_toCameraPos2.Set(1.0f, 125.0f, -60.0f);
+	m_PosMain.Set(1.0f, 125.0f, -60.0f);
 	//プレイヤーのインスタンスを探す。
 	m_player = FindGO<Player>("player");
 	m_ringBell = FindGO<RingBell>("ringbell");
@@ -64,21 +64,21 @@ void GameCamera::Update()
 	}
 	else
 	{
-		// 本殿の位置
+		// 本殿の位置。
 		m_mainPos = m_ringBell->GetPosition();
 
-		// 注視点から本殿への方向
+		// 注視点から本殿への方向。
 		Vector3 toShrineDir = m_mainPos - target;
 		toShrineDir.Normalize();
 
-		// 現在のカメラ方向と距離
+		// 現在のカメラ方向と距離。
 		Vector3 currentDir = m_toCameraPos;
 		float length = currentDir.Length();
 
-		// 本殿方向を同じ距離に変換
+		// 本殿方向を同じ距離に変換。
 		Vector3 targetDir =toShrineDir * (- length);
 
-		// 補間率（回転スピード）
+		// 補間率。
 		float t = 0.05f;
 
 		//Lerp.
@@ -94,7 +94,7 @@ void GameCamera::Update()
 
 	}
 
-	Vector3 position = target + m_toCameraPos2;
+	Vector3 position = target + m_PosMain;
 
     m_position = position;
 	m_cameraForward = (target - position);

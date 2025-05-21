@@ -14,11 +14,15 @@ Line::~Line()
 
 bool Line::Start() 
 {
-	m_spriteRender.Init("Assets/sprite/line.DDS", 600.0f, 400.0f); //画像を読み込む
-	m_spriteRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f)); //座標の設定
-	m_spriteRender.SetScale({ 1.0f,1.0f,1.0f }); //大きさの設定
+	//画像を読み込む。
+	m_spriteRender.Init("Assets/sprite/line.DDS", 600.0f, 400.0f); 
+	//座標の設定。
+	m_spriteRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f)); 
+	//大きさの設定。
+	m_spriteRender.SetScale({ 1.0f,1.0f,1.0f }); 
 	m_spriteRender.Update();
 
+	//各種インスタンスアドレスを検索。
 	m_lantern1 = FindGO<Lantern>("lantern1");
 	m_lantern2 = FindGO<Lantern>("lantern2");
 	m_lantern3 = FindGO<Lantern>("lantern3");
@@ -29,17 +33,14 @@ bool Line::Start()
 
 void Line::Move()
 {
-
-	
-	
 	//moveStateが0の時。
-	if (m_moveState == 0)
+	if (m_directionState == 0)
 	{
 			//右に移動する。
 			m_position.x += 10.0f;
 	}
 	//moveStateが1の時。
-	else if (m_moveState == 1)
+	else if (m_directionState == 1)
 	{
 		//左に移動する。
 		m_position.x -= 10.0f;
@@ -49,26 +50,24 @@ void Line::Move()
 	if (m_position.x >= m_firstPosition.x + 400.0f)
 	{
 		//moveStateを1にする(下に移動するようにする)。
-		m_moveState = 1;
+		m_directionState = 1;
 	}
 	//y座標が初期座標-100.0fより下になったら。
 	else if (m_position.x <= m_firstPosition.x - 400.0f)
 	{
 		//moveStateを0にする(上に移動するようにする)。
-		m_moveState = 0;
+		m_directionState = 0;
 	}
 
-		m_spriteRender.SetPosition(m_position);
-		m_spriteRender.Update();
-
-	
-	
-
-	
+	//座標設定。
+	m_spriteRender.SetPosition(m_position);
+	//画像を更新。
+	m_spriteRender.Update();
 }
 
 void Line::Update()
 {
+	Move();
 	//if (m_lantern1->m_buttonAState == 1 or m_lantern2->m_buttonAState == 1 or m_lantern3->m_buttonAState == 1 or m_lantern4->m_buttonAState == 1) {
 
 		//if (m_moving == false) {
@@ -88,8 +87,6 @@ void Line::Update()
 		//}
 
 	//}
-	
-	Move();
 }
 
 void Line::Render(RenderContext& rc)
