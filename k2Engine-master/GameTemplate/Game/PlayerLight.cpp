@@ -45,7 +45,7 @@ void PlayerLight::Update()
 	m_direction = g_camera3D->GetForward();
 	m_direction.Normalize();
 	m_spotLight.SetDirection(m_direction);
-	//ライトを更新。3q
+	//ライトを更新。
 	m_spotLight.Update();
 }
 
