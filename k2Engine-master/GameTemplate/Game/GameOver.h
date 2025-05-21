@@ -12,6 +12,6 @@ public:
 	void Render(RenderContext& rc);
 
 	//メンバ変数。
-	SpriteRender m_spriteRender;//スプライトレンダー。
-	Game* m_game;//ゲーム。
+	SpriteRender	m_spriteRender;		//スプライトレンダー。
+	Game*			m_game;				//ゲーム。
 };

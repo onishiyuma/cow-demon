@@ -24,6 +24,7 @@ GameOver::~GameOver()
 
 void GameOver::Update()
 {
+	//タイトルに戻る処理。
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
 		NewGO<Title>(0);

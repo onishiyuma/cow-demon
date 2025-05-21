@@ -333,7 +333,7 @@ void Game::LanternLightState()
 	m_lanternEffectState = 0;
 
 	//1つ目の灯籠に火が灯ったら
-	if (m_lantern1->m_lightFlag == true) {
+	if (m_lantern1->m_isLight == true) {
 		//かつ、1つ目の灯籠と距離が近かったら
 		if (m_lanternDiff1.Length() <= 100.0f) {
 			m_lanternLightState = 1;
@@ -341,7 +341,7 @@ void Game::LanternLightState()
 		}
 	}
 	//2つ目の灯籠に火が灯ったら
-	if (m_lantern2->m_lightFlag == true) {
+	if (m_lantern2->m_isLight == true) {
 		//かつ、2つ目の灯籠と距離が近かったら
 		if (m_lanternDiff2.Length() <= 100.0f) {
 			m_lanternLightState = 2;
@@ -349,7 +349,7 @@ void Game::LanternLightState()
 		}
 	}
 	//3つ目の灯籠に火が灯ったら
-	if (m_lantern3->m_lightFlag == true) {
+	if (m_lantern3->m_isLight == true) {
 		//かつ、3つ目の灯籠と距離が近かったら
 		if (m_lanternDiff3.Length() <= 100.0f) {
 			m_lanternLightState = 3;
@@ -357,7 +357,7 @@ void Game::LanternLightState()
 		}
 	}
 	//4つ目の灯籠に火が灯ったら
-	if (m_lantern4->m_lightFlag == true) {
+	if (m_lantern4->m_isLight == true) {
 		//かつ、4つ目の灯籠と距離が近かったら
 		if (m_lanternDiff4.Length() <= 100.0f) {
 			m_lanternLightState = 4;
@@ -510,21 +510,21 @@ void Game::LanternAttackLightState()
 	m_lanternAttackLightState = 0;//攻撃灯籠用ライトステートを常に初期化
 
 	//1つ目の攻撃灯籠に火が灯ったら
-	if (m_lanternAttack1->m_lightFlag == true) {
+	if (m_lanternAttack1->m_isLight == true) {
 		//かつ、1つ目の攻撃灯籠と距離が近かったら
 		if (LanternAttackDiff1.Length() <= 100.0f) {
 			m_lanternAttackLightState = 1;
 		}
 	}
 	//2つ目の攻撃灯籠に火が灯ったら
-	if (m_lanternAttack2->m_lightFlag == true) {
+	if (m_lanternAttack2->m_isLight == true) {
 		//かつ、2つ目の攻撃灯籠と距離が近かったら
 		if (LanternAttackDiff2.Length() <= 100.0f) {
 			m_lanternAttackLightState = 2;
 		}
 	}
 	//3つ目の攻撃灯籠に火が灯ったら
-	if (m_lanternAttack3->m_lightFlag == true) {
+	if (m_lanternAttack3->m_isLight == true) {
 		//かつ、3つ目の攻撃灯籠と距離が近かったら
 		if (LanternAttackDiff3.Length() <= 100.0f) {
 			m_lanternAttackLightState = 3;
