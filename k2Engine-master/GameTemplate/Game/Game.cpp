@@ -13,6 +13,7 @@
 #include "Lantern.h"
 #include "LanternLight.h"
 #include "LanternAttack.h"
+#include "BlueFlame.h"
 #include "LanternAttackLight.h"
 #include "MiniMap.h"
 #include "UIStone.h"
@@ -26,6 +27,7 @@
 #include "random"
 #include "EnemyUI.h"
 #include "Fade.h"
+#include "graphics/effect/EffectEmitter.h"
 
 bool Game::Start()
 {
@@ -125,6 +127,12 @@ Game::~Game()
 	DeleteGO(m_lanternLight3);
 	DeleteGO(m_lanternLight4);
 
+	//灯籠用エフェクト
+	DeleteGO(m_blueFlame1);
+	DeleteGO(m_blueFlame2);
+	DeleteGO(m_blueFlame3);
+	DeleteGO(m_blueFlame4);
+
 	//攻撃用灯籠。
 	DeleteGO(m_lanternAttack1);
 	DeleteGO(m_lanternAttack2);
@@ -158,25 +166,15 @@ void Game::Update()
 	//ゲームーオーバーやゲームクリアーを呼び出す関数。
 	GameManager();
   
-  //灯籠用ライトのステート
+    //灯籠用ライトのステート
 	LanternLightState();
 	//灯籠用ライトの作成
 	CreateLanternLight();
+	//灯籠用エフェクトの作成
+	//CreateLanternEffect();
 
 	//攻撃灯籠用ライトのステート
 	LanternAttackLightState();
-	//攻撃灯籠用ライトの作成
-	CreateLanternAttackLight();
-
-	//灯籠用ライトのステート
-	LanternLightState();
-
-	//灯籠用ライトの作成
-	CreateLanternLight();
-
-	//攻撃灯籠用ライトのステート
-	LanternAttackLightState();
-
 	//攻撃灯籠用ライトの作成
 	CreateLanternAttackLight();
 
@@ -192,10 +190,10 @@ void Game::Update()
 void Game::GameManager()
 {
 	//タイマーを減らす処理。
-	m_timeLimit -= g_gameTime->GetFrameDeltaTime();
+	//m_timeLimit -= g_gameTime->GetFrameDeltaTime();
 
 	//敵から本殿を守り切ったらゲームクリア。
-	if (m_timeLimit <= 0)
+	if (m_timer >= 300.0f)
 	{
 		NewGO<GameClear>(0);
 		DeleteGO(this);
@@ -332,12 +330,14 @@ void Game::LanternLightState()
 	Vector3 m_lanternDiff4 = m_player->m_position - m_lantern4->m_position;//4つ目
 
 	m_lanternLightState = 0;//灯籠用ライトステートを常に初期化
+	m_lanternEffectState = 0;
 
 	//1つ目の灯籠に火が灯ったら
 	if (m_lantern1->m_isLight == true) {
 		//かつ、1つ目の灯籠と距離が近かったら
 		if (m_lanternDiff1.Length() <= 100.0f) {
 			m_lanternLightState = 1;
+			m_lanternEffectState = 1;
 		}
 	}
 	//2つ目の灯籠に火が灯ったら
@@ -345,6 +345,7 @@ void Game::LanternLightState()
 		//かつ、2つ目の灯籠と距離が近かったら
 		if (m_lanternDiff2.Length() <= 100.0f) {
 			m_lanternLightState = 2;
+			m_lanternEffectState = 2;
 		}
 	}
 	//3つ目の灯籠に火が灯ったら
@@ -352,6 +353,7 @@ void Game::LanternLightState()
 		//かつ、3つ目の灯籠と距離が近かったら
 		if (m_lanternDiff3.Length() <= 100.0f) {
 			m_lanternLightState = 3;
+			m_lanternEffectState = 3;
 		}
 	}
 	//4つ目の灯籠に火が灯ったら
@@ -359,6 +361,7 @@ void Game::LanternLightState()
 		//かつ、4つ目の灯籠と距離が近かったら
 		if (m_lanternDiff4.Length() <= 100.0f) {
 			m_lanternLightState = 4;
+			m_lanternEffectState = 4;
 		}
 	}
 	
@@ -375,8 +378,12 @@ void Game::CreateLanternLight()
 			if (m_lanternLightFlag1 == false) {
 				//1つ目の灯籠用ライトを作成する
 				m_lanternLight1 = NewGO<LanternLight>(0, "lanternLight1");
-				m_lanternLight1->m_position = { 500.0f,80.0f,500.0f };
+				m_lanternLight1->m_position = { 500.0f,50.0f,500.0f };
 				m_lanternLight1->m_firstPosition = m_lanternLight1->m_position;
+				//1つ目の灯籠用エフェクトを作成する
+				m_blueFlame1 = NewGO<BlueFlame>(0, "blueFlame1");
+				m_blueFlame1->m_position = { 500.0f,100.0f,500.0f };
+				m_blueFlame1->m_firstPosition = m_blueFlame1->m_position;
 				m_lanternLightFlag1 = true;//灯っている判定にする
 			}
 		break;
@@ -386,8 +393,12 @@ void Game::CreateLanternLight()
 			if (m_lanternLightFlag2 == false) {
 				//2つ目の灯籠用ライトを作成する
 				m_lanternLight2 = NewGO<LanternLight>(0, "lanternLight2");
-				m_lanternLight2->m_position = { 500.0f,80.0f,-500.0f };
+				m_lanternLight2->m_position = { 500.0f,50.0f,-500.0f };
 				m_lanternLight2->m_firstPosition = m_lanternLight2->m_position;
+				//2つ目の灯籠用エフェクトを作成する
+				m_blueFlame2 = NewGO<BlueFlame>(0, "blueFlame2");
+				m_blueFlame2->m_position = { 500.0f,100.0f,-500.0f };
+				m_blueFlame2->m_firstPosition = m_blueFlame2->m_position;
 				m_lanternLightFlag2 = true;//灯っている判定にする
 			}
 		break;
@@ -397,8 +408,12 @@ void Game::CreateLanternLight()
 			if (m_lanternLightFlag3 == false) {
 				//3つ目の灯籠用ライトを作成する
 				m_lanternLight3 = NewGO<LanternLight>(0, "lanternLight3");
-				m_lanternLight3->m_position = { -500.0f,80.0f,500.0f };
+				m_lanternLight3->m_position = { -500.0f,50.0f,500.0f };
 				m_lanternLight3->m_firstPosition = m_lanternLight3->m_position;
+				//3つ目の灯籠用エフェクトを作成する
+				m_blueFlame3 = NewGO<BlueFlame>(0, "blueFlame3");
+				m_blueFlame3->m_position = { -500.0f,100.0f,500.0f };
+				m_blueFlame3->m_firstPosition = m_blueFlame3->m_position;
 				m_lanternLightFlag3 = true;//灯っている判定にする
 			}
 		break;
@@ -408,10 +423,58 @@ void Game::CreateLanternLight()
 			if (m_lanternLightFlag4 == false) {
 				//4つ目の灯籠用ライトを作成する
 				m_lanternLight4 = NewGO<LanternLight>(0, "lanternLight4");
-				m_lanternLight4->m_position = { -500.0f,80.0f,-500.0f };
+				m_lanternLight4->m_position = { -500.0f,50.0f,-500.0f };
 				m_lanternLight4->m_firstPosition = m_lanternLight4->m_position;
+				//4つ目の灯籠用エフェクトを作成する
+				m_blueFlame4 = NewGO<BlueFlame>(0, "blueFlame4");
+				m_blueFlame4->m_position = { 500.0f,100.0f,-500.0f };
+				m_blueFlame4->m_firstPosition = m_blueFlame4->m_position;
 				m_lanternLightFlag4 = true;//灯っている判定にする
 			}
+		break;
+	}
+}
+
+//灯籠用エフェクトの作成
+void Game::CreateLanternEffect()
+{
+	switch (m_lanternEffectState)
+	{
+	case 1:
+		if (m_lanternEffectFlag1 == false) {
+			//1つ目の灯籠用エフェクトを作成する
+			m_blueFlame1 = NewGO<BlueFlame>(0, "blueFlame1");
+			m_blueFlame1->m_position = { 0.0f,100.0f,0.0f };
+			m_blueFlame1->m_firstPosition = m_blueFlame1->m_position;
+			m_lanternEffectFlag1 = true;
+		}
+		break;
+	case 2:
+		if (m_lanternEffectFlag2 == false) {
+			//2つ目の灯籠用エフェクトを作成する
+			m_blueFlame2 = NewGO<BlueFlame>(0, "blueFlame2");
+			m_blueFlame2->m_position = { 500.0f,100.0f,-500.0f };
+			m_blueFlame2->m_firstPosition = m_blueFlame2->m_position;
+			m_lanternEffectFlag2 = true;
+		}
+		break;
+	case 3:
+		if (m_lanternEffectFlag3 == false) {
+			//3つ目の灯籠用エフェクトを作成する
+			m_blueFlame3 = NewGO<BlueFlame>(0, "blueFlame3");
+			m_blueFlame3->m_position = { -500.0f,100.0f,500.0f };
+			m_blueFlame3->m_firstPosition = m_blueFlame3->m_position;
+			m_lanternEffectFlag3 = true;
+		}
+		break;
+	case 4:
+		if (m_lanternEffectFlag4 == false) {
+			//4つ目の灯籠用エフェクトを作成する
+			m_blueFlame4 = NewGO<BlueFlame>(0, "blueFlame4");
+			m_blueFlame4->m_position = { 500.0f,100.0f,-500.0f };
+			m_blueFlame4->m_firstPosition = m_blueFlame4->m_position;
+			m_lanternEffectFlag4 = true;
+		}
 		break;
 	}
 }
@@ -678,7 +741,7 @@ void Game::UITimer()
 	//フォントの大きさを設定。
 	m_timerFontRender.SetScale(1.5f);
 	//フォントの位置を設定。
-	m_timerFontRender.SetPosition(Vector3(0.0f, 500.0f, 0.0f));
+	m_timerFontRender.SetPosition(Vector3(-80.0f, 500.0f, 0.0f));
 	//フォントの色を設定。
 	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 

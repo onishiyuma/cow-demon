@@ -6,8 +6,8 @@
 
 bool GameClear::Start()
 {
-	//ゲームクリアの画像を読み込む。
-	m_spriteRender.Init("Assets/sprite/S.DDS", 1920.0f, 1080.0f);
+	//ゲームクリアの画像を読み込む
+	m_spriteRender.Init("Assets/sprite/GameClear.DDS", 1920.0f, 1080.0f);
 	
 	return true;
 }

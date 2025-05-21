@@ -33,13 +33,13 @@ bool UIcurseBar::Start()
 {
 	m_player = FindGO<Player>("player");
 	//呪の抵抗フレーム
-	m_curseFrame.Init("Assets/UI/Red.DDS", 1024, 128);
+	m_curseFrame.Init("Assets/UI/white.DDS", 1024, 128);
 	m_curseFrame.SetPosition(HP_FREME_POSITION);
 	m_curseFrame.SetScale(HP_FRAME_SCAL);
 	m_curseFrame.SetMulColor(BLACK);
 
 	//呪いの抵抗ゲージ
-	m_curseSprit.Init("Assets/UI/Red.DDS", 102.4, 50);
+	m_curseSprit.Init("Assets/UI/white.DDS", 102.4, 50);
 	m_curseSprit.SetPosition(HP_POSITION);
 
 	m_curseSprit.SetPivot(HP_PIVOT);
