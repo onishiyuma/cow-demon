@@ -2,7 +2,7 @@
 class SpriteLight :public IGameObject
 {
 public:
-	//メンバ関数
+	//メンバ関数。
 	SpriteLight();
 	~SpriteLight();
 
@@ -11,8 +11,9 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	//メンバ変数
-	SpriteRender m_spriteRender;
-	Vector3 m_position;
+private:
+	//メンバ変数。
+	SpriteRender	m_spriteRender;		//スプライトレンダー。
+	Vector3			m_position;			//座標。
 };
 

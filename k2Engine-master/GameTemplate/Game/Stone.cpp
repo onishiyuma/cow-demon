@@ -8,26 +8,17 @@
 
 bool Stone::Start() 
 {
-
+	//各種インスタンスアドレスを検索。
 	m_player = FindGO<Player>("player");
-
 	m_spriteCollection = FindGO<SpriteCollection>("spriteCollection");
 
+	//火打石のモデルを読み込む。
 	ModelInitData initData;
-	//火打石のモデルを読み込む
 	initData.m_tkmFilePath = "Assets/modelData/stone/stone.tkm";
-	//火打石用のシェーダーを読み込む
+	//火打石用のシェーダーを読み込む。
 	initData.m_fxFilePath = "Assets/shader/stone.fx";
 	m_modelRender.InitForwardRendering(initData);
 	m_modelRender.SetScale(0.5f, 0.5f, 0.5f);
-	
-	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
-	//コリジョン作成用関数を呼び出す。
-	//CreateCollision();
-	//コリジョンに座標をセット。
-	//m_collisionObject->SetPosition(m_position);
-	//m_collisionObject->Update();
-	
 
 	return true;
 }
@@ -40,74 +31,49 @@ Stone::Stone()
 Stone::~Stone() 
 {
 	DeleteGO(m_spriteCollection);
-	//DeleteGO(m_collisionObject);
-	//DeleteGO(this);
 }
 
 void Stone::Update() 
 {
-
-	//m_modelRender.SetPosition(m_player->GetPosition());
 	m_modelRender.Update();
 	m_modelRender.SetPosition(m_position);
 
-	
-	
 	//プレイヤーから火打石に向かうベクトルを計算。
 	Vector3 diff = m_player->m_position - m_position;
-	//ベクトルの長さが100.0fより小さかったら
-	if (diff.Length() <= 100.0f) {
+	//ベクトルの長さが100.0fより小さかったら。
+	if (diff.Length() <= 100.0f)
+	{
 
-		if (m_collectionFlag ==false) {
+		if (!m_isNearCollection )
+		{
 
 			m_spriteCollection = NewGO<SpriteCollection>(0, "spriteCollection");
 
-			m_collectionFlag = true;
-
-			
-			
+			m_isNearCollection = true;
 		}
 		//Aボタンを押したら
-		if (g_pad[0]->IsTrigger(enButtonA)) {
+		if (g_pad[0]->IsTrigger(enButtonA))
+		{
 
 			//火打石のアイテムカウントを1増やす。
 			m_player->m_stoneCount += 1;
 
 			//自身を削除する。
-			DeleteGO(this);
-			
+			DeleteGO(this);	
 		}
-		
 	}
-	else {
+	else 
+	{
 
-		m_collectionFlag = false;
+		m_isNearCollection = false;
 
-		if (m_spriteCollection != nullptr) {
+		if (m_spriteCollection != nullptr)
+		{
 			DeleteGO(m_spriteCollection);
 			m_spriteCollection = nullptr;
-		}
-		
-	}
-	
-	
+		}	
+	}	
 }
-
-////コリジョンを作成。
-//void Stone::CreateCollision()
-//{
-//	m_collisionObject = NewGO<CollisionObject>(0);
-//
-//	//箱状のコリジョンを作成。
-//	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { m_collisionScale });
-//
-//	//コリジョンに名前をつける。
-//	m_collisionObject->SetName("gameover_collision");
-//
-//	//オブジェクトが自動で削除されないようにする。
-//	m_collisionObject->SetIsEnableAutoDelete(false);
-//}
-
 
 void Stone::Render(RenderContext& rc) 
 {

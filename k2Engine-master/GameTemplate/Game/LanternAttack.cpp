@@ -61,7 +61,7 @@ void LanternAttack::Update()
 		//ベクトルの長さが120.0fより小さかったら。
 		if (diff.Length() <= 100.0f)
 		{
-			if (m_isLightUI == false)
+			if (!m_isLightUI)
 			{
 
 				m_isLightUI = true;
@@ -79,7 +79,7 @@ void LanternAttack::Update()
 					{
 
 						//ミニゲームをしていなかったら。
-						if (m_isLanternAttackAction == false) 
+						if (!m_isLanternAttackAction) 
 						{
 
 							//ミニゲーム中にする。

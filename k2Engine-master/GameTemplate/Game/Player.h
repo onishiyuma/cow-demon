@@ -46,6 +46,8 @@ public:
 	void RotationCamera();
 	//HPの回復。
 	void HealHP(int amount);
+	//ステータスを更新する。
+	void UpdateHealHint();
 
 
 	//座標を取得。
@@ -73,7 +75,7 @@ public:
 	const int			m_cliticalDamage = 2;						//クリティカルダメージ。
 	float				m_tukuyomiBlessingCoolDown = 0.0f;			//月読の加護のクールダウン。
 	float				m_shimenawaGetTime = 0.0f;					//しめ縄を取る時間。
-	bool				m_enemyIsCanAttack = false;					//敵から攻撃されているか。
+	bool				m_enemyIsCanAttack = false;					//敵に攻撃できるか。
 	int					m_playerHP = 0;								//プレイヤーのHP。
 	int					m_skillCharge = 0;							//スキルチャージ。
 	int					m_normalATK = 0;							//通常攻撃。
@@ -92,7 +94,8 @@ private:
 	Shimenawa*			m_shimenawa;								//しめ縄。
 	ModelRender			m_modelRender;								//モデルレンダー。
 	CharacterController m_characterController;						//キャラコン。
-	FontRender			m_fontRender;								//フォントレンダー。
+	FontRender			m_fontRender1;								//フォントレンダー。
+	FontRender			m_fontRender2;								//フォントレンダー。
 	PlayerLight*		m_playerLight;								//プレイヤーのライト。
 	Vector3				m_forward = Vector3::AxisZ;					//方向。
 	Vector3				m_moveSpeed;								//移動速度。
@@ -108,5 +111,6 @@ private:
 	float				m_distSq = 0.0f;							//距離の二乗。
 	bool				m_isDeleted = false;						//消されるか。
 	bool				m_isRotating = false;						//回転中か。
+	bool				m_isDisplay = false;						//表示するか。
 	int					m_playerMaxHP = 100;						//プレイヤーの最大体力。
 };

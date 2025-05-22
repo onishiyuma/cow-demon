@@ -15,6 +15,11 @@
 #include "NoHeal.h"
 #include<time.h>
 
+namespace
+{
+	Vector3 FONT_POSITION = { -330.0f,-300.0f,0.0f };
+	Vector4 FONT_COLOR = { 1.0f,0.0f,1.0f,1.0f };
+}
 bool Player::Start()
 {
 	//モデルを読み込む。
@@ -31,6 +36,7 @@ bool Player::Start()
 
 	//プレイヤーのHPをセットする。
 	m_playerHP = 100;
+
 	//ヒールのクールタイム
 	m_healCoolDown = 10.0f;
 
@@ -38,9 +44,7 @@ bool Player::Start()
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 	m_playerLight = FindGO<PlayerLight>("playerLight");
-
 	m_playerLight = NewGO<PlayerLight>(0, "playerLight");
-
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 	m_lantern = FindGO<Lantern>("lantern");
@@ -69,6 +73,9 @@ void Player::Update()
 	//判定を呼び出す。
 	Collision();
 
+	//回復できるように知らせる。
+	UpdateHealHint();
+
 	//呪いの抵抗が0を下回っていたら。
 	if (m_playerHP<=0)
 	{
@@ -77,7 +84,7 @@ void Player::Update()
 	}
 
 	//灯籠に火が灯っていれば攻撃できる。
-	if (m_enemyIsCanAttack == true)
+	if (m_enemyIsCanAttack)
 	{
 		//通常攻撃。
 		NormalAttack();
@@ -94,13 +101,12 @@ void Player::Update()
 	else
 	{
 		//文字の表示。
-		wchar_t text[256] = {0};
-		swprintf_s(text, 256, L"灯籠を灯すと攻撃できるぞ！");
-		m_fontRender.SetText(text);
-		m_fontRender.SetPosition({ -300.0f,-300.0f,0.0f });
-		m_fontRender.SetColor(g_vec4White);
+		wchar_t text[256] = { 0 };
+		swprintf_s(text, 256, L"灯籠を全て灯すと攻撃できるぞ！");
+		m_fontRender1.SetText(text);
+		m_fontRender1.SetPosition(FONT_POSITION);
+		m_fontRender1.SetColor(FONT_COLOR);
 	}
-	m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
 }
 
 void Player::Move()
@@ -226,8 +232,6 @@ void Player::ItemShimenawa()
 }
 
 
-
-
 //--------------------------------------------------------------------------------------------------------------
 //ここから作成用関数
 //--------------------------------------------------------------------------------------------------------------
@@ -323,7 +327,7 @@ void Player::Collision()
 				{
 					Distance();
 					// ヒールUIが有効な場合のみ回転処理。
-					if (!m_uiHeal->m_deleteFlag)
+					if (!m_uiHeal->m_isDelete)
 					{
 						RotationCamera();
 					}
@@ -455,7 +459,39 @@ void Player::HealHP(int amount)
 	}
 }
 
+void Player::UpdateHealHint()
+{
+	//HPが減っていたら回復できるように知らせる。
+	if (m_playerHP <= 90)
+	{
+		m_isDisplay = true;
+	}
+
+	//一回だけ表示させたいので。
+	if (m_isDisplay)
+	{
+		wchar_t text[256] = { 0 };
+		swprintf_s(text, 256, L"本殿の前でAボタンを押すと回復できるぞ！");
+		m_fontRender2.SetText(text);
+		m_fontRender2.SetPosition({ -300.0f,-250.0f,0.0f });
+		m_fontRender2.SetColor({ 1.0f,0.0f,1.0f,1.0f });
+	}
+
+	//回復のクールタイムを減らす。
+	m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
+}
+
 void Player::Render(RenderContext& rc)
 {
-	m_fontRender.Draw(rc);
+	//灯籠が灯っていれば描画しない。
+	if (!m_enemyIsCanAttack)
+	{
+		m_fontRender1.Draw(rc);
+	}
+	//HPが100以上あれば描画しない。
+	if (m_playerHP<=90)
+	{
+		m_fontRender2.Draw(rc);
+		m_isDisplay = false;
+	}
 }

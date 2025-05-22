@@ -73,7 +73,7 @@ void Poison::Update()
 
 	//タイマーを加算。
 	m_timer += g_gameTime->GetFrameDeltaTime();
-	//タイマーが0.7f以上だったら
+	//タイマーが0.7f以上だったら。
 	if (m_timer >= 2.0f)
 	{
 		DeleteGO(this);

@@ -5,11 +5,11 @@
 
 namespace
 {
-	//回復回数1
+	//回復回数1。
 	Vector3 SOUL_POSITION = Vector3(-600.0f, -450.0f, 0.0f);
-	//回復回数2
+	//回復回数2。
 	Vector3 SOUL_POSITION2 = Vector3(-725.0f, -450.0f, 0.0f);
-	//回復回数3
+	//回復回数3。
 	Vector3 SOUL_POSITION3 = Vector3(-850.0f, -450.0f, 0.0f);
 }
 
@@ -26,7 +26,9 @@ UIheal::~UIheal()
 
 bool UIheal::Start()
 {
-m_player = FindGO<Player>("player");
+	//インスタンスアドレスを検索。
+	m_player = FindGO<Player>("player");
+
 	//回復回数1
 	m_soulSprite1.Init("Assets/UI/gage.DDS", 150, 150);
 	m_soulSprite1.SetPosition(SOUL_POSITION);
@@ -37,6 +39,7 @@ m_player = FindGO<Player>("player");
 	m_soulSprite3.Init("Assets/UI/gage.DDS", 150, 150);
 	m_soulSprite3.SetPosition(SOUL_POSITION3);
 
+	//回復回数を初期化。
 	m_useHeal = 3;
 
 	return true;
@@ -51,7 +54,7 @@ void UIheal::Update()
 
 void UIheal::Render(RenderContext& rc)
 {
-
+	//回復回数を表示。
 	if (m_useHeal >= 3)
 	{
 		m_soulSprite1.Draw(rc);
@@ -69,7 +72,7 @@ void UIheal::Render(RenderContext& rc)
 	}
 	else if (m_useHeal <= 0)
 	{
-		m_deleteFlag = true;
+		m_isDelete = true;
 		DeleteGO(this);
 	}
 }

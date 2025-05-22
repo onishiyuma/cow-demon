@@ -5,17 +5,17 @@
 
 namespace
 {
-	//HPゲージ
+	//HPゲージ。
 	Vector3 HP_POSITION = Vector3(-245.0f, -450.0f, 0.0f);
-	//HPフレーム
+	//HPフレーム。
 	Vector3 HP_FREME_POSITION = Vector3(0.0f, -450.0f, 0.0f);
-	//HPフレームスケール
+	//HPフレームスケール。
 	Vector3 HP_FRAME_SCAL = Vector3(0.5f, 0.5f, 0.5f);
-	//HPゲージスケール
+	//HPゲージスケール。
 	Vector3 HP_SCAL = Vector3(0.2f, 0.5f, 0.5f);
-	//HPゲージピボット
+	//HPゲージピボット。
 	Vector2 HP_PIVOT = Vector2(0.0f, 0.5f);
-	//黒
+	//黒。
 	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
@@ -31,7 +31,9 @@ UIcurseBar::~UIcurseBar()
 
 bool UIcurseBar::Start()
 {
+	//インスタンスアドレスを検索。
 	m_player = FindGO<Player>("player");
+
 	//呪の抵抗フレーム
 	m_curseFrame.Init("Assets/UI/white.DDS", 1024, 128);
 	m_curseFrame.SetPosition(HP_FREME_POSITION);
@@ -41,13 +43,13 @@ bool UIcurseBar::Start()
 	//呪いの抵抗ゲージ
 	m_curseSprit.Init("Assets/UI/white.DDS", 102.4, 50);
 	m_curseSprit.SetPosition(HP_POSITION);
-
 	m_curseSprit.SetPivot(HP_PIVOT);
 	return true;
 }
 
 void UIcurseBar::Update()
 {
+	//呪いの抵抗ゲージのスケールを変更。
 	int newCurseGage = m_player->m_playerHP;
 	float wari = (float)newCurseGage / 21;
 	Vector3 scal = { 1.0f,1.0f,1.0f };
@@ -55,9 +57,6 @@ void UIcurseBar::Update()
 
 	if (m_player->m_playerHP <= 100) {
 		m_curseSprit.SetScale(scal);
-	}
-	else {
-
 	}
 
 	m_curseFrame.Update();
