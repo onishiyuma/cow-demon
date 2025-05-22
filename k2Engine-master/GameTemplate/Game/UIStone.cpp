@@ -6,6 +6,7 @@
 
 bool UIStone::Start() 
 {
+	//インスタンスアドレスを検索。
 	m_player = FindGO<Player>("player");
 
 	return true;
@@ -18,11 +19,12 @@ UIStone::UIStone()
 
 UIStone::~UIStone() 
 {
-	//DeleteGO(this);
+
 }
 
 void UIStone::Update() 
 {
+	//火打石の数を表示。
 	wchar_t wcsbuf2[256];
 	swprintf_s(wcsbuf2, 256, L"火打石:%d", int(m_player->m_stoneCount));
 

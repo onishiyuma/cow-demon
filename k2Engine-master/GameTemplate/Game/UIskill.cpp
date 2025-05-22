@@ -5,19 +5,19 @@
 
 namespace 
 {
-	//スキル
+	//スキル。
 	Vector3 SKILL_FREME_POSITION = Vector3(600.0f, -425.0f, 0.0f);
-	//スキルゲージ
+	//スキルゲージ。
 	Vector3 SKILL_GAUGE_POSITION = Vector3(600.0f, -485.0f, 0.0f);
-	//スキルフォント
+	//スキルフォント。
 	Vector3 SKILL_FONT_POSITION = Vector3(603.0f, -450.0f, 0.0f);
-	//緑
+	//緑。
 	Vector4 GREEN = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-	//薄い緑
+	//薄い緑。
 	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
-	//白
+	//白。
 	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	//透明
+	//透明。
 	Vector4 TOUMEI = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
 }
 
@@ -33,24 +33,28 @@ UIskill::~UIskill()
 
 bool UIskill::Start()
 {
+	//インスタンスアドレスを検索。
 	m_player = FindGO<Player>("player");
-	//スキルゲージ
+
+	//スキルゲージ。
 	m_skillGageSprite.Init("Assets/UI/White.DDS", 120, 14);
 	m_skillGageSprite.SetPosition(SKILL_GAUGE_POSITION);
 	m_skillGageSprite.SetPivot(Vector2{ 0.5f,0.0f });
 
-	//スキルスプライト
+	//スキルスプライト。
 	m_skillSprite.Init("Assets/UI/skilmax.DDS", 130, 130);
 	m_skillSprite.SetPosition(SKILL_FREME_POSITION);
 
-	//スキルフォント
+	//文字の座標と大きさを設定。
 	m_fontRender.SetPosition(SKILL_FONT_POSITION);
 	m_fontRender.SetScale(0.8f);
+
 	return true;
 }
 
 void UIskill::Update()
 {
+	//スキルゲージの最大値を取得。
 	m_skillGage = m_player->m_skillCharge;
 	m_skillMax = m_player->m_skillMax;
 
@@ -59,6 +63,7 @@ void UIskill::Update()
 	Vector3 scale = { 1.0f,8.7,1.0f };
 	scale.y*=wari;
 
+	//スキルが使える状態だと濃い緑になる。
 	if (m_skillGage>=m_skillMax) 
 	{
 		m_skillGageSprite.SetScale(scale);
@@ -69,6 +74,8 @@ void UIskill::Update()
 	{
 		m_skillGageSprite.SetMulColor(LIGHT_GREEN);
 	}
+
+	//表示する文字を設定。
 	wchar_t wcsbuf[256];
 	int m_skillFont =m_skillGage;
 	swprintf_s(wcsbuf, 256, L"%01d％",m_skillFont);

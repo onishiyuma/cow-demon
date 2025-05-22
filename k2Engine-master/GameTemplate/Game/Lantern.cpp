@@ -59,13 +59,13 @@ void Lantern::Update()
 	Vector3 diff = m_player->m_position - m_position;
 
 	//灯籠に火が灯っていなかったら。
-	if (m_isLight == false)
+	if (!m_isLight)
 	{
 
 		//ベクトルの長さが120.0fより小さかったら。
 		if (diff.Length() <= 100.0f)
 		{
-			if (m_isLightUI==false)
+			if (!m_isLightUI)
 			{
 
 				m_isLightUI = true;
