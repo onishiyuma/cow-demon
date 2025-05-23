@@ -62,6 +62,7 @@ bool Enemy::Start()
 	m_game = FindGO<Game>("game");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	
+	
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
 	m_forward = Vector3::AxisZ;
@@ -342,6 +343,7 @@ void Enemy::Collision()
 		{
 			m_gameCamera->m_isGameOver = true;
 			DeleteGO(this);
+
 			break;
 		}
 	}
@@ -571,7 +573,7 @@ void Enemy::ProcessCommonStateTransition()
 			//ベクトルを正規化する。
 			diff.Normalize();
 			//移動速度を設定する。
-			m_moveSpeed = diff * 250.0f;
+			m_moveSpeed = diff * 100.0f;
 			//攻撃できる距離なら。
 			int ram = rand() % 100;
 
