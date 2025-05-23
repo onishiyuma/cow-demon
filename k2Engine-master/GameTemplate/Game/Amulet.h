@@ -4,10 +4,10 @@ class Player;
 class GameCamera;
 #include"graphics/effect/EffectEmitter.h"
 
-//御札クラス・
 class Amulet:public IGameObject
 {
 public:
+	//メンバ関数。
 	Amulet();
 	~Amulet();
 	void Update();

@@ -10,7 +10,6 @@
 #include "Lantern.h"
 #include "UIheal.h"
 #include "RingBell.h"
-#include "GameCamera.h"
 #include "BellSpriteRender.h"
 #include "NoHeal.h"
 #include<time.h>
@@ -20,6 +19,8 @@ namespace
 	Vector3 FONT_POSITION = { -330.0f,-300.0f,0.0f };
 	Vector4 FONT_COLOR = { 1.0f,0.0f,1.0f,1.0f };
 }
+
+
 bool Player::Start()
 {
 	//モデルを読み込む。
@@ -27,6 +28,7 @@ bool Player::Start()
 
 	//モデルの座標をセットする。
 	m_position.Set(70.0f, 0.0f, -1000.0f);
+
 	//キャラコンを初期化。
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
 	
@@ -129,8 +131,8 @@ void Player::Move()
 	right.y = 0.0f;
 
 	//左スティックの入力量を乗算する。
-	right *= stikL.x * 310.0f;
-	forward *= stikL.y * 310.0f;
+	right *= stikL.x * 350.0f;
+	forward *= stikL.y * 350.0f;
 
 	//移動速度にスティックの入力量を加算する。
 	m_moveSpeed += right + forward;
@@ -296,12 +298,6 @@ void Player::MakeShimenawa()
 //-----------------------------------------------------------------------------------------------------------------
 //終わり
 //-----------------------------------------------------------------------------------------------------------------
- 
-//プレイヤーの管理。
-void Player::ManageState()
-{
-
-}
 
 //回復用判定。
 void Player::Collision()

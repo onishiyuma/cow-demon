@@ -17,13 +17,13 @@ public:
 	//メンバ関数。
 	Lantern();
 	~Lantern();
-
 	bool Start();
-	
 	//更新処理。
 	void Update();
 	//描画処理。
 	void Render(RenderContext& rc);
+	//リセット用関数。
+	void ResetLanternState();
 
 	//メンバ変数。
 public:
@@ -42,12 +42,12 @@ private:
 	Line*				m_line;						//線。
 	SpritePush*			m_spritePush;				//プッシュ画像。
 	LanternLight*		m_lanternLight = nullptr;	//灯籠。
-
-
-	int					m_buttonAState = 0;			//Aボタンの入力ステート管理。
-	int					m_lanternCount = 0;			//火を灯したカウント。
 	bool				m_isNoStoneUI = false;		//火打石があるか。
 	bool				m_isLanternAction = false;	//「A:火を灯す」灯籠を灯したか。
 	bool				m_isLightUI = false;		//灯籠の近くにいるか。
+	const float			m_lightUpDistance = 100.0f;	//灯籠を灯す距離。	
+	int					m_buttonAState = 0;			//Aボタンの入力ステート管理。
+	int					m_lanternCount = 0;			//火を灯したカウント。
+
 };
 

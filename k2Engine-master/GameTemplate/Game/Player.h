@@ -36,8 +36,6 @@ public:
 	void MakeShimenawa();
 	//移動。
 	void Move();
-	//状態管理。
-	void ManageState();
 	//当たり判定。
 	void Collision();
 	//距離計算。
