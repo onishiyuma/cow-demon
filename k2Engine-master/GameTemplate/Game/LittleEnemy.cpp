@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "GameOver.h"
 #include "GameCamera.h"
-
+#include "RingBell.h"
 //#include"collision/CollisionObject.h"
 #include<time.h>
 #include<stdlib.h>
@@ -58,8 +58,8 @@ bool LittleEnemy::Start()
 
 	//キャラコンを初期化。
 	m_charaCon.Init(
-		20.0f,
-		20.0f,
+		50.0f,
+		50.0f,
 		m_position
 	);
 
@@ -80,7 +80,7 @@ bool LittleEnemy::Start()
 	//各種インスタンスアドレスを検索。
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
-
+	m_ringBell = FindGO<RingBell>("ringbell");
 	//乱数を初期化。
 	srand((unsigned)time(NULL));
 	m_forward = Vector3::AxisZ;
@@ -93,6 +93,8 @@ void LittleEnemy::Update()
 {
 	//追跡処理。
 	Chase();
+	//本殿追跡処理
+	IsHonden();
 	//回転処理。
 	Rotation();
 	//コリジョン
@@ -143,6 +145,24 @@ void LittleEnemy::Chase()
 	//モデルの表示位置を更新。
 	Vector3 modelPosition = m_position;
 	modelPosition.y += 2.5f;
+	m_modelRender.SetPosition(modelPosition);
+}
+
+void LittleEnemy::IsHonden()
+{
+	//追跡ステートでないなら、追跡処理はしない
+	if (m_enemyState != enEnemyState_Honden)
+	{
+		return;
+	}
+	/*m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();*/
+	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+	if (m_charaCon.IsOnGround()) {
+		//地面についた
+		m_moveSpeed.y = 0.0f;
+	}
+	Vector3 modelPosition = m_position;
+
 	m_modelRender.SetPosition(modelPosition);
 }
 
@@ -356,6 +376,27 @@ const bool LittleEnemy::SearchPlayer()const
 	return false;
 }
 
+const bool LittleEnemy::SearchHonden()const
+{
+	Vector3 diff = m_ringBell->GetPosition() - m_position;
+	//対象に向かう
+	if (diff.LengthSq() <= 10000 * 10000)
+	{
+		//エネミーから本殿に向かうベクトルを正規化する
+		diff.Normalize();
+		//内積(cos0)を調べる
+		float cos = m_forward.Dot(diff);
+		//内積から角度を求める
+		float angle = acosf(cos);
+		if (angle <= (Math::PI / 360.0f) * 360.0f)
+		{
+			return true;
+		}
+		return false;
+
+	}
+}
+
 /*void LittleEnemy::Leave()
 {
 	//騾謨｣繧ｹ繝・・繝亥・縺ｪ縺・↑繧・騾謨｣蜃ｦ逅・・縺励↑縺・
@@ -506,6 +547,24 @@ void LittleEnemy::ProcessPoisonAttackStateTransition()
 
 }	
 
+void LittleEnemy::ProcessHondenStateTransition()
+{
+	//攻撃ができる距離になったら
+	if (IsCanAttack() == true)
+	{
+		//他のステートに遷移する
+		ProcessCommonStateTransition();
+		return;
+	}
+
+	m_hondenTimer += g_gameTime->GetFrameDeltaTime();
+	//追跡時移行がある程度経過したら
+	if (m_hondenTimer >= 0.8f)
+	{
+		ProcessCommonStateTransition();
+	}
+}
+
 void LittleEnemy::ProcessDamageStateTransition()
 {
 	//被ダメージアニメーションの再生が終わったら。
@@ -536,42 +595,48 @@ void LittleEnemy::ProcessCommonStateTransition()
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
 	m_poisonAttackCoolDown = 0.0f;
+	m_hondenTimer = 0.0f;
 
-
-	Vector3 diff = m_player->GetPosition() - m_position;
-	//プレイヤーとの距離を求める。
-	if (SearchPlayer() == true)
-	{
-		//正規化。
-		diff.Normalize();
-		//移動速度を計算する。
-		m_moveSpeed = diff * 100.0f;
-		//攻撃できる距離なら。
-		if (IsCanAttack() == true)
+	if (SearchHonden() == true) {
+		//プレイヤーとの距離を求める。
+		if (SearchPlayer() == true)
 		{
-			int ram = rand() % 100;
-			if (ram > 90)
+			Vector3 diff = m_player->GetPosition() - m_position;
+			//正規化。
+			diff.Normalize();
+			//移動速度を計算する。
+			m_moveSpeed = diff * 100.0f;
+			//攻撃できる距離なら。
+			if (IsCanAttack() == true)
 			{
-				m_enemyState = enEnemyState_Chase;
+				int ram = rand() % 100;
+				if (ram > 90)
+				{
+					m_enemyState = enEnemyState_Chase;
 
+				}
+
+				else
+				{
+					m_enemyState = enEnemyState_Poison;
+					return;
+				}
 			}
-
 			else
 			{
-				m_enemyState = enEnemyState_Poison;
-				return;
+				m_enemyState = enEnemyState_Chase;
 			}
+
 		}
 		else
 		{
-			m_enemyState = enEnemyState_Chase;
-		}
+			Vector3 diff = m_ringBell->GetPosition() - m_position;
+			diff.Normalize();
+			m_moveSpeed = diff * 125.0f;
 
-	}
-	else
-	{
-		m_enemyState = enEnemyState_Idle;
-		return;
+			m_enemyState = enEnemyState_Honden;
+			return;
+		}
 	}
 }
 
@@ -592,6 +657,10 @@ void LittleEnemy::ManageState()
 		/*case enEnemyState_Leave:
 			ProcessLeaveStateTransition();
 			break;*/
+		//本殿追従状態
+	case enEnemyState_Honden:
+		ProcessHondenStateTransition();
+		break;
 		//遠距離攻撃状態
 	case enEnemyState_Poison:
 		ProcessPoisonAttackStateTransition();
@@ -634,6 +703,10 @@ void LittleEnemy::PlayAnimation()
 		//	m_modelRender.SetAnimationSpeed(1.2f);
 		//	m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		//	break;
+	case enEnemyState_Honden:
+		m_modelRender.SetAnimationSpeed(1.2f);
+		m_modelRender.PlayAnimation(enAnimationClip_Run,0.1f);
+		break;
 	case enEnemyState_Poison:
 		//遠距離攻撃状態
 		m_modelRender.SetAnimationSpeed(1.2f);
@@ -669,7 +742,7 @@ const bool LittleEnemy::IsCanAttack()const
 	Vector3 diff = m_player->GetPosition() - m_position;
 
 	//プレイヤーとの距離が近かったら。
-	if (diff.LengthSq() <= 10000.0f * 1000.0f)
+	if (diff.LengthSq() <= 500.0f * 500.0f)
 	{
 		//攻撃。
 		return true;

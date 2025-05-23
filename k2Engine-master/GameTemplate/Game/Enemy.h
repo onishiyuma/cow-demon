@@ -85,7 +85,7 @@ public:
 
 	//アニメーション処理。
 	void PlayAnimation() override;
-	void OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName);
+	void OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)override;
 
 	//攻撃処理。
 	void Attack();
