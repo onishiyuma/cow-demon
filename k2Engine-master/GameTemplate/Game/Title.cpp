@@ -29,6 +29,7 @@ Title::~Title()
 
 void Title::Update()
 {
+	//タイマーを加算。
 	m_timer+= g_gameTime->GetFrameDeltaTime();
 
 	//タイトルからインゲームへ移行。

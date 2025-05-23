@@ -5,19 +5,19 @@ class LanternAttack;
 class RedFlame:public IGameObject
 {
 public:
-	//メンバ関数
+	//メンバ関数。
 	RedFlame();
 	~RedFlame();
 	bool Start();
-	//更新処理
+	//更新処理。
 	void Update();
-	//描画処理
+	//描画処理。
 	void Render(RenderContext& rc);
 
-	//メンバ変数
-	Vector3 m_firstPosition;
-	Vector3 m_position;
-	LanternAttack* m_lanternAttack;
-
+private:
+	//メンバ変数。
+	LanternAttack*		m_lanternAttack;//攻撃用灯籠。
+	Vector3				m_firstPosition;//初期座標。
+	Vector3				m_position;//座標。
 };
 

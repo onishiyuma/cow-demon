@@ -6,13 +6,14 @@
 #include "Game.h"
 #include "GameOver.h"
 #include "GameCamera.h"
-
+#include "RingBell.h"
 //#include"collision/CollisionObject.h"
 #include<time.h>
 #include<stdlib.h>
 
 namespace
 {
+	//スキルゲージの増加量。
 	int CHARGE_INCREASE_AMOUNT = 2;
 }
 
@@ -27,43 +28,48 @@ LittleEnemy::~LittleEnemy()
 }
 
 bool LittleEnemy::Start()
-{   //蠕・ｩ・
+{  
+	//アニメーションの読み込みとループ設定。
 	m_animationClips[enAnimationClip_Idle].Load("Assets/animData/littleEnemy/idle.tka");
 	m_animationClips[enAnimationClip_Idle].SetLoopFlag(true);
-	//豁ｩ陦・
+
 	m_animationClips[enAnimationClip_Walk].Load("Assets/animData/littleEnemy/walk.tka");
 	m_animationClips[enAnimationClip_Walk].SetLoopFlag(true);
-	//襍ｰ陦・
+
 	m_animationClips[enAnimationClip_Run].Load("Assets/animData/littleEnemy/run.tka");
 	m_animationClips[enAnimationClip_Run].SetLoopFlag(true);
-	////迢ｬ繝悶Ξ繧ｹ
+
 	m_animationClips[enAnimationClip_Poison].Load("Assets/animData/littleEnemy/poison.tka");
 	m_animationClips[enAnimationClip_Poison].SetLoopFlag(true);
-	//繝繝｡繝ｼ繧ｸ
+
 	m_animationClips[enAnimationClip_Damage].Load("Assets/animData/littleEnemy/receivedamage.tka");
 	m_animationClips[enAnimationClip_Damage].SetLoopFlag(false);
-	//繝繧ｦ繝ｳ
+	
 	m_animationClips[enAnimationClip_Down].Load("Assets/animData/littleEnemy/down.tka");
 	m_animationClips[enAnimationClip_Down].SetLoopFlag(false);
 
+	//モデルの初期化。
 	m_modelRender.Init("Assets/modelData/LittleEnemy/enemy.tkm", m_animationClips, enAnimationClip_Num);
 
-	//蠎ｧ讓吶ｒ譖ｴ譁ｰ縺吶ｋ
+	//座標を設定。
 	m_modelRender.SetPosition(m_position);
-	//蝗櫁ｻ｢繧定ｨｭ螳壹☆繧・
+	//回転を設定。
 	m_modelRender.SetRotation(m_rotation);
-	////螟ｧ縺阪＆繧定ｨｭ螳壹☆繧・
-	//m_modelRender.SetScale(m_scale);
+
+	//キャラコンを初期化。
 	m_charaCon.Init(
-		20.0f,
-		20.0f,
+		50.0f,
+		50.0f,
 		m_position
 	);
 
+	//大きさを設定。
 	Vector3  scale(100.0f, 100.0f, 100.0f);
 	SetScale(scale);
+	//HPを設定。
 	SetHP(100);
-	//繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧､繝吶Φ繝育畑縺ｮ髢｢謨ｰ繧定ｨｭ螳壹☆繧・
+
+	//アニメーションイベントの登録。
 	m_modelRender.AddAnimationEvent([&](const wchar_t* clipName, const wchar_t* eventName) {
 		OneAnimationEvent(clipName, eventName);
 		});
@@ -71,10 +77,11 @@ bool LittleEnemy::Start()
 	////繧ｨ繝輔ぉ繧ｯ繝医ｒ隱ｭ縺ｿ霎ｼ繧
 	//EffectEngine::GetInstance()->ResistEffect(1, u"Assets/Effect/Poison.efk");
 
+	//各種インスタンスアドレスを検索。
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
-
-	//荵ｱ謨ｰ繧貞・譛溷喧縺吶ｋ
+	m_ringBell = FindGO<RingBell>("ringbell");
+	//乱数を初期化。
 	srand((unsigned)time(NULL));
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
@@ -84,36 +91,37 @@ bool LittleEnemy::Start()
 
 void LittleEnemy::Update()
 {
-	////騾謨｣蜃ｦ逅・
-	//Leave();
-	//霑ｽ霍｡蜃ｦ逅・
+	//追跡処理。
 	Chase();
-	//蝗櫁ｻ｢蜃ｦ逅・
+	//本殿追跡処理
+	IsHonden();
+	//回転処理。
 	Rotation();
-	//蠖薙◆繧雁愛螳・
+	//コリジョン
 	Collision();
-	//繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ蜀咲函
+	//アニメーション更新。
 	PlayAnimation();
-	//繧ｹ繝・・繝育ｮ｡逅・
+	//状態管理。
 	ManageState();
-	//繝｢繝・Ν縺ｮ譖ｴ譁ｰ
+	//モデルレンダーの更新。
 	m_modelRender.Update();
 }
 
 void LittleEnemy::Rotation()
 {
+	//移動速度がなければ何もしない。
 	if (fabsf(m_moveSpeed.x) < 0.001f&& fabsf(m_moveSpeed.z) < 0.001f) 
 	{
 		return;
 	}
 
+	//進行方向に回転をかける。
 	float angle = atan2(-m_moveSpeed.x, m_moveSpeed.z);
 	m_rotation.SetRotationY(-angle);
 
-	//蝗櫁ｻ｢繧定ｨｭ螳壹☆繧・
+	//回転を設定。
 	m_modelRender.SetRotation(m_rotation);
 
-	//繝励Ξ繧､繝､繝ｼ縺ｮ蜑阪・繧ｯ繝医Ν繧定ｨ育ｮ励☆繧・
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
 
@@ -121,29 +129,47 @@ void LittleEnemy::Rotation()
 
 void LittleEnemy::Chase()
 {
-	//霑ｽ霍｡繧ｹ繝・・繝医〒縺ｪ縺・↑繧峨∬ｿｽ霍｡蜃ｦ逅・・縺励↑縺・
+	//追跡ステートでなければ何もしない。
 	if (m_enemyState != enEnemyState_Chase)
 	{
 		return;
 	}
-	/*m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();*/
+
+	//キャラコンを使って移動。
 	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
 
 	if (m_charaCon.IsOnGround()) {
-		//蝨ｰ髱｢縺ｫ縺､縺・◆
+		//y方向には移動させない。
 		m_moveSpeed.y = 0.0f;
 	}
+	//モデルの表示位置を更新。
 	Vector3 modelPosition = m_position;
 	modelPosition.y += 2.5f;
 	m_modelRender.SetPosition(modelPosition);
 }
 
+void LittleEnemy::IsHonden()
+{
+	//追跡ステートでないなら、追跡処理はしない
+	if (m_enemyState != enEnemyState_Honden)
+	{
+		return;
+	}
+	/*m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();*/
+	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+	if (m_charaCon.IsOnGround()) {
+		//地面についた
+		m_moveSpeed.y = 0.0f;
+	}
+	Vector3 modelPosition = m_position;
+
+	m_modelRender.SetPosition(modelPosition);
+}
+
 void LittleEnemy::Collision()
 {
-	//陲ｫ繝繝｡繝ｼ繧ｸ縲√≠繧九＞縺ｯ繝繧ｦ繝ｳ繧ｹ繝・・繝医・譎ゅ・
-	//蠖薙◆繧雁愛螳壼・逅・・縺励↑縺・/
-	if (m_enemyState == enEnemyState_Damage ||
-		m_enemyState == enEnemyState_Down)
+	//ダメーいを受けている場合は何もしない。
+	if (m_enemyState == enEnemyState_Damage ||m_enemyState == enEnemyState_Down)
 	{
 		return;
 	}
@@ -153,12 +179,12 @@ void LittleEnemy::Collision()
 	//-----------------------------------------
 
 	{
-		//プレイヤー攻撃用のコリジョンを取得する
+		//プレイヤー攻撃用のコリジョンを取得する。
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("purification");
-		//コリジョンの配列をfor文で回す
+		//コリジョンの配列をfor文で回す。
 		for (auto collision : collisions)
 		{
-			//コリジョンとキャラコンが衝突したら
+			//コリジョンとキャラコンが衝突したら。
 			if (collision->IsHit(m_charaCon))
 			{
 				//会心の設定。
@@ -169,15 +195,14 @@ void LittleEnemy::Collision()
 
 					if (m_enemyHP <= 0)
 					{
-						//HPが0になったら
+						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
 					}
 					else {
-						//被ダメージステートに遷移する
+						//被ダメージステートに遷移する。
 						m_enemyState = enEnemyState_Damage;
 					}
-
-					//スキルを使うため
+					//スキルを使うため。
 					m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
 				}
 				//非会心。
@@ -187,11 +212,11 @@ void LittleEnemy::Collision()
 
 					if (m_enemyHP <= 0)
 					{
-						//HPが0になったら
+						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
 					}
 					else {
-						//被ダメージステートに遷移する
+						//被ダメージステートに遷移する。
 						m_enemyState = enEnemyState_Damage;
 					}
 					return;
@@ -205,12 +230,12 @@ void LittleEnemy::Collision()
 	//-----------------------------------------	
 
 	{
-		//プレイヤーのスキル用のコリジョンを取得する
+		//プレイヤーのスキル用のコリジョンを取得する。
 		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("amulet");
-		//for文で配列を回す
+		//for文で配列を回す。
 		for (auto collision : collisions)
 		{
-			//コリジョンとキャラコンが衝突する
+			//コリジョンとキャラコンが衝突する。
 			if (collision->IsHit(m_charaCon))
 			{
 				//スキルのダメージ。
@@ -218,15 +243,15 @@ void LittleEnemy::Collision()
 				//敵のHPを減らす。
 				m_enemyHP -= m_player->m_skillATK;
 
-				//HPが0になったら
+				//HPが0になったら。
 				if (m_enemyHP < 0)
 				{
-					//ダウンステートに遷移する
+					//ダウンステートに遷移する。
 					m_enemyState = enEnemyState_Down;
 				}
 
 				else {
-					//被ダメージステートに遷移する
+					//被ダメージステートに遷移する。
 					m_enemyState = enEnemyState_Damage;
 				}
 				return;
@@ -252,7 +277,7 @@ void LittleEnemy::Collision()
 				//敵のHPを減らす。
 				m_enemyHP -= m_player->m_tukuyomiATK;
 
-				//HPが0になったら
+				//HPが0になったら。
 				if (m_enemyHP < 0)
 				{
 					//ダウンステートに遷移する。
@@ -329,26 +354,47 @@ void LittleEnemy::Collision()
 
 const bool LittleEnemy::SearchPlayer()const
 {
+	//プレイヤーとのベクトルを求める。
 	Vector3 diff = m_player->GetPosition() - m_position;
 
-	//蟇ｾ雎｡縺ｫ霑代￥縺ｪ縺｣縺溘ｉ
+	//エネミーとプレイヤーの距離が近かったら。
 	if (diff.LengthSq() <= 700.0f * 700.0f)
 	{
-		//繧ｨ繝阪Α繝ｼ縺九ｉ繝励Ξ繧､繝､繝ｼ縺ｫ蜷代°縺・・繧ｯ繝医Ν繧呈ｭ｣隕丞喧縺吶ｋ
+		//正規化。
 		diff.Normalize();
-		//蜀・ｩ・cos0)繧定ｪｿ縺ｹ繧・
+		//内積を求める。
 		float cos = m_forward.Dot(diff);
-		//蜀・ｩ・cos0)縺九ｉ隗貞ｺｦ繧呈ｱゅａ繧・
+		//内積から角度を求める。
 		float angle = acosf(cos);
-		//隗貞ｺｦ繧・0)縺・20蠎ｦ繧医ｊ蟆上＆縺代ｌ縺ｰ
+		//角度が120度よりも小さければ。
 		if (angle <= (Math::PI / 360.0f) * 360.0f)
 		{
-			//繝励Ξ繧､繝､繝ｼ繧定ｦ九▽縺代ｉ繧後◆
+			//プレイヤーを見つけた。
 			return true;
 		}
-
 	}
 	return false;
+}
+
+const bool LittleEnemy::SearchHonden()const
+{
+	Vector3 diff = m_ringBell->GetPosition() - m_position;
+	//対象に向かう
+	if (diff.LengthSq() <= 10000 * 10000)
+	{
+		//エネミーから本殿に向かうベクトルを正規化する
+		diff.Normalize();
+		//内積(cos0)を調べる
+		float cos = m_forward.Dot(diff);
+		//内積から角度を求める
+		float angle = acosf(cos);
+		if (angle <= (Math::PI / 360.0f) * 360.0f)
+		{
+			return true;
+		}
+		return false;
+
+	}
 }
 
 /*void LittleEnemy::Leave()
@@ -404,42 +450,42 @@ void LittleEnemy::PoisonAttack()
 
 void LittleEnemy::MakePoison()
 {
-	//豈偵ヶ繝ｬ繧ｹ縺ｮ繧ｪ繝悶ず繧ｧ繧ｯ繝医ｒ菴懈・縺吶ｋ
+	//毒ブレスのオブジェクトを作成。
 	Poison* poison = NewGO<Poison>(0);
 	Vector3 PoisonPosition = m_position;
-	//蠎ｧ讓吶ｒ蟆代＠荳翫↓險ｭ螳壹☆繧・
+	//座標を少し上に設定。
 	PoisonPosition.y += 50.0f;
-	//蠎ｧ讓吶ｒ險ｭ螳壹☆繧・
+	//座標を設定。
 	poison->SetPosition(PoisonPosition);
-	//蝗櫁ｻ｢繧定ｨｭ螳壹☆繧・
+	//回転を設定。
 	poison->SetRotation(m_rotation);
-	//蟆・焔繧定ｨｭ螳壹☆繧・
+	//射手を設定する。
 	poison->SetEnEnemy(Poison::enPoison_LittleEnemy);
 }
 
 void LittleEnemy::ProcessIdleStateTransition()
 {
+	//待機時間を加算。
 	m_idleTimer += g_gameTime->GetFrameDeltaTime();
-	//蠕・ｩ滓凾髢薙′縺ゅｋ遞句ｺｦ邨碁℃縺励◆繧・
+	//待機時間がある程度経過したら
 	if (m_idleTimer >= 0.9f)
 	{
-		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
+		//他のステートに遷移する。
 		ProcessCommonStateTransition();
 	}
 }
 void LittleEnemy::ProcessChaseStateTransition()
 {
-	//謾ｻ謦・′縺ｧ縺阪ｋ霍晞屬縺ｪ繧・
-	/*if (IsCanAttack() == true)
-	////謾ｻ謦・′縺ｧ縺阪ｋ霍晞屬縺ｪ繧・
+	/*//攻撃ができる距離なら。
 	if (IsCanAttack() == true)
 	{
-		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
+		//他のステートに遷移する。
 		ProcessCommonStateTransition();
 		return;
 	}*/
+
 	m_chaseTimer += g_gameTime->GetFrameDeltaTime();
-	//霑ｽ霍｡譎る俣縺後≠繧狗ｨ句ｺｦ邨碁℃縺励◆繧・
+	//追跡時間がある程度経過したら。
 	if (m_chaseTimer >= 0.8f)
 	{
 		ProcessCommonStateTransition();
@@ -449,49 +495,49 @@ void LittleEnemy::ProcessChaseStateTransition()
 
 /*void LittleEnemy::ProcessLeaveStateTransition()
 {
-	//霍晞屬縺瑚ｿ代＞縺ｪ繧・
+		//距離が近いなら
 	if (IsLeave() == true)
 	{
-		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
+		//他のステートに遷移する
 		ProcessCommonStateTransition();
 		return;
 	}
 	m_leaveTimer += g_gameTime->GetFrameDeltaTime();
-		//騾謨｣譎る俣縺後≠繧狗ｨ句ｺｦ邨碁℃縺励◆繧・
+		//退散時間がある程度経過したら
 	if (m_leaveTimer >= 0.8f)
 	{
-		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
+		//他のステートに遷移する
 		ProcessCommonStateTransition();
 	}
-}*/
-//void LittleEnemy::ProcessLeaveStateTransition()
-//{
-//	//霍晞屬縺瑚ｿ代＞縺ｪ繧・
-//	if (IsLeave() == true)
-//	{
-//		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
-//		ProcessCommonStateTransition();
-//		return;
-//	}
-//	m_leaveTimer += g_gameTime->GetFrameDeltaTime();
-//		//騾謨｣譎る俣縺後≠繧狗ｨ句ｺｦ邨碁℃縺励◆繧・
-//	if (m_leaveTimer >= 0.8f)
-//	{
-//		//莉悶・繧ｹ繝・・繝医↓驕ｷ遘ｻ縺吶ｋ
-//		ProcessCommonStateTransition();
-//	}
-//}
-
-void LittleEnemy::ProcessPoisonAttackStateTransition()
+}
+void LittleEnemy::ProcessLeaveStateTransition()
 {
-
-	//驕霍晞屬謾ｻ謦・い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ蜀咲函縺檎ｵゅｏ縺｣縺溘ｉ
+	//遠距離攻撃アニメーションの再生が終わったら。
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
 		ProcessCommonStateTransition();
 		return;
 	}
-	//霑ｽ霍｡譎る俣縺後≠繧狗ｨ句ｺｦ邨碁℃縺励◆繧・
+	//追跡時間がある程度経過したら。
+	if (m_poisonAttackCoolDown >= 0.8f)
+	{
+		ProcessCommonStateTransition();
+		return;
+	}
+	m_poisonAttackCoolDown += g_gameTime->GetFrameDeltaTime();
+}*/
+
+
+void LittleEnemy::ProcessPoisonAttackStateTransition()
+{
+
+	//被ダメージアニメーションの再生が終わったら。
+	if (m_modelRender.IsPlayingAnimation() == false)
+	{
+		ProcessCommonStateTransition();
+		return;
+	}
+	//追跡時間がある程度経過したら。
 	if (m_poisonAttackCoolDown >= 0.8f)
 	{
 		ProcessCommonStateTransition();
@@ -499,24 +545,43 @@ void LittleEnemy::ProcessPoisonAttackStateTransition()
 	}
 	m_poisonAttackCoolDown += g_gameTime->GetFrameDeltaTime();
 
+}	
+
+void LittleEnemy::ProcessHondenStateTransition()
+{
+	//攻撃ができる距離になったら
+	if (IsCanAttack() == true)
+	{
+		//他のステートに遷移する
+		ProcessCommonStateTransition();
+		return;
+	}
+
+	m_hondenTimer += g_gameTime->GetFrameDeltaTime();
+	//追跡時移行がある程度経過したら
+	if (m_hondenTimer >= 0.8f)
+	{
+		ProcessCommonStateTransition();
+	}
 }
 
 void LittleEnemy::ProcessDamageStateTransition()
 {
-	//陲ｫ繝繝｡繝ｼ繧ｸ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ蜀咲函縺檎ｵゅｏ縺｣縺溘ｉ
+	//被ダメージアニメーションの再生が終わったら。
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
-		//謾ｻ謦・＆繧後◆繧芽ｷ晞屬髢｢菫ゅ↑縺励↓騾謨｣縺輔○繧・
+		//攻撃されたら距離関係なしに退散させる。
 		m_enemyState = enEnemyState_Chase;
 		Vector3 diff = m_player->GetPosition() - m_position;
 		diff.Normalize();
-		//遘ｻ蜍暮溷ｺｦ繧定ｨｭ螳壹☆繧・
+		//移動速度を設定する。
 		m_moveSpeed = diff * 10.0f;
 	}
 }
 
 void LittleEnemy::ProcessDownStateTransition()
 {
+	//ダウンアニメーションの再生が終わったら。
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
 		Game* game = FindGO<Game>("Game");
@@ -526,46 +591,52 @@ void LittleEnemy::ProcessDownStateTransition()
 
 void LittleEnemy::ProcessCommonStateTransition()
 {
-	//蜷・ち繧､繝槭・繧貞・譛溷喧
+	//各種タイマーをリセット。
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
 	m_poisonAttackCoolDown = 0.0f;
+	m_hondenTimer = 0.0f;
 
-
-	Vector3 diff = m_player->GetPosition() - m_position;
-	//繝励Ξ繧､繝､繝ｼ繧定ｦ九▽縺代◆繧・
-	if (SearchPlayer() == true)
-	{
-		//繝吶け繝医Ν繧呈ｭ｣隕丞喧縺吶ｋ
-		diff.Normalize();
-		//遘ｻ蜍暮溷ｺｦ險育ｮ励☆繧・
-		m_moveSpeed = diff * 100.0f;
-		//謾ｻ謦・〒縺阪ｒ繧玖ｷ晞屬縺ｪ繧・
-		if (IsCanAttack() == true)
+	if (SearchHonden() == true) {
+		//プレイヤーとの距離を求める。
+		if (SearchPlayer() == true)
 		{
-			int ram = rand() % 100;
-			if (ram > 90)
+			Vector3 diff = m_player->GetPosition() - m_position;
+			//正規化。
+			diff.Normalize();
+			//移動速度を計算する。
+			m_moveSpeed = diff * 100.0f;
+			//攻撃できる距離なら。
+			if (IsCanAttack() == true)
 			{
-				m_enemyState = enEnemyState_Chase;
+				int ram = rand() % 100;
+				if (ram > 90)
+				{
+					m_enemyState = enEnemyState_Chase;
 
+				}
+
+				else
+				{
+					m_enemyState = enEnemyState_Poison;
+					return;
+				}
 			}
-
 			else
 			{
-				m_enemyState = enEnemyState_Poison;
-				return;
+				m_enemyState = enEnemyState_Chase;
 			}
+
 		}
 		else
 		{
-			m_enemyState = enEnemyState_Chase;
-		}
+			Vector3 diff = m_ringBell->GetPosition() - m_position;
+			diff.Normalize();
+			m_moveSpeed = diff * 125.0f;
 
-	}
-	else
-	{
-		m_enemyState = enEnemyState_Idle;
-		return;
+			m_enemyState = enEnemyState_Honden;
+			return;
+		}
 	}
 }
 
@@ -574,21 +645,31 @@ void LittleEnemy::ManageState()
 {
 	switch (m_enemyState)
 	{
+		//待機状態
 	case enEnemyState_Idle:
 		ProcessIdleStateTransition();
 		break;
+		//追跡状態
 	case enEnemyState_Chase:
 		ProcessChaseStateTransition();
 		break;
+		//退散状態
 		/*case enEnemyState_Leave:
 			ProcessLeaveStateTransition();
 			break;*/
+		//本殿追従状態
+	case enEnemyState_Honden:
+		ProcessHondenStateTransition();
+		break;
+		//遠距離攻撃状態
 	case enEnemyState_Poison:
 		ProcessPoisonAttackStateTransition();
 		break;
+		//被ダメージ状態
 	case enEnemyState_Damage:
 		ProcessDamageStateTransition();
 		break;
+		//ダウン状態
 	case enEnemyState_Down:
 		ProcessDownStateTransition();
 		break;
@@ -599,40 +680,45 @@ void LittleEnemy::ManageState()
 
 void LittleEnemy::PlayAnimation()
 {
+	//アニメーションの再生速度を設定。
 	m_modelRender.SetAnimationSpeed(1.0f);
 	switch (m_enemyState)
 	{
 	case enEnemyState_Idle:
-		//蠕・ｩ溘せ繝・・繝・
+		//待機状態
 		m_modelRender.PlayAnimation(enAnimationClip_Idle, 0.5f);
 		break;
 	case enEnemyState_Chase:
-		//霑ｽ霍｡繧ｹ繝・・繝・
+		//追跡状態
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
 		/*case enEnemyState_Leave:
-			//騾謨｣繧ｹ繝・・繝・
+			//追跡状態
 			m_modelRender.SetAnimationSpeed(1.2f);
 			m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 			break;*/
 		//case enEnemyState_Leave:
-		//	//騾謨｣繧ｹ繝・・繝・
+		//退散状態
 		//	m_modelRender.SetAnimationSpeed(1.2f);
 		//	m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		//	break;
+	case enEnemyState_Honden:
+		m_modelRender.SetAnimationSpeed(1.2f);
+		m_modelRender.PlayAnimation(enAnimationClip_Run,0.1f);
+		break;
 	case enEnemyState_Poison:
-		//驕霍晞屬謾ｻ謦・せ繝・・繝・
+		//遠距離攻撃状態
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Poison, 0.1f);
 		break;
 	case enEnemyState_Damage:
-		//陲ｫ繝繝｡繝ｼ繧ｸ繧ｹ繝・・繝・
+		//被ダメージ状態
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Damage, 0.1f);
 		break;
 	case enEnemyState_Down:
-		//繝繧ｦ繝ｳ繧ｹ繝・・繝・
+		//ダウン状態
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Down, 0.1f);
 		break;
@@ -644,7 +730,7 @@ void LittleEnemy::PlayAnimation()
 void LittleEnemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
 {
 	(void)clipName;
-
+	//アニメーションイベントの処理。
 	if (wcscmp(eventName, L"magic_attack") == 0) {
 		MakePoison();
 	}
@@ -652,14 +738,16 @@ void LittleEnemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* even
 
 const bool LittleEnemy::IsCanAttack()const
 {
+	//プレイヤーとの距離を求める。
 	Vector3 diff = m_player->GetPosition() - m_position;
-	//繧ｨ繝阪Α繝ｼ縺ｨ繝励Ξ繧､繝､繝ｼ縺ｮ霍晞屬縺瑚ｿ代°縺｣縺溘ｉ
-	if (diff.LengthSq() <= 10000.0f * 1000.0f)
+
+	//プレイヤーとの距離が近かったら。
+	if (diff.LengthSq() <= 500.0f * 500.0f)
 	{
-		//謾ｻ謦・庄
+		//攻撃。
 		return true;
 	}
-	//謾ｻ謦・ｸ榊庄
+	//何もしない。
 	return false;
 }
 

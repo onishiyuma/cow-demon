@@ -9,7 +9,6 @@ class Player;
 class Game;
 class GameCamera;
 
-//ウザイ敵の管理を行うクラス。
 class AnnoyingEnemy : public EnemyBase
 {
 public:

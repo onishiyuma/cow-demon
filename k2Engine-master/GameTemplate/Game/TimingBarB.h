@@ -1,6 +1,7 @@
 #pragma once
 class TimingBarB :public IGameObject
 {
+	//メンバ関数。
 public:
 	TimingBarB();
 	~TimingBarB();
@@ -10,8 +11,10 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	SpriteRender m_spriteRender;
-	Vector3 m_position;
+private:
+	//メンバ変数。
+	SpriteRender	m_spriteRender;		//スプライトレンダー。
+	Vector3			m_position;			//座標。
 
 };
 

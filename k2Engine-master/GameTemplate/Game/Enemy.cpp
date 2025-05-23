@@ -6,7 +6,6 @@
 #include "GameOver.h"
 #include "RingBell.h"
 #include "BackGround.h"
-#include "Game.h"
 #include "collision/CollisionObject.h"
 #include "GameCamera.h"
 #include <time.h>
@@ -44,8 +43,8 @@ bool Enemy::Start()
 	
 	//キャラコンの初期化。
 	m_charaCon.Init(
-		20.0f,
-		20.0f,
+		40.0f,
+		40.0f,
 		m_position
 	);
 
@@ -149,6 +148,8 @@ void Enemy::IsHonden()
 	{
 		return;
 	}
+	//重力を追加。
+	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
 	//キャラコンを使って移動。
 	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
 	//地面についていたらY方向の速度をリセット。
@@ -365,7 +366,6 @@ void Enemy::Attack()
 	}
 }
 
-
 const bool Enemy::SearchPlayer()const
 {
 	Vector3 diff = m_player->GetPosition() - m_position;
@@ -434,8 +434,6 @@ void Enemy::ProcessIdleStateTransition()
 	}
 }
 
-
-
 void Enemy::ProcessChaseStateTransition()
 {
 	//攻撃ができる距離になったら。
@@ -500,59 +498,6 @@ void Enemy::ProcessHondenStateTransition()
 		ProcessCommonStateTransition();
 	}
 }
-
-//void Enemy::ProcessCommonStateTransition()
-//{
-//	//各タイマーを初期化
-//	m_idleTimer = 0.0f;
-//	m_chaseTimer = 0.0f;
-//
-//	//エネミーからプレイヤーに向かうベクトルを計算する
-//	Vector3 diff1 = m_player->GetPosition() - m_position;
-//	
-//	//プレイヤーを見つけたら
-//	if (SearchPlayer() == true)
-//	{
-//
-//		//ベクトルを正規化する
-//		diff1.Normalize();
-//		//移動速度を設定する
-//		m_moveSpeed = diff1 * 250.0f;
-//		//攻撃できる距離なら
-//		if (IsCanAttack() == true)
-//		{
-//			//乱数によって、攻撃するか待機させるかを決定する
-//			int ram = rand() % 100;
-//			if (ram > 30)
-//			{
-//				m_enemyState = enEnemyState_Attack;
-//				m_isUnderAttack = false;
-//				return;
-//			}
-//			else
-//			{
-//				//待機ステートに遷移する
-//				m_enemyState = enEnemyState_Idle;
-//				return;
-//			}
-//
-//		}
-//		//攻撃できない距離なら
-//		if (IsCanAttack() == false) {
-//			m_enemyState = enEnemyState_Chase;
-//			return;
-//		}
-//	}
-//
-//	
-//	//何も見つけられなければ
-//	else
-//	{
-//		//待機ステートに遷移する
-//		m_enemyState = enEnemyState_Idle;
-//		return;
-//	}
-//}
 
 void Enemy::ProcessCommonStateTransition()
 {
@@ -707,7 +652,6 @@ const bool Enemy::IsCanAttack() const
 	//攻撃不可。
 	return false;
 }
-
 
 void Enemy::Render(RenderContext& rc)
 {

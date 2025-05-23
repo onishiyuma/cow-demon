@@ -44,15 +44,13 @@ Amulet::~Amulet()
 
 void Amulet::Update()	
 {
-	//移動処理。
 	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
 
 	if (m_effectEmitter->GetEffect() != nullptr)
 	{
-		//エフェクトの位置を更新。
 		m_effectEmitter->SetPosition(m_position);
 	}
-	//コリジョン位置の更新。
+
 	m_collisionObj->SetPosition(m_position);
 
 	//自動削除タイマー。
@@ -60,7 +58,6 @@ void Amulet::Update()
 	//時間経過で削除する。
 	if (m_deleteTimer >= 0.38f)
 	{
-		//オブジェクト削除。
 		DeleteGO(this);
 		//エフェクトの停止。
 		m_effectEmitter->Stop();
@@ -71,16 +68,12 @@ void Amulet::CreateCollision()
 {
 	//カメラ位置の取得。
 	Vector3 cameraPosition = g_camera3D->GetPosition();
-
 	//コリジョンオブジェクトの作成。
 	m_collisionObj = NewGO<CollisionObject>(0);
-
 	//ボックス上のコリジョンを作成。
 	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 100.0f,100.0f,100.0f });
-
 	//名前をつける。
 	m_collisionObj->SetName("purification");
-
 	//自動削除されないようにする。
 	m_collisionObj->SetIsEnableAutoDelete(false);
 }

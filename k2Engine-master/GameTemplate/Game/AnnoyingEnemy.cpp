@@ -169,10 +169,10 @@ void AnnoyingEnemy::Collision()
 
 					if (m_enemyHP <= 0)
 					{
-						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
 					}
-					else {
+					else 
+					{
 						//被ダメージステートに遷移する。
 						m_enemyState = enEnemyState_Damage;
 					}
@@ -621,16 +621,13 @@ void AnnoyingEnemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* ev
 
 const bool AnnoyingEnemy::IsCanAttack()const
 {
-	//プレイヤーとの距離を計算。
 	Vector3 diff = m_player->GetPosition() - m_position;
 
 	//エネミーとプレイヤーの距離が近かったら
 	if (diff.LengthSq() <= 10000.0f * 1000.0f)
 	{
-		//攻撃可
 		return true;
 	}
-	//攻撃不可
 	return false;
 }
 

@@ -1,6 +1,5 @@
 #pragma once
 
-//鈴の画像を表示するクラス。
 class BellSpriteRender :public IGameObject
 {
 public:

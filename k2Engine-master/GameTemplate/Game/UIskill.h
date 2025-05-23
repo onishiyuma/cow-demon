@@ -6,22 +6,20 @@
 class UIskill: public IGameObject
 {
  public:
- UIskill();
+	 //メンバ関数。
+	UIskill();
+	~UIskill();
+	bool Start();
+	void Update();
+	void Render(RenderContext& rc);
 
- ~UIskill();
-
- bool Start();
-
- void Update();
-
- void Render(RenderContext& rc);
-
- Player* m_player = nullptr;
-
- SpriteRender m_skillSprite;
- SpriteRender m_skillGageSprite;
- FontRender m_fontRender;
- int m_skillGage = 0.0f;//スキルゲージ。
- int m_skillMax=0.0f;//スキルがマックスになったら。
+private:
+	//メンバ変数。
+	Player*			m_player = nullptr;		//プレイヤー。
+	SpriteRender	m_skillSprite;			//スキルの画像。
+	SpriteRender	m_skillGageSprite;		//スキルゲージの画像。
+	FontRender		m_fontRender;			//フォントレンダー。
+	int				m_skillGage = 0.0f;		//スキルゲージ。
+	int				m_skillMax=0.0f;		//スキルがマックスになったら。
 };
 

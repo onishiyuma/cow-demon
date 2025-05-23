@@ -14,6 +14,7 @@ bool Shimenawa::Start()
 	//座標を取得。
 	m_position = m_player->GetPosition();
 
+	//コリジョンを作成。
 	CreateCollision();
 
 	return true;
@@ -60,8 +61,8 @@ void Shimenawa::CreateCollision()
 
 void Shimenawa::DurationTime()
 {
+	//継続時間が切れたら削除する。
 	m_durationTimer+= g_gameTime->GetFrameDeltaTime();
-
 	if (m_durationTimer >= m_duration)
 	{
 		DeleteGO(this);

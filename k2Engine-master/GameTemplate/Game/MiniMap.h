@@ -11,16 +11,19 @@ public:
 	bool Start() override;
 	void Update() override;
 	void Render(RenderContext& rc);
+
 private:
+	//マップの座標を設定する。
+	const bool WouldPositionConvertToMapPosition(Vector3 wourdCenterPosition, Vector3 wourdPosition, Vector3& mapPosition);	
+	
+	//メンバ変数。
+	Enemy*			m_enemy = nullptr;		//敵。
+	Player*			m_player = nullptr;		//プレイヤー。
+	SpriteRender	m_spriteRender;			//マップの画像。
+	SpriteRender	m_playerSprite;			//プレイヤーの画像。
+	SpriteRender	m_enemySprite;			//敵の画像。
 
-	const bool WouldPositionConvertToMapPosition(Vector3 wourdCenterPosition, Vector3 wourdPosition, Vector3& mapPosition);
-	SpriteRender m_spriteRender;
-	SpriteRender m_playerSprite;
-	SpriteRender m_enemySprite;
-
-	Enemy* m_enemy = nullptr;
-	Player* m_player = nullptr;
-	bool m_isImage = false;
+	bool			m_isImage = false;		//画像を表示するかどうか。
 
 };
 

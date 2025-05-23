@@ -1,6 +1,5 @@
 #pragma once
 
-//ステージの管理を行うクラス。
 class BackGround : public IGameObject
 {
 public:

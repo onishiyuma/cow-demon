@@ -10,35 +10,43 @@
 #include "Lantern.h"
 #include "UIheal.h"
 #include "RingBell.h"
-#include "GameCamera.h"
 #include "BellSpriteRender.h"
 #include "NoHeal.h"
 #include<time.h>
 
+namespace
+{
+	Vector3 FONT_POSITION = { -330.0f,-300.0f,0.0f };
+	Vector4 FONT_COLOR = { 1.0f,0.0f,1.0f,1.0f };
+}
+
+
 bool Player::Start()
 {
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
-	
 	//モデルを読み込む。
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
-	//キャラコンを初期化。
+
+	//モデルの座標をセットする。
 	m_position.Set(70.0f, 0.0f, -1000.0f);
+
+	//キャラコンを初期化。
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
 	
 	//初期化。
 	m_prevStickAngle = 0.0f;
 	m_totalRotation = 0.0f;
+
 	//プレイヤーのHPをセットする。
 	m_playerHP = 100;
+
 	//ヒールのクールタイム
 	m_healCoolDown = 10.0f;
 
+	//各種インスタンスアドレスの検索。
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 	m_playerLight = FindGO<PlayerLight>("playerLight");
-
 	m_playerLight = NewGO<PlayerLight>(0, "playerLight");
-	//インスタンスアドレスの検索。
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 	m_lantern = FindGO<Lantern>("lantern");
@@ -57,11 +65,19 @@ Player::Player()
 Player::~Player()
 {
 	DeleteGO(m_playerLight);
-	//DeleteGO(this);
 }
 
 void Player::Update()
 {	
+	//移動処理。
+	Move();
+
+	//判定を呼び出す。
+	Collision();
+
+	//回復できるように知らせる。
+	UpdateHealHint();
+
 	//呪いの抵抗が0を下回っていたら。
 	if (m_playerHP<=0)
 	{
@@ -69,17 +85,8 @@ void Player::Update()
 		DeleteGO(this);
 	}
 
-	//移動処理。
-	Move();
-
-	//判定を呼び出す。
-	Collision();
-
-	//モデルを更新する。
-	//m_modelRender.Update();
-	/////////////////////コメントアウト解除を忘れずに/////////////////////////////
 	//灯籠に火が灯っていれば攻撃できる。
-	if (m_enemyIsCanAttack == true)
+	if (m_enemyIsCanAttack)
 	{
 		//通常攻撃。
 		NormalAttack();
@@ -96,30 +103,12 @@ void Player::Update()
 	else
 	{
 		//文字の表示。
-		wchar_t text[256] = {0};
-		swprintf_s(text, 256, L"灯籠を灯すと攻撃できるぞ！");
-		m_fontRender.SetText(text);
-		m_fontRender.SetPosition({ -300.0f,-300.0f,0.0f });
-		m_fontRender.SetColor(g_vec4White);
+		wchar_t text[256] = { 0 };
+		swprintf_s(text, 256, L"灯籠を全て灯すと攻撃できるぞ！");
+		m_fontRender1.SetText(text);
+		m_fontRender1.SetPosition(FONT_POSITION);
+		m_fontRender1.SetColor(FONT_COLOR);
 	}
-	////////////////////////////////////////////////////////////////////////////
-
-	m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
-
-
-	////////////////////////////ここは削除する/////////////////////////
-	////通常攻撃。
-	//NormalAttack();
-
-	////スキル。
-	//Skill();
-
-	////月読の加護。
-	//SkillTukuyomiBlessing();
-
-	////しめ縄。
-	//ItemShimenawa();
-	/////////////////////////////////////////////////////////////////
 }
 
 void Player::Move()
@@ -128,7 +117,7 @@ void Player::Move()
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
 
-	//左スティックの入力量を取得
+	//左スティックの入力量を取得。
 	Vector3 stikL;
 	stikL.x = g_pad[0]->GetLStickXF();
 	stikL.y = g_pad[0]->GetLStickYF();
@@ -136,13 +125,14 @@ void Player::Move()
 	//カメラの前方向と右方向のベクトルを持ってくる。
 	Vector3 forward = g_camera3D->GetForward();
 	Vector3 right = g_camera3D->GetRight();
+
 	//y方向には移動をさせない。
 	forward.y = 0.0f;
 	right.y = 0.0f;
 
-	//左スティックの入力量を乗算する
-	right *= stikL.x * 270.0f;
-	forward *= stikL.y * 270.0f;
+	//左スティックの入力量を乗算する。
+	right *= stikL.x * 350.0f;
+	forward *= stikL.y * 350.0f;
 
 	//移動速度にスティックの入力量を加算する。
 	m_moveSpeed += right + forward;
@@ -168,13 +158,13 @@ void Player::Move()
 		m_moveSpeed.y = 0.0f;
 	}
 
-	//モデルの座標をセットする
+	//モデルの座標をセットする。
 	m_modelRender.SetPosition(m_position);
 }
 
-//------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------
 //通常攻撃。
-//-------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------
 void Player::NormalAttack()
 {
 	//クールタイムを減らす。
@@ -194,9 +184,9 @@ void Player::NormalAttack()
 	}
 }
 
-//------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 //スキル。
-//-------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 void Player::Skill()
 {
 	//スキル発動。
@@ -209,9 +199,9 @@ void Player::Skill()
 	}
 }
 
-//------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
 //月読の加護。
-//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
 void Player::SkillTukuyomiBlessing()
 {
 	//クールタイムを減らす。
@@ -226,9 +216,9 @@ void Player::SkillTukuyomiBlessing()
 	}
 }
 
-//------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
 //しめ縄。
-//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
 void Player::ItemShimenawa()
 {
 	//取得までの時間を増加。
@@ -244,13 +234,11 @@ void Player::ItemShimenawa()
 }
 
 
-
-
-//---------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 //ここから作成用関数
-//---------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 
-//通常攻撃作成
+//通常攻撃作成。
 void Player::MakeNormalAttack()
 {
 	//インスタンスを作成。
@@ -307,15 +295,9 @@ void Player::MakeShimenawa()
 	shimenawa->SetName("shimenawa");
 }
 
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
 //終わり
-//---------------------------------------------------------------
- 
-//プレイヤーの管理。
-void Player::ManageState()
-{
-
-}
+//-----------------------------------------------------------------------------------------------------------------
 
 //回復用判定。
 void Player::Collision()
@@ -341,7 +323,7 @@ void Player::Collision()
 				{
 					Distance();
 					// ヒールUIが有効な場合のみ回転処理。
-					if (!m_uiHeal->m_deleteFlag)
+					if (!m_uiHeal->m_isDelete)
 					{
 						RotationCamera();
 					}
@@ -349,13 +331,14 @@ void Player::Collision()
 					{
 						m_totalRotation = 0.0f;
 					}
-					// 接触中の鈴が見つかったら break。
+					// 接触中の鈴が見つかったら抜け出す。
 					break;
 				}
 			}
 		}
 	}
 
+	// 鈴に接触していなければ鈴の画像を削除する。
 	if (!isBellHit)
 	{
 		if (m_bellSpriteRender != nullptr)
@@ -376,6 +359,7 @@ void Player::Collision()
 	m_prevStickAngle=0.0f;
 }
 
+//鈴との距離を測る。
 void Player::Distance()
 {
 	if (m_ringBell == nullptr) {
@@ -396,8 +380,6 @@ void Player::Distance()
 
 	// 距離を測って接触判定。
 	m_distSq = (playerPos - bellPos).LengthSq();
-
-
 }
 
 void Player::RotationCamera()
@@ -473,7 +455,39 @@ void Player::HealHP(int amount)
 	}
 }
 
+void Player::UpdateHealHint()
+{
+	//HPが減っていたら回復できるように知らせる。
+	if (m_playerHP <= 90)
+	{
+		m_isDisplay = true;
+	}
+
+	//一回だけ表示させたいので。
+	if (m_isDisplay)
+	{
+		wchar_t text[256] = { 0 };
+		swprintf_s(text, 256, L"本殿の前でAボタンを押すと回復できるぞ！");
+		m_fontRender2.SetText(text);
+		m_fontRender2.SetPosition({ -300.0f,-250.0f,0.0f });
+		m_fontRender2.SetColor({ 1.0f,0.0f,1.0f,1.0f });
+	}
+
+	//回復のクールタイムを減らす。
+	m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
+}
+
 void Player::Render(RenderContext& rc)
 {
-	m_fontRender.Draw(rc);
+	//灯籠が灯っていれば描画しない。
+	if (!m_enemyIsCanAttack)
+	{
+		m_fontRender1.Draw(rc);
+	}
+	//HPが100以上あれば描画しない。
+	if (m_playerHP<=90)
+	{
+		m_fontRender2.Draw(rc);
+		m_isDisplay = false;
+	}
 }
