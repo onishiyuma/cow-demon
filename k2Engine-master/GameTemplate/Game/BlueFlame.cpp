@@ -1,8 +1,11 @@
 #include "stdafx.h"
 #include "BlueFlame.h"
 #include "Lantern.h"
-//#include "graphics/effect/EffectEmitter.h"
 
+namespace
+{
+	Vector3 EFECT_SCALE = { 100.0f,100.0f,100.0f };
+}
 
 bool BlueFlame::Start()
 {
@@ -11,7 +14,7 @@ bool BlueFlame::Start()
 	m_lantern = FindGO<Lantern>("lantern3");
 	m_lantern = FindGO<Lantern>("lantern4");
 
-	//エフェクトを読み込む
+	//エフェクトを読み込む。
 	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/blueFlame/Tourou_Brue.efk");
 
 	CreateEffect();
@@ -45,11 +48,12 @@ void BlueFlame::Update()
 
 void BlueFlame::CreateEffect()
 {
+	//エフェクトのインスタンスを生成。
 	m_effectEmitter = NewGO<EffectEmitter>(0);
 	m_effectEmitter->Init(0);
-	//エフェクトの大きさ
-	m_effectEmitter->SetScale({ 100.0f,100.0f,100.0f });
-	//エフェクトの初期座標
+	//エフェクトの大きさ。
+	m_effectEmitter->SetScale(EFECT_SCALE);
+	//エフェクトの初期座標。
 	m_effectEmitter->SetPosition(m_firstPosition);
 	m_effectEmitter->Play();
 }

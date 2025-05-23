@@ -59,7 +59,7 @@ void GameCamera::Update()
 		Vector3 axisX;
 		axisX.Cross(Vector3::AxisY, m_toCameraPos);
 		axisX.Normalize();
-		qRot.SetRotationDeg(axisX, 2.2f * y);
+		qRot.SetRotationDeg(axisX, 2.4f * y);
 		qRot.Apply(m_toCameraPos);
 	}
 	else
@@ -105,8 +105,6 @@ void GameCamera::Update()
 	//メインカメラに注視点と座標を設定する。
 	g_camera3D->SetTarget(target);
 	g_camera3D->SetPosition(pos);
-
-	
 
 	//カメラの更新。
 	g_camera3D->Update();

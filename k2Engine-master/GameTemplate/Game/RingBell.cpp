@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "RingBell.h"
 #include "collision/CollisionObject.h"
-
+namespace
+{
+	Vector3 MODEL_SCALE{ 0.7f, 0.7f, 0.7f };
+}
 bool RingBell::Start()
 {
 	//モデルを読み込む。
@@ -9,7 +12,7 @@ bool RingBell::Start()
 	//座標を設定する。
 	m_modelRender.SetPosition(m_position);
 	//大きさを設定する。
-	m_modelRender.SetScale(0.7f, 0.7f, 0.7f);
+	m_modelRender.SetScale(MODEL_SCALE);
 
 	//コリジョン作成用関数を呼び出す。
 	CreateCollision();

@@ -48,7 +48,7 @@ void LanternAttack::Update()
 {
 	//モデルレンダーのアップデート。
 	m_modelRender.Update();
-	//座標の更新
+	//座標の更新。
 	m_modelRender.SetPosition(m_position);
 
 	//プレイヤーから灯籠に向かうベクトルを計算。
@@ -57,7 +57,6 @@ void LanternAttack::Update()
 	//灯籠に火が灯っていなかったら。
 	if (m_isLight == false)
 	{
-
 		//ベクトルの長さが120.0fより小さかったら。
 		if (diff.Length() <= 100.0f)
 		{

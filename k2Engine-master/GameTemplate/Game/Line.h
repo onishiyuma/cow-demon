@@ -23,10 +23,7 @@ private:
 	Lantern*		m_lantern3;
 	Lantern*		m_lantern4;
 	SpriteRender	m_spriteRender;			//ラインの画像。
-
 	Vector3			m_firstPosition;		//初期座標。
-
 	int				m_directionState = 0;	//移動方向の状態。
 	bool			m_isMoving = false;		//移動中か。
 };
-
