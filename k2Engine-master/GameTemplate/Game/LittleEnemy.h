@@ -9,6 +9,7 @@ class EnemyBase;
 class Player;
 class Game;
 class GameCamera;
+class RingBell;
 
 class LittleEnemy :public EnemyBase
 {
@@ -18,6 +19,7 @@ public:
 		enEnemyState_Idle,			//静止状態。
 		/*	enEnemyState_Goal,*/	//ゴール状態。
 		enEnemyState_Chase,			//追跡状態。
+		enEnemyState_Honden,        //本殿を目指す状態
 		enEnemyState_Leave,			//離脱状態。
 		enEnemyState_Poison,		//毒攻撃状態。
 		enEnemyState_Damage,		//ダメージ状態。
@@ -52,16 +54,19 @@ public:
 	void Leave();                               //退散処理。
 	const bool IsCanAttack() const;             //攻撃可能判定。
 	const bool IsLeave() const;                 //退散判定。
-	void PlayAnimation() override;              //アニメーション再生。
+	void PlayAnimation() ;              //アニメーション再生。
 	void MakePoison();                          //毒の生成。
+	const bool SearchHonden() const;            //本殿を探す。
+	void IsHonden();                            //本殿へ行く処理。
 
 	//各ステートの遷移処理。
 	void ProcessIdleStateTransition() override;         //待機。
 	void ProcessPoisonAttackStateTransition();          //毒攻撃。
 	void ProcessDamageStateTransition() override;       //被ダメージ。
 	void ProcessLeaveStateTransition();                 //退散。
+	void ProcessHondenStateTransition();                //本殿移動
 	void ProcessChaseStateTransition() override;        //追跡。
-	void OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName) override; //アニメーションイベント。
+	void OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName) ; //アニメーションイベント。
 	void ProcessCommonStateTransition() override;       //共通処理。
 	void ProcessDownStateTransition() override;         //ダウン。
 
@@ -90,8 +95,12 @@ public:
 	}
 
 private:
-	//メンバ変数。
+	//メンバ変数
+	Vector3 m_position;
+	Vector3 m_scale;
+	Quaternion m_rotation;
 	GameCamera*			m_gameCamera;								//カメラ。
+	RingBell*           m_ringBell = nullptr;						//鈴。
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションのクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//敵の状態。
 	const Vector3		m_stopMove = Vector3::Zero;					//動きを完全停止。
@@ -101,6 +110,7 @@ private:
 	float				m_poisonAttackCoolDown = 0.0f;				//毒攻撃のクールダウン。
 	float				m_stopTimer = 0.0f;							//拘束時間。
 	float				m_mainTimer = 0.0f;							//本殿の時間。
+	float               m_hondenTimer = 0.0f;
 	bool				m_isStopped = false;						//動いているか。
 	bool				m_gameoverFlag = false;						//ゲームオーバーか。
 	bool				m_isUnderAttack = false;					//攻撃を受けたか。

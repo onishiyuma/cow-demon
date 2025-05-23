@@ -669,8 +669,6 @@ void Game::CreateEnemy()
 						Enemy* enemy = NewGO<Enemy>(1, "enemy");
 						enemy->SetPosition(Random());
 						m_enemyList.push_back(enemy);//敵リストに追加
-						m_enemyList.push_back(enemy);//敵リストに追加する。
-						m_enemyList.push_back(enemy);//謨ｵ繝ｪ繧ｹ繝医↓霑ｽ蜉
 						EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
 						enemyUI->SetEnemy(enemy);
 					}
@@ -685,7 +683,6 @@ void Game::CreateEnemy()
 							LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 							littleEnemy->SetPosition(Random());
 							m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
-							m_littleEnemyList.push_back(littleEnemy);//雑魚敵を敵のリストに追加する。
 							m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
 							m_enemyUI->SetLittleEnemy(littleEnemy);
 						}
