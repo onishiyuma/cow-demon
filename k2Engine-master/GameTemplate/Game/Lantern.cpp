@@ -197,11 +197,10 @@ void Lantern::Update()
 	if (!m_isLight)
 	{
 		//ベクトルの長さが条件よりも小さいか。
-		if (diff.Length() <= 100.0f)
+		if (diff.Length() <=m_lightUpDistance)
 		{
 			if (!m_isLightUI)
 			{
-	
 				m_isLightUI = true;
 	
 				//「Ａ：火を灯す」を読み込む。
@@ -220,7 +219,6 @@ void Lantern::Update()
 						//ミニゲームをしていなかったら。
 						if (!m_isLanternAction)
 						{
-
 							//ミニゲーム中にする。
 							m_isLanternAction = true;
 
@@ -263,7 +261,6 @@ void Lantern::Update()
 					//バーのラインが、-10.0ｆ以上10.0ｆ以下（成功の場所）だったら。
 					if (m_line->m_position.x <= 10.0f && m_line->m_position.x >= -10.0f)
 					{
-
 						//陽が灯っている灯籠のカウントを増やす。
 						m_player->m_lanternCount++;
 

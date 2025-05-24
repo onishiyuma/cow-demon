@@ -10,7 +10,7 @@ namespace
 	//しめ縄ゲージ。
 	Vector3 ROPE_GAUGE_POSITION = Vector3(435.0f, -486.0f, 0.0f);
 	//しめ縄フォント位置。
-	Vector3 ROPE_FONT_POSITION = Vector3(400.0f, -405.0f, 0.0f);
+	Vector3 ROPE_FONT_POSITION = Vector3(409.0f, -405.0f, 0.0f);
 	//緑。
 	Vector4 GREEN = Vector4(0.0f,1.0f,0.0f,1.0f);
 	//薄い緑。
@@ -18,7 +18,7 @@ namespace
 	//白。
 	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	//透明。
-	Vector4 TOUMEI = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	Vector4 TRANSPARENCY = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 UISimenawa::UISimenawa()
@@ -48,7 +48,7 @@ bool UISimenawa::Start()
 	//文字の大きさ、座標、色を設定。
 	m_fontRender.SetScale(1.0);
 	m_fontRender.SetPosition(ROPE_FONT_POSITION);
-	m_fontRender.SetColor(TOUMEI);
+	m_fontRender.SetColor(TRANSPARENCY);
 
 
 	return true;
@@ -73,13 +73,11 @@ void UISimenawa::UpdateShimenawaGaugeVisibility()
 		m_ropeGage.SetScale(scal);
 		m_ropeGage.SetMulColor(LIGHT_GREEN);
 		m_fontRender.SetColor(WHITE);
-
-
 	}
 	else
 	{
 		m_ropeGage.SetMulColor(GREEN);
-		m_fontRender.SetColor(TOUMEI);
+		m_fontRender.SetColor(TRANSPARENCY);
 	}
 
 	if (!m_isReset) 

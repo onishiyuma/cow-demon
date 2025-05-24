@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "Fade.h"
 #include "Game.h"
-
-#include "stdafx.h"  
-#include "Fade.h"  
-#include "Game.h"  
+ 
+namespace
+{
+    Vector3 FONTRENDER_PSOITION = Vector3{ -600.0f, -300.0f, 0.0f };
+}
 
 bool Fade::Start()  
 {  
@@ -27,8 +28,8 @@ bool Fade::Start()
     };
 
     std::wstring wstr(tipsList[m_currentTipIndex].begin(), tipsList[m_currentTipIndex].end());
-    m_fontRenderTips1.SetText(wstr.c_str());
-	m_fontRenderTips1.SetPosition(Vector3(-600.0f, -300.0f, 0.0f));
+    m_fontRenderTips.SetText(wstr.c_str());
+	m_fontRenderTips.SetPosition(FONTRENDER_PSOITION);
 
     //初期化。  
     m_load = 1.0f;  
@@ -56,7 +57,7 @@ void Fade::Update()
 
 void Fade::LoadingProgress()
 {
-    //フェード制御。
+    //ロード制御。
     if (m_isFadingOut) 
     {
         m_load -= 0.1f;
@@ -100,10 +101,8 @@ void Fade::LoadingProgress()
 
 void Fade::Tips()
 {
-	m_tipTimer += g_gameTime->GetFrameDeltaTime();
-
 	//時間経過でTipsを更新。
-    if (m_tipTimer > m_tipInterval)
+    if (g_pad[0]->IsTriggerAnyKey())
     {
         //Tipsの表示時間をリセット。
         m_tipTimer = 0.0f;
@@ -111,7 +110,7 @@ void Fade::Tips()
         m_currentTipIndex = (m_currentTipIndex + 1) % tipsList.size();
         //表示するTipsを更新。
         std::wstring wstr(tipsList[m_currentTipIndex].begin(), tipsList[m_currentTipIndex].end());
-        m_fontRenderTips1.SetText(wstr.c_str());
+        m_fontRenderTips.SetText(wstr.c_str());
     }
 }
 
@@ -120,5 +119,5 @@ void Fade::Render(RenderContext& rc)
     m_spriteLoad.Draw(rc);
     m_spriteLoadGage.Draw(rc);
     m_spriteMask.Draw(rc);
-    m_fontRenderTips1.Draw(rc);
+    m_fontRenderTips.Draw(rc);
 }
