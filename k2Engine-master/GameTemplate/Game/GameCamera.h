@@ -34,6 +34,9 @@ public:
 public:
 	//メンバ変数
 	bool			m_isGameOver = false;				//ゲームオーバーか。
+	bool			m_isCameraRotationFin = false;		//カメラの回転が終わったか。
+	float			m_waitTime = 0.0f;					//待機時間。
+	float			m_callGameOverTime = 0.0f;			//ゲームオーバーを呼び出すまでの時間。
 private:
 	GameOver*		m_gameOver;							//ゲームオーバー。
 	Game*			m_game;								//ゲーム。
@@ -49,9 +52,8 @@ private:
 	float			m_furClip = 20000.0f;				//ファークリップ。
 	float			m_rotateTimer = 0.0f;				//回転する時間。
 	float			m_rottatieDuration = 2.0f;			//2秒で回転。
-	float			m_callGameOverTime = 0.0f;			//ゲームオーバーを呼び出すまでの時間。
 	const int		m_half=2;							//半分。
 	bool			m_isLocked = false;					//カメラが本殿を向いているか。
-	bool			m_isCameraRotationFin=false;		//カメラの回転が終わったか。
+
 };
 

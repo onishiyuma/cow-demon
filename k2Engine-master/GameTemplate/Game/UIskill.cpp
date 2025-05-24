@@ -18,7 +18,7 @@ namespace
 	//白。
 	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	//透明。
-	Vector4 TOUMEI = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+	Vector4 TRANSPARENCY = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
 }
 
 UIskill::UIskill()

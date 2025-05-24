@@ -16,7 +16,7 @@
 
 namespace
 {
-	Vector3 FONT_POSITION = { -330.0f,-300.0f,0.0f };
+	Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };
 	Vector4 FONT_COLOR = { 1.0f,0.0f,1.0f,1.0f };
 }
 
@@ -467,9 +467,9 @@ void Player::UpdateHealHint()
 	if (m_isDisplay)
 	{
 		wchar_t text[256] = { 0 };
-		swprintf_s(text, 256, L"本殿の前でAボタンを押すと回復できるぞ！");
+		swprintf_s(text, 256, L"本殿の前でAボタンを押してスティックを回すと回復できるぞ！");
 		m_fontRender2.SetText(text);
-		m_fontRender2.SetPosition({ -300.0f,-250.0f,0.0f });
+		m_fontRender2.SetPosition({ -600.0f,-300.0f,0.0f });
 		m_fontRender2.SetColor({ 1.0f,0.0f,1.0f,1.0f });
 	}
 
