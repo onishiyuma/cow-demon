@@ -17,6 +17,12 @@ namespace
 	Vector2 HP_PIVOT = Vector2(0.0f, 0.5f);
 	//黒。
 	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	//緑
+	Vector4 GREEN = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+	//赤
+	Vector4 RED = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+	//紫
+	Vector4 PURPLE = Vector4(0.5f, 0.0f, 0.5f, 1.0f);
 }
 
 UIcurseBar::UIcurseBar()
@@ -43,6 +49,9 @@ bool UIcurseBar::Start()
 	//呪いの抵抗ゲージ
 	m_curseSprit.Init("Assets/UI/white.DDS", 102.4, 50);
 	m_curseSprit.SetPosition(HP_POSITION);
+	
+
+
 	m_curseSprit.SetPivot(HP_PIVOT);
 	return true;
 }
@@ -58,6 +67,17 @@ void UIcurseBar::Update()
 	if (m_player->m_playerHP <= 100) {
 		m_curseSprit.SetScale(scal);
 	}
+
+	//プレイヤーのHPが30以上の場合は緑色にする
+	if (m_player->m_playerHP<= 100 && m_player->m_playerHP >= 30) {
+		m_curseSprit.SetMulColor(GREEN);
+	}
+	//プレイヤーのHPが30未満の場合は赤色にする
+	else if (m_player->m_playerHP < 30) {
+		m_curseSprit.SetMulColor(RED);
+	}
+	
+	
 
 	m_curseFrame.Update();
 	m_curseSprit.Update();

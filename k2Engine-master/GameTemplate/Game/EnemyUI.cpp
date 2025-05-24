@@ -52,6 +52,7 @@ bool EnemyUI::Start()
 
 void EnemyUI::Update()
 {
+	
 	//大きさの処理
 	Scale();
 
@@ -64,6 +65,8 @@ void EnemyUI::Update()
 
 void EnemyUI::Position()
 {
+	
+
 	Vector3 position;
 
 	//親によってポジションを変える

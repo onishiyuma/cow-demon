@@ -27,7 +27,6 @@
 #include "random"
 #include "EnemyUI.h"
 #include "Fade.h"
-#include "graphics/effect/EffectEmitter.h"
 
 bool Game::Start()
 {
@@ -41,12 +40,12 @@ bool Game::Start()
 	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
 	//空の作成
-	SkyCube* skyCube = NewGO<SkyCube>(0);
-	skyCube->SetType(enSkyCubeType_NightToon_2);
-	skyCube->SetScale(1000.0f);
-	skyCube->SetLuminance(0.0005f);//空の光の強さ
+	m_skyCube = NewGO<SkyCube>(0, "skyCube");
+	m_skyCube->SetType(enSkyCubeType_NightToon);
+	m_skyCube->SetScale(1000.0f);
+	m_skyCube->SetLuminance(m_skyLuminance);//空の光の強さ
 
-	g_renderingEngine->SetAmbientByIBLTexture(skyCube->GetTextureFilePath(), 0.0004f);//空の光から影響する環境光の強さ
+	g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(),m_skyAmbient);//空の光から影響する環境光の強さ
 
 	//オブジェクトの作成。
 	CreateObject();
@@ -128,10 +127,10 @@ Game::~Game()
 	DeleteGO(m_lanternLight4);
 
 	//灯籠用エフェクト
-	DeleteGO(m_blueFlame1);
-	DeleteGO(m_blueFlame2);
-	DeleteGO(m_blueFlame3);
-	DeleteGO(m_blueFlame4);
+	//DeleteGO(m_blueFlame1);
+	//DeleteGO(m_blueFlame2);
+	//DeleteGO(m_blueFlame3);
+	//DeleteGO(m_blueFlame4);
 
 	//攻撃用灯籠。
 	DeleteGO(m_lanternAttack1);
@@ -177,17 +176,19 @@ void Game::Update()
 	//攻撃灯籠用ライトの作成
 	CreateLanternAttackLight();
 
-	//プレイヤーが四つ灯籠に火を灯したら
-	if (m_player->m_enemyIsCanAttack != false) {
+	//ゲーム開始から30秒経ったら
+	//if (m_timer >= 150.0f) 
+  {
 		//エネミーの作成
 		CreateEnemy();
 	}
+	//空の明るさ調整
+	SetSkyLight();
 }
 
 //ゲームクリア、ゲームオーバーの判定処理。
 void Game::GameManager()
 {
-
 	//敵から本殿を守り切ったらゲームクリア。
 	if (m_timer >= 300.0f)
 	{
@@ -207,12 +208,147 @@ void Game::GameManager()
 		NewGO<GameOver>(0);
 		DeleteGO(this);
 	}
+
+
 }
 
 //本殿の方向を見させる関数。
 void Game::LookingMain()
 {
 	
+}
+
+//空の設定。
+void Game::SetSkyLight()
+{
+	//完全な夜。
+	if (m_timer > m_phase1Start && m_timer < m_phase2Start) {
+		if (m_isNight != true) {
+			//夜の明るさに設定。
+			m_luminance = m_luminanceNight;
+			//それぞれ夜の明るさに変更する。
+			m_skyLuminance = m_luminance;
+			m_skyAmbient = m_luminance;
+			// 適用
+			m_skyCube->SetLuminance(m_skyLuminance);
+			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+			m_isNight = true;
+		}
+	}
+	//真夜中。
+	else if (m_timer > m_phase2Start && m_timer < m_phase3Start) {
+		if (m_isMidNight1 != true) {
+			//真夜中の明るさに設定。
+			m_luminance = m_luminanceMidNight1;
+			//それぞれ真夜中の明るさに変更する。
+			m_skyLuminance = m_luminance;
+			m_skyAmbient = m_luminance;
+			// 適用
+			m_skyCube->SetLuminance(m_skyLuminance);
+			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+			m_isMidNight1 = true;
+		}
+	}
+	//真夜中。
+	else if (m_timer > m_phase3Start && m_timer < m_phase4Start) {
+		if (m_isMidNight2 != true) {
+			//真夜中の明るさに設定。
+			m_luminance = m_luminanceMidNight2;
+			//それぞれ真夜中の明るさに変更する。
+			m_skyLuminance = m_luminance;
+			m_skyAmbient = m_luminance;
+			// 適用
+			m_skyCube->SetLuminance(m_skyLuminance);
+			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+			m_isMidNight2 = true;
+		}
+	}
+	//日の出開始。
+	else if (m_timer > m_phase4Start && m_timer < m_phase5Start) {
+		if (m_isSunrise != true) {
+			//日の出の明るさに設定。
+			m_luminance = m_luminanceSunrise;
+			//それぞれ日の出の明るさに変更する。
+			m_skyLuminance = m_luminance;
+			m_skyAmbient = m_luminance;
+			// 適用
+			m_skyCube->SetLuminance(m_skyLuminance);
+			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+			//ステージ全体の光の影響を調整する。
+			g_sceneLight->SetAmbient(Vector3(1.0f,1.0f, 1.0f));
+			g_sceneLight->SetDirectionLight(0, Vector3(0.0f,0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
+			m_isSunrise = true;
+		}
+	}
+	//夜明け中。
+	else if (m_timer > m_phase5Start && m_timer < m_phase6Start) {
+		if (m_isDawn1 != true) {
+			//夜明けの明るさに設定。
+			m_luminance = m_luminanceDawn1;
+			//それぞれ夜明けの明るさに変更する。
+			m_skyLuminance = m_luminance;
+			m_skyAmbient = m_luminance;
+			// 適用
+			m_skyCube->SetLuminance(m_skyLuminance);
+			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+			//ステージ全体の光の影響をする。
+			g_sceneLight->SetAmbient(Vector3(1.0f, 1.0f, 1.0f));
+			g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
+			m_isDawn1 = true;
+		}
+		
+	}
+	//夜明け中。
+	else if (m_timer > m_phase6Start && m_timer < m_phase7Start) {
+		if (m_isDawn2 != true) {
+			//夜明けの明るさに設定。
+			m_luminance = m_luminanceDawn2;
+			//それぞれ夜明けの明るさに変更する。
+			m_skyLuminance = m_luminance;
+			m_skyAmbient = m_luminance;
+			// 適用
+			m_skyCube->SetLuminance(m_skyLuminance);
+			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+			//ステージ全体の光の影響を調整する。
+			g_sceneLight->SetAmbient(Vector3(1.0f, 1.0f, 1.0f));
+			g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
+			m_isDawn2 = true;
+		}
+	}
+	//夜明け中。
+	else if (m_timer > m_phase7Start && m_timer < m_dayStart) {
+		if (m_isDawn3 != true) {
+			//夜明けの明るさに設定。
+			m_luminance = m_luminanceDawn3;
+			//それぞれ夜明けの明るさに変更する。
+			m_skyLuminance = m_luminance;
+			m_skyAmbient = m_luminance;
+			// 適用
+			m_skyCube->SetLuminance(m_skyLuminance);
+			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+			//ステージ全体の光の影響を調整する。
+			g_sceneLight->SetAmbient(Vector3(1.0f, 1.0f, 1.0f));
+			g_sceneLight->SetDirectionLight(0, Vector3(0.0f,0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
+			m_isDawn3 = true;
+		}
+	}
+	//朝。
+	else if (m_timer > m_dayStart) {
+		if (m_isDay != true) {
+			//朝の明るさに設定。
+			m_luminance = m_luminanceDay;
+			//それぞれ朝の明るさに変更する。
+			m_skyLuminance = m_luminance;
+			m_skyAmbient = m_luminance;
+			// 適用
+			m_skyCube->SetLuminance(m_skyLuminance);
+			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+			//ステージ全体の光の影響を調整する。
+			g_sceneLight->SetAmbient(Vector3(1.0f, 1.0f, 1.0f));
+			g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
+			m_isDay = true;
+		}
+	}
 }
 
 //オブジェクト作成用関数。
@@ -381,10 +517,6 @@ void Game::CreateLanternLight()
 				m_lanternLight1 = NewGO<LanternLight>(0, "lanternLight1");
 				m_lanternLight1->m_position = { 500.0f,50.0f,500.0f };
 				m_lanternLight1->m_firstPosition = m_lanternLight1->m_position;
-				//1つ目の灯籠用エフェクトを作成する
-				m_blueFlame1 = NewGO<BlueFlame>(0, "blueFlame1");
-				m_blueFlame1->m_position = { 500.0f,100.0f,500.0f };
-				m_blueFlame1->m_firstPosition = m_blueFlame1->m_position;
 				m_lanternLightFlag1 = true;//灯っている判定にする
 			}
 		break;
@@ -396,10 +528,6 @@ void Game::CreateLanternLight()
 				m_lanternLight2 = NewGO<LanternLight>(0, "lanternLight2");
 				m_lanternLight2->m_position = { 500.0f,50.0f,-500.0f };
 				m_lanternLight2->m_firstPosition = m_lanternLight2->m_position;
-				//2つ目の灯籠用エフェクトを作成する
-				m_blueFlame2 = NewGO<BlueFlame>(0, "blueFlame2");
-				m_blueFlame2->m_position = { 500.0f,100.0f,-500.0f };
-				m_blueFlame2->m_firstPosition = m_blueFlame2->m_position;
 				m_lanternLightFlag2 = true;//灯っている判定にする
 			}
 		break;
@@ -411,10 +539,6 @@ void Game::CreateLanternLight()
 				m_lanternLight3 = NewGO<LanternLight>(0, "lanternLight3");
 				m_lanternLight3->m_position = { -500.0f,50.0f,500.0f };
 				m_lanternLight3->m_firstPosition = m_lanternLight3->m_position;
-				//3つ目の灯籠用エフェクトを作成する
-				m_blueFlame3 = NewGO<BlueFlame>(0, "blueFlame3");
-				m_blueFlame3->m_position = { -500.0f,100.0f,500.0f };
-				m_blueFlame3->m_firstPosition = m_blueFlame3->m_position;
 				m_lanternLightFlag3 = true;//灯っている判定にする
 			}
 		break;
@@ -426,10 +550,6 @@ void Game::CreateLanternLight()
 				m_lanternLight4 = NewGO<LanternLight>(0, "lanternLight4");
 				m_lanternLight4->m_position = { -500.0f,50.0f,-500.0f };
 				m_lanternLight4->m_firstPosition = m_lanternLight4->m_position;
-				//4つ目の灯籠用エフェクトを作成する
-				m_blueFlame4 = NewGO<BlueFlame>(0, "blueFlame4");
-				m_blueFlame4->m_position = { 500.0f,100.0f,-500.0f };
-				m_blueFlame4->m_firstPosition = m_blueFlame4->m_position;
 				m_lanternLightFlag4 = true;//灯っている判定にする
 			}
 		break;
@@ -578,7 +698,7 @@ void Game::CreateLanternAttackLight()
 void Game::CreateEnemy()
 {
 	//タイマーを増やす。
-	m_timer += g_gameTime->GetFrameDeltaTime();
+	//m_timer += g_gameTime->GetFrameDeltaTime();
 	//1分目
 	if (m_timer > 120.0f && m_timer < 180.0f)
 	{
@@ -638,7 +758,7 @@ void Game::CreateEnemy()
 			}
 		}
 		//タイマーを減らす処理。
-		m_timer += g_gameTime->GetFrameDeltaTime();
+		//m_timer += g_gameTime->GetFrameDeltaTime();
 		//1分目
 		if (m_timer > 120.0f && m_timer < 180.0f)
 		{
