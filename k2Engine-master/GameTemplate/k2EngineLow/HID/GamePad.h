@@ -83,7 +83,30 @@ namespace nsK2EngineLow {
 		{
 			return m_trigger[button] != 0;
 		}
-		
+
+		/// <summary>
+		/// 何かのボタンが押されているか判定。
+		/// </summary>
+		/// <returns>trueが帰ってきたら押されている。</returns>
+		bool IsTriggerAnyKey() const
+		{
+			return IsTrigger(enButtonUp)
+				|| IsTrigger(enButtonDown)
+				|| IsTrigger(enButtonLeft)
+				|| IsTrigger(enButtonRight)
+				|| IsTrigger(enButtonA)
+				|| IsTrigger(enButtonB)
+				|| IsTrigger(enButtonX)
+				|| IsTrigger(enButtonY)
+				|| IsTrigger(enButtonSelect)
+				|| IsTrigger(enButtonStart)
+				|| IsTrigger(enButtonRB1)
+				|| IsTrigger(enButtonRB2)
+				|| IsTrigger(enButtonRB3)
+				|| IsTrigger(enButtonLB1)
+				|| IsTrigger(enButtonLB2)
+				|| IsTrigger(enButtonLB3);
+		}
 		/// <summary>
 		/// ボタンが押されているか判定
 		/// </summary>
