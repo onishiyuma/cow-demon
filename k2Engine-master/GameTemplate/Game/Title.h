@@ -1,7 +1,7 @@
 #pragma once
 
 class Game;
-class Fade;
+class Load;
 
 //タイトルクラス。
 class Title:public IGameObject
@@ -19,7 +19,7 @@ private:
 	FontRender		m_fontRender;				//フォントレンダー。
 	SpriteRender	m_spriteRender;				//スプライトレンダー。
 	Game*			m_game;						//ゲーム。
-	Fade*			m_fade;						//フェード。
+	Load*			m_load;						//フェード。
 	float			m_timer;					//タイマー。
 	float 			m_titleTime = 0.0f;			//タイトルに戻るまでの時間。
 	const float 	m_maxTitleTIme = 2.0f;		//タイトルに戻るまでの最大時間。

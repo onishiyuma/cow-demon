@@ -14,13 +14,13 @@ class AnnoyingEnemy : public EnemyBase
 public:
 	//敵の状態を定義する列挙型。
 	enum EnEnemyState {
-		enEnemyState_Idle,			//待機中。
-		enEnemyState_Honden,         //本殿へ行く。
-		enEnemyState_Chase,			//追跡。
-		enEnemyState_Explode,		//爆発。
-		enEnemyState_Poison,		//毒攻撃。
-		enEnemyState_Damage,		//ダメージを受けている。
-		enEnemyState_Down			//倒されている状態。
+		enEnemyState_Idle,			  //待機中。
+		enEnemyState_Honden,      //本殿へ行く。
+		enEnemyState_Chase,			  //追跡。
+		enEnemyState_Explode,		  //爆発。
+		enEnemyState_Poison,		  //毒攻撃。
+		enEnemyState_Damage,		  //ダメージを受けている。
+		enEnemyState_Down			    //倒されている状態。
 	};
 
 	//使用するアニメーションクリップを定義。
@@ -56,6 +56,7 @@ public:
 	const bool SearchHonden() const;            //本殿を探す。
 	void IsHonden();                            //本殿へ行く処理。
 	void PlayAnimation() override;            //アニメーション切り替え。
+	void MakePoison();    
 
 	//状態ごとの処理。
 	void ProcessIdleStateTransition() override;

@@ -3,7 +3,7 @@
 class BackGround : public IGameObject
 {
 public:
-	//メンバ関数
+	//メンバ関数。
 	BackGround();
 	~BackGround();
 	void Update();
@@ -13,7 +13,7 @@ public:
 	void CreateCollision();
 
 private:
-	//メンバ変数
+	//メンバ変数。
 	ModelRender				m_modelRender;				//モデルレンダー。
 	PhysicsStaticObject		m_physicsStaticObject;		//静的物理オブジェクト。
 	CollisionObject*		m_collisionObject;			//コリジョンオブジェクト。

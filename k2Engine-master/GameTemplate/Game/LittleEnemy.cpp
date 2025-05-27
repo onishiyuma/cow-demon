@@ -135,6 +135,8 @@ void LittleEnemy::Chase()
 		return;
 	}
 
+	//重力を追加。
+	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
 	//キャラコンを使って移動。
 	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
 
@@ -541,7 +543,7 @@ void LittleEnemy::ProcessCommonStateTransition()
 			//正規化。
 			diff.Normalize();
 			//移動速度を計算する。
-			m_moveSpeed = diff * 100.0f;
+			m_moveSpeed = diff * 80.0f;
 			//攻撃できる距離なら。
 			if (IsCanAttack() == true)
 			{
@@ -569,7 +571,7 @@ void LittleEnemy::ProcessCommonStateTransition()
 		{
 			Vector3 diff = m_ringBell->GetPosition() - m_position;
 			diff.Normalize();
-			m_moveSpeed = diff * 125.0f;
+			m_moveSpeed = diff * 80.0f;
 
 			m_enemyState = enEnemyState_Honden;
 			return;

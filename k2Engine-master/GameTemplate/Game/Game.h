@@ -29,7 +29,7 @@ class UIcurseBar;
 class UIheal;
 class MiniMap;
 class EnemyUI;
-class Fade;
+class Load;
 
 class Game : public IGameObject
 {
@@ -52,6 +52,8 @@ public:
 	void CreateUI();
 	//UIのタイマー。
 	void UITimer();
+	//敵の出現を通知。
+	void NotifiyEnemy();
 	//繧ｨ繝阪Α繝ｼ縺ｮ逕滓・縲・
 	void CreateEnemy();
 	//繧ｲ繝ｼ繝繧ｪ繝ｼ繝舌・縲√ご繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ繧貞他縺ｶ髢｢謨ｰ縲・
@@ -89,9 +91,9 @@ public:
 	CrossHair*m_crossHair;//クロスヘアー。
 	ModelRender m_modelRender;//モデルレンダー。
 	Shimenawa* m_shimenawa;//しめ縄。
-	Fade* m_fade;//フェード処理。
+	Load* m_load;//フェード処理。
 	EnemyUI*m_enemyUI;
-	SkyCube* m_skyCube;//スカイクラブ。
+	SkyCube* m_skyCube;//スカイキューブ。
 
 	Stone* m_stone1; //轣ｫ謇鍋浹
 	Stone* m_stone2; //轣ｫ謇鍋浹
@@ -140,6 +142,7 @@ public:
 
 	SpriteRender m_spriteRender;//繧ｹ繝励Λ繧､繝医Ξ繝ｳ繝繝ｼ
 	FontRender m_timerFontRender;//譎りｨ・
+	FontRender m_notifyEnemyFontRender;//敵出現通知用フォントレンダー。
 	Vector3 m_pos;//蠎ｧ讓・
 	Vector3 Random(); //繧ｨ繝阪Α繝ｼ縺ｮ繝ｩ繝ｳ繝繝繧ｹ繝昴・繝ｳ
 
@@ -171,15 +174,17 @@ public:
 
 	int m_maxCount = 0;	//敵の最大数。
 	int m_totalCount = 0;//敵の合計。
-    float m_timer = 120.0f;//タイマー。
-	bool m_lanternAction = false; 
-	float m_timeLimit=0;//蛻ｶ髯先凾髢・
 	int m_lanternLightState = 0;
 	int m_lanternEffectState = 0;
 	int m_lanternAttackLightState = 0;
+	float m_timer = 120.0f;//タイマー。
+	float m_timeLimit = 0;//蛻ｶ髯先凾髢・
 	int m_lanternAttackEffectState = 0;
 	float m_skyLuminance = 0.0002f; //空の明るさ。
 	float m_skyAmbient = 0.0002f; //空の明るさの影響を受ける環境光。
+	float m_notifyx = 0.0f; //敵出現通知のX座標。
+	bool m_lanternAction = false;
+	bool m_isShowNotify=false; //敵出現通知を表示するかどうか。
 	//灯籠用ライトのフラグ
 	bool m_lanternLightFlag = false;
 	bool m_lanternLightFlag1 = false;
@@ -210,26 +215,25 @@ public:
 	bool m_isDay = false;
 
 	float m_luminance = 0.0f; //空の明るさの変化量。
+  
+	const float		m_nightStart = 0.0f;
+	const float		m_phase1Start = 120.0f;  //夜明けの始まり
+	const float		m_phase2Start = 180.0f;  //少し明るくなる
+	const float		m_phase3Start = 210.0f;  //少し明るくなる
+	const float		m_phase4Start = 240.0f;  //日の出開始
+	const float		m_phase5Start = 250.0f;  //少しずつ明ける
+	const float		m_phase6Start = 260.0f;  //少しずつ明ける
+	const float		m_phase7Start = 270.0f;  //少しずつ明ける
+	const float		m_dayStart = 290.0f;     //朝になる
 
-	const float m_nightStart = 0.0f;
-	const float m_phase1Start = 120.0f;  // 夜明けの始まり
-	const float m_phase2Start = 180.0f;  // 少し明るくなる
-	const float m_phase3Start = 210.0f;  // 少し明るくなる
-	const float m_phase4Start = 240.0f;  // 日の出開始
-	const float m_phase5Start = 250.0f;  // 少しずつ明ける
-	const float m_phase6Start = 260.0f;  // 少しずつ明ける
-	const float m_phase7Start = 270.0f;  // 少しずつ明ける
-	const float m_dayStart = 290.0f;     // 朝になる
-
-	const float m_luminanceNight = 0.0003f;       // 夜の明るさ
-	const float m_luminanceMidNight1 = 0.0005f;   // 夜の明るさ
-	const float m_luminanceMidNight2 = 0.001f;     // 夜の明るさ
-	const float m_luminanceSunrise = 0.0050f;       // 日の出
-	const float m_luminanceDawn1 = 0.01f;          // 夜明け
-	const float m_luminanceDawn2 = 0.1f;          // 夜明け
-	const float m_luminanceDawn3 = 0.5f;          // 夜明け
-	const float m_luminanceDay = 1.0f;            // 朝（最大）
-
+	const float		m_luminanceNight = 0.0003f;			//夜の明るさ
+	const float		m_luminanceMidNight1 = 0.0005f;		//夜の明るさ
+	const float		m_luminanceMidNight2 = 0.001f;		//夜の明るさ
+	const float		m_luminanceSunrise = 0.0075f;		//日の出
+	const float		m_luminanceDawn1 = 0.05f;			//夜明け
+	const float		m_luminanceDawn2 = 0.1f;			//夜明け
+	const float		m_luminanceDawn3 = 0.5f;			//夜明け
+	const float		m_luminanceDay = 1.0f;				//朝（最大）
 };
 
 

@@ -27,12 +27,12 @@
 #include "GameOver.h"
 #include "random"
 #include "EnemyUI.h"
-#include "Fade.h"
+#include "Load.h"
 
 bool Game::Start()
 {
 	//インスタンスアドレスを検索。
-	m_fade = FindGO<Fade>("fade");
+	m_load = FindGO<Load>("load");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_enemy = FindGO<Enemy>("enemy");
 
@@ -40,13 +40,17 @@ bool Game::Start()
 	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
 	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
-	//空の作成
+	//x軸の向き。
+	m_notifyx = 1000.0f;
+
+	//空の作成。
 	m_skyCube = NewGO<SkyCube>(0, "skyCube");
 	m_skyCube->SetType(enSkyCubeType_NightToon);
 	m_skyCube->SetScale(1000.0f);
-	m_skyCube->SetLuminance(m_skyLuminance);//空の光の強さ
-
-	g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(),m_skyAmbient);//空の光から影響する環境光の強さ
+	//空の光の強さ。
+	m_skyCube->SetLuminance(m_skyLuminance);
+	//空の光から影響する環境光の強さ
+	g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(),m_skyAmbient);
 
 	//オブジェクトの作成。
 	CreateObject();
@@ -100,11 +104,11 @@ Game::~Game()
 		DeleteGO(annoyingEnemy);
 	}
 
-	DeleteGO(m_player);//プレイヤー。
-	DeleteGO(m_gameCamera);//ゲームカメラ。
-	DeleteGO(m_backGround);//ステージ。
-	DeleteGO(m_crossHair);//クロスヘアー。
-	DeleteGO(m_ringBell);//ベル。
+	DeleteGO(m_player);			//プレイヤー。
+	DeleteGO(m_gameCamera);		//ゲームカメラ。
+	DeleteGO(m_backGround);		//ステージ。
+	DeleteGO(m_crossHair);		//クロスヘアー。
+	DeleteGO(m_ringBell);		//ベル。
 
 	//火打石。
 	DeleteGO(m_stone1);
@@ -160,7 +164,7 @@ Game::~Game()
 
 void Game::Update()
 {	
-	if (m_fade->isFade())
+	if (m_load->isLoad())
 	{
 		return;
 	}
@@ -182,19 +186,10 @@ void Game::Update()
 	LanternAttackLightState();
 	//攻撃灯籠用ライトの作成
 	CreateLanternAttackLight();
-	//攻撃灯籠用エフェクトの作成
-	CreateLanternAttackEffect();
-
-	m_timer += g_gameTime->GetFrameDeltaTime();
-
-	//ゲーム開始から30秒経ったら
-	//if (m_timer >= 150.0f) 
-  {
-		//エネミーの作成
-		CreateEnemy();
-	}
 	//空の明るさ調整
 	SetSkyLight();
+	//敵のスポーン処理と敵が来たことを通知する。
+	NotifiyEnemy();
 }
 
 //ゲームクリア、ゲームオーバーの判定処理。
@@ -413,34 +408,35 @@ void Game::CreateStone()
 {
 	// 火打石を表示。
 	m_stone1 = NewGO<Stone>(0, "stone1");
-	m_stone1->m_position = { 1000.0f,0.0f,-500.0f };
+	m_stone1->m_position = { 1000.0f,-25.0f,-500.0f };
 	m_stone1->m_firstPosition = m_stone1->m_position;
 	//m_stone1 = FindGO<Stone>("stone");
 
 	m_stone2 = NewGO<Stone>(0, "stone2");
-	m_stone2->m_position = { 200.0f,0.0f,-2000.0f };
+	m_stone2->m_position = { 200.0f,-25.0f,-2000.0f };
 	m_stone2->m_firstPosition = m_stone2->m_position;
 	//m_stone2 = FindGO<Stone>("stone");
 
 	m_stone3 = NewGO<Stone>(0, "stone3");
-	m_stone3->m_position = { -1200.0f,0.0f,500.0f };
+	m_stone3->m_position = { -1200.0f,-25.0f,500.0f };
 	m_stone3->m_firstPosition = m_stone3->m_position;
 
 	m_stone4 = NewGO<Stone>(0, "stone4");
-	m_stone4->m_position = { 2000.0f,0.0f,-2000.0f };
+	m_stone4->m_position = { 2000.0f,-25.0f,-2000.0f };
 	m_stone4->m_firstPosition = m_stone4->m_position;
 
 	m_stone5 = NewGO<Stone>(0, "stone5");
-	m_stone5->m_position = { -2000.0f,0.0f,-2200.0f };
+	m_stone5->m_position = { -2300.0f,-25.0f,-2200.0f };
 	m_stone5->m_firstPosition = m_stone5->m_position;
 
 	m_stone6 = NewGO<Stone>(0, "stone6");
-	m_stone6->m_position = { -1500.0f,0.0f,0.0f };
+	m_stone6->m_position = { 0.0f,-25.0f,500.0f };
 	m_stone6->m_firstPosition = m_stone6->m_position;
 
 	m_stone7 = NewGO<Stone>(0, "stone7");
-	m_stone7->m_position = { 1200.0f,0.0f,-1000.0f };
-	m_stone7->m_firstPosition = m_stone7->m_position;
+	m_stone7->m_position = { 0.0f,-25.0f,-500.0f };
+	m_stone5->m_position = { -2000.0f,0.0f,-2200.0f };
+	m_stone5->m_firstPosition = m_stone5->m_position;
 }
 
 //灯籠作成用関数。
@@ -899,7 +895,33 @@ void Game::UITimer()
 	
 }
 
+void Game::NotifiyEnemy()
+{
+	//ゲーム開始から30秒経ったら。
+	if (m_timer >= 150.0f)
+	{
+		//エネミーの作成。
+		CreateEnemy();
+		//敵が来たことを通知する。
+		m_notifyEnemyFontRender.SetText(L"敵が来るぞ");
+		m_notifyEnemyFontRender.SetColor(g_vec4Red);
+		m_notifyEnemyFontRender.SetScale(2);
+		m_isShowNotify = true;
+	}
+	if (m_isShowNotify)
+	{
+		m_notifyx -= 230 * g_gameTime->GetFrameDeltaTime();
+		m_notifyEnemyFontRender.SetPosition(m_notifyx, 400.0f, 0.0f);
+
+		if (m_notifyx < -1400.0f)
+		{
+			m_isShowNotify = false;
+		}
+	}
+}
+
 void Game::Render(RenderContext& rc)
 {
 	m_timerFontRender.Draw(rc);
+	m_notifyEnemyFontRender.Draw(rc);
 }

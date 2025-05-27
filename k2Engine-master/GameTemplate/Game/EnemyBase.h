@@ -77,7 +77,6 @@ public:
 	//virtual void ProcessGoalStateTransition() =0;
 	//virtual void InitEnemyModel() = 0;
 	virtual void PlayAnimation() = 0;
-
 protected:
 	Game* m_game = nullptr;
 	Player* m_player = nullptr;
