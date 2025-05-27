@@ -1,6 +1,7 @@
 #pragma once
 #include "graphics/effect/EffectEmitter.h"
 	class LittleEnemy;
+	class BossEnemy;
 	class Player;
 
 
@@ -34,9 +35,9 @@
 		}
 
 		//ステータスを設定。
-		void SetEnEnemy(const EnEnemy enenemy)
+		void SetEnEnemy(const EnEnemy enEnemy)
 		{
-			m_enEnemy = enenemy;
+			m_enEnemy = enEnemy;
 		}
 
 		//座標を取得。
@@ -48,7 +49,8 @@
 	private:
 		//メンバ変数。
 		Player*				m_player;						//プレイヤー。
-		LittleEnemy*		m_littleenemy;					//小さい敵。
+		LittleEnemy*		m_littleEnemy;					//小さい敵。
+		BossEnemy*          m_bossEnemy;					//ボス敵。
 		CollisionObject*	m_collisionObj;					//コリジョンオブジェクト。
 		EffectEmitter*		m_effectEmitter;				//エフェクトエミッター。
 		Vector3				m_position;						//座標。

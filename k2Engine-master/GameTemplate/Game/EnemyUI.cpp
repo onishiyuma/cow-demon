@@ -10,11 +10,19 @@
 
 namespace
 {
+	//HPゲージのサイズ
+	const Vector3 HP_GAUGE_SCALE = { 195.0f,22.0f,1.0f };
+	//HPフレームのサイズ
+	const Vector3 HP_FREAM_SCALE = { 195.0f,22.0f,1.0f };
+	//HPフレームのポジション
+	const float ENEMY_HP = 160.0f;
+	//HPスプライトのポジション
+	const float ENEMY_HP_GAUGE = 170.0f;
+	//赤
 	//HPゲージのサイズ。
 	const Vector3 HP_GAUGE_SCALE = { 180.0f,13.0f,1.0f };
 	//HPフレームのサイズ。
 	const Vector3 HP_FREAM_SCALE = { 195.0f,22.0f,1.0f };
-
 	//HPのポジション。
 	const float ENEMY_HP = 160.0f;
 	//赤。
@@ -37,12 +45,15 @@ bool EnemyUI::Start()
 {
 	//ゲージ部分
 	m_HPSprite.Init("Assets/UI/white.DDS", HP_GAUGE_SCALE.x, HP_GAUGE_SCALE.y);
+	//m_HPSprite.SetScale(m_scale);
+	m_HPSprite.SetPivot(Vector2{ 0.0f,1.0f });
 	m_HPSprite.SetScale(m_scale
 	);
 	m_HPSprite.SetMulColor(RED);
 	//枠の部分
 	m_HPFreamSprite.Init("Assets/UI/white.DDS", HP_FREAM_SCALE.x, HP_FREAM_SCALE.y);
 	m_HPFreamSprite.SetScale(m_scale);
+	m_HPFreamSprite.SetPivot(Vector2{ 0.0f,1.0f });
 	m_HPFreamSprite.SetMulColor(BLACK);
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
@@ -109,13 +120,14 @@ void EnemyUI::Position()
 	m_HPFreamSprite.SetPosition(Vector3(m_position.x, m_position.y, 0.0f));
 
 
-	//画像を左に寄せる
-	Vector3 BarSizeSubtraction = SendHPBer(HP_GAUGE_SCALE, m_scale);
-	m_position.x -= BarSizeSubtraction.x;
+	// --- ゲージ（バー）描画位置 ---
+	float frameWidth = HP_FREAM_SCALE.x;
+	float gaugeWidth = HP_GAUGE_SCALE.x;
+	float offsetX = (frameWidth - gaugeWidth) * 0.0f;
 
-	//HPバーをセットする
-	m_HPSprite.SetPosition(Vector3(m_position.x, m_position.y, 0.0f));
 
+	// ピボットが左上なので、x座標にoffsetXを加えるだけでOK
+	m_HPSprite.SetPosition(Vector3(m_position.x + offsetX, m_position.y, 0.0f));
 
 }
 
@@ -126,12 +138,13 @@ void EnemyUI::Scale()
 	{
 		float m_enemyHp = m_enemy->GetHP();
 		float m_maxHP = m_enemy->GetMaxHP();
-		float wari = (float)m_enemyHp / (float)m_maxHP;
-		Vector3 scale = { 1.0f,1.0f,1.0f };
-		m_HPFreamSprite.SetScale(scale);
+		float wari = (float)m_enemyHp/(float)m_maxHP;
+		Vector3 scale = { wari,1.0f,1.0f };
 
-
-		if (m_enemyHp <= 100) {
+		if (m_enemyHp <= 0.0f) {
+			m_HPSprite.SetScale(Vector3(0.0f,1.0f,1.0f));
+		}
+		else if (m_enemyHp <= m_maxHP) {
 			m_HPSprite.SetScale(scale);
 		}
 	}
@@ -141,11 +154,12 @@ void EnemyUI::Scale()
 		float m_enemyHp = m_littleEnemy->GetHP();
 		float m_maxHP = m_littleEnemy->GetMaxHP();
 		float wari = (float)m_enemyHp /(float)m_maxHP;
-		Vector3 scale = { 1.0f,1.0f,1.0f };
-		m_HPFreamSprite.SetScale(scale);
+		Vector3 scale = { wari,1.0f,1.0f };
 
-
-		if (m_enemyHp <= 100) {
+		if (m_enemyHp <= 0.0f) {
+			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+		}
+		else if (m_enemyHp <= m_maxHP) {
 			m_HPSprite.SetScale(scale);
 		}
 	}
@@ -155,11 +169,12 @@ void EnemyUI::Scale()
 		float m_enemyHp = m_bossEnemy->GetHP();
 		float m_maxHP = m_bossEnemy->GetMaxHP();
 		float wari = (float)m_enemyHp /(float)m_maxHP;
-		Vector3 scale = { 1.0f,1.0f,1.0f };
-		m_HPFreamSprite.SetScale(scale);
+		Vector3 scale = { wari,1.0f,1.0f };
 
-
-		if (m_enemyHp <= 100) {
+		if (m_enemyHp <= 0.0f) {
+			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+		}
+		else if (m_enemyHp <= m_maxHP) {
 			m_HPSprite.SetScale(scale);
 		}
 	}
@@ -169,15 +184,15 @@ void EnemyUI::Scale()
 		float m_enemyHp = m_annoyingEnemy->GetHP();
 		float m_maxHP = m_annoyingEnemy->GetMaxHP();
 		float wari = (float)m_enemyHp /(float)m_maxHP;
-		Vector3 scale = { 1.0f,1.0f,1.0f };
-		m_HPFreamSprite.SetScale(scale);
-
-
-		if (m_enemyHp <= 100) {
+		Vector3 scale = { wari,1.0f,1.0f };
+		
+		if (m_enemyHp <= 0.0f) {
+			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+		}
+		else if (m_enemyHp <= m_maxHP) {
 			m_HPSprite.SetScale(scale);
 		}
 	}
-
 }
 
 Vector3 EnemyUI::SendHPBer(Vector3 size, Vector3 scale)
@@ -196,7 +211,7 @@ Vector3 EnemyUI::SendHPBer(Vector3 size, Vector3 scale)
 template<class T>
 bool EnemyUI::Angle(T Enemy)
 {
-	//カメラからエネミーの位置のベクトルを求める
+	////カメラからエネミーの位置のベクトルを求める
 	Vector3 toEnemy = Enemy->GetPosition() - m_gameCamera->GetCameraPos();
 	float distance = toEnemy.Length();
 	toEnemy.Normalize();
@@ -207,7 +222,7 @@ bool EnemyUI::Angle(T Enemy)
 	//内積の結果から角度を求める
 	float angleRad = acos(dot);
 	//カメラから見てエネミーが一定角度の時
-	if (fabsf(angleRad) <= Math::DegToRad(50.0f))
+	if (fabsf(angleRad) <= Math::DegToRad(40.0f))
 	{
 		return true;
 		

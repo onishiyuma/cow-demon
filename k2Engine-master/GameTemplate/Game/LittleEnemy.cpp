@@ -24,7 +24,11 @@ LittleEnemy::LittleEnemy()
 
 LittleEnemy::~LittleEnemy()
 {
-
+	if (m_effectEmitter) {
+		m_effectEmitter->Stop();
+		DeleteGO(m_effectEmitter);
+		m_effectEmitter = nullptr;
+	}
 }
 
 bool LittleEnemy::Start()
@@ -50,7 +54,7 @@ bool LittleEnemy::Start()
 
 	//モデルの初期化。
 	m_modelRender.Init("Assets/modelData/LittleEnemy/enemy.tkm", m_animationClips, enAnimationClip_Num);
-
+	EffectEngine::GetInstance()->ResistEffect(8, u"Assets/effect/EnemyEffects/Usioni_Little_Down/Little_Down.efk");
 	//座標を設定。
 	m_modelRender.SetPosition(m_position);
 	//回転を設定。
@@ -67,15 +71,11 @@ bool LittleEnemy::Start()
 	Vector3  scale(100.0f, 100.0f, 100.0f);
 	SetScale(scale);
 	//HPを設定。
-	SetHP(100);
-
+	SetHP(80);
 	//アニメーションイベントの登録。
 	m_modelRender.AddAnimationEvent([&](const wchar_t* clipName, const wchar_t* eventName) {
 		OneAnimationEvent(clipName, eventName);
 		});
-
-	////繧ｨ繝輔ぉ繧ｯ繝医ｒ隱ｭ縺ｿ霎ｼ繧
-	//EffectEngine::GetInstance()->ResistEffect(1, u"Assets/Effect/Poison.efk");
 
 	//各種インスタンスアドレスを検索。
 	m_player = FindGO<Player>("player");
@@ -142,6 +142,8 @@ void LittleEnemy::Chase()
 		//y方向には移動させない。
 		m_moveSpeed.y = 0.0f;
 	}
+	//重力を追加。
+	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
 	//モデルの表示位置を更新。
 	Vector3 modelPosition = m_position;
 	modelPosition.y += 2.5f;
@@ -155,14 +157,15 @@ void LittleEnemy::IsHonden()
 	{
 		return;
 	}
-	/*m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();*/
 	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
 	if (m_charaCon.IsOnGround()) {
 		//地面についた
 		m_moveSpeed.y = 0.0f;
 	}
+    m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
+	
 	Vector3 modelPosition = m_position;
-
+	modelPosition.y += 2.5f;
 	m_modelRender.SetPosition(modelPosition);
 }
 
@@ -363,7 +366,7 @@ const bool LittleEnemy::SearchPlayer()const
 	Vector3 diff = m_player->GetPosition() - m_position;
 
 	//エネミーとプレイヤーの距離が近かったら。
-	if (diff.LengthSq() <= 700.0f * 700.0f)
+	if (diff.LengthSq() <= 1000.0f * 1000.0f)
 	{
 		//正規化。
 		diff.Normalize();
@@ -402,57 +405,6 @@ const bool LittleEnemy::SearchHonden()const
 	}
 }
 
-/*void LittleEnemy::Leave()
-{
-	//騾謨｣繧ｹ繝・・繝亥・縺ｪ縺・↑繧・騾謨｣蜃ｦ逅・・縺励↑縺・
-	if (m_enemyState != enEnemyState_Leave)
-	{
-		return;
-	}
-
-	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
-	if (m_charaCon.IsOnGround())
-	{
-		m_moveSpeed.y = 0.0f;
-	}
-	Vector3 modelPosition = m_position;
-	m_modelRender.SetPosition(modelPosition);
-}
-
-//void LittleEnemy::Leave()
-//{
-//	//騾謨｣繧ｹ繝・・繝亥・縺ｪ縺・↑繧・騾謨｣蜃ｦ逅・・縺励↑縺・
-//	if (m_enemyState != enEnemyState_Leave)
-//	{
-//		return;
-//	}
-//
-//	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
-//	if (m_charaCon.IsOnGround())
-//	{
-//		m_moveSpeed.y = 0.0f;
-//	}
-//	Vector3 modelPosition = m_position;
-//	m_modelRender.SetPosition(modelPosition);
-//}
-//
-void LittleEnemy::PoisonAttack()
-{
-	//謾ｻ謦・せ繝・・繝医〒縺ｪ縺・↑繧牙・逅・・縺励↑縺・
-	//謾ｻ謦・・逅・ｦ√せ繝・・繝医′蜃ｺ縺ｪ縺・↑繧牙・逅・・縺励↑縺・
-	if (m_enemyState != enEnemyState_Poison)
-	{
-		return;
-	}
-
-	//謾ｻ謦・ｸｭ縺ｧ縺ゅｌ縺ｰ
-	if (m_isUnderAttack == true)
-	{
-		//謾ｻ謦・畑縺ｮ繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ繧剃ｽ懈・縺吶ｋ
-		MakePoison()
-	}
-}*/
-
 void LittleEnemy::MakePoison()
 {
 	//毒ブレスのオブジェクトを作成。
@@ -468,6 +420,20 @@ void LittleEnemy::MakePoison()
 	poison->SetEnEnemy(Poison::enPoison_LittleEnemy);
 }
 
+void LittleEnemy::DeathEffect()
+{
+	//エフェクトの発生位置
+	Vector3 m_effectPosition = m_position;
+	m_effectPosition.y += 50.0f;
+
+	//エフェクトの生成
+	m_effectEmitter = NewGO<EffectEmitter>(0);
+	m_effectEmitter->Init(8);//番号はRegistの登録番号
+	m_effectEmitter->SetPosition(m_effectPosition);
+	m_effectEmitter->SetScale(Vector3(30.0f, 30.0f, 30.0f));//大きさは調整
+	m_effectEmitter->Play();//エフェクトの再生
+}
+
 void LittleEnemy::ProcessIdleStateTransition()
 {
 	//待機時間を加算。
@@ -481,14 +447,6 @@ void LittleEnemy::ProcessIdleStateTransition()
 }
 void LittleEnemy::ProcessChaseStateTransition()
 {
-	/*//攻撃ができる距離なら。
-	if (IsCanAttack() == true)
-	{
-		//他のステートに遷移する。
-		ProcessCommonStateTransition();
-		return;
-	}*/
-
 	m_chaseTimer += g_gameTime->GetFrameDeltaTime();
 	//追跡時間がある程度経過したら。
 	if (m_chaseTimer >= 0.8f)
@@ -497,41 +455,6 @@ void LittleEnemy::ProcessChaseStateTransition()
 		return;
 	}
 }
-
-/*void LittleEnemy::ProcessLeaveStateTransition()
-{
-		//距離が近いなら
-	if (IsLeave() == true)
-	{
-		//他のステートに遷移する
-		ProcessCommonStateTransition();
-		return;
-	}
-	m_leaveTimer += g_gameTime->GetFrameDeltaTime();
-		//退散時間がある程度経過したら
-	if (m_leaveTimer >= 0.8f)
-	{
-		//他のステートに遷移する
-		ProcessCommonStateTransition();
-	}
-}
-void LittleEnemy::ProcessLeaveStateTransition()
-{
-	//遠距離攻撃アニメーションの再生が終わったら。
-	if (m_modelRender.IsPlayingAnimation() == false)
-	{
-		ProcessCommonStateTransition();
-		return;
-	}
-	//追跡時間がある程度経過したら。
-	if (m_poisonAttackCoolDown >= 0.8f)
-	{
-		ProcessCommonStateTransition();
-		return;
-	}
-	m_poisonAttackCoolDown += g_gameTime->GetFrameDeltaTime();
-}*/
-
 
 void LittleEnemy::ProcessPoisonAttackStateTransition()
 {
@@ -542,13 +465,14 @@ void LittleEnemy::ProcessPoisonAttackStateTransition()
 		ProcessCommonStateTransition();
 		return;
 	}
+	m_poisonAttackCoolDown += g_gameTime->GetFrameDeltaTime();
 	//追跡時間がある程度経過したら。
-	if (m_poisonAttackCoolDown >= 0.8f)
+	if (m_poisonAttackCoolDown >= 2.8f)
 	{
 		ProcessCommonStateTransition();
 		return;
 	}
-	m_poisonAttackCoolDown += g_gameTime->GetFrameDeltaTime();
+	
 
 }	
 
@@ -581,11 +505,18 @@ void LittleEnemy::ProcessDamageStateTransition()
 		diff.Normalize();
 		//移動速度を設定する。
 		m_moveSpeed = diff * 10.0f;
+		/*ProcessCommonStateTransition();*/
 	}
 }
 
 void LittleEnemy::ProcessDownStateTransition()
 {
+	if (!m_isDeadFlag)
+	{
+		DeathEffect();
+		m_isDeadFlag = true;
+	}
+
 	//ダウンアニメーションの再生が終わったら。
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
@@ -615,10 +546,10 @@ void LittleEnemy::ProcessCommonStateTransition()
 			if (IsCanAttack() == true)
 			{
 				int ram = rand() % 100;
-				if (ram > 90)
+				if (ram > 80)
 				{
 					m_enemyState = enEnemyState_Chase;
-
+					return;
 				}
 
 				else
@@ -630,6 +561,7 @@ void LittleEnemy::ProcessCommonStateTransition()
 			else
 			{
 				m_enemyState = enEnemyState_Chase;
+				return;
 			}
 
 		}
@@ -658,10 +590,6 @@ void LittleEnemy::ManageState()
 	case enEnemyState_Chase:
 		ProcessChaseStateTransition();
 		break;
-		//退散状態
-		/*case enEnemyState_Leave:
-			ProcessLeaveStateTransition();
-			break;*/
 		//本殿追従状態
 	case enEnemyState_Honden:
 		ProcessHondenStateTransition();
@@ -698,16 +626,7 @@ void LittleEnemy::PlayAnimation()
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
-		/*case enEnemyState_Leave:
-			//追跡状態
-			m_modelRender.SetAnimationSpeed(1.2f);
-			m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
-			break;*/
-		//case enEnemyState_Leave:
-		//退散状態
-		//	m_modelRender.SetAnimationSpeed(1.2f);
-		//	m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
-		//	break;
+		//本殿追従状態
 	case enEnemyState_Honden:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run,0.1f);
@@ -717,8 +636,8 @@ void LittleEnemy::PlayAnimation()
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Poison, 0.1f);
 		break;
-	case enEnemyState_Damage:
 		//被ダメージ状態
+	case enEnemyState_Damage:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Damage, 0.1f);
 		break;
@@ -747,7 +666,7 @@ const bool LittleEnemy::IsCanAttack()const
 	Vector3 diff = m_player->GetPosition() - m_position;
 
 	//プレイヤーとの距離が近かったら。
-	if (diff.LengthSq() <= 500.0f * 500.0f)
+	if (diff.LengthSq() <= 700.0f * 700.0f)
 	{
 		//攻撃。
 		return true;
