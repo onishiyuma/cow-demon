@@ -550,21 +550,8 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 	m_chaseTimer = 0.0f;
 	m_poisonAttackCoolDown = 0.0f;
 
-	//プレイヤーを見つけたら。
-	if (SearchPlayer() == true)
+	if (SearchHonden() == true)
 	{
-		//プレイヤーとの方向ベクトルを取得。
-		Vector3 diff = m_player->GetPosition() - m_position;
-		//ベクトルを正規化する。
-		diff.Normalize();
-		//移動速度計算する。
-		m_moveSpeed = diff * 130.0f;
-		//攻撃できをる距離なら。
-		if (IsCanAttack() == true)
-	m_explodeTimer = 0.0f;
-	m_hondenTimer = 0.0f;
-	m_deathEffectTimer = 0.0f;
-	if (SearchHonden() == true) {
 		//プレイヤーを見つけたら。
 		if (SearchPlayer() == true)
 		{
@@ -584,7 +571,6 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 					return;
 
 				}
-
 				else
 				{
 					m_enemyState = enEnemyState_Chase;
@@ -594,21 +580,16 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 			{
 				m_enemyState = enEnemyState_Chase;
 			}
-
 		}
 		else
 		{
 			Vector3 diff = m_ringBell->GetPosition() - m_position;
 			diff.Normalize();
 			m_moveSpeed = diff * 100.0f;
-		  //攻撃でき化ければ追跡ステートへ。
-		  m_enemyState = enEnemyState_Idle;
-		  return;
-		  m_enemyState = enEnemyState_Honden;
-		  return;
+			m_enemyState = enEnemyState_Honden;
+			return;
 		}
 	}
-
 }
 
 void AnnoyingEnemy::ManageState()

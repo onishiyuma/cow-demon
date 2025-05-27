@@ -577,9 +577,7 @@ void Enemy::ProcessCommonStateTransition()
 	//プレイヤーを見つけたら。
 	if (SearchMain() == true)
 	{
-		{
-
-			if (SearchPlayer() == true){
+		if (SearchPlayer() == true) {
 			Vector3 diff = m_player->GetPosition() - m_position;
 			//ベクトルを正規化する。
 			diff.Normalize();
@@ -587,51 +585,49 @@ void Enemy::ProcessCommonStateTransition()
 			m_moveSpeed = diff * 100.0f;
 			//攻撃できる距離なら。
 			int ram = rand() % 100;
-				if (IsCanAttack() == true)
+			if (IsCanAttack() == true)
+			{
+				m_enemyState = enEnemyState_Attack;
+				m_isUnderAttack = false;
+				return;
+			}
+			else
+			{
+				if (ram > 70)
 				{
+
+
 					m_enemyState = enEnemyState_Attack;
 					m_isUnderAttack = false;
 					return;
 				}
+
 				else
 				{
-					if (ram > 70)
-					{
-
-
-						m_enemyState = enEnemyState_Attack;
-						m_isUnderAttack = false;
-						return;
-					}
-
-					else
-					{
-						m_enemyState = enEnemyState_Chase;
-					}
-
-				}
-				//攻撃できない距離なら。
-				if (IsCanAttack() == false) 
-        {
 					m_enemyState = enEnemyState_Chase;
-					return;
 				}
+
 			}
 			//攻撃できない距離なら。
-			if (IsCanAttack() == false) 
-			{
+			if (IsCanAttack() == false)
 				m_enemyState = enEnemyState_Chase;
-			//何も見つけられなければ。
-			else
-			{
-				Vector3 diff = m_ringBell->GetPosition() - m_position;
-				diff.Normalize();
-				m_moveSpeed = diff * 100.0f;
-
-				m_enemyState = enEnemyState_Honden;
-				return;
-			}
+			return;
 		}
+	}
+	//攻撃できない距離なら。
+	if (IsCanAttack() == false)
+	{
+		m_enemyState = enEnemyState_Chase;
+		//何も見つけられなければ。
+	}
+	else
+	{
+		Vector3 diff = m_ringBell->GetPosition() - m_position;
+		diff.Normalize();
+		m_moveSpeed = diff * 100.0f;
+
+		m_enemyState = enEnemyState_Honden;
+		return;
 	}
 }
 
