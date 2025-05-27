@@ -689,6 +689,9 @@ namespace nsK2EngineLow {
 	const Vector4 g_vec4Black = { 0.0f, 0.0f, 0.0f, 1.0f };
 	const Vector4 g_vec4Gray = { 0.5f, 0.5f, 0.5f, 1.0f };
 	const Vector4 g_vec4Yellow = { 1.0f, 1.0f, 0.0f, 1.0f };
+	const Vector4 g_vec4Red = { 1.0f,0.0f, 0.0f, 0.5f };
+	const Vector4 g_vec4Green = { 0.0f, 1.0f, 0.0f, 1.0f };
+	const Vector4 g_vec4Blue = { 0.0f, 0.0f, 1.0f, 1.0f };
 
 	/// <summary>
 	/// クォータニオンクラス。

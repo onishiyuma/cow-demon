@@ -132,7 +132,8 @@ void Enemy::Chase()
 	//キャラコンを使って移動。
 	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
 	//地面についていたらY方向の速度をリセット。
-	if (m_charaCon.IsOnGround()) {
+	if (m_charaCon.IsOnGround()) 
+	{
 		//地面についた。
 		m_moveSpeed.y = 0.0f;
 	}
@@ -394,7 +395,7 @@ const bool Enemy::SearchPlayer()const
 	return false;
 }
 
-const bool Enemy::SearchHonden()const
+const bool Enemy::SearchMain()const
 {
 	Vector3 diff2 = m_ringBell->GetPosition() - m_position;
 	//対象に向かう。
@@ -459,7 +460,8 @@ void Enemy::ProcessChaseStateTransition()
 void Enemy::ProcessAttackStateTransition()
 {
 	//アニメーション再生が終わっていたら。
-	if (m_modelRender.IsPlayingAnimation() == false) {
+	if (m_modelRender.IsPlayingAnimation() == false) 
+	{
 		ProcessCommonStateTransition();
 	}
 }
@@ -486,7 +488,7 @@ void Enemy::ProcessDownStateTransition()
 	}
 }
 
-void Enemy::ProcessHondenStateTransition()
+void Enemy::ProcessMainStateTransition()
 {
 	//攻撃ができる距離になったら
 	if (IsCanAttack() == true)
@@ -510,12 +512,9 @@ void Enemy::ProcessCommonStateTransition()
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
 	m_hondenTimer = 0.0f;
-	//エネミーからプレイヤーに向かうベクトルを計算する。
 
 	//プレイヤーを見つけたら。
-
-
-	if (SearchHonden() == true)
+	if (SearchMain() == true)
 	{
 		if (SearchPlayer() == true)
 		{
@@ -531,13 +530,10 @@ void Enemy::ProcessCommonStateTransition()
 			{
 				if (ram > 70)
 				{
-
-
 					m_enemyState = enEnemyState_Attack;
 					m_isUnderAttack = false;
 					return;
 				}
-
 				else
 				{
 					m_enemyState = enEnemyState_Chase;
@@ -545,9 +541,8 @@ void Enemy::ProcessCommonStateTransition()
 
 			}
 			//攻撃できない距離なら。
-			if (IsCanAttack() == false) {
-
-
+			if (IsCanAttack() == false) 
+			{
 				m_enemyState = enEnemyState_Chase;
 
 				return;
@@ -558,7 +553,7 @@ void Enemy::ProcessCommonStateTransition()
 		{
 			Vector3 diff = m_ringBell->GetPosition() - m_position;
 			diff.Normalize();
-			m_moveSpeed = diff * 250.0f;
+			m_moveSpeed = diff * 100.0f;
 
 			m_enemyState = enEnemyState_Honden;
 			return;
@@ -576,7 +571,7 @@ void Enemy::ManageState()
 		ProcessIdleStateTransition();
 		break;
 	case Enemy::enEnemyState_Honden:
-		ProcessHondenStateTransition();
+		ProcessMainStateTransition();
 		break;
 		//追跡ステート。
 	case  Enemy::enEnemyState_Chase:

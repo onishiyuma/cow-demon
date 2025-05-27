@@ -12,6 +12,8 @@ public:
 	~GameCamera();
 	bool Start();
 	void Update();
+	void Render(RenderContext& rc);
+
 
 	void LockCamera(bool isLock) 
 	{ 
@@ -48,12 +50,15 @@ private:
 	Vector3			m_PosMain = Vector3::One;			//本殿の方向の座標
 	Vector3			cameraTargetLoakAt;					//ターゲットの方向に向いているか。
 	Vector3			m_mainPos;							//本殿の位置。
+	FontRender		m_notifyEnemyInMain;				//本殿に敵が入った時の通知。
 	float			m_nearClip = 1.0f;					//ニアークリップ
 	float			m_furClip = 20000.0f;				//ファークリップ。
 	float			m_rotateTimer = 0.0f;				//回転する時間。
 	float			m_rottatieDuration = 2.0f;			//2秒で回転。
 	const int		m_half=2;							//半分。
+	int				m_notifyx = 0.0f;					//通知のX座標。
 	bool			m_isLocked = false;					//カメラが本殿を向いているか。
+	bool 			m_isShowNotify;						//通知を表示するか。
 
 };
 

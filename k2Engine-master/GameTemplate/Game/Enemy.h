@@ -15,12 +15,12 @@ class Enemy : public EnemyBase
 public:
 		//敵の状態を表す列挙型。
 	enum EnEnemyState {
-		enEnemyState_Idle,//待機中。
-		enEnemyState_Honden,//本殿を目指す。
-		enEnemyState_Chase,//プレイヤーを追跡。
-		enEnemyState_Attack,//攻撃中。
-		enEnemyState_Damage,//ダメージを受けた状態。
-		enEnemyState_Down//ダウン状態か。
+		enEnemyState_Idle,			//待機中。
+		enEnemyState_Honden,		//本殿を目指す。
+		enEnemyState_Chase,			//プレイヤーを追跡。
+		enEnemyState_Attack,		//攻撃中。
+		enEnemyState_Damage,		//ダメージを受けた状態。
+		enEnemyState_Down			//ダウン状態か。
 	};
 
 	//アニメーション。
@@ -71,7 +71,7 @@ public:
 	//行動ロジック。
 	void Chase() override;						//追跡。
 	const bool SearchPlayer() const override;   //探す。
-	const bool SearchHonden() const;            //本殿を探す。
+	const bool SearchMain() const;				//本殿を探す。
 	void IsHonden();                            //本殿へ行く処理。
 
 	//状態遷移処理。
@@ -81,7 +81,7 @@ public:
 	void ProcessChaseStateTransition() override;
 	void ProcessAttackStateTransition();
 	void ProcessDamageStateTransition() override;
-	void ProcessHondenStateTransition();
+	void ProcessMainStateTransition();
 	void ProcessDownStateTransition() override;
 
 	//アニメーション処理。
@@ -96,6 +96,7 @@ public:
 	//コリジョン処理。
 	void Collision() override;
 
+private:
 	//メンバ変数。
 	GameCamera*			m_gameCamera = nullptr;						//ゲームカメラ。
 	Player*				m_player = nullptr;							//プレイヤー。
@@ -109,13 +110,14 @@ public:
 	Vector3				m_position;									//現在位置。
 	Vector3				m_farstPosition = Vector3::Zero;			//初期位置。
 	Vector3				m_forward = Vector3::AxisZ;					//向きベクトル。
-	Vector3				m_moveSpeed;								//移動速度ベクトル。
+	Vector3				m_moveSpeed;								//移動速度。
 	const Vector3		m_stopMove = Vector3::Zero;					//動いていない。
 	Vector3				m_scale;									//モデルのスケール。
 	Quaternion			m_rotation;									//回転。
 
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//ステータス。
 
+	const int			m_enemyATK = 5;								//敵の攻撃力。
 	int					m_hp = 0;									//体力。
 	int					m_isUnderAttack = false;					//攻撃を受けているか
 	int					m_FangBoneId = -1;							//攻撃判定を出すボーンID

@@ -54,7 +54,7 @@ public:
 	const bool IsCanAttack() const;           //攻撃可能かどうかを判定。
 	const bool IsLeave() const;               //離脱状態かどうかを判定。
 	void PlayAnimation() override;            //アニメーション切り替え。
-	void MakePoison();                        //毒攻撃エフェクト生成。
+	void MakePoison();    
 
 	//状態ごとの処理。
 	void ProcessIdleStateTransition() override;

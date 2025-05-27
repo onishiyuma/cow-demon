@@ -2,12 +2,12 @@
 
 class Game;
 
-class Fade : public IGameObject
+class Load : public IGameObject
 {
 public:
 	//メンバ関数。
-	Fade();
-	~Fade();
+	Load();
+	~Load();
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
@@ -15,7 +15,7 @@ public:
 	/// フェード中かどうか。
 	/// </summary>
 	/// <returns>フェードの状態。</returns>
-	bool isFade() const
+	bool isLoad() const
 	{
 		if (m_load > 0.0f)
 		{
@@ -40,12 +40,11 @@ private:
 	SpriteRender		m_spriteLoadGage;			//ロードゲージ用スプライト。
 	SpriteRender		m_spriteMask;				//マスクを動かす。
 	FontRender			m_fontRenderTips;			//フォントレンダー。
-
-	const float			m_tipInterval = 3.4f;		//ヒントの表示間隔。
+	const float			m_tipsInterval = 3.4f;		//ヒントの表示間隔。
 	float				m_tipTimer = 0.0f;			//ヒントの表示時間。
 	float				m_loadingProgress = 0.0f;	//ロード進行状況。
 	float				m_load = 1.0f;				//フェード用アルファ値。
-	int					m_currentTipIndex = 0;		//現在のヒントのインデックス。
+	int					m_currentTipsIndex = 0;		//現在のヒントのインデックス。
 	bool				m_isFadingOut = true;		//最初は暗くする。
 	bool				m_drawUI = false;			//UIを表示するか。
 };

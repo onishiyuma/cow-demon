@@ -521,7 +521,7 @@ void BossEnemy::ProcessCommonStateTransition()
 		//ベクトルを正規化する。
 		diff.Normalize();
 		//移動速度計算する。
-		m_moveSpeed = diff * 100.0f;
+		m_moveSpeed = diff * 50.0f;
 		//攻撃できをる距離なら。
 		if (IsCanAttack() == true)
 		{
@@ -546,6 +546,9 @@ void BossEnemy::ProcessCommonStateTransition()
 	}
 	else
 	{
+		Vector3 diff = m_player->GetPosition() - m_position;
+		diff.Normalize();
+		m_moveSpeed = diff * 50.0f;
 		m_enemyState = enEnemyState_Idle;
 		return;
 	}

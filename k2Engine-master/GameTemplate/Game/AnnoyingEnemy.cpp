@@ -104,6 +104,19 @@ void AnnoyingEnemy::Update()
 	m_modelRender.Update();
 }
 
+/*void Enemy::MakeAttackCollision()
+{
+	//攻撃判定用のコリジョンオブジェクトを作成する。
+	auto collisionObject = NewGO<CollisionObject>(0);
+	Vector3 collisionPosition = m_position;
+	collisionPosition += m_forward * 15.0f;
+	collisionObject->CreateSphere(collisionPosition,
+		Quaternion::Identity,
+		70.0f
+	);
+	collisionObject->SetName("annoyingenemy_attack");
+}*/
+
 void AnnoyingEnemy::Rotation()
 {
 	if (fabsf(m_moveSpeed.x) < 0.001f && fabsf(m_moveSpeed.z) < 0.001f)
@@ -497,15 +510,16 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 	m_chaseTimer = 0.0f;
 	m_poisonAttackCoolDown = 0.0f;
 
-	//プレイヤーとの方向ベクトルを取得。
-	Vector3 diff = m_player->GetPosition() - m_position;
+	//if(Serchmain)
 	//プレイヤーを見つけたら。
 	if (SearchPlayer() == true)
 	{
+		//プレイヤーとの方向ベクトルを取得。
+		Vector3 diff = m_player->GetPosition() - m_position;
 		//ベクトルを正規化する。
 		diff.Normalize();
 		//移動速度計算する。
-		m_moveSpeed = diff * 100.0f;
+		m_moveSpeed = diff * 130.0f;
 		//攻撃できをる距離なら。
 		if (IsCanAttack() == true)
 		{
@@ -530,10 +544,14 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 	}
 	else
 	{
+		Vector3 diff = m_player->GetPosition() - m_position;
+		diff.Normalize();
+		m_moveSpeed = diff * 130.0f;
 		//攻撃でき化ければ追跡ステートへ。
 		m_enemyState = enEnemyState_Idle;
 		return;
 	}
+
 }
 
 void AnnoyingEnemy::ManageState()
