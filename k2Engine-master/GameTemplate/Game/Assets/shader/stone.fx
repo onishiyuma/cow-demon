@@ -4,6 +4,8 @@
 
 
 #include "Sampler.h"
+#include "PBRLighting_const.h"
+#include "PBRLighting_struct.h"
 
 ////////////////////////////////////////////////
 // 構造体
@@ -33,6 +35,13 @@ cbuffer ModelCb : register(b0)
     float4x4 mView;
     float4x4 mProj;
 };
+
+// ライト用の定数バッファー
+cbuffer cb_0 : register(b1)
+{
+    float skyLuminance;
+};
+
 
 ////////////////////////////////////////////////
 // 構造体
@@ -89,16 +98,18 @@ float4 PSMainCore( SPSIn In, uniform int isSoftShadow )
 
     
     // ここで計算しているのは石全体に掛かる光。1000離れると光が０
-    float3 lig = lerp(0.001f/*マックスの光の強さ*/, 0.0f, saturate(length(In.posInView) / 1000.0f));
+    float3 lig = lerp(0.5f * skyLuminance/*マックスの光の強さ*/, 0.0f, saturate(length(In.posInView) / 1000.0f));
     // ここで計算しているのがエッジの光。
+    float rimPower = 30.0f * skyLuminance;
     float3 rim = float3(
-        pow((1 - abs(In.normalInView.z)), 10.0f/*リムの絞り*/) * 0.01f,
-        pow((1 - abs(In.normalInView.z)), 10.0f /*リムの絞り*/) * 0.01f,
-        pow((1 - abs(In.normalInView.z)), 10.0f /*リムの絞り*/) * 0.01f);
+        pow((1 - abs(In.normalInView.z)), 10.0f /*リムの絞り*/) * rimPower,
+        pow((1 - abs(In.normalInView.z)), 10.0f /*リムの絞り*/) * rimPower,
+        pow((1 - abs(In.normalInView.z)), 10.0f /*リムの絞り*/) * rimPower);
     // 2000離れるとエッジの光も０
     rim *= lerp(1, 0, saturate(length(In.posInView) / 1000.0f));
     lig += rim;
-    
+    float ambient = 0.5f * skyLuminance;
+    lig += ambient;
 	float4 finalColor = 1.0f;
     finalColor.xyz = albedoColor * lig ;
     return float4(finalColor.xyz, albedoColor.a);

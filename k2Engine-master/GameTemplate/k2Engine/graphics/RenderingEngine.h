@@ -338,6 +338,10 @@ namespace nsK2Engine {
         {
             return m_iblData.m_texture;
         }
+        void SetIBLIntensity(float intencity)
+        {
+            m_iblData.m_intencity = intencity;
+		}
         /// <summary>
         /// シャドウマップテクスチャにクエリを行う。
         /// </summary>
@@ -459,6 +463,7 @@ namespace nsK2Engine {
         {
             ReInitIBL(textureFilePath, luminance);
         }
+
         /// <summary>
         /// IBL環境光を無効にする。
         /// </summary>

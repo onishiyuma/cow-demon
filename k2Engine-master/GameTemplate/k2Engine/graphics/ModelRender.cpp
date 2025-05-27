@@ -98,6 +98,7 @@ namespace nsK2Engine {
 		InitComputeAnimatoinVertexBuffer(initData.m_tkmFilePath, initData.m_modelUpAxis);
 
 		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+
 		//作成した初期化データをもとにモデルを初期化する。
 		m_forwardRenderModel.Init(initData);
 		//ZPrepass描画用のモデルを初期化。

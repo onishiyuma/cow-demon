@@ -1,5 +1,6 @@
 #pragma once
 #include "EnemyBase.h"
+#include "graphics/effect/EffectEmitter.h"
 class Player;
 class BackGround;
 class Collision;
@@ -62,10 +63,20 @@ public:
 	{
 		m_scale = scale;
 	}
-	//HPをセット。
+
 	void SetHP(const int hp)
 	{
-		m_hp = hp;
+		m_enemyHP = hp;
+	}
+
+	float GetHP()const
+	{
+		return	m_enemyHP;
+	}
+
+	float GetMaxHP()const
+	{
+		return m_enemyMaxHP;
 	}
 
 	//行動ロジック。
@@ -73,6 +84,7 @@ public:
 	const bool SearchPlayer() const override;   //探す。
 	const bool SearchMain() const;				//本殿を探す。
 	void IsHonden();                            //本殿へ行く処理。
+	void DeathEffect();                        //死亡エフェクト。
 
 	//状態遷移処理。
 	void ManageState() override;
@@ -95,13 +107,13 @@ public:
 
 	//コリジョン処理。
 	void Collision() override;
-
 private:
 	//メンバ変数。
 	GameCamera*			m_gameCamera = nullptr;						//ゲームカメラ。
 	Player*				m_player = nullptr;							//プレイヤー。
 	RingBell*			m_ringBell = nullptr;						//鈴。
 	Game*				m_game = nullptr;							//ゲーム。
+	EffectEmitter* m_effectEmitter = nullptr;					//エフェクトエミッター。
 	GameOver*           m_gameOver = nullptr;						//ゲームオーバー。
 
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションデータ。
@@ -119,8 +131,11 @@ private:
 
 	const int			m_enemyATK = 5;								//敵の攻撃力。
 	int					m_hp = 0;									//体力。
+	int                 m_enemyMaxHP = m_enemyHP;								//最大体力。
+
 	int					m_isUnderAttack = false;					//攻撃を受けているか
 	int					m_FangBoneId = -1;							//攻撃判定を出すボーンID
+	
 
 	float				m_idleTimer = 0.0f;							//待機状態の経過時間。
 	float				m_chaseTimer = 0.0f;						//追跡状態の経過時間。
@@ -129,4 +144,5 @@ private:
 
 	bool				m_isStopped = false;						//拘束状態。
 	bool				m_isGameOver = false;						//ゲームオーバーか。
+	bool                m_isDeadFlag = false;                       //死亡フラグ。
 };

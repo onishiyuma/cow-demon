@@ -6,7 +6,7 @@
 #include "EnemyBase.h"
 #include "Game.h"
 #include "GameCamera.h"
-
+#include "RingBell.h"
 
 //#include "collision/CollisionObject.h"
 #include<time.h>
@@ -26,7 +26,12 @@ AnnoyingEnemy::AnnoyingEnemy()
 
 AnnoyingEnemy::~AnnoyingEnemy()
 {
-
+	if (m_effectEmitter)
+	{
+		m_effectEmitter->Stop();
+		DeleteGO(m_effectEmitter);
+		m_effectEmitter = nullptr;
+	}
 }
 
 
@@ -60,22 +65,22 @@ bool AnnoyingEnemy::Start()
 	//大きさを設定する。
 	//m_modelRender.SetScale(m_scale);
 	m_charaCon.Init(
-		20.0f,
-		20.0f,
+		50.0f,
+		50.0f,
 		m_position
 	);
+
+	//ボーンのIDを取得する。
+	m_ExplosionBoneId = m_modelRender.FindBoneID(L"Explosion");
 	Vector3 scale(100.0f, 100.0f, 1.00f);
 	SetScale(scale);
-	//アニメーションイベント用の関数を設定する。
-	m_modelRender.AddAnimationEvent([&](const wchar_t* clipName, const wchar_t* eventName) {
-		OneAnimationEvent(clipName, eventName);
-		});
 
 	//エフェクトを読み込む。
-	EffectEngine::GetInstance()->ResistEffect(1, u"Assets/Effect/Poison.efk");
+	EffectEngine::GetInstance()->ResistEffect(7, u"Assets/effect/EnemyEffects/Fox_Down/Fox_Down.efk");
 
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
+	m_ringBell = FindGO<RingBell>("ringbell");
 
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
@@ -87,8 +92,10 @@ bool AnnoyingEnemy::Start()
 
 void AnnoyingEnemy::Update()
 {
-	//退散処理。
-	//Leave();
+	//爆発処理
+	Explode();
+	//本殿追跡処理
+	IsHonden();
 	//追跡処理。
 	Chase();
 	//回転処理。
@@ -151,6 +158,75 @@ void AnnoyingEnemy::Chase()
 	Vector3 modelPositon = m_position;
 	modelPositon.y += 2.5f;
 	m_modelRender.SetPosition(modelPositon);
+}
+
+void AnnoyingEnemy::Explode()
+{
+
+	// 爆発ステートでなければreturn
+	if (m_enemyState != enEnemyState_Explode)
+		return;
+
+	// 爆発処理を一度だけ行う
+	if (m_isUnderAttack==true)
+	{
+		// 爆発用のコリジョン生成
+		MakeExplosion();
+	
+		m_explodeTimer = 0.0f;
+	}
+
+	// 爆発後の消滅までの演出猶予
+	m_explodeTimer += g_gameTime->GetFrameDeltaTime();
+	if (m_explodeTimer > 1.0f) // 1秒間の演出後に消える
+	{
+		m_enemyHP = 0; // HPを0にしてダウンステートに移行
+		DeleteGO(this);
+	}
+	
+}
+
+void AnnoyingEnemy::MakeExplosion()
+{
+	//爆発コリジョンを生成する
+	auto collisionObject = NewGO<CollisionObject>(0);
+	Vector3 collisionPosition = m_position;
+	collisionObject->CreateSphere(collisionPosition,Quaternion::Identity,300.0f);
+	collisionObject->SetName("explosion");
+	
+}
+
+void AnnoyingEnemy::DeathEffect()
+{
+	//エフェクトの発生位置
+	Vector3 m_effectPosition = m_position;
+	m_effectPosition.y += 50.0f;
+
+	//エフェクトの生成
+	m_effectEmitter = NewGO <EffectEmitter>(0);
+	m_effectEmitter->Init(7);
+	m_effectEmitter->SetPosition(m_effectPosition);
+	m_effectEmitter->SetScale(Vector3(30.0f, 30.0f, 30.0f));
+	m_effectEmitter->Play();
+
+}
+
+void AnnoyingEnemy::IsHonden()
+{
+	//追跡ステートでないなら、追跡処理はしない
+	if (m_enemyState != enEnemyState_Honden)
+	{
+		return;
+	}
+	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
+	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+	if (m_charaCon.IsOnGround()) {
+		//地面についた
+		m_moveSpeed.y = 0.0f;
+	}
+	Vector3 modelPosition = m_position;
+
+	m_modelRender.SetPosition(modelPosition);
 }
 
 void AnnoyingEnemy::Collision()
@@ -365,53 +441,25 @@ const bool AnnoyingEnemy::SearchPlayer()const
 	return false;
 }
 
-/*void BossEnemy::Leave()
+const bool AnnoyingEnemy::SearchHonden()const
 {
-	//退散ステート出ないなら,退散処理はしない
-	if (m_enemyState != enEnemyState_Leave)
+	Vector3 diff = m_ringBell->GetPosition() - m_position;
+	//対象に向かう
+	if (diff.LengthSq() <= 10000 * 10000)
 	{
-		return;
-	}
+		//エネミーから本殿に向かうベクトルを正規化する
+		diff.Normalize();
+		//内積(cos0)を調べる
+		float cos = m_forward.Dot(diff);
+		//内積から角度を求める
+		float angle = acosf(cos);
+		if (angle <= (Math::PI / 360.0f) * 360.0f)
+		{
+			return true;
+		}
+		return false;
 
-	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
-	if (m_charaCon.IsOnGround())
-	{
-		m_moveSpeed.y = 0.0f;
 	}
-	Vector3 modelPosition = m_position;
-	m_modelRender.SetPosition(modelPosition);
-}
-
-void BossEnemy::PoisonAttack()
-{
-	//攻撃ステートでないなら処理はしない
-	//攻撃処理要ステートが出ないなら処理はしない
-	if (m_enemyState != enEnemyState_Poison)
-	{
-		return;
-	}
-
-	//攻撃中であれば
-	if (m_isUnderAttack == true)n
-	{
-		//攻撃用のコリジョンを作成する
-		MakePoison()
-	}
-}*/
-
-void AnnoyingEnemy::MakePoison()
-{
-	//毒ブレスのオブジェクトを作成する。
-	Poison* poison = NewGO<Poison>(0);
-	Vector3 PoisonPosition = m_position;
-	//座標を少し上に設定する。
-	PoisonPosition.y += 50.0f;
-	//座標を設定する。
-	poison->SetPosition(PoisonPosition);
-	//回転を設定する。
-	poison->SetRotation(m_rotation);
-	//射手を設定する。
-	poison->SetEnEnemy(Poison::enPoison_LittleEnemy);
 }
 
 void AnnoyingEnemy::ProcessIdleStateTransition()
@@ -427,14 +475,6 @@ void AnnoyingEnemy::ProcessIdleStateTransition()
 
 void AnnoyingEnemy::ProcessChaseStateTransition()
 {
-	/*//攻撃ができる距離なら
-if (IsCanAttack() == true)
-{
-	//他のステートに遷移する
-	ProcessCommonStateTransition();
-	return;
-}*/
-
 	m_chaseTimer += g_gameTime->GetFrameDeltaTime();
 	//追跡時間がある程度経過したら。
 	if (m_chaseTimer >= 0.8f)
@@ -444,58 +484,58 @@ if (IsCanAttack() == true)
 	}
 }
 
-/*void BossEnemy::ProcessLeaveStateTransition()
+void AnnoyingEnemy::ProcessHondenStateTransition()
 {
-	//距離が近いなら
-	if (IsLeave() == true)
+	m_hondenTimer += g_gameTime->GetFrameDeltaTime();
+	//本殿に向かう時間がある程度経過したら。
+	if (m_hondenTimer >= 0.8f)
 	{
-		//他のステートに遷移する
 		ProcessCommonStateTransition();
 		return;
 	}
-	m_leaveTimer += g_gameTime->GetFrameDeltaTime();
-		//退散時間がある程度経過したら
-	if (m_leaveTimer >= 0.8f)
-	{
-		//他のステートに遷移する
-		ProcessCommonStateTransition();
-	}
-}*/
+}
 
-void AnnoyingEnemy::ProcessPoisonAttackStateTransition()
+void AnnoyingEnemy::ProcessExplodeStateTransition()
 {
-	//遠距離攻撃アニメーションの再生が終わったら。
-	if (m_modelRender.IsPlayingAnimation() == false)
+	//downステートでないなら、何もしない。
+	if (m_enemyState ==!enEnemyState_Down)
 	{
-		ProcessCommonStateTransition();
 		return;
 	}
-	//追跡時間がある程度経過したら。
-	if (m_poisonAttackCoolDown >= 0.8f)
-	{
-		ProcessCommonStateTransition();
-		return;
+
+	if (m_hasExploded == true) {
+		m_explodeTimer += g_gameTime->GetFrameDeltaTime();
+		//爆発用のコリジョン生成
+		MakeExplosion();
+		if (m_explodeTimer >= 0.8) {
+			//Gameのインスタンスアドレスを検索
+			Game* game = FindGO<Game>("game");
+			DeleteGO(this);
+			return;
+		}
 	}
-	m_poisonAttackCoolDown += g_gameTime->GetFrameDeltaTime();
 }
 
 void AnnoyingEnemy::ProcessDamageStateTransition()
 {
-	//被ダメージアニメーションの再生が終わったら。
-	if (m_modelRender.IsPlayingAnimation() == false)
-	{
 		//攻撃されたら距離関係なしに退散させる。
 		m_enemyState = enEnemyState_Chase;
 		Vector3 diff = m_player->GetPosition() - m_position;
 		diff.Normalize();
 		//移動速度を設定する。
 		m_moveSpeed = diff * 10.0f;
-	}
 }
 
 void AnnoyingEnemy::ProcessDownStateTransition()
 {
-	if (m_modelRender.IsPlayingAnimation() == false)
+	if (!m_isDeadFlag)
+	{
+		DeathEffect();
+		m_isDeadFlag = true;
+	}
+	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+	//ダウン時間がある程度経過したら。
+	if (m_deathEffectTimer >= 1.0f)
 	{
 		//Gameのインスタンスアドレスを検索
 		Game* game = FindGO<Game>("game");
@@ -510,7 +550,6 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 	m_chaseTimer = 0.0f;
 	m_poisonAttackCoolDown = 0.0f;
 
-	//if(Serchmain)
 	//プレイヤーを見つけたら。
 	if (SearchPlayer() == true)
 	{
@@ -522,34 +561,52 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 		m_moveSpeed = diff * 130.0f;
 		//攻撃できをる距離なら。
 		if (IsCanAttack() == true)
+	m_explodeTimer = 0.0f;
+	m_hondenTimer = 0.0f;
+	m_deathEffectTimer = 0.0f;
+	if (SearchHonden() == true) {
+		//プレイヤーを見つけたら。
+		if (SearchPlayer() == true)
 		{
-			int ram = rand() % 100;
-			if (ram > 90)
+			Vector3 diff = m_player->GetPosition() - m_position;
+			//ベクトルを正規化する。
+			diff.Normalize();
+			//移動速度計算する。
+			m_moveSpeed = diff * 100.0f;
+			//攻撃できをる距離なら。
+			if (IsCanAttack() == true)
 			{
-				m_enemyState = enEnemyState_Chase;
+				int ram = rand() % 100;
+				if (ram > 40)
+				{
+					m_enemyState = enEnemyState_Explode;
+					m_isUnderAttack == true;
+					return;
 
+				}
+
+				else
+				{
+					m_enemyState = enEnemyState_Chase;
+				}
 			}
-
 			else
 			{
-				m_enemyState = enEnemyState_Poison;
-				return;
+				m_enemyState = enEnemyState_Chase;
 			}
+
 		}
 		else
 		{
-			m_enemyState = enEnemyState_Chase;
+			Vector3 diff = m_ringBell->GetPosition() - m_position;
+			diff.Normalize();
+			m_moveSpeed = diff * 100.0f;
+		  //攻撃でき化ければ追跡ステートへ。
+		  m_enemyState = enEnemyState_Idle;
+		  return;
+		  m_enemyState = enEnemyState_Honden;
+		  return;
 		}
-
-	}
-	else
-	{
-		Vector3 diff = m_player->GetPosition() - m_position;
-		diff.Normalize();
-		m_moveSpeed = diff * 130.0f;
-		//攻撃でき化ければ追跡ステートへ。
-		m_enemyState = enEnemyState_Idle;
-		return;
 	}
 
 }
@@ -566,13 +623,12 @@ void AnnoyingEnemy::ManageState()
 	case enEnemyState_Chase:
 		ProcessChaseStateTransition();
 		break;
-
-		/*case enEnemyState_Leave:
-			ProcessLeaveStateTransition();
-			break;*/
-		//毒攻撃状態の処理。
-	case enEnemyState_Poison:
-		ProcessPoisonAttackStateTransition();
+	case enEnemyState_Honden:
+		ProcessHondenStateTransition();
+		break;
+		//自爆処理
+	case enEnemyState_Explode:
+		ProcessExplodeStateTransition();
 		break;
 		//ダメージを受けった時の処理。
 	case enEnemyState_Damage:
@@ -590,51 +646,13 @@ void AnnoyingEnemy::ManageState()
 
 void AnnoyingEnemy::PlayAnimation()
 {
-	m_modelRender.SetAnimationSpeed(1.0f);
-	switch (m_enemyState)
-	{
-		//待機ステート
-	case enEnemyState_Idle:
-		m_modelRender.PlayAnimation(enAnimationClip_Idle, 0.5f);
-		break;
-		//追跡ステート
-	case enEnemyState_Chase:
-		m_modelRender.SetAnimationSpeed(1.2f);
-		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
-		break;
-		//退散ステート
-		/*case enEnemyState_Leave:
-			m_modelRender.SetAnimationSpeed(1.2f);
-			m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
-			break;*/
-			//遠距離攻撃ステート
-	case enEnemyState_Poison:
-		m_modelRender.SetAnimationSpeed(1.2f);
-		m_modelRender.PlayAnimation(enAnimationClip_Poison, 0.1f);
-		break;
-		//被ダメージステート
-	case enEnemyState_Damage:
-		m_modelRender.SetAnimationSpeed(1.2f);
-		m_modelRender.PlayAnimation(enAnimationClip_Damage, 0.1f);
-		break;
-		//ダウンステート
-	case enEnemyState_Down:
-		m_modelRender.SetAnimationSpeed(1.2f);
-		m_modelRender.PlayAnimation(enAnimationClip_Down, 0.1f);
-		break;
-	default:
-		break;
-	}
+
 }
 
 //アニメーションイベントを受け取った際に呼び出される関数。
 void AnnoyingEnemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
 {
-	(void)clipName;
-
-	if (wcscmp(eventName, L"magic_attack") == 0) {
-		MakePoison();
-	}
+	
 }
 
 const bool AnnoyingEnemy::IsCanAttack()const
@@ -642,8 +660,9 @@ const bool AnnoyingEnemy::IsCanAttack()const
 	Vector3 diff = m_player->GetPosition() - m_position;
 
 	//エネミーとプレイヤーの距離が近かったら
-	if (diff.LengthSq() <= 10000.0f * 1000.0f)
+	if (diff.LengthSq() <= 100.0f * 100.0f)
 	{
+		
 		return true;
 	}
 	return false;

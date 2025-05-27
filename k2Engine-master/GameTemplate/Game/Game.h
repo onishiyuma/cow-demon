@@ -16,6 +16,7 @@ class LanternAttack;
 class LanternLight;
 class LanternAttackLight;
 class BlueFlame;
+class RedFlame;
 class RingBell;
 class GameClear;
 class GameOver;
@@ -67,6 +68,8 @@ public:
 	void LanternAttackLightState();
 	//攻撃灯籠用ライトの作成
 	void CreateLanternAttackLight();
+	//攻撃灯籠用エフェクトの作成
+	void CreateLanternAttackEffect();
 	//本殿の方を見る。
 	void LookingMain();
 	//空の明るさ調整用関数。
@@ -126,6 +129,10 @@ public:
 	LanternAttackLight* m_lanternAttackLight2;
 	LanternAttackLight* m_lanternAttackLight3;
 
+	RedFlame* m_redFlame1;
+	RedFlame* m_redFlame2;
+	RedFlame* m_redFlame3;
+
 	UItukuyomi* m_uiTukuyomi;
 	UIskill* m_uiSkill;
 	UISimenawa* m_uiSimenawa;
@@ -172,12 +179,14 @@ public:
 	int m_lanternAttackLightState = 0;
 	float m_timer = 120.0f;//タイマー。
 	float m_timeLimit = 0;//蛻ｶ髯先凾髢・
+	int m_lanternAttackEffectState = 0;
 	float m_skyLuminance = 0.0002f; //空の明るさ。
 	float m_skyAmbient = 0.0002f; //空の明るさの影響を受ける環境光。
 	float m_notifyx = 0.0f; //敵出現通知のX座標。
 	bool m_lanternAction = false;
 	bool m_isShowNotify=false; //敵出現通知を表示するかどうか。
 	//灯籠用ライトのフラグ
+	bool m_lanternLightFlag = false;
 	bool m_lanternLightFlag1 = false;
 	bool m_lanternLightFlag2 = false;
 	bool m_lanternLightFlag3 = false;
@@ -191,6 +200,10 @@ public:
 	bool m_lanternAttackLightFlag1 = false;
 	bool m_lanternAttackLightFlag2 = false;
 	bool m_lanternAttackLightFlag3 = false;
+	//攻撃灯籠用エフェクトのフラグ
+	bool m_lanternAttackEffectFlag1 = false;
+	bool m_lanternAttackEffectFlag2 = false;
+	bool m_lanternAttackEffectFlag3 = false;
 	//空の明るさのフラグ
 	bool m_isNight = false;
 	bool m_isMidNight1 = false;
@@ -202,7 +215,7 @@ public:
 	bool m_isDay = false;
 
 	float m_luminance = 0.0f; //空の明るさの変化量。
-
+  
 	const float		m_nightStart = 0.0f;
 	const float		m_phase1Start = 120.0f;  //夜明けの始まり
 	const float		m_phase2Start = 180.0f;  //少し明るくなる
@@ -221,7 +234,6 @@ public:
 	const float		m_luminanceDawn2 = 0.1f;			//夜明け
 	const float		m_luminanceDawn3 = 0.5f;			//夜明け
 	const float		m_luminanceDay = 1.0f;				//朝（最大）
-
 };
 
 

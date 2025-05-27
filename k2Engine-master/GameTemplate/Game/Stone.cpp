@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "SpriteCollection.h"
 #include "sound/SoundEngine.h"
-
+#include "Game.h"
 
 
 bool Stone::Start() 
@@ -11,10 +11,13 @@ bool Stone::Start()
 	//各種インスタンスアドレスを検索。
 	m_player = FindGO<Player>("player");
 	m_spriteCollection = FindGO<SpriteCollection>("spriteCollection");
+	auto game = FindGO<Game>("game");
 
 	//火打石のモデルを読み込む。
 	ModelInitData initData;
 	initData.m_tkmFilePath = "Assets/modelData/stone/stone.tkm";
+	initData.m_expandConstantBuffer = &game->m_luminance;
+	initData.m_expandConstantBufferSize = sizeof(game->m_luminance);
 	//火打石用のシェーダーを読み込む。
 	initData.m_fxFilePath = "Assets/shader/stone.fx";
 	m_modelRender.InitForwardRendering(initData);
@@ -40,8 +43,8 @@ void Stone::Update()
 
 	//プレイヤーから火打石に向かうベクトルを計算。
 	Vector3 diff = m_player->m_position - m_position;
-	//ベクトルの長さが100.0fより小さかったら。
-	if (diff.Length() <= 100.0f)
+	//ベクトルの長さが120.0fより小さかったら。
+	if (diff.Length() <= 120.0f)
 	{
 
 		if (!m_isNearCollection )

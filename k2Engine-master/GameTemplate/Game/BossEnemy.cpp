@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "BossEnemy.h"
 #include "Player.h"
-#include "Enemy.h"
+
 #include "Poison.h"
+#include "RingBell.h"
 #include "EnemyBase.h"
 #include "Game.h"
 #include "GameOver.h"
@@ -22,7 +23,11 @@ BossEnemy::BossEnemy()
 
 BossEnemy::~BossEnemy()
 {
-
+	if (m_effectEmitter) {
+		m_effectEmitter->Stop();
+		DeleteGO(m_effectEmitter);
+		m_effectEmitter = nullptr;
+	}
 }
 
 bool BossEnemy::Start()
@@ -36,6 +41,9 @@ bool BossEnemy::Start()
 	//走り。
 	m_animationClips[enAnimationClip_Run].Load("Assets/animData/BossEnemy/run.tka");
 	m_animationClips[enAnimationClip_Run].SetLoopFlag(true);
+	//近接攻撃
+	m_animationClips[enAnimationClip_Attack].Load("Assets/animData/BossEnemy/attack.tka");
+	m_animationClips[enAnimationClip_Attack].SetLoopFlag(true);
 	//毒ブレス。
 	m_animationClips[enAnimationClip_Poison].Load("Assets/animData/BossEnemy/poison.tka");
 	m_animationClips[enAnimationClip_Poison].SetLoopFlag(true);
@@ -59,22 +67,25 @@ bool BossEnemy::Start()
 		20.0f,
 		m_position
 	);
+
+	//ボーンのIDを取得する。
+	m_BossFangBoneID = m_modelRender.FindBoneID(L"BossFang");
 	//大きさを設定。
 	Vector3 scale(100.0f, 100.0f, 1.00f);
 	SetScale(scale);
 	//HPを設定する。
-	SetHP(100);
-
+	
 	//アニメーションイベント用の関数を設定する。
 	m_modelRender.AddAnimationEvent([&](const wchar_t* clipName, const wchar_t* eventName) {
 		OneAnimationEvent(clipName, eventName);
 		});
 
-	//エフェクトを読み込む。
-	EffectEngine::GetInstance()->ResistEffect(1, u"Assets/Effect/Poison.efk");
+	//エフェクトを読み込む
+	EffectEngine::GetInstance()->ResistEffect(10,u"Assets/effect/EnemyEffects/Usioni_Boss_Down/Boss_Down.efk");
 
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
+	m_ringBell = FindGO<RingBell>("ringbell");
 
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
@@ -86,14 +97,16 @@ bool BossEnemy::Start()
 
 void BossEnemy::Update()
 {
-	//退散処理。
-	//Leave();
+	//本殿追跡処理
+	IsHonden();
 	//追跡処理。
 	Chase();
 	//回転処理。
 	Rotation();
 	//当たり判定。
 	Collision();
+    //攻撃
+	Attack();
 	//アニメーションの再生。
 	PlayAnimation();
 	//ステート管理。
@@ -139,10 +152,63 @@ void BossEnemy::Chase()
 		//地面についた。
 		m_moveSpeed.y = 0.0f;
 	}
+	//重力を追加。
+	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
 	//モデルの表示位置設定。
 	Vector3 modelPositon = m_position;
 	modelPositon.y += 2.5f;
 	m_modelRender.SetPosition(modelPositon);
+}
+
+void BossEnemy::IsHonden()
+{
+	//追跡ステートでないなら、追跡処理はしない。
+	if (m_enemyState != enEnemyState_Honden)
+	{
+		return;
+	}
+	
+	//キャラコンを使って移動。
+	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+	//地面についていたらY方向の速度をリセット。
+	if (m_charaCon.IsOnGround()) {
+		//地面についた。
+		m_moveSpeed.y = 0.0f;
+	}
+    //重力を追加。
+	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
+	//座標をセット。
+	Vector3 modelPosition = m_position;
+	m_modelRender.SetPosition(modelPosition);
+}
+
+void BossEnemy::Attack()
+{
+	//攻撃処理要ステートが出ないなら処理はしない。
+	if (m_enemyState != enEnemyState_Attack)
+	{
+		return;
+	}
+
+	//攻撃中であれば。
+	if (m_isUnderAttack == true)
+	{
+		//攻撃用のコリジョンを作成する。
+		MakeAttackCollision();
+	}
+}
+
+void BossEnemy::MakeAttackCollision()
+{
+	//攻撃判定用のコリジョンオブジェクトを作成する。
+	auto collisionObject = NewGO<CollisionObject>(0);
+	Vector3 collisionPosition = m_position;
+	collisionPosition += m_forward * 15.0f;
+	collisionObject->CreateSphere(collisionPosition,
+		Quaternion::Identity,
+		120.0f
+	);
+	collisionObject->SetName("Boss_enemy_attack");
 }
 
 void BossEnemy::Collision()
@@ -366,39 +432,27 @@ const bool BossEnemy::SearchPlayer()const
 	return false;
 }
 
-/*void BossEnemy::Leave()
+const bool BossEnemy::SearchHonden()const
 {
-	//退散ステート出ないなら,退散処理はしない
-	if (m_enemyState != enEnemyState_Leave)
+	//本殿と自身の位置のベクトル。
+	Vector3 diff = m_ringBell->GetPosition() - m_position;
+	//対象に近くなったら。
+	if (diff.LengthSq() <= 10000.0f * 10000.0f)
 	{
-		return;
+		//エネミーから本殿に向かうベクトルを正規化する。
+		diff.Normalize();
+		//内積(cos0)を調べる。
+		float cos = m_forward.Dot(diff);
+		//内積(cos0)から角度を求める。
+		float angle = acosf(cos);
+		//角度を(0)が120度より小さければ。
+		if (angle <= (Math::PI / 360.0f) * 360.0f)
+		{
+			return true;
+		}
 	}
-
-	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
-	if (m_charaCon.IsOnGround())
-	{
-		m_moveSpeed.y = 0.0f;
-	}
-	Vector3 modelPosition = m_position;
-	m_modelRender.SetPosition(modelPosition);
+	return false;
 }
-
-void BossEnemy::PoisonAttack()
-{
-	//攻撃ステートでないなら処理はしない
-	//攻撃処理要ステートが出ないなら処理はしない
-	if (m_enemyState != enEnemyState_Poison)
-	{
-		return;
-	}
-
-	//攻撃中であれば
-	if (m_isUnderAttack == true)
-	{
-		//攻撃用のコリジョンを作成する
-		MakePoison()
-	}
-}*/
 
 void BossEnemy::MakePoison()
 {
@@ -415,6 +469,20 @@ void BossEnemy::MakePoison()
 	poison->SetEnEnemy(Poison::enPoison_BossEnemy);
 }
 
+void BossEnemy::DeathEffect()
+{
+	//エフェクトの発生位置
+	Vector3 m_effectPosition = m_position;
+	m_effectPosition.y += 50.0f;
+
+	//エフェクトの生成
+    m_effectEmitter = NewGO<EffectEmitter>(0);
+	m_effectEmitter->Init(10);//番号はRegistの登録番号
+	m_effectEmitter->SetPosition(m_effectPosition);
+	m_effectEmitter->SetScale(Vector3(30.0f, 30.0f, 30.0f));//大きさは調整
+	m_effectEmitter->Play();//エフェクトの再生
+}
+
 void BossEnemy::ProcessIdleStateTransition()
 {
 	//待機時間を加算。
@@ -424,19 +492,12 @@ void BossEnemy::ProcessIdleStateTransition()
 	{
 		//他のステートに遷移する。
 		ProcessCommonStateTransition();
+		return;
 	}
 }
 
 void BossEnemy::ProcessChaseStateTransition()
 {
-	/*//攻撃ができる距離なら
-	if (IsCanAttack() == true)
-	{
-		//他のステートに遷移する
-		ProcessCommonStateTransition();
-		return;
-	}*/
-
 	m_chaseTimer += g_gameTime->GetFrameDeltaTime();
 	//追跡時間がある程度経過したら。
 	if (m_chaseTimer >= 0.8f)
@@ -446,23 +507,38 @@ void BossEnemy::ProcessChaseStateTransition()
 	}
 }
 
-/*void BossEnemy::ProcessLeaveStateTransition()
+void BossEnemy::ProcessHondenStateTransition()
 {
-	//距離が近いなら
-	if (IsLeave() == true)
+	////攻撃ができる距離になったら
+	//if (IsCanAttack() == true)
+	//{
+	//	//他のステートに遷移する
+	//	ProcessCommonStateTransition();
+	//	return;
+	//}
+
+	m_hondenTimer += g_gameTime->GetFrameDeltaTime();
+	//追跡時移行がある程度経過したら
+	if (m_hondenTimer >= 0.8f)
 	{
-		//他のステートに遷移する
+		ProcessCommonStateTransition();
+	}
+}
+
+void BossEnemy::ProcessAttackStateTransition()
+{
+	// 攻撃可能範囲外なら即座に遷移
+	if (!IsCanAttack()) {
 		ProcessCommonStateTransition();
 		return;
 	}
-	m_leaveTimer += g_gameTime->GetFrameDeltaTime();
-		//退散時間がある程度経過したら
-	if (m_leaveTimer >= 0.8f)
-	{
-		//他のステートに遷移する
+
+	//アニメーション再生が終わっていたら。
+	if (m_modelRender.IsPlayingAnimation() == false) {
 		ProcessCommonStateTransition();
+		return;
 	}
-}*/
+}
 
 void BossEnemy::ProcessPoisonAttackStateTransition()
 {
@@ -499,6 +575,11 @@ void BossEnemy::ProcessDamageStateTransition()
 
 void BossEnemy::ProcessDownStateTransition()
 {
+	if (!m_isDeadFlag) {
+		DeathEffect();
+		m_isDeadFlag = true;
+	}
+	
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
 		Game* game = FindGO<Game>("game");
@@ -512,11 +593,10 @@ void BossEnemy::ProcessCommonStateTransition()
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
 	m_poisonAttackCoolDown = 0.0f;
+	m_hondenTimer = 0.0f;
 
 
-	Vector3 diff = m_player->GetPosition() - m_position;
-	//プレイヤーを見つけたら。
-	if (SearchPlayer() == true)
+	if (SearchHonden() == true)
 	{
 		//ベクトルを正規化する。
 		diff.Normalize();
@@ -525,32 +605,61 @@ void BossEnemy::ProcessCommonStateTransition()
 		//攻撃できをる距離なら。
 		if (IsCanAttack() == true)
 		{
-			int ram = rand() % 100;
-			if (ram > 90)
+		//プレイヤーを見つけたら。
+		if (SearchPlayer() == true)
+		{
+			Vector3 diff = m_player->GetPosition() - m_position;
+			//ベクトルを正規化する。
+			diff.Normalize();
+			//移動速度計算する。
+			m_moveSpeed = diff * 100.0f;
+			//攻撃できをる距離なら。
+			if (IsCanAttack() == true)
 			{
-				m_enemyState = enEnemyState_Chase;
+				int ram = rand() % 100;
+				if (ram > 70)
+				{
+					
+					m_enemyState = enEnemyState_Attack;
+					m_isUnderAttack = false;
+					return;
+				}
 
+				else
+				{
+					m_enemyState = enEnemyState_Chase;
+					return;
+				}
 			}
 
+			//攻撃できない距離なら
 			else
 			{
-				m_enemyState = enEnemyState_Poison;
-				return;
+				int ram = rand() % 100;
+				if (ram > 40)
+				{
+					//追跡ステートに遷移する
+					m_enemyState = enEnemyState_Chase;
+					return;
+				}
+
+				else
+				{
+					//遠距離攻撃ステートに遷移する。
+					m_enemyState = enEnemyState_Poison;
+					return;
+				}
 			}
 		}
 		else
 		{
-			m_enemyState = enEnemyState_Chase;
-		}
+			Vector3 diff = m_ringBell->GetPosition() - m_position;
+			diff.Normalize();
+			m_moveSpeed = diff * 50.0f;
 
-	}
-	else
-	{
-		Vector3 diff = m_player->GetPosition() - m_position;
-		diff.Normalize();
-		m_moveSpeed = diff * 50.0f;
-		m_enemyState = enEnemyState_Idle;
-		return;
+			m_enemyState = enEnemyState_Honden;
+			return;
+		}
 	}
 }
 
@@ -559,26 +668,31 @@ void BossEnemy::ManageState()
 	switch (m_enemyState)
 	{
 		//待機中の処理。
-	case enEnemyState_Idle:
+	case BossEnemy::enEnemyState_Idle:
 		ProcessIdleStateTransition();
 		break;
 		//追跡処理。
-	case enEnemyState_Chase:
+	case BossEnemy::enEnemyState_Chase:
 		ProcessChaseStateTransition();
 		break;
-		/*case enEnemyState_Leave:
-			ProcessLeaveStateTransition();
-			break;*/
+		//本殿追跡処理。
+	case BossEnemy::enEnemyState_Honden:
+		ProcessHondenStateTransition();
+		break;
+		//攻撃処理。
+	case BossEnemy::enEnemyState_Attack:
+		ProcessAttackStateTransition();
+		break;
 		//毒攻撃処理。
-	case enEnemyState_Poison:
+	case BossEnemy::enEnemyState_Poison:
 		ProcessPoisonAttackStateTransition();
 		break;
 		//ダメージを受けた時の処理。
-	case enEnemyState_Damage:
+	case BossEnemy::enEnemyState_Damage:
 		ProcessDamageStateTransition();
 		break;
 		//ダウン処理。
-	case enEnemyState_Down:
+	case BossEnemy::enEnemyState_Down:
 		ProcessDownStateTransition();
 		break;
 	default:
@@ -592,31 +706,34 @@ void BossEnemy::PlayAnimation()
 	switch (m_enemyState)
 	{
 		//待機ステート
-	case enEnemyState_Idle:
+	case BossEnemy::enEnemyState_Idle:
 		m_modelRender.PlayAnimation(enAnimationClip_Idle, 0.5f);
 		break;
 		//追跡ステート
-	case enEnemyState_Chase:
+	case BossEnemy::enEnemyState_Chase:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
-		//退散ステート
-		/*case enEnemyState_Leave:
-			m_modelRender.SetAnimationSpeed(1.2f);
-			m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
-			break;*/
+	case BossEnemy::enEnemyState_Honden:
+		m_modelRender.SetAnimationSpeed(1.2f);
+		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
+		break;
+	case BossEnemy::enEnemyState_Attack:
+		m_modelRender.SetAnimationSpeed(1.6f);
+		m_modelRender.PlayAnimation(enAnimationClip_Attack,0.1f);
+		break;
 		//遠距離攻撃ステート
-	case enEnemyState_Poison:
+	case BossEnemy::enEnemyState_Poison:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Poison, 0.1f);
 		break;
 		//被ダメージステート
-	case enEnemyState_Damage:
+	case BossEnemy::enEnemyState_Damage:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Damage, 0.1f);
 		break;
 		//ダウンステート
-	case enEnemyState_Down:
+	case BossEnemy::enEnemyState_Down:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Down, 0.1f);
 		break;
@@ -628,6 +745,13 @@ void BossEnemy::PlayAnimation()
 void BossEnemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
 {
 	(void)clipName;
+	if (wcscmp(eventName, L"attack_start") == 0) {
+		//攻撃中判定をtrueにする。
+		m_isUnderAttack = true;
+	}
+	else if (wcscmp(eventName, L"attack_end") == 0) {
+		m_isUnderAttack = false;
+	}
 
 	if (wcscmp(eventName, L"magic_attack") == 0) {
 		MakePoison();
@@ -639,7 +763,7 @@ const bool BossEnemy::IsCanAttack()const
 	//プレイヤーとの距離ベクトルを取得。
 	Vector3 diff = m_player->GetPosition() - m_position;
 	//エネミーとプレイヤーの距離が近かったら
-	if (diff.LengthSq() <= 10000.0f * 1000.0f)
+	if (diff.LengthSq() <= 100.0f * 100.0f)
 	{
 		//攻撃可
 		return true;
