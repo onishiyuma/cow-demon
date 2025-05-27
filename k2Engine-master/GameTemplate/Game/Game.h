@@ -16,6 +16,7 @@ class LanternAttack;
 class LanternLight;
 class LanternAttackLight;
 class BlueFlame;
+class RedFlame;
 class RingBell;
 class GameClear;
 class GameOver;
@@ -65,6 +66,8 @@ public:
 	void LanternAttackLightState();
 	//攻撃灯籠用ライトの作成
 	void CreateLanternAttackLight();
+	//攻撃灯籠用エフェクトの作成
+	void CreateLanternAttackEffect();
 	//本殿の方を見る。
 	void LookingMain();
 	//空の明るさ調整用関数。
@@ -124,6 +127,10 @@ public:
 	LanternAttackLight* m_lanternAttackLight2;
 	LanternAttackLight* m_lanternAttackLight3;
 
+	RedFlame* m_redFlame1;
+	RedFlame* m_redFlame2;
+	RedFlame* m_redFlame3;
+
 	UItukuyomi* m_uiTukuyomi;
 	UIskill* m_uiSkill;
 	UISimenawa* m_uiSimenawa;
@@ -170,9 +177,11 @@ public:
 	int m_lanternLightState = 0;
 	int m_lanternEffectState = 0;
 	int m_lanternAttackLightState = 0;
+	int m_lanternAttackEffectState = 0;
 	float m_skyLuminance = 0.0002f; //空の明るさ。
 	float m_skyAmbient = 0.0002f; //空の明るさの影響を受ける環境光。
 	//灯籠用ライトのフラグ
+	bool m_lanternLightFlag = false;
 	bool m_lanternLightFlag1 = false;
 	bool m_lanternLightFlag2 = false;
 	bool m_lanternLightFlag3 = false;
@@ -186,6 +195,10 @@ public:
 	bool m_lanternAttackLightFlag1 = false;
 	bool m_lanternAttackLightFlag2 = false;
 	bool m_lanternAttackLightFlag3 = false;
+	//攻撃灯籠用エフェクトのフラグ
+	bool m_lanternAttackEffectFlag1 = false;
+	bool m_lanternAttackEffectFlag2 = false;
+	bool m_lanternAttackEffectFlag3 = false;
 	//空の明るさのフラグ
 	bool m_isNight = false;
 	bool m_isMidNight1 = false;
@@ -211,8 +224,8 @@ public:
 	const float m_luminanceNight = 0.0003f;       // 夜の明るさ
 	const float m_luminanceMidNight1 = 0.0005f;   // 夜の明るさ
 	const float m_luminanceMidNight2 = 0.001f;     // 夜の明るさ
-	const float m_luminanceSunrise = 0.0075f;       // 日の出
-	const float m_luminanceDawn1 = 0.05f;          // 夜明け
+	const float m_luminanceSunrise = 0.0050f;       // 日の出
+	const float m_luminanceDawn1 = 0.01f;          // 夜明け
 	const float m_luminanceDawn2 = 0.1f;          // 夜明け
 	const float m_luminanceDawn3 = 0.5f;          // 夜明け
 	const float m_luminanceDay = 1.0f;            // 朝（最大）
