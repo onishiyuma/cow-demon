@@ -39,7 +39,7 @@ private:
 	SpriteRender		m_spriteLoad;				//ロードの画像。
 	SpriteRender		m_spriteLoadGage;			//ロードゲージ用スプライト。
 	SpriteRender		m_spriteMask;				//マスクを動かす。
-	FontRender			m_fontRenderTips1;			//フォントレンダー。
+	FontRender			m_fontRenderTips;			//フォントレンダー。
 
 	const float			m_tipInterval = 3.4f;		//ヒントの表示間隔。
 	float				m_tipTimer = 0.0f;			//ヒントの表示時間。

@@ -33,12 +33,12 @@ bool Game::Start()
 {
 	//インスタンスアドレスを検索。
 	m_fade = FindGO<Fade>("fade");
-
+	m_gameCamera = FindGO<GameCamera>("gamecamera");
+	m_enemy = FindGO<Enemy>("enemy");
 
 	//ステージ全体を暗くする。
 	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
-
-	g_sceneLight->SetDirectionLight(0, Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f));
+	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
 	//空の作成
 	m_skyCube = NewGO<SkyCube>(0, "skyCube");
@@ -155,7 +155,7 @@ Game::~Game()
 	DeleteGO(m_uiCurseBar);
 	DeleteGO(m_uiHeal);
 	DeleteGO(m_uiStone);
-	//DeleteGO(m_miniMap);
+	DeleteGO(m_enemyUI);
 }
 
 void Game::Update()
@@ -188,21 +188,18 @@ void Game::Update()
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
 	//ゲーム開始から30秒経ったら
-	//if (m_timer >= 150.0f) {
-	//	//エネミーの作成
-	//	CreateEnemy();
-	//}
-	
-
+	//if (m_timer >= 150.0f) 
+  {
+		//エネミーの作成
+		CreateEnemy();
+	}
 	//空の明るさ調整
 	SetSkyLight();
-	
 }
 
 //ゲームクリア、ゲームオーバーの判定処理。
 void Game::GameManager()
 {
-	
 	//敵から本殿を守り切ったらゲームクリア。
 	if (m_timer >= 300.0f)
 	{
@@ -210,6 +207,11 @@ void Game::GameManager()
 		DeleteGO(this);
 	}
 
+	if (m_gameCamera->m_isCameraRotationFin && m_gameCamera->m_callGameOverTime >= m_gameCamera->m_waitTime)
+	{
+		NewGO<GameOver>(0);
+		DeleteGO(this);
+	}
 
 	//呪いの抵抗値がなくなったら。
 	if (m_player->m_playerHP <= 0)
@@ -823,6 +825,11 @@ void Game::CreateEnemy()
 						LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 						littleEnemy->SetPosition(Random());
 						m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
+					else 
+					{
+						LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
+						m_littleEnemy->SetPosition(Random());
+						m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
 						m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
 						m_enemyUI->SetLittleEnemy(littleEnemy);
 						if (ram > 30)

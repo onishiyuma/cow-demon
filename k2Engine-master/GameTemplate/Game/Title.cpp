@@ -31,14 +31,18 @@ void Title::Update()
 {
 	//タイマーを加算。
 	m_timer+= g_gameTime->GetFrameDeltaTime();
+	m_timer += g_gameTime->GetFrameDeltaTime();
 
-	//タイトルからインゲームへ移行。
-	if (m_timer>0.1f&&g_pad[0]->IsPressAnyKey())
+	if (m_timer >= m_maxTitleTIme)
 	{
-		NewGO<Fade>(1, "fade");
-		m_spriteRender.Update();
-		//自身を削除する。
-		DeleteGO(this);
+		//タイトルからインゲームへ移行。
+		if (m_timer > 0.1f && g_pad[0]->IsPressAnyKey())
+		{
+			NewGO<Fade>(1, "fade");
+			m_spriteRender.Update();
+			//自身を削除する。
+			DeleteGO(this);
+		}
 	}
 }
 

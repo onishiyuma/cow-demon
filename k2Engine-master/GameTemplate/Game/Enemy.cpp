@@ -35,7 +35,7 @@ bool Enemy::Start()
 
 	//モデルとアニメーションの初期化。
 	m_modelRender.Init("Assets/modelData/enemy/enemy.tkm", m_animationClips, enAnimationClip_Num);
-
+	EffectEngine::GetInstance()->ResistEffect(6,u"Assets/effect/EnemyEffects/Usioni_Down/Usioni_Down.efk");
 	////座標を更新する。
 	m_modelRender.SetPosition(m_farstPosition);
 	//回転を設定する。
@@ -43,8 +43,8 @@ bool Enemy::Start()
 	
 	//キャラコンの初期化。
 	m_charaCon.Init(
-		40.0f,
-		40.0f,
+		50.0f,
+		50.0f,
 		m_position
 	);
 
@@ -77,7 +77,11 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
-
+	if (m_effectEmitter) {
+		m_effectEmitter->Stop();
+		DeleteGO(m_effectEmitter);
+		m_effectEmitter = nullptr;
+	}
 }
 
 void Enemy::Update()
@@ -127,8 +131,7 @@ void Enemy::Chase()
 	{
 		return;
 	}
-	//重力を追加。
-	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
+	
 	//キャラコンを使って移動。
 	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
 	//地面についていたらY方向の速度をリセット。
@@ -136,6 +139,8 @@ void Enemy::Chase()
 		//地面についた。
 		m_moveSpeed.y = 0.0f;
 	}
+    //重力を追加。
+	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
 	//座標をセット。
 	Vector3 modelPosition = m_position;
 	m_modelRender.SetPosition(modelPosition);
@@ -148,8 +153,7 @@ void Enemy::IsHonden()
 	{
 		return;
 	}
-	//重力を追加。
-	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
+	
 	//キャラコンを使って移動。
 	m_position = m_charaCon.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
 	//地面についていたらY方向の速度をリセット。
@@ -157,6 +161,8 @@ void Enemy::IsHonden()
 		//地面についた。
 		m_moveSpeed.y = 0.0f;
 	}
+    //重力を追加。
+	m_moveSpeed.y -= 980.0f * g_gameTime->GetFrameDeltaTime();
 	//座標をセット。
 	Vector3 modelPosition = m_position;
 	m_modelRender.SetPosition(modelPosition);
@@ -175,22 +181,29 @@ void Enemy::Collision()
 	//プレイヤーの攻撃判定処理。
 	//-----------------------------------------
 
+	//プレイヤー攻撃用のコリジョンを取得する。
+	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("purification");
+	//コリジョンの配列をfor文で回す。
+	for (auto collision : collisions)
 	{
-		//プレイヤー攻撃用のコリジョンを取得する。
-		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("purification");
-		//コリジョンの配列をfor文で回す。
-		for (auto collision : collisions)
+		//コリジョンとキャラコンが衝突したら。
+		if (collision->IsHit(m_charaCon))
 		{
-			//コリジョンとキャラコンが衝突したら。
-			if (collision->IsHit(m_charaCon))
-			{
-				//会心の設定。
-				int ram = rand() %100;
-				if (ram < m_player->m_criticalRate)
-				{
-					m_hp -= m_player->m_criticalATK;
+			//スキルを使うための。
+			m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
 
-					if (m_hp <= 0)
+			//会心の設定。
+			int ram = rand() % 100;
+			if (ram < m_player->m_criticalRate)
+			{
+				m_enemyHP -= m_player->m_criticalATK;
+
+				if (m_enemyHP <= 0)
+				{
+
+					m_enemyHP -= m_player->m_criticalATK;
+
+					if (m_enemyHP <= 0)
 					{
 						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
@@ -202,13 +215,27 @@ void Enemy::Collision()
 
 					//スキルを使うための。
 					m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
-				}
-				//非会心。
-				else
-				{
-					m_hp -= m_player->m_normalATK;
 
-					if (m_hp <= 0)
+					//HPが0になったら。
+					m_enemyState = enEnemyState_Down;
+
+				}
+				else {
+					//被ダメージステートに遷移する
+					m_enemyState = enEnemyState_Damage;
+				}
+			}
+			//非会心。
+			else
+			{
+				m_enemyHP -= m_player->m_normalATK;
+
+				if (m_enemyHP <= 0)
+				{
+
+					m_enemyHP -= m_player->m_normalATK;
+
+					if (m_enemyHP <= 0)
 					{
 						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
@@ -218,7 +245,16 @@ void Enemy::Collision()
 						m_enemyState = enEnemyState_Damage;
 					}
 					return;
+
+					//HPが0になったら。
+					m_enemyState = enEnemyState_Down;
+
 				}
+				else {
+					//被ダメージステートに遷移する。
+					m_enemyState = enEnemyState_Damage;
+				}
+				return;
 			}
 		}
 	}
@@ -239,16 +275,17 @@ void Enemy::Collision()
 				//スキルのダメージ。
 				m_player->m_skillATK = m_player->m_playerATK * m_player->m_skillMagnification;
 				//敵のHPを減らす。
-				m_hp -= m_player->m_skillATK;
+				m_enemyHP -= m_player->m_skillATK;
 
 				//HPが0になったら。
-				if (m_hp < 0)
+				if (m_enemyHP < 0)
 				{
 					//ダウンステートに遷移する。
 					m_enemyState = enEnemyState_Down;
 				}
 
-				else {
+				else 
+				{
 					//被ダメージステートに遷移する。
 					m_enemyState = enEnemyState_Damage;
 				}
@@ -273,10 +310,10 @@ void Enemy::Collision()
 				//月読の加護のダメージ。
 				m_player->m_tukuyomiATK = m_player->m_playerATK * m_player->m_TukuyomiMagnification;
 				//敵のHPを減らす。
-				m_hp -= m_player->m_tukuyomiATK;
+				m_enemyHP -= m_player->m_tukuyomiATK;
 
 				//HPが0になったら。
-				if (m_hp < 0)
+				if (m_enemyHP < 0)
 				{
 					//ダウンステートに遷移する。
 					m_enemyState = enEnemyState_Down;
@@ -316,16 +353,22 @@ void Enemy::Collision()
 					//時間をリセット。
 					m_stopTimer = 5.0f;
 				}
+				break;
 			}
-			//停止中の処理。
-			else if (m_isStopped)
-			{
-				m_stopTimer -= g_gameTime->GetFrameDeltaTime();
+		}
 
-				if (m_stopTimer <= 0.0f)
-				{
-					m_isStopped = false;
-				}
+		//停止中の処理。
+		if (m_isStopped)
+		{
+			//動きを止める。
+			m_moveSpeed = m_stopMove;
+			//アニメーションも止める。
+			m_enemyState = enEnemyState_Idle;
+			m_stopTimer -= g_gameTime->GetFrameDeltaTime();
+
+			if (m_stopTimer <= 0.0f)
+			{
+				m_isStopped = false;
 			}
 		}
 	}
@@ -333,19 +376,19 @@ void Enemy::Collision()
 	//-----------------------------------------
 	//本殿に接触したらゲームオーバーする処理。
 	//-----------------------------------------
-
-	//本殿に触れたらゲームオーバー。
-	const auto& collisions = g_collisionObjectManager->FindMatchForwardNameCollisionObjects("gameover_collision");
-	//コリジョンの配列をfor文で回す。
-	for (auto collision : collisions)
 	{
-		//コリジョンとキャラが衝突したら。
-		if (collision->IsHit(m_charaCon))
+		//本殿に触れたらゲームオーバー。
+		const auto& collisions = g_collisionObjectManager->FindMatchForwardNameCollisionObjects("gameover_collision");
+		//コリジョンの配列をfor文で回す。
+		for (auto collision : collisions)
 		{
-			m_gameCamera->m_isGameOver = true;
-			DeleteGO(this);
-
-			break;
+			//コリジョンとキャラが衝突したら。
+			if (collision->IsHit(m_charaCon))
+			{
+				m_gameCamera->m_isGameOver = true;
+				DeleteGO(this);
+				return;
+			}
 		}
 	}
 }
@@ -423,6 +466,21 @@ void Enemy::MakeAttackCollision()
 	collisionObject->SetName("enemy_attack");
 }
 
+void Enemy::DeathEffect()
+{
+	//エフェクトの発生位置
+	Vector3 m_effectPosition = m_position;
+	m_effectPosition.y += 50.0f;
+
+	//エフェクトの生成
+	m_effectEmitter = NewGO<EffectEmitter>(0);
+	m_effectEmitter->Init(6);//番号はRegistの登録番号
+	m_effectEmitter->SetPosition(m_effectPosition);
+	m_effectEmitter->SetScale(Vector3(30.0f, 30.0f, 30.0f));//大きさは調整
+	m_effectEmitter->Play();//エフェクトの再生
+}
+
+
 void Enemy::ProcessIdleStateTransition()
 {
 	m_idleTimer += g_gameTime->GetFrameDeltaTime();
@@ -469,12 +527,20 @@ void Enemy::ProcessDamageStateTransition()
 		diff.Normalize();
 		m_moveSpeed = diff * 250.0f;
 	}
-	ProcessCommonStateTransition();
+	/*ProcessCommonStateTransition();*/
 }
 
 void Enemy::ProcessDownStateTransition()
 {
-	if (m_enemyState == enEnemyState_Down) {
+	if (!m_isDeadFlag)
+	{
+		//死亡エフェクトを発生させる。
+		DeathEffect();
+		m_isDeadFlag = true;
+
+	}
+
+	if (m_modelRender.IsPlayingAnimation()==false) {
 		Game* game = FindGO<Game>("game");
 		//自身を削除する
 		DeleteGO(this);
@@ -512,8 +578,9 @@ void Enemy::ProcessCommonStateTransition()
 
 	if (SearchHonden() == true)
 	{
-		if (SearchPlayer() == true)
 		{
+
+			if (SearchPlayer() == true){
 			Vector3 diff = m_player->GetPosition() - m_position;
 			//ベクトルを正規化する。
 			diff.Normalize();
@@ -521,44 +588,42 @@ void Enemy::ProcessCommonStateTransition()
 			m_moveSpeed = diff * 100.0f;
 			//攻撃できる距離なら。
 			int ram = rand() % 100;
-
-			if (IsCanAttack() == true)
-			{
-				if (ram > 70)
+				if (IsCanAttack() == true)
 				{
+					if (ram > 70)
+					{
 
 
-					m_enemyState = enEnemyState_Attack;
-					m_isUnderAttack = false;
+						m_enemyState = enEnemyState_Attack;
+						m_isUnderAttack = false;
+						return;
+					}
+
+					else
+					{
+						m_enemyState = enEnemyState_Chase;
+					}
+
+				}
+				//攻撃できない距離なら。
+				if (IsCanAttack() == false) {
+
+
+					m_enemyState = enEnemyState_Chase;
 					return;
 				}
-
-				else
-				{
-					m_enemyState = enEnemyState_Chase;
-				}
-
 			}
-			//攻撃できない距離なら。
-			if (IsCanAttack() == false) {
+			//何も見つけられなければ。
+			else
+			{
+				Vector3 diff = m_ringBell->GetPosition() - m_position;
+				diff.Normalize();
+				m_moveSpeed = diff * 250.0f;
 
-
-				m_enemyState = enEnemyState_Chase;
-
+				m_enemyState = enEnemyState_Honden;
 				return;
 			}
 		}
-		//何も見つけられなければ。
-		else
-		{
-			Vector3 diff = m_ringBell->GetPosition() - m_position;
-			diff.Normalize();
-			m_moveSpeed = diff * 250.0f;
-
-			m_enemyState = enEnemyState_Honden;
-			return;
-		}
-
 	}
 }
 
@@ -621,6 +686,7 @@ void Enemy::PlayAnimation()
 		m_modelRender.PlayAnimation(enAnimationClip_Damage, 0.1f);
 		break;
 	case Enemy::enEnemyState_Down:
+		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Down, 0.1f);
 		break;
 	default:
@@ -644,7 +710,7 @@ const bool Enemy::IsCanAttack() const
 {
 	Vector3 diff = m_player->GetPosition() - m_position;
 	//エネミーとプレイヤーの距離が近かったら。
-	if (diff.LengthSq() <= 50.0f * 50.0f)
+	if (diff.LengthSq() <= 100.0f * 100.0f)
 	{
 		//攻撃可。
 		return true;

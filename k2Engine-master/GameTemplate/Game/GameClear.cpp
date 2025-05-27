@@ -24,12 +24,17 @@ GameClear::~GameClear()
 
 void GameClear::Update()
 {
-	//タイトルに戻る処理。
-	if (g_pad[0]->IsTrigger(enButtonA))
-	{
-		NewGO<Title>(0);
+	m_titleTime += g_gameTime->GetFrameDeltaTime();
 
-		DeleteGO(this);
+	if (m_titleTime >= m_maxTitleTIme)
+	{
+		//タイトルに戻る処理。
+		if (g_pad[0]->IsTrigger(enButtonA))
+		{
+			NewGO<Title>(0);
+
+			DeleteGO(this);
+		}
 	}
 }
 
