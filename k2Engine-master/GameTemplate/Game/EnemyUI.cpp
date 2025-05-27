@@ -18,13 +18,6 @@ namespace
 	const float ENEMY_HP = 160.0f;
 	//HPスプライトのポジション
 	const float ENEMY_HP_GAUGE = 170.0f;
-	//赤
-	//HPゲージのサイズ。
-	const Vector3 HP_GAUGE_SCALE = { 180.0f,13.0f,1.0f };
-	//HPフレームのサイズ。
-	const Vector3 HP_FREAM_SCALE = { 195.0f,22.0f,1.0f };
-	//HPのポジション。
-	const float ENEMY_HP = 160.0f;
 	//赤。
 	Vector4 RED = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 	//黒。

@@ -196,9 +196,9 @@ void Enemy::Collision()
 			int ram = rand() % 100;
 			if (ram < m_player->m_criticalRate)
 			{
-				m_hp -= m_player->m_criticalATK;
+				m_enemyHP -= m_player->m_criticalATK;
 
-				if (m_hp <= 0)
+				if (m_enemyHP <= 0)
 				{
 
 					m_enemyHP -= m_player->m_criticalATK;
@@ -228,9 +228,9 @@ void Enemy::Collision()
 			//非会心。
 			else
 			{
-				m_hp -= m_player->m_normalATK;
+				m_enemyHP -= m_player->m_normalATK;
 
-				if (m_hp <= 0)
+				if (m_enemyHP <= 0)
 				{
 
 					m_enemyHP -= m_player->m_normalATK;
@@ -580,7 +580,7 @@ void Enemy::ProcessCommonStateTransition()
 	{
 		{
 
-			if (SearchPlayer() == true)
+			if (SearchPlayer() == true){
 			Vector3 diff = m_player->GetPosition() - m_position;
 			//ベクトルを正規化する。
 			diff.Normalize();
@@ -588,18 +588,6 @@ void Enemy::ProcessCommonStateTransition()
 			m_moveSpeed = diff * 100.0f;
 			//攻撃できる距離なら。
 			int ram = rand() % 100;
-
-			if (IsCanAttack() == true)
-
-			{
-				Vector3 diff = m_player->GetPosition() - m_position;
-				//ベクトルを正規化する。
-				diff.Normalize();
-				//移動速度を設定する。
-				m_moveSpeed = diff * 250.0f;
-				//攻撃できる距離なら。
-				int ram = rand() % 100;
-
 				if (IsCanAttack() == true)
 				{
 					if (ram > 70)
