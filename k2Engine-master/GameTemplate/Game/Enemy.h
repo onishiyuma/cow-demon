@@ -8,6 +8,7 @@ class RingBell;
 class EnemyBase;
 class Game;
 class GameCamera;
+class GameOver;
 
 class Enemy : public EnemyBase
 {
@@ -113,6 +114,7 @@ private:
 	RingBell*			m_ringBell = nullptr;						//鈴。
 	Game*				m_game = nullptr;							//ゲーム。
 	EffectEmitter* m_effectEmitter = nullptr;					//エフェクトエミッター。
+	GameOver*           m_gameOver = nullptr;						//ゲームオーバー。
 
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションデータ。
 	ModelRender			m_modelRender;								//モデルレンダー。

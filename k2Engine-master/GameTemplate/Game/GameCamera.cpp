@@ -20,6 +20,9 @@ bool GameCamera::Start()
 	g_camera3D->SetNear(m_nearClip);
 	g_camera3D->SetFar(m_furClip);
 
+	//初期化。
+	m_waitTime = 5.0f;
+
 	return true;
 }
 
@@ -30,7 +33,7 @@ GameCamera::GameCamera()
 
 GameCamera::~GameCamera()
 {
-	DeleteGO(this);
+
 }
 
 
@@ -62,6 +65,7 @@ void GameCamera::Update()
 		qRot.SetRotationDeg(axisX, 2.4f * y);
 		qRot.Apply(m_toCameraPos);
 	}
+	//ゲームオーバー時にカメラを本殿に向ける。
 	else
 	{
 		// 本殿の位置。
@@ -81,17 +85,12 @@ void GameCamera::Update()
 		// 補間率。
 		float t = 0.05f;
 
-		//Lerp.
+		//Lerp。
 		m_toCameraPos = currentDir + (targetDir - currentDir) * t;
 
 		m_isCameraRotationFin = true;
 
 		m_callGameOverTime += g_gameTime->GetFrameDeltaTime();
-		if (m_isCameraRotationFin && m_callGameOverTime >= 5.0f)
-		{
-			NewGO<GameOver>(0);
-		}
-
 	}
 
 	Vector3 position = target + m_PosMain;

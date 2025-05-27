@@ -14,14 +14,20 @@ namespace
 	const Vector3 HP_GAUGE_SCALE = { 195.0f,22.0f,1.0f };
 	//HPフレームのサイズ
 	const Vector3 HP_FREAM_SCALE = { 195.0f,22.0f,1.0f };
-
 	//HPフレームのポジション
 	const float ENEMY_HP = 160.0f;
 	//HPスプライトのポジション
 	const float ENEMY_HP_GAUGE = 170.0f;
 	//赤
+	//HPゲージのサイズ。
+	const Vector3 HP_GAUGE_SCALE = { 180.0f,13.0f,1.0f };
+	//HPフレームのサイズ。
+	const Vector3 HP_FREAM_SCALE = { 195.0f,22.0f,1.0f };
+	//HPのポジション。
+	const float ENEMY_HP = 160.0f;
+	//赤。
 	Vector4 RED = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
-	//黒
+	//黒。
 	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
@@ -41,6 +47,8 @@ bool EnemyUI::Start()
 	m_HPSprite.Init("Assets/UI/white.DDS", HP_GAUGE_SCALE.x, HP_GAUGE_SCALE.y);
 	//m_HPSprite.SetScale(m_scale);
 	m_HPSprite.SetPivot(Vector2{ 0.0f,1.0f });
+	m_HPSprite.SetScale(m_scale
+	);
 	m_HPSprite.SetMulColor(RED);
 	//枠の部分
 	m_HPFreamSprite.Init("Assets/UI/white.DDS", HP_FREAM_SCALE.x, HP_FREAM_SCALE.y);
@@ -55,12 +63,12 @@ bool EnemyUI::Start()
 
 void EnemyUI::Update()
 {
+	
 	//大きさの処理
 	Scale();
 
 	//位置調整の処理
 	Position();
-
 
 	m_HPFreamSprite.Update();
 	m_HPSprite.Update();
@@ -68,6 +76,8 @@ void EnemyUI::Update()
 
 void EnemyUI::Position()
 {
+	
+
 	Vector3 position;
 
 	//親によってポジションを変える

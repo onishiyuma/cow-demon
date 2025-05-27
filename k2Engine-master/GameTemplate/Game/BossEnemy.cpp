@@ -367,18 +367,22 @@ void BossEnemy::Collision()
 					//時間をリセット。
 					m_stopTimer = 5.0f;
 				}
+				break;
 			}
-			//停止中の処理。
-			else if (m_isStopped)
-			{
-				//停止時間を減らす。
-				m_stopTimer -= g_gameTime->GetFrameDeltaTime();
+		}
 
-				//停止時間が経過したらフラグを戻す。
-				if (m_stopTimer <= 0.0f)
-				{
-					m_isStopped = false;
-				}
+		//停止中の処理。
+		if (m_isStopped)
+		{
+			//動きを止める。
+			m_moveSpeed = m_stopMove;
+			//アニメーションも止める。
+			m_enemyState = enEnemyState_Idle;
+			m_stopTimer -= g_gameTime->GetFrameDeltaTime();
+
+			if (m_stopTimer <= 0.0f)
+			{
+				m_isStopped = false;
 			}
 		}
 	}
@@ -424,7 +428,6 @@ const bool BossEnemy::SearchPlayer()const
 			//プレイヤーを見つけられた。
 			return true;
 		}
-
 	}
 	return false;
 }

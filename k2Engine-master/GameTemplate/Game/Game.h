@@ -67,6 +67,8 @@ public:
 	void CreateLanternAttackLight();
 	//本殿の方を見る。
 	void LookingMain();
+	//空の明るさ調整用関数。
+	void SetSkyLight();
   
 	void Render(RenderContext& rc);
 
@@ -86,6 +88,7 @@ public:
 	Shimenawa* m_shimenawa;//しめ縄。
 	Fade* m_fade;//フェード処理。
 	EnemyUI*m_enemyUI;
+	SkyCube* m_skyCube;//スカイクラブ。
 
 	Stone* m_stone1; //轣ｫ謇鍋浹
 	Stone* m_stone2; //轣ｫ謇鍋浹
@@ -161,12 +164,14 @@ public:
 
 	int m_maxCount = 0;	//敵の最大数。
 	int m_totalCount = 0;//敵の合計。
-   float m_timer = 120.0f;//タイマー。
+    float m_timer = 120.0f;//タイマー。
 	bool m_lanternAction = false; 
 	float m_timeLimit=0;//蛻ｶ髯先凾髢・
 	int m_lanternLightState = 0;
 	int m_lanternEffectState = 0;
 	int m_lanternAttackLightState = 0;
+	float m_skyLuminance = 0.0002f; //空の明るさ。
+	float m_skyAmbient = 0.0002f; //空の明るさの影響を受ける環境光。
 	//灯籠用ライトのフラグ
 	bool m_lanternLightFlag1 = false;
 	bool m_lanternLightFlag2 = false;
@@ -181,6 +186,36 @@ public:
 	bool m_lanternAttackLightFlag1 = false;
 	bool m_lanternAttackLightFlag2 = false;
 	bool m_lanternAttackLightFlag3 = false;
+	//空の明るさのフラグ
+	bool m_isNight = false;
+	bool m_isMidNight1 = false;
+	bool m_isMidNight2 = false;
+	bool m_isSunrise = false;
+	bool m_isDawn1 = false;
+	bool m_isDawn2 = false; 
+	bool m_isDawn3 = false;
+	bool m_isDay = false;
+
+	float m_luminance = 0.0f; //空の明るさの変化量。
+
+	const float m_nightStart = 0.0f;
+	const float m_phase1Start = 120.0f;  // 夜明けの始まり
+	const float m_phase2Start = 180.0f;  // 少し明るくなる
+	const float m_phase3Start = 210.0f;  // 少し明るくなる
+	const float m_phase4Start = 240.0f;  // 日の出開始
+	const float m_phase5Start = 250.0f;  // 少しずつ明ける
+	const float m_phase6Start = 260.0f;  // 少しずつ明ける
+	const float m_phase7Start = 270.0f;  // 少しずつ明ける
+	const float m_dayStart = 290.0f;     // 朝になる
+
+	const float m_luminanceNight = 0.0003f;       // 夜の明るさ
+	const float m_luminanceMidNight1 = 0.0005f;   // 夜の明るさ
+	const float m_luminanceMidNight2 = 0.001f;     // 夜の明るさ
+	const float m_luminanceSunrise = 0.0075f;       // 日の出
+	const float m_luminanceDawn1 = 0.05f;          // 夜明け
+	const float m_luminanceDawn2 = 0.1f;          // 夜明け
+	const float m_luminanceDawn3 = 0.5f;          // 夜明け
+	const float m_luminanceDay = 1.0f;            // 朝（最大）
 
 };
 

@@ -61,6 +61,7 @@ bool Enemy::Start()
 	m_game = FindGO<Game>("game");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	
+	
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
 	m_forward = Vector3::AxisZ;
@@ -180,19 +181,26 @@ void Enemy::Collision()
 	//プレイヤーの攻撃判定処理。
 	//-----------------------------------------
 
+	//プレイヤー攻撃用のコリジョンを取得する。
+	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("purification");
+	//コリジョンの配列をfor文で回す。
+	for (auto collision : collisions)
 	{
-		//プレイヤー攻撃用のコリジョンを取得する。
-		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("purification");
-		//コリジョンの配列をfor文で回す。
-		for (auto collision : collisions)
+		//コリジョンとキャラコンが衝突したら。
+		if (collision->IsHit(m_charaCon))
 		{
-			//コリジョンとキャラコンが衝突したら。
-			if (collision->IsHit(m_charaCon))
+			//スキルを使うための。
+			m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
+
+			//会心の設定。
+			int ram = rand() % 100;
+			if (ram < m_player->m_criticalRate)
 			{
-				//会心の設定。
-				int ram = rand() %100;
-				if (ram < m_player->m_criticalRate)
+				m_hp -= m_player->m_criticalATK;
+
+				if (m_hp <= 0)
 				{
+
 					m_enemyHP -= m_player->m_criticalATK;
 
 					if (m_enemyHP <= 0)
@@ -207,10 +215,24 @@ void Enemy::Collision()
 
 					//スキルを使うための。
 					m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
+
+					//HPが0になったら。
+					m_enemyState = enEnemyState_Down;
+
 				}
-				//非会心。
-				else
+				else {
+					//被ダメージステートに遷移する
+					m_enemyState = enEnemyState_Damage;
+				}
+			}
+			//非会心。
+			else
+			{
+				m_hp -= m_player->m_normalATK;
+
+				if (m_hp <= 0)
 				{
+
 					m_enemyHP -= m_player->m_normalATK;
 
 					if (m_enemyHP <= 0)
@@ -223,7 +245,16 @@ void Enemy::Collision()
 						m_enemyState = enEnemyState_Damage;
 					}
 					return;
+
+					//HPが0になったら。
+					m_enemyState = enEnemyState_Down;
+
 				}
+				else {
+					//被ダメージステートに遷移する。
+					m_enemyState = enEnemyState_Damage;
+				}
+				return;
 			}
 		}
 	}
@@ -253,7 +284,8 @@ void Enemy::Collision()
 					m_enemyState = enEnemyState_Down;
 				}
 
-				else {
+				else 
+				{
 					//被ダメージステートに遷移する。
 					m_enemyState = enEnemyState_Damage;
 				}
@@ -321,16 +353,22 @@ void Enemy::Collision()
 					//時間をリセット。
 					m_stopTimer = 5.0f;
 				}
+				break;
 			}
-			//停止中の処理。
-			else if (m_isStopped)
-			{
-				m_stopTimer -= g_gameTime->GetFrameDeltaTime();
+		}
 
-				if (m_stopTimer <= 0.0f)
-				{
-					m_isStopped = false;
-				}
+		//停止中の処理。
+		if (m_isStopped)
+		{
+			//動きを止める。
+			m_moveSpeed = m_stopMove;
+			//アニメーションも止める。
+			m_enemyState = enEnemyState_Idle;
+			m_stopTimer -= g_gameTime->GetFrameDeltaTime();
+
+			if (m_stopTimer <= 0.0f)
+			{
+				m_isStopped = false;
 			}
 		}
 	}
@@ -338,18 +376,19 @@ void Enemy::Collision()
 	//-----------------------------------------
 	//本殿に接触したらゲームオーバーする処理。
 	//-----------------------------------------
-
-	//本殿に触れたらゲームオーバー。
-	const auto& collisions = g_collisionObjectManager->FindMatchForwardNameCollisionObjects("gameover_collision");
-	//コリジョンの配列をfor文で回す。
-	for (auto collision : collisions)
 	{
-		//コリジョンとキャラが衝突したら。
-		if (collision->IsHit(m_charaCon))
+		//本殿に触れたらゲームオーバー。
+		const auto& collisions = g_collisionObjectManager->FindMatchForwardNameCollisionObjects("gameover_collision");
+		//コリジョンの配列をfor文で回す。
+		for (auto collision : collisions)
 		{
-			m_gameCamera->m_isGameOver = true;
-			DeleteGO(this);
-			break;
+			//コリジョンとキャラが衝突したら。
+			if (collision->IsHit(m_charaCon))
+			{
+				m_gameCamera->m_isGameOver = true;
+				DeleteGO(this);
+				return;
+			}
 		}
 	}
 }
@@ -540,7 +579,18 @@ void Enemy::ProcessCommonStateTransition()
 	if (SearchHonden() == true)
 	{
 		{
+
 			if (SearchPlayer() == true)
+			Vector3 diff = m_player->GetPosition() - m_position;
+			//ベクトルを正規化する。
+			diff.Normalize();
+			//移動速度を設定する。
+			m_moveSpeed = diff * 100.0f;
+			//攻撃できる距離なら。
+			int ram = rand() % 100;
+
+			if (IsCanAttack() == true)
+
 			{
 				Vector3 diff = m_player->GetPosition() - m_position;
 				//ベクトルを正規化する。
