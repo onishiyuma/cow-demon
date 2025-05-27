@@ -598,67 +598,64 @@ void BossEnemy::ProcessCommonStateTransition()
 
 	if (SearchHonden() == true)
 	{
-		//ベクトルを正規化する。
-		diff.Normalize();
-		//移動速度計算する。
-		m_moveSpeed = diff * 50.0f;
 		//攻撃できをる距離なら。
 		if (IsCanAttack() == true)
 		{
-		//プレイヤーを見つけたら。
-		if (SearchPlayer() == true)
-		{
-			Vector3 diff = m_player->GetPosition() - m_position;
-			//ベクトルを正規化する。
-			diff.Normalize();
-			//移動速度計算する。
-			m_moveSpeed = diff * 100.0f;
-			//攻撃できをる距離なら。
-			if (IsCanAttack() == true)
+			//プレイヤーを見つけたら。
+			if (SearchPlayer() == true)
 			{
-				int ram = rand() % 100;
-				if (ram > 70)
+				Vector3 diff = m_player->GetPosition() - m_position;
+				//ベクトルを正規化する。
+				diff.Normalize();
+				//移動速度計算する。
+				m_moveSpeed = diff * 100.0f;
+				//攻撃できをる距離なら。
+				if (IsCanAttack() == true)
 				{
-					
-					m_enemyState = enEnemyState_Attack;
-					m_isUnderAttack = false;
-					return;
+					int ram = rand() % 100;
+					if (ram > 70)
+					{
+
+						m_enemyState = enEnemyState_Attack;
+						m_isUnderAttack = false;
+						return;
+					}
+
+					else
+					{
+						m_enemyState = enEnemyState_Chase;
+						return;
+					}
 				}
 
+				//攻撃できない距離なら
 				else
 				{
-					m_enemyState = enEnemyState_Chase;
-					return;
+					int ram = rand() % 100;
+					if (ram > 40)
+					{
+						//追跡ステートに遷移する
+						m_enemyState = enEnemyState_Chase;
+						return;
+					}
+
+					else
+					{
+						//遠距離攻撃ステートに遷移する。
+						m_enemyState = enEnemyState_Poison;
+						return;
+					}
 				}
 			}
-
-			//攻撃できない距離なら
 			else
 			{
-				int ram = rand() % 100;
-				if (ram > 40)
-				{
-					//追跡ステートに遷移する
-					m_enemyState = enEnemyState_Chase;
-					return;
-				}
+				Vector3 diff = m_ringBell->GetPosition() - m_position;
+				diff.Normalize();
+				m_moveSpeed = diff * 50.0f;
 
-				else
-				{
-					//遠距離攻撃ステートに遷移する。
-					m_enemyState = enEnemyState_Poison;
-					return;
-				}
+				m_enemyState = enEnemyState_Honden;
+				return;
 			}
-		}
-		else
-		{
-			Vector3 diff = m_ringBell->GetPosition() - m_position;
-			diff.Normalize();
-			m_moveSpeed = diff * 50.0f;
-
-			m_enemyState = enEnemyState_Honden;
-			return;
 		}
 	}
 }

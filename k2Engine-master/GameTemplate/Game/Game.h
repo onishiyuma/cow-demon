@@ -70,8 +70,6 @@ public:
 	void CreateLanternAttackLight();
 	//攻撃灯籠用エフェクトの作成
 	void CreateLanternAttackEffect();
-	//本殿の方を見る。
-	void LookingMain();
 	//空の明るさ調整用関数。
 	void SetSkyLight();
   

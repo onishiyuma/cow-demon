@@ -168,20 +168,18 @@ void Game::Update()
 	{
 		return;
 	}
-	
+	m_timer += g_gameTime->GetFrameDeltaTime();
+
 	//タイマーを表示する用関数。
 	UITimer();
-
 	//ゲームーオーバーやゲームクリアーを呼び出す関数。
 	GameManager();
-  
     //灯籠用ライトのステート
 	LanternLightState();
 	//灯籠用ライトの作成
 	CreateLanternLight();
 	//灯籠用エフェクトの作成
 	CreateLanternEffect();
-
 	//攻撃灯籠用ライトのステート
 	LanternAttackLightState();
 	//攻撃灯籠用ライトの作成
@@ -216,12 +214,6 @@ void Game::GameManager()
 	}
 
 
-}
-
-//本殿の方向を見させる関数。
-void Game::LookingMain()
-{
-	
 }
 
 //空の設定。
@@ -362,16 +354,12 @@ void Game::CreateObject()
 {
 	//制限時間の設定。
 	m_timeLimit = 180.0f;
-
 	//背景の作成。
 	m_backGround = NewGO<BackGround>(0);
-
 	//ベルの作成。
 	m_ringBell = NewGO<RingBell>(0, "ringbell");
-
 	//プレイヤーの作成。
 	m_player = NewGO<Player>(0, "player");
-
 	//ゲームカメラの作成。
 	m_gameCamera = NewGO<GameCamera>(0, "gamecamera");
 }
@@ -814,35 +802,28 @@ void Game::CreateEnemy()
 						Enemy* enemy = NewGO<Enemy>(1, "enemy");
 						enemy->SetPosition(Random());
 						m_enemyList.push_back(enemy);//敵リストに追加
-						EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-						enemyUI->SetEnemy(enemy);
+						//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
+						//enemyUI->SetEnemy(enemy);
 					}
 					else {
 						LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 						littleEnemy->SetPosition(Random());
 						m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
-					else 
-					{
-						LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-						m_littleEnemy->SetPosition(Random());
-						m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
-						m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-						m_enemyUI->SetLittleEnemy(littleEnemy);
 						if (ram > 30)
 						{
 							LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 							littleEnemy->SetPosition(Random());
 							m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
-							m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-							m_enemyUI->SetLittleEnemy(littleEnemy);
+							//m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
+							//m_enemyUI->SetLittleEnemy(littleEnemy);
 						}
 						if (ram > 30)
 						{
 							BossEnemy* bossEnemy = NewGO<BossEnemy>(1, "bossEnemy");
 							bossEnemy->SetPosition(Random());
 							m_bossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する。
-							m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-							m_enemyUI->SetBossEnemy(bossEnemy);
+							//m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
+							//m_enemyUI->SetBossEnemy(bossEnemy);
 						}
 					}
 				}
@@ -856,15 +837,12 @@ void Game::CreateUI()
 {
 	//クロスヘアーを表示。
 	m_crossHair = NewGO<CrossHair>(0);
-
 	//月読の加護のUI
 	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
 	//スキルUI
 	m_uiSkill = NewGO<UIskill>(0, "uiskill");
 	//しめ縄UI
 	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
-	//ミニマップ
-	//m_miniMap = NewGO<MiniMap>(0, "minimap");
 	//呪ゲージ
 	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
 	//回復
