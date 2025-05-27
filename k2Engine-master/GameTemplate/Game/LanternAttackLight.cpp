@@ -22,9 +22,9 @@ bool LanternAttackLight::Start()
 	//ポイントライトを初期化。
 	m_pointLight.Init();
 	//ポイントライトの色を設定。
-	m_pointLight.SetColor(Vector3(0.5f, 0.35f, 0.35f));
+	m_pointLight.SetColor(Vector3(0.25f, 0.15f, 0.15f));
 	//ポイントライトの範囲を設定。
-	m_pointLight.SetRange(500.0f);
+	m_pointLight.SetRange(400.0f);
 	//ポイントライトの影響力を設定。
 	m_pointLight.SetAffectPowParam(1.0f);
 

@@ -22,5 +22,6 @@ private:
 	Vector3			m_direction;			//ライトの向き。
 	Lantern*		m_lantern;				//灯籠。
 	PointLight		m_pointLight;			//ポイントライト。
+	VolumePointLight m_volumePointLight;	//ボリュームポイントライト。
 };
 

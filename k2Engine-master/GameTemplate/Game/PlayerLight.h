@@ -2,7 +2,7 @@
 
 class Player;
 
-class PlayerLight:public IGameObject
+class PlayerLight :public IGameObject
 {
 public:
 	//メンバ関数。

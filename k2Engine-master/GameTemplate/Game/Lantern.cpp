@@ -16,6 +16,7 @@ bool Lantern::Start()
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
 	m_modelRender.SetScale(0.6f, 0.6f, 0.6f);
+	
 
 	//各種インスタンスアドレスを検索。
 	m_player = FindGO <Player>("player");
@@ -38,11 +39,11 @@ Lantern::Lantern()
 
 Lantern::~Lantern() 
 {
-	DeleteGO(m_spriteLight);
+	/*DeleteGO(m_spriteLight);
 	DeleteGO(m_spriteNoStone);
 	DeleteGO(m_timingBarA);
 	DeleteGO(m_line);
-	DeleteGO(m_spritePush);
+	DeleteGO(m_spritePush);*/
 }
 
 
