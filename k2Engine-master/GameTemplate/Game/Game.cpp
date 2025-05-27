@@ -729,32 +729,32 @@ void Game::CreateEnemy()
 				BossEnemy* boss = NewGO<BossEnemy>(1, "bossEnemy");
 				boss->SetPosition(Random());
 				m_bossEnemyList.push_back(boss);
-				//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-				//enemyUI->SetBossEnemy(boss);
+				EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
+				enemyUI->SetBossEnemy(boss);
 			}
 			else if (r >= 80) {
 				//ウザイ敵
 				AnnoyingEnemy* annoying = NewGO<AnnoyingEnemy>(1, "annoyingEnemy");
 				annoying->SetPosition(Random());
 				m_annoyingEnemyList.push_back(annoying);
-				//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-				//enemyUI->SetAnnoyingEnemy(annoying);
+				EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
+				enemyUI->SetAnnoyingEnemy(annoying);
 			}
 			else if (r >= 40) {
 				//普通の敵。
 				Enemy* enemy = NewGO<Enemy>(1, "enemy");
 				enemy->SetPosition(Random());
 				m_enemyList.push_back(enemy);
-				//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-				//enemyUI->SetEnemy(enemy);
+				EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
+				enemyUI->SetEnemy(enemy);
 			}
 			else {
 				//雑魚敵。
 				LittleEnemy* little = NewGO<LittleEnemy>(1, "littleEnemy");
 				little->SetPosition(Random());
 				m_littleEnemyList.push_back(little);
-				//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-				//enemyUI->SetLittleEnemy(little);
+				EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
+				enemyUI->SetLittleEnemy(little);
 			}
 		}
 		//タイマーを減らす処理。
@@ -790,31 +790,31 @@ void Game::CreateEnemy()
 						Enemy* enemy = NewGO<Enemy>(1, "enemy");
 						enemy->SetPosition(Random());
 						m_enemyList.push_back(enemy);//敵リストに追加
-						//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-						//enemyUI->SetEnemy(enemy);
+						EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
+						enemyUI->SetEnemy(enemy);
 					}
 					else 
 					{
 						LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 						m_littleEnemy->SetPosition(Random());
 						m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
-						//m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-						//m_enemyUI->SetLittleEnemy(m_littleEnemy);
+						m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
+						m_enemyUI->SetLittleEnemy(m_littleEnemy);
 						if (ram > 30)
 						{
 							LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 							littleEnemy->SetPosition(Random());
 							m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
-							//m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-							//m_enemyUI->SetLittleEnemy(littleEnemy);
+							m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
+							m_enemyUI->SetLittleEnemy(littleEnemy);
 						}
 						if (ram > 30)
 						{
 							BossEnemy* bossEnemy = NewGO<BossEnemy>(1, "bossEnemy");
 							bossEnemy->SetPosition(Random());
 							m_bossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する。
-							//m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-							//m_enemyUI->SetBossEnemy(bossEnemy);
+							m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
+							m_enemyUI->SetBossEnemy(bossEnemy);
 						}
 					}
 				}
