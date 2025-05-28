@@ -111,6 +111,19 @@ void AnnoyingEnemy::Update()
 	m_modelRender.Update();
 }
 
+/*void Enemy::MakeAttackCollision()
+{
+	//攻撃判定用のコリジョンオブジェクトを作成する。
+	auto collisionObject = NewGO<CollisionObject>(0);
+	Vector3 collisionPosition = m_position;
+	collisionPosition += m_forward * 15.0f;
+	collisionObject->CreateSphere(collisionPosition,
+		Quaternion::Identity,
+		70.0f
+	);
+	collisionObject->SetName("annoyingenemy_attack");
+}*/
+
 void AnnoyingEnemy::Rotation()
 {
 	if (fabsf(m_moveSpeed.x) < 0.001f && fabsf(m_moveSpeed.z) < 0.001f)
@@ -534,10 +547,10 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 	//各タイマーを初期化。
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
-	m_explodeTimer = 0.0f;
-	m_hondenTimer = 0.0f;
-	m_deathEffectTimer = 0.0f;
-	if (SearchHonden() == true) {
+	m_poisonAttackCoolDown = 0.0f;
+
+	if (SearchHonden() == true)
+	{
 		//プレイヤーを見つけたら。
 		if (SearchPlayer() == true)
 		{
@@ -557,7 +570,6 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 					return;
 
 				}
-
 				else
 				{
 					m_enemyState = enEnemyState_Chase;
@@ -567,14 +579,12 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 			{
 				m_enemyState = enEnemyState_Chase;
 			}
-
 		}
 		else
 		{
 			Vector3 diff = m_ringBell->GetPosition() - m_position;
 			diff.Normalize();
 			m_moveSpeed = diff * 100.0f;
-
 			m_enemyState = enEnemyState_Honden;
 			return;
 		}
