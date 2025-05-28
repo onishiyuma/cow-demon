@@ -118,7 +118,7 @@ private:
 
 	const Vector3		m_stopMove = Vector3::Zero;                  //移動できないようにする。
 	int m_BossFangBoneID = -3;
-    int m_enemyHP = 100;
+    int m_enemyHP = 50;
 	int m_enemyMaxHP = m_enemyHP;                               
 
 	//各種タイマー。

@@ -129,7 +129,7 @@ private:
 
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//ステータス。
 
-	int					m_enemyHP = 50;									//体力。
+	int					m_enemyHP = 10;									//体力。
 	int                 m_enemyMaxHP = m_enemyHP;								//最大体力。
 	int					m_isUnderAttack = false;					//攻撃を受けているか
 	int					m_FangBoneId = -1;							//攻撃判定を出すボーンID

@@ -14,7 +14,7 @@
 namespace
 {
 	//スキルのチャージの
-	int CHARGE_INCREASE_AMOUNT = 2;
+	int CHARGE_INCREASE_AMOUNT = 5;
 }
 
 BossEnemy::BossEnemy()

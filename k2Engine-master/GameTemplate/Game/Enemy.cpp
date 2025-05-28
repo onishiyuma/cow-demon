@@ -14,7 +14,7 @@
 //定数を設定する場所。
 namespace
 {
-	int CHARGE_INCREASE_AMOUNT = 2;//チャージ増加量。
+	int CHARGE_INCREASE_AMOUNT = 100;//チャージ増加量。
 }
 
 bool Enemy::Start()
