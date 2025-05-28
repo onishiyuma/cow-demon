@@ -15,7 +15,7 @@
 namespace
 {
 	//スキルのチャージの増加量。
-	int CHARGE_INCREASE_AMOUNT = 2;
+	int CHARGE_INCREASE_AMOUNT = 5;
 }
 
 AnnoyingEnemy::AnnoyingEnemy()
@@ -173,7 +173,6 @@ void AnnoyingEnemy::Explode()
 		// 爆発用のコリジョン生成
 		MakeExplosion();
 	
-		m_explodeTimer = 0.0f;
 	}
 
 	// 爆発後の消滅までの演出猶予

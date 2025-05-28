@@ -129,6 +129,8 @@ private:
 
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//ステータス。
 
+
+	int					m_enemyHP = 10;									//体力。
 	const int			m_enemyATK = 5;								//敵の攻撃力。
 	int					m_hp = 0;									//体力。
 	int                 m_enemyMaxHP = m_enemyHP;								//最大体力。

@@ -118,7 +118,7 @@ public:
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションのクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//敵の状態。
 	const Vector3		m_stopMove = Vector3::Zero;					//動きを完全停止。
-	int m_enemyHP = 25;
+	int m_enemyHP = 10;
 	int m_enemyMaxHP = m_enemyHP;
 	float				m_leaveTimer = 0.0f;						//退散時間。
 	float				m_idleTimer = 0.0f;							//待機時間。
