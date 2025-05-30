@@ -14,7 +14,7 @@
 bool Lantern::Start() 
 {
 	//モデルを読み込む
-	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
+	m_modelRender.Init("Assets/modelData/fox/fox.tkm");
 	m_modelRender.SetScale(0.6f, 0.6f, 0.6f);
 	
 

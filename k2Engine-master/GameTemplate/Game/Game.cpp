@@ -188,11 +188,11 @@ void Game::Update()
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
 	//ゲーム開始から30秒経ったら
-	//if (m_timer >= 150.0f) 
+  if (m_timer >= 150.0f) 
   {
 		//エネミーの作成
 		CreateEnemy();
-	}
+  }
 	//空の明るさ調整
 	SetSkyLight();
 }
@@ -821,17 +821,13 @@ void Game::CreateEnemy()
 						EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
 						enemyUI->SetEnemy(enemy);
 					}
-					else {
-						LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-						littleEnemy->SetPosition(Random());
-						m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
 					else 
 					{
 						LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 						m_littleEnemy->SetPosition(Random());
 						m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
 						m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-						m_enemyUI->SetLittleEnemy(littleEnemy);
+						m_enemyUI->SetLittleEnemy(m_littleEnemy);
 						if (ram > 30)
 						{
 							LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
