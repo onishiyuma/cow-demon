@@ -12,6 +12,9 @@ bool BackGround::Start()
 	//静的物理オブジェクトの作成。
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	
+	//当たり判定を有効化する。
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+
 	//コリジョン作成用関数を呼び出す。
 	CreateCollision();
 

@@ -97,6 +97,11 @@ public:
 		m_enemyHP = hp;
 	}
 
+    bool IsDead() const
+	{
+		return m_isDeadFlag;
+	}
+
 	float GetHP()const
 	{
 		return	m_enemyHP;
@@ -106,6 +111,8 @@ public:
 	{
 		return m_enemyMaxHP;
 	}
+
+	
 
 
 private:
@@ -118,7 +125,7 @@ private:
 
 	const Vector3		m_stopMove = Vector3::Zero;                  //移動できないようにする。
 	int m_BossFangBoneID = -3;
-    int m_enemyHP = 100;
+    int m_enemyHP = 10;
 	int m_enemyMaxHP = m_enemyHP;                               
 
 	//各種タイマー。

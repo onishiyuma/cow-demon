@@ -90,10 +90,9 @@ public:
 		m_scale = scale;
 	}
 
-	//HPをセットする関数。
-	void SetHP(const int hp)
+	bool IsDead() const
 	{
-		m_enemyHP = hp;
+		return m_isDeadFlag;
 	}
 
 	float GetHP()const
@@ -106,7 +105,9 @@ public:
 		return m_enemyMaxHP;
 	}
 
-//private:
+	
+
+private:
 	//メンバ変数
 	Vector3 m_position;
 	Vector3 m_scale;
@@ -118,8 +119,8 @@ public:
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションのクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//敵の状態。
 	const Vector3		m_stopMove = Vector3::Zero;					//動きを完全停止。
-	int m_enemyHP = 25;
-	int m_enemyMaxHP = m_enemyHP;
+	int                 m_enemyHP = 10;                             //体力
+	int                 m_enemyMaxHP = m_enemyHP;                   //最大体力
 	float				m_leaveTimer = 0.0f;						//退散時間。
 	float				m_idleTimer = 0.0f;							//待機時間。
 	float				m_ChaseTimer = 0.0f;						//追跡時間。

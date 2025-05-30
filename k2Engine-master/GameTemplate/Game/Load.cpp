@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Fade.h"
+#include "Load.h"
 #include "Game.h"
  
 namespace
@@ -7,7 +7,7 @@ namespace
     Vector3 FONTRENDER_PSOITION = Vector3{ -600.0f, -300.0f, 0.0f };
 }
 
-bool Fade::Start()  
+bool Load::Start()  
 {  
     //ロード画像。  
     m_spriteLoad.Init("Assets/sprite/Load.dds",1920,1080);  
@@ -27,7 +27,7 @@ bool Fade::Start()
         L"Tips：本殿にある鐘を鳴らすことで回復できるぞ！"
     };
 
-    std::wstring wstr(tipsList[m_currentTipIndex].begin(), tipsList[m_currentTipIndex].end());
+    std::wstring wstr(tipsList[m_currentTipsIndex].begin(), tipsList[m_currentTipsIndex].end());
     m_fontRenderTips.SetText(wstr.c_str());
 	m_fontRenderTips.SetPosition(FONTRENDER_PSOITION);
 
@@ -37,17 +37,17 @@ bool Fade::Start()
     return true;  
 }
 
-Fade::Fade()
+Load::Load()
 {
     
 }
 
-Fade::~Fade()
+Load::~Load()
 {
 
 }
 
-void Fade::Update()
+void Load::Update()
 {
     //ゲージ進行。
     LoadingProgress();
@@ -55,7 +55,7 @@ void Fade::Update()
     Tips();
 }
 
-void Fade::LoadingProgress()
+void Load::LoadingProgress()
 {
     //ロード制御。
     if (m_isFadingOut) 
@@ -99,7 +99,7 @@ void Fade::LoadingProgress()
     m_spriteMask.Update();
 }
 
-void Fade::Tips()
+void Load::Tips()
 {
 	//時間経過でTipsを更新。
     if (g_pad[0]->IsTriggerAnyKey())
@@ -107,14 +107,14 @@ void Fade::Tips()
         //Tipsの表示時間をリセット。
         m_tipTimer = 0.0f;
         //Tipsのインデックスを更新。
-        m_currentTipIndex = (m_currentTipIndex + 1) % tipsList.size();
+        m_currentTipsIndex = (m_currentTipsIndex + 1) % tipsList.size();
         //表示するTipsを更新。
-        std::wstring wstr(tipsList[m_currentTipIndex].begin(), tipsList[m_currentTipIndex].end());
+        std::wstring wstr(tipsList[m_currentTipsIndex].begin(), tipsList[m_currentTipsIndex].end());
         m_fontRenderTips.SetText(wstr.c_str());
     }
 }
 
-void Fade::Render(RenderContext& rc)
+void Load::Render(RenderContext& rc)
 {
     m_spriteLoad.Draw(rc);
     m_spriteLoadGage.Draw(rc);

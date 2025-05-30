@@ -22,6 +22,7 @@ bool GameCamera::Start()
 
 	//初期化。
 	m_waitTime = 5.0f;
+	m_notifyx = 1000.0f;
 
 	return true;
 }
@@ -68,6 +69,22 @@ void GameCamera::Update()
 	//ゲームオーバー時にカメラを本殿に向ける。
 	else
 	{
+		//敵が来たことを通知する。
+		m_notifyEnemyInMain.SetText(L"本殿に入られたぞ");
+		m_notifyEnemyInMain.SetColor(g_vec4White);
+		m_notifyEnemyInMain.SetScale(2);
+		m_isShowNotify = true;
+		if (m_isShowNotify)
+		{
+			m_notifyx -= 250 * g_gameTime->GetFrameDeltaTime();
+			m_notifyEnemyInMain.SetPosition(m_notifyx, 400.0f, 0.0f);
+
+			if (m_notifyx < -1400.0f)
+			{
+				m_isShowNotify = false;
+			}
+		}
+
 		// 本殿の位置。
 		m_mainPos = m_ringBell->GetPosition();
 
@@ -107,4 +124,9 @@ void GameCamera::Update()
 
 	//カメラの更新。
 	g_camera3D->Update();
+}
+
+void GameCamera::Render(RenderContext& rc)
+{
+	m_notifyEnemyInMain.Draw(rc);
 }

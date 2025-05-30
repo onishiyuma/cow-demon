@@ -12,8 +12,11 @@ namespace
 	//白。
 	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	//透明。
-	Vector4 TRANSPARENCY = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-
+	Vector4 TOUMEI = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+	//チャージ中。
+	Vector4 RUNA_COLOR = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
+	//チャージ完了。
+	Vector4 RUNA_MAX_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 UItukuyomi::UItukuyomi()
@@ -34,12 +37,12 @@ bool UItukuyomi::Start()
 	//ツクヨミゲージ画像。
 	m_runaSprite.Init("Assets/UI/Tukuyomi 1.DDS", 230, 230);
 	m_runaSprite.SetPosition(RUNA_FREME_POSITION);
-	m_runaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, 0.5f));
+	m_runaSprite.SetMulColor(RUNA_COLOR);
 
 	//ツクヨミMAX。
 	m_runaSpriteMax.Init("Assets/UI/TukuyomiMax 1.DDS", 230, 230);
 	m_runaSpriteMax.SetPosition(RUNA_FREME_POSITION);
-	m_runaSpriteMax.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, 0.5f));
+	m_runaSpriteMax.SetMulColor(RUNA_MAX_COLOR);
 
 	//ツクヨミの加護のクールタイムの表記位置。
 	m_fontRender.SetPosition(RUNA_FONT_POSITION);

@@ -17,8 +17,10 @@ namespace
 	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
 	//白。
 	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	//黒。
+	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 	//透明。
-	Vector4 TRANSPARENCY = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	Vector4 TOUMEI = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 UISimenawa::UISimenawa()
@@ -48,7 +50,7 @@ bool UISimenawa::Start()
 	//文字の大きさ、座標、色を設定。
 	m_fontRender.SetScale(1.0);
 	m_fontRender.SetPosition(ROPE_FONT_POSITION);
-	m_fontRender.SetColor(TRANSPARENCY);
+	m_fontRender.SetColor(TOUMEI);
 
 
 	return true;
@@ -77,7 +79,7 @@ void UISimenawa::UpdateShimenawaGaugeVisibility()
 	else
 	{
 		m_ropeGage.SetMulColor(GREEN);
-		m_fontRender.SetColor(TRANSPARENCY);
+		m_fontRender.SetColor(TOUMEI);
 	}
 
 	if (!m_isReset) 

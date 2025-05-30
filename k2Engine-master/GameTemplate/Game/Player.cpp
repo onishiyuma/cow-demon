@@ -78,13 +78,6 @@ void Player::Update()
 	//回復できるように知らせる。
 	UpdateHealHint();
 
-	//呪いの抵抗が0を下回っていたら。
-	if (m_playerHP<=0)
-	{
-		NewGO<GameOver>(0, "gameover");
-		DeleteGO(this);
-	}
-
 	//灯籠に火が灯っていれば攻撃できる。
 	if (m_enemyIsCanAttack)
 	{
@@ -299,9 +292,13 @@ void Player::MakeShimenawa()
 //終わり
 //-----------------------------------------------------------------------------------------------------------------
 
-//回復用判定。
+//コリジョン判定。
 void Player::Collision()
 {
+	//--------------------------------------------------------------------------------------------------------------
+	// 回復（鈴）のコリジョン判定。
+	//---------------------------------------------------------------------------------------------------------------
+	
 	// 鈴のコリジョンを取得する。
 	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("ringbell");
 	bool isBellHit = false;
@@ -352,11 +349,59 @@ void Player::Collision()
 			m_noHeal = nullptr;
 		}
 	}
-
-
 	// Aボタンを押していない間は回転量と角度をリセット。
 	m_totalRotation = 0.0f;
-	m_prevStickAngle=0.0f;
+	m_prevStickAngle = 0.0f;
+
+	//--------------------------------------------------------------------------------------------------------------
+	//敵の攻撃用コリジョン判定。
+	//---------------------------------------------------------------------------------------------------------------- 
+	{
+		//敵の攻撃用のコリジョンを取得する。
+		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("enemy_attack");
+		//配列をfor文で回す。
+		for (auto collision : collisions)
+		{
+			//コリジョンとキャラコンが衝突したら。
+			if (collision->IsHit(m_characterController))
+			{
+				//HPを減らす。
+				m_playerHP -= 5;
+
+				//HPが0を下回っていたら。
+				if (m_playerHP <= 0)
+				{
+					NewGO<GameOver>(0, "gameover");
+					DeleteGO(this);
+				}
+				return;
+			}
+		}
+	}
+
+	//--------------------------------------------------------------------------------------------------------------
+	//ウザイ敵の攻撃用コリジョン判定。
+	//---------------------------------------------------------------------------------------------------------------
+	{
+		//敵の攻撃用コリジョンを取得する。
+		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("annoyingenemy_attack");
+		//配列をfor文で回す。
+		for (auto collision : collisions)
+		{
+			if (collision->IsHit(m_characterController))
+			{
+				//HPを減らす。
+				m_playerHP -= 1;
+
+				//HPが0を下回っていたら。
+				if (m_playerHP <= 0)
+				{
+					NewGO<GameOver>(0, "gameover");
+					DeleteGO(this);
+				}
+			}
+		}
+	}
 }
 
 //鈴との距離を測る。

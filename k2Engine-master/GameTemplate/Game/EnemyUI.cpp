@@ -22,6 +22,10 @@ namespace
 	Vector4 RED = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 	//黒。
 	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	//透明。
+	Vector4 TOUMEI = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	//ボス紫
+	Vector4 BOSS = { 1.0f,0.0f,1.0f,1.0f };
 }
 
 EnemyUI::EnemyUI()
@@ -56,7 +60,12 @@ bool EnemyUI::Start()
 
 void EnemyUI::Update()
 {
-	
+	// どの敵も指していない場合はバーを非表示
+	if (!m_enemy && !m_littleEnemy && !m_annoyingEnemy && !m_bossEnemy) {
+		m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f)); // 幅0で非表示
+		m_HPFreamSprite.SetMulColor(TOUMEI);            // 透明
+		return; // このフレームは何もしない
+	}
 	//大きさの処理
 	Scale();
 
@@ -116,7 +125,7 @@ void EnemyUI::Position()
 	// --- ゲージ（バー）描画位置 ---
 	float frameWidth = HP_FREAM_SCALE.x;
 	float gaugeWidth = HP_GAUGE_SCALE.x;
-	float offsetX = (frameWidth - gaugeWidth) * 0.0f;
+	float offsetX = (frameWidth - gaugeWidth) * -1.0f;
 
 
 	// ピボットが左上なので、x座標にoffsetXを加えるだけでOK
@@ -129,6 +138,15 @@ void EnemyUI::Scale()
 	//体力の計算
 	if (m_enemy != nullptr)
 	{
+		if (m_enemy->IsDead())
+		{
+			// 必ずバーを非表示にしてからポインタ切断
+			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPFreamSprite.SetMulColor(TOUMEI);
+			m_enemy = nullptr; // ポインタ切断
+			return;
+		}
+
 		float m_enemyHp = m_enemy->GetHP();
 		float m_maxHP = m_enemy->GetMaxHP();
 		float wari = (float)m_enemyHp/(float)m_maxHP;
@@ -136,6 +154,7 @@ void EnemyUI::Scale()
 
 		if (m_enemyHp <= 0.0f) {
 			m_HPSprite.SetScale(Vector3(0.0f,1.0f,1.0f));
+			m_HPFreamSprite.SetMulColor(TOUMEI);
 		}
 		else if (m_enemyHp <= m_maxHP) {
 			m_HPSprite.SetScale(scale);
@@ -144,6 +163,15 @@ void EnemyUI::Scale()
 
 	if (m_littleEnemy != nullptr)
 	{
+		if (m_littleEnemy->IsDead())
+		{
+			// 必ずバーを非表示にしてからポインタ切断
+			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPFreamSprite.SetMulColor(TOUMEI);
+			m_littleEnemy = nullptr; // ポインタ切断
+			return;
+		}
+
 		float m_enemyHp = m_littleEnemy->GetHP();
 		float m_maxHP = m_littleEnemy->GetMaxHP();
 		float wari = (float)m_enemyHp /(float)m_maxHP;
@@ -151,6 +179,7 @@ void EnemyUI::Scale()
 
 		if (m_enemyHp <= 0.0f) {
 			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPFreamSprite.SetMulColor(TOUMEI);
 		}
 		else if (m_enemyHp <= m_maxHP) {
 			m_HPSprite.SetScale(scale);
@@ -159,6 +188,15 @@ void EnemyUI::Scale()
 
 	if (m_bossEnemy != nullptr)
 	{
+		if (m_bossEnemy->IsDead())
+		{
+			// 必ずバーを非表示にしてからポインタ切断
+			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPFreamSprite.SetMulColor(TOUMEI);
+			m_bossEnemy = nullptr; // ポインタ切断
+			return;
+		}
+
 		float m_enemyHp = m_bossEnemy->GetHP();
 		float m_maxHP = m_bossEnemy->GetMaxHP();
 		float wari = (float)m_enemyHp /(float)m_maxHP;
@@ -166,14 +204,24 @@ void EnemyUI::Scale()
 
 		if (m_enemyHp <= 0.0f) {
 			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPFreamSprite.SetMulColor(TOUMEI);
 		}
 		else if (m_enemyHp <= m_maxHP) {
 			m_HPSprite.SetScale(scale);
+			m_HPSprite.SetMulColor(BOSS);
 		}
 	}
 
 	if (m_annoyingEnemy != nullptr)
 	{
+		if (m_annoyingEnemy->IsDead())
+		{
+			// 必ずバーを非表示にしてからポインタ切断
+			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPFreamSprite.SetMulColor(TOUMEI);
+			m_annoyingEnemy = nullptr; // ポインタ切断
+			return;
+		}
 		float m_enemyHp = m_annoyingEnemy->GetHP();
 		float m_maxHP = m_annoyingEnemy->GetMaxHP();
 		float wari = (float)m_enemyHp /(float)m_maxHP;
@@ -181,6 +229,7 @@ void EnemyUI::Scale()
 		
 		if (m_enemyHp <= 0.0f) {
 			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPFreamSprite.SetMulColor(TOUMEI);
 		}
 		else if (m_enemyHp <= m_maxHP) {
 			m_HPSprite.SetScale(scale);
@@ -243,6 +292,8 @@ void EnemyUI::SetBossEnemy(BossEnemy* bossEnemy)
 	m_bossEnemy = bossEnemy;
 	m_annoyingEnemy = nullptr;
 }
+
+
 
 void EnemyUI::Render(RenderContext& rc)
 {

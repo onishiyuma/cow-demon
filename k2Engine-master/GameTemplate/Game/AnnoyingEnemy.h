@@ -14,13 +14,13 @@ class AnnoyingEnemy : public EnemyBase
 public:
 	//敵の状態を定義する列挙型。
 	enum EnEnemyState {
-		enEnemyState_Idle,			//待機中。
-		enEnemyState_Honden,         //本殿へ行く。
-		enEnemyState_Chase,			//追跡。
-		enEnemyState_Explode,		//爆発。
-		enEnemyState_Poison,		//毒攻撃。
-		enEnemyState_Damage,		//ダメージを受けている。
-		enEnemyState_Down			//倒されている状態。
+		enEnemyState_Idle,			  //待機中。
+		enEnemyState_Honden,      //本殿へ行く。
+		enEnemyState_Chase,			  //追跡。
+		enEnemyState_Explode,		  //爆発。
+		enEnemyState_Poison,		  //毒攻撃。
+		enEnemyState_Damage,		  //ダメージを受けている。
+		enEnemyState_Down			    //倒されている状態。
 	};
 
 	//使用するアニメーションクリップを定義。
@@ -44,7 +44,7 @@ public:
 	void Render(RenderContext& rc);
 
 	// 各行動処理。
-	void Explode();                           //爆発処理。
+	//void Explode();                           //爆発処理。
 	void MakeExplosion();                     //爆発コリジョンとエフェクトを作成。
 	void DeathEffect();                         //死亡エフェクト生成。        
 	void ManageState() override;              //状態管理。
@@ -56,6 +56,7 @@ public:
 	const bool SearchHonden() const;            //本殿を探す。
 	void IsHonden();                            //本殿へ行く処理。
 	void PlayAnimation() override;            //アニメーション切り替え。
+	void MakePoison();    
 
 	//状態ごとの処理。
 	void ProcessIdleStateTransition() override;
@@ -96,6 +97,11 @@ public:
 		m_enemyHP = hp;
 	}
 
+    bool IsDead() const 
+	{
+		return m_isDeadFlag; 
+	}
+
 	float GetHP()const
 	{
 		return	m_enemyHP;
@@ -106,6 +112,7 @@ public:
 		return m_enemyMaxHP;
 	}
 
+	
 private:
 	//メンバ変数。
 	GameCamera*		m_gameCamera = nullptr;                     //ゲームカメラへの参照。
@@ -119,10 +126,8 @@ private:
 	const Vector3	m_stopMove = Vector3::Zero;					//移動を停止するためのベクトル。
 
 	//各種タイマー。
-	float	m_leaveTimer = 0.0f;              //離脱タイマー。
 	float	m_idleTimer = 0.0f;               //待機タイマー。
 	float	m_chaseTimer = 0.0f;              //追跡タイマー。
-	float	m_poisonAttackCoolDown = 0.0f;    //毒攻撃のクールダウン。
 	float	m_stopTimer = 0.0f;               //拘束（動きが止まる）タイマー。
 	float _m_explosionTimer = 0.0f;          //爆発タイマー。
 	float m_hondenTimer = 0.0f;              //本殿へ行くタイマー。
