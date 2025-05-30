@@ -184,6 +184,17 @@ void Game::Update()
 	LanternAttackLightState();
 	//攻撃灯籠用ライトの作成
 	CreateLanternAttackLight();
+	//攻撃灯籠用エフェクトの作成
+	CreateLanternAttackEffect();
+
+	m_timer += g_gameTime->GetFrameDeltaTime();
+
+	//ゲーム開始から30秒経ったら
+  if (m_timer >= 150.0f) 
+  {
+		//エネミーの作成
+		CreateEnemy();
+  }
 	//空の明るさ調整
 	SetSkyLight();
 	//敵のスポーン処理と敵が来たことを通知する。
@@ -805,6 +816,13 @@ void Game::CreateEnemy()
 						//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
 						//enemyUI->SetEnemy(enemy);
 					}
+					else 
+					{
+						LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
+						m_littleEnemy->SetPosition(Random());
+						m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
+						m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
+						m_enemyUI->SetLittleEnemy(m_littleEnemy);
 					else {
 						LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 						littleEnemy->SetPosition(Random());

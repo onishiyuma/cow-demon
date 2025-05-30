@@ -14,7 +14,7 @@
 //定数を設定する場所。
 namespace
 {
-	int CHARGE_INCREASE_AMOUNT = 2;//チャージ増加量。
+	int CHARGE_INCREASE_AMOUNT = 10;//チャージ増加量。
 }
 
 bool Enemy::Start()
@@ -387,6 +387,8 @@ void Enemy::Collision()
 			if (collision->IsHit(m_charaCon))
 			{
 				m_gameCamera->m_isGameOver = true;
+				//消滅時EnemyUIのポインタを切断するためのフラグ
+				m_isDeadFlag = true;
 				DeleteGO(this);
 				return;
 			}
@@ -539,10 +541,10 @@ void Enemy::ProcessDownStateTransition()
 		//死亡エフェクトを発生させる。
 		DeathEffect();
 		m_isDeadFlag = true;
-
 	}
 
 	if (m_modelRender.IsPlayingAnimation()==false) {
+       
 		Game* game = FindGO<Game>("game");
 		//自身を削除する
 		DeleteGO(this);
@@ -574,24 +576,18 @@ void Enemy::ProcessCommonStateTransition()
 	m_chaseTimer = 0.0f;
 	m_hondenTimer = 0.0f;
 
-	//プレイヤーを見つけたら。
+
 	if (SearchMain() == true)
-	{
+	{   //プレイヤーを見つけたら。
 		if (SearchPlayer() == true) {
 			Vector3 diff = m_player->GetPosition() - m_position;
 			//ベクトルを正規化する。
 			diff.Normalize();
 			//移動速度を設定する。
-			m_moveSpeed = diff * 100.0f;
+			m_moveSpeed = diff * 150.0f;
 			//攻撃できる距離なら。
 			int ram = rand() % 100;
 			if (IsCanAttack() == true)
-			{
-				m_enemyState = enEnemyState_Attack;
-				m_isUnderAttack = false;
-				return;
-			}
-			else
 			{
 				if (ram > 70)
 				{
@@ -609,25 +605,21 @@ void Enemy::ProcessCommonStateTransition()
 
 			}
 			//攻撃できない距離なら。
-			if (IsCanAttack() == false)
+			else
+			{
 				m_enemyState = enEnemyState_Chase;
+				return;
+			}
+		}
+		else {
+			Vector3 diff = m_ringBell->GetPosition() - m_position;
+			diff.Normalize();
+			m_moveSpeed = diff * 150.0f;
+
+			m_enemyState = enEnemyState_Honden;
 			return;
 		}
-	}
-	//攻撃できない距離なら。
-	if (IsCanAttack() == false)
-	{
-		m_enemyState = enEnemyState_Chase;
-		//何も見つけられなければ。
-	}
-	else
-	{
-		Vector3 diff = m_ringBell->GetPosition() - m_position;
-		diff.Normalize();
-		m_moveSpeed = diff * 100.0f;
 
-		m_enemyState = enEnemyState_Honden;
-		return;
 	}
 }
 

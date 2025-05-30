@@ -14,7 +14,7 @@
 namespace
 {
 	//スキルのチャージの
-	int CHARGE_INCREASE_AMOUNT = 2;
+	int CHARGE_INCREASE_AMOUNT = 10;
 }
 
 BossEnemy::BossEnemy()
@@ -63,8 +63,8 @@ bool BossEnemy::Start()
 	m_modelRender.SetRotation(m_rotation);
 	//キャラコンの初期化。
 	m_charaCon.Init(
-		20.0f,
-		20.0f,
+		120.0f,
+		120.0f,
 		m_position
 	);
 
@@ -401,6 +401,8 @@ void BossEnemy::Collision()
 		{
 			//ゲームオーバーのフラグを立てる。
 			m_gameCamera->m_isGameOver = true;
+			//消滅時EnemyUIのポインタを切断するためのフラグ
+			m_isDeadFlag = true;
 			//自身を削除。
 			DeleteGO(this);
 			break;
