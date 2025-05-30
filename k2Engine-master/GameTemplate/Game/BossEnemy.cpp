@@ -14,7 +14,7 @@
 namespace
 {
 	//スキルのチャージの
-	int CHARGE_INCREASE_AMOUNT = 5;
+	int CHARGE_INCREASE_AMOUNT = 10;
 }
 
 BossEnemy::BossEnemy()
@@ -63,8 +63,8 @@ bool BossEnemy::Start()
 	m_modelRender.SetRotation(m_rotation);
 	//キャラコンの初期化。
 	m_charaCon.Init(
-		20.0f,
-		20.0f,
+		120.0f,
+		120.0f,
 		m_position
 	);
 
@@ -401,6 +401,8 @@ void BossEnemy::Collision()
 		{
 			//ゲームオーバーのフラグを立てる。
 			m_gameCamera->m_isGameOver = true;
+			//消滅時EnemyUIのポインタを切断するためのフラグ
+			m_isDeadFlag = true;
 			//自身を削除。
 			DeleteGO(this);
 			break;
@@ -598,12 +600,10 @@ void BossEnemy::ProcessCommonStateTransition()
 
 	if (SearchHonden() == true)
 	{
-		//攻撃できをる距離なら。
-		if (IsCanAttack() == true)
-		{
-			//プレイヤーを見つけたら。
-			if (SearchPlayer() == true)
-			{
+		
+		//プレイヤーを見つけたら。
+		if (SearchPlayer() == true)
+	    {
 				Vector3 diff = m_player->GetPosition() - m_position;
 				//ベクトルを正規化する。
 				diff.Normalize();
@@ -651,12 +651,11 @@ void BossEnemy::ProcessCommonStateTransition()
 			{
 				Vector3 diff = m_ringBell->GetPosition() - m_position;
 				diff.Normalize();
-				m_moveSpeed = diff * 50.0f;
+				m_moveSpeed = diff * 100.0f;
 
 				m_enemyState = enEnemyState_Honden;
 				return;
 			}
-		}
 	}
 }
 

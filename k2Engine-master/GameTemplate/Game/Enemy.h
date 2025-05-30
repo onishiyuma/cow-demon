@@ -69,6 +69,11 @@ public:
 		m_enemyHP = hp;
 	}
 
+    bool IsDead() const
+	{
+		return m_isDeadFlag;
+	}
+
 	float GetHP()const
 	{
 		return	m_enemyHP;
@@ -78,6 +83,8 @@ public:
 	{
 		return m_enemyMaxHP;
 	}
+
+	
 
 	//行動ロジック。
 	void Chase() override;						//追跡。
@@ -130,10 +137,10 @@ private:
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//ステータス。
 
 
-	int					m_enemyHP = 10;									//体力。
-	const int			m_enemyATK = 5;								//敵の攻撃力。
-	int					m_hp = 0;									//体力。
-	int                 m_enemyMaxHP = m_enemyHP;								//最大体力。
+	int					m_enemyHP = 10;								//体力。
+	int                 m_enemyMaxHP = m_enemyHP;					//最大体力。
+	const int			m_enemyATK = 5;								//敵の攻撃力。									
+	
 
 	int					m_isUnderAttack = false;					//攻撃を受けているか
 	int					m_FangBoneId = -1;							//攻撃判定を出すボーンID

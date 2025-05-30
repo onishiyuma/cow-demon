@@ -34,7 +34,7 @@ public:
 		m_scale = scale;
 	}
 
-	void SetHP(const int hp)
+	/*void SetHP(const int hp)
 	{
 		m_enemyHP = hp;
 	}
@@ -42,9 +42,9 @@ public:
 	float GetHP()const
 	{
 		return m_enemyHP;
-	}
+	}*/
 
-	float GetMaxHP()const
+	/*float GetMaxHP()const
 	{
 		return m_enemyHPMax;
 	}
@@ -52,7 +52,7 @@ public:
 	float GetSpeed()const
 	{
 		return m_enemySpeed;
-	}
+	}*/
 
 	/*virtual void GameSet() = 0;*/
 	virtual void Update() = 0;
@@ -91,8 +91,8 @@ protected:
 	/*EnEnemyState m_enemyState = enEnemyState_Idle;*/
 	//派生クラスからいじる変数
 
-	float m_enemyHP = 100;
-	float m_enemyHPMax = m_enemyHP;
+	/*float m_enemyHP = 0;
+	float m_enemyHPMax = m_enemyHP;*/
 	float m_enemySpeed = 0;
 	float m_chaseTimer = 0.0f;
 	float m_idleTimer = 0.0f;
