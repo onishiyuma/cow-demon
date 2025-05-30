@@ -10,15 +10,17 @@ namespace
 	//スキルゲージ。
 	Vector3 SKILL_GAUGE_POSITION = Vector3(600.0f, -485.0f, 0.0f);
 	//スキルフォント。
-	Vector3 SKILL_FONT_POSITION = Vector3(590.0f, -450.0f, 0.0f);
+	Vector3 SKILL_FONT_POSITION = Vector3(600.0f, -450.0f, 0.0f);
 	//緑。
 	Vector4 GREEN = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
 	//薄い緑。
 	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
 	//白。
 	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	//黒。
+	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 	//透明。
-	Vector4 TRANSPARENCY = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+	Vector4 TOUMEI = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
 }
 
 UIskill::UIskill()
@@ -47,7 +49,7 @@ bool UIskill::Start()
 
 	//文字の座標と大きさを設定。
 	m_fontRender.SetPosition(SKILL_FONT_POSITION);
-	m_fontRender.SetScale(0.8f);
+	m_fontRender.SetScale(0.6f);
 
 	return true;
 }
@@ -103,11 +105,10 @@ void UIskill::Render(RenderContext& rc)
         
 	}
 
+	m_skillSprite.Draw(rc);
+
 	if (m_player->m_enemyIsCanAttack == true)
 	{
       m_fontRender.Draw(rc);
 	}
-
-	m_skillSprite.Draw(rc);
-	
 }

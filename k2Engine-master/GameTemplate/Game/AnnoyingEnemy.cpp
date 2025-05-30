@@ -15,7 +15,7 @@
 namespace
 {
 	//スキルのチャージの増加量。
-	int CHARGE_INCREASE_AMOUNT = 5;
+	int CHARGE_INCREASE_AMOUNT = 10;
 }
 
 AnnoyingEnemy::AnnoyingEnemy()
@@ -65,8 +65,8 @@ bool AnnoyingEnemy::Start()
 	//大きさを設定する。
 	//m_modelRender.SetScale(m_scale);
 	m_charaCon.Init(
-		50.0f,
-		50.0f,
+		60.0f,
+		60.0f,
 		m_position
 	);
 
@@ -77,6 +77,7 @@ bool AnnoyingEnemy::Start()
 
 	//エフェクトを読み込む。
 	EffectEngine::GetInstance()->ResistEffect(7, u"Assets/effect/EnemyEffects/Fox_Down/Fox_Down.efk");
+	EffectEngine::GetInstance()->ResistEffect(10, u"Assets/effect/EnemyEffects/Fox_Explosion/Fox_Explosion.efk");
 
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
@@ -92,8 +93,8 @@ bool AnnoyingEnemy::Start()
 
 void AnnoyingEnemy::Update()
 {
-	//爆発処理
-	Explode();
+	////爆発処理
+	//Explode();
 	//本殿追跡処理
 	IsHonden();
 	//追跡処理。
@@ -160,30 +161,21 @@ void AnnoyingEnemy::Chase()
 	m_modelRender.SetPosition(modelPositon);
 }
 
-void AnnoyingEnemy::Explode()
-{
-
-	// 爆発ステートでなければreturn
-	if (m_enemyState != enEnemyState_Explode)
-		return;
-
-	// 爆発処理を一度だけ行う
-	if (m_isUnderAttack==true)
-	{
-		// 爆発用のコリジョン生成
-		MakeExplosion();
-	
-	}
-
-	// 爆発後の消滅までの演出猶予
-	m_explodeTimer += g_gameTime->GetFrameDeltaTime();
-	if (m_explodeTimer > 1.0f) // 1秒間の演出後に消える
-	{
-		m_enemyHP = 0; // HPを0にしてダウンステートに移行
-		DeleteGO(this);
-	}
-	
-}
+//void AnnoyingEnemy::Explode()
+//{
+//
+//	// 爆発ステートでなければreturn
+//	if (m_enemyState != enEnemyState_Explode)
+//		return;
+//
+//	// 爆発処理を一度だけ行う
+//	if (m_hasExploded == true)
+//	{
+//		// 爆発用のコリジョン生成
+//		MakeExplosion();
+//		
+//	}
+//}
 
 void AnnoyingEnemy::MakeExplosion()
 {
@@ -192,6 +184,16 @@ void AnnoyingEnemy::MakeExplosion()
 	Vector3 collisionPosition = m_position;
 	collisionObject->CreateSphere(collisionPosition,Quaternion::Identity,300.0f);
 	collisionObject->SetName("explosion");
+	//エフェクトの発生位置
+	Vector3 m_effectPosition = m_position;
+    m_effectPosition.y += 10.0f;
+	//爆発エフェクトを生成する
+	//エフェクトの生成
+	m_effectEmitter = NewGO <EffectEmitter>(0);
+	m_effectEmitter->Init(10);
+	m_effectEmitter->SetPosition(m_effectPosition);
+	m_effectEmitter->SetScale(Vector3(75.0f, 75.0f, 75.0f));
+	m_effectEmitter->Play();
 	
 }
 
@@ -199,7 +201,7 @@ void AnnoyingEnemy::DeathEffect()
 {
 	//エフェクトの発生位置
 	Vector3 m_effectPosition = m_position;
-	m_effectPosition.y += 50.0f;
+	
 
 	//エフェクトの生成
 	m_effectEmitter = NewGO <EffectEmitter>(0);
@@ -408,6 +410,8 @@ void AnnoyingEnemy::Collision()
 		if (collision->IsHit(m_charaCon))
 		{
 			m_gameCamera->m_isGameOver = true;
+			//消滅時EnemyUIのポインタを切断するためのフラグ
+			m_isDeadFlag = true;
 			DeleteGO(this);
 			break;
 		}
@@ -496,22 +500,25 @@ void AnnoyingEnemy::ProcessHondenStateTransition()
 
 void AnnoyingEnemy::ProcessExplodeStateTransition()
 {
-	//downステートでないなら、何もしない。
+	//ダウンステートなら、何もしない。
 	if (m_enemyState ==!enEnemyState_Down)
 	{
 		return;
 	}
 
-	if (m_hasExploded == true) {
-		m_explodeTimer += g_gameTime->GetFrameDeltaTime();
-		//爆発用のコリジョン生成
+	if (!m_hasExploded)
+	{
 		MakeExplosion();
-		if (m_explodeTimer >= 0.8) {
-			//Gameのインスタンスアドレスを検索
-			Game* game = FindGO<Game>("game");
-			DeleteGO(this);
-			return;
-		}
+		m_hasExploded = true;
+		m_isDeadFlag = true;
+		m_enemyHP = 0; 
+	}
+    
+	m_explodeTimer += g_gameTime->GetFrameDeltaTime();
+	if (m_explodeTimer > 3.0f) // 1秒間の演出後に消える
+	{
+		Game* game = FindGO<Game>("game");
+		DeleteGO(this);
 	}
 }
 
@@ -527,6 +534,11 @@ void AnnoyingEnemy::ProcessDamageStateTransition()
 
 void AnnoyingEnemy::ProcessDownStateTransition()
 {
+	/*if (m_enemyState != enEnemyState_Explode)
+	{
+		return;
+	}*/
+
 	if (!m_isDeadFlag)
 	{
 		DeathEffect();
@@ -547,7 +559,8 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 	//各タイマーを初期化。
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
-	m_poisonAttackCoolDown = 0.0f;
+	m_explodeTimer = 0.0f;
+
 
 	if (SearchHonden() == true)
 	{
@@ -558,15 +571,15 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 			//ベクトルを正規化する。
 			diff.Normalize();
 			//移動速度計算する。
-			m_moveSpeed = diff * 100.0f;
+			m_moveSpeed = diff * 300.0f;
 			//攻撃できをる距離なら。
 			if (IsCanAttack() == true)
 			{
 				int ram = rand() % 100;
-				if (ram > 40)
+				if (ram > 20)
 				{
 					m_enemyState = enEnemyState_Explode;
-					m_isUnderAttack == true;
+					/*m_hasExploded == true;*/
 					return;
 
 				}
@@ -584,7 +597,7 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 		{
 			Vector3 diff = m_ringBell->GetPosition() - m_position;
 			diff.Normalize();
-			m_moveSpeed = diff * 100.0f;
+			m_moveSpeed = diff * 300.0f;
 			m_enemyState = enEnemyState_Honden;
 			return;
 		}
@@ -640,7 +653,7 @@ const bool AnnoyingEnemy::IsCanAttack()const
 	Vector3 diff = m_player->GetPosition() - m_position;
 
 	//エネミーとプレイヤーの距離が近かったら
-	if (diff.LengthSq() <= 100.0f * 100.0f)
+	if (diff.LengthSq() <= 150.0f * 150.0f)
 	{
 		
 		return true;
@@ -650,5 +663,7 @@ const bool AnnoyingEnemy::IsCanAttack()const
 
 void AnnoyingEnemy::Render(RenderContext& rc)
 {
-	m_modelRender.Draw(rc);
+	if (m_hasExploded == false){
+		m_modelRender.Draw(rc);
+	}
 }
