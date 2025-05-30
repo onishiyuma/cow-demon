@@ -386,7 +386,7 @@ const bool LittleEnemy::SearchPlayer()const
 	return false;
 }
 
-const bool LittleEnemy::SearchHonden()const
+const bool LittleEnemy::SearchMain()const
 {
 	Vector3 diff = m_ringBell->GetPosition() - m_position;
 	//対象に向かう
@@ -535,7 +535,7 @@ void LittleEnemy::ProcessCommonStateTransition()
 	m_poisonAttackCoolDown = 0.0f;
 	m_hondenTimer = 0.0f;
 
-	if (SearchHonden() == true) {
+	if (SearchMain() == true) {
 		//プレイヤーとの距離を求める。
 		if (SearchPlayer() == true)
 		{

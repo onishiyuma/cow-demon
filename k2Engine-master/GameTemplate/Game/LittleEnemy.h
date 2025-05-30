@@ -54,7 +54,7 @@ public:
 	void PlayAnimation() ;              //アニメーション再生。
 	void MakePoison();                          //毒の生成。
 	void DeathEffect();                        //死亡エフェクト。
-	const bool SearchHonden() const;            //本殿を探す。
+	const bool SearchMain() const;            //本殿を探す。
 	void IsHonden();                            //本殿へ行く処理。
 
 	//各ステートの遷移処理。

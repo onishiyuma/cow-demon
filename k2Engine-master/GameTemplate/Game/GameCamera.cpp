@@ -74,6 +74,7 @@ void GameCamera::Update()
 		m_notifyEnemyInMain.SetColor(g_vec4White);
 		m_notifyEnemyInMain.SetScale(2);
 		m_isShowNotify = true;
+
 		if (m_isShowNotify)
 		{
 			m_notifyx -= 250 * g_gameTime->GetFrameDeltaTime();
@@ -92,6 +93,7 @@ void GameCamera::Update()
 		Vector3 toShrineDir = m_mainPos - target;
 		toShrineDir.Normalize();
 
+
 		// 現在のカメラ方向と距離。
 		Vector3 currentDir = m_toCameraPos;
 		float length = currentDir.Length();
@@ -108,16 +110,16 @@ void GameCamera::Update()
 		m_isCameraRotationFin = true;
 
 		m_callGameOverTime += g_gameTime->GetFrameDeltaTime();
+		
+		Vector3 position = target + m_PosMain;
+
+		m_position = position;
+		m_cameraForward = (target - position);
+		m_cameraForward.Normalize();
 	}
 
-	Vector3 position = target + m_PosMain;
-
-    m_position = position;
-	m_cameraForward = (target - position);
-	m_cameraForward.Normalize();
-
 	//視点を計算する。
-	Vector3 pos = target+m_toCameraPos/m_half;
+	Vector3 pos = target + m_toCameraPos / m_half;
 	//メインカメラに注視点と座標を設定する。
 	g_camera3D->SetTarget(target);
 	g_camera3D->SetPosition(pos);
