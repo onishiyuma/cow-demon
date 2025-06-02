@@ -66,10 +66,6 @@ bool Game::Start()
 
 	//UIの作成。
 	CreateUI();
-
-	//Enemyの作成。
-	//CreateEnemy();
-
 	return true;
 }
 
@@ -168,6 +164,7 @@ void Game::Update()
 	{
 		return;
 	}
+
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
 	//タイマーを表示する用関数。
@@ -186,8 +183,6 @@ void Game::Update()
 	CreateLanternAttackLight();
 	//攻撃灯籠用エフェクトの作成
 	CreateLanternAttackEffect();
-
-	m_timer += g_gameTime->GetFrameDeltaTime();
 
 	//ゲーム開始から30秒経ったら
   if (m_timer >= 150.0f) 
@@ -720,8 +715,6 @@ void Game::CreateLanternAttackEffect()
 //敵を生成用関数。
 void Game::CreateEnemy()
 {
-	//タイマーを増やす。
-	//m_timer += g_gameTime->GetFrameDeltaTime();
 	//1分目
 	if (m_timer > 120.0f && m_timer < 180.0f)
 	{
@@ -780,73 +773,6 @@ void Game::CreateEnemy()
 				//enemyUI->SetLittleEnemy(little);
 			}
 		}
-		//タイマーを減らす処理。
-		//m_timer += g_gameTime->GetFrameDeltaTime();
-		//1分目
-		if (m_timer > 120.0f && m_timer < 180.0f)
-		{
-			m_maxCount = 5;
-		}
-		//2分目
-		else if (m_timer > 180.0f && m_timer < 240.0f)
-		{
-			m_maxCount = 10;
-		}
-		//3分目
-		else
-		{
-			m_maxCount = 20;
-		}
-		m_totalCount = m_enemyList.size() + m_littleEnemyList.size() + m_annoyingEnemyList.size() + m_bossEnemyList.size();
-		/*while (m_enemyList.size()+m_littleEnemyList.size()<m_maxCount)*/
-		if (m_totalCount < m_maxCount)
-		{
-			int ram = rand() % 100;
-
-			if (ram > 30) {
-				for (int i = 0; i < 5; i++)
-				{
-					int ram = rand() % 100;
-
-					if (ram > 30)
-					{
-						Enemy* enemy = NewGO<Enemy>(1, "enemy");
-						enemy->SetPosition(Random());
-						m_enemyList.push_back(enemy);//敵リストに追加
-						//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-						//enemyUI->SetEnemy(enemy);
-					}
-					else 
-					{
-						LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-						m_littleEnemy->SetPosition(Random());
-						m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
-						m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-						m_enemyUI->SetLittleEnemy(m_littleEnemy);
-					else {
-						LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-						littleEnemy->SetPosition(Random());
-						m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
-						if (ram > 30)
-						{
-							LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-							littleEnemy->SetPosition(Random());
-							m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
-							//m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-							//m_enemyUI->SetLittleEnemy(littleEnemy);
-						}
-						if (ram > 30)
-						{
-							BossEnemy* bossEnemy = NewGO<BossEnemy>(1, "bossEnemy");
-							bossEnemy->SetPosition(Random());
-							m_bossEnemyList.push_back(bossEnemy);//ボスエネミーを敵のリストに追加する。
-							//m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
-							//m_enemyUI->SetBossEnemy(bossEnemy);
-						}
-					}
-				}
-			}
-		}
 	}
 }
 	
@@ -886,9 +812,7 @@ void Game::UITimer()
 	//フォントの位置を設定。
 	m_timerFontRender.SetPosition(Vector3(-80.0f, 500.0f, 0.0f));
 	//フォントの色を設定。
-	m_timerFontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
-
-	
+	m_timerFontRender.SetColor(g_vec4White);
 }
 
 void Game::NotifiyEnemy()
