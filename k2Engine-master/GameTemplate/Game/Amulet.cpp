@@ -12,7 +12,7 @@ bool Amulet::Start()
 	m_player = FindGO<Player>("player");
 
 	//エフェクトの登録。
-	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/hit.efk");
+	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/PlayerEffects/NormalAttack/NormalAttack.efk");
 
 	//カメラの前方向のベクトルを取得して、移動方向にする。
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();
@@ -56,11 +56,11 @@ void Amulet::Update()
 	//自動削除タイマー。
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
 	//時間経過で削除する。
-	if (m_deleteTimer >= 0.38f)
+	if (m_deleteTimer >= 0.28f)
 	{
-		DeleteGO(this);
 		//エフェクトの停止。
 		m_effectEmitter->Stop();
+		DeleteGO(this);
 	}
 }
 
@@ -73,7 +73,7 @@ void Amulet::CreateCollision()
 	//ボックス上のコリジョンを作成。
 	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 100.0f,100.0f,100.0f });
 	//名前をつける。
-	m_collisionObj->SetName("purification");
+	m_collisionObj->SetName("amulet");
 	//自動削除されないようにする。
 	m_collisionObj->SetIsEnableAutoDelete(false);
 }

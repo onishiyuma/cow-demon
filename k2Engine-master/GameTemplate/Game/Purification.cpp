@@ -12,7 +12,7 @@ bool Purification::Start()
 	m_player = FindGO<Player>("player");
 
 	//エフェクトをロードする。
-	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/black.efkefc");
+	EffectEngine::GetInstance()->ResistEffect(1, u"Assets/effect/PlayerEffects/SkillAttack/Sukill.efkefc");
 
 	//カメラの前方向を取得。
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();
@@ -39,7 +39,6 @@ Purification::Purification()
 Purification::~Purification()
 {
 	DeleteGO(m_collisionObj);
-	DeleteGO(m_effectEmitter);
 }
 
 void Purification::Update()
@@ -57,30 +56,29 @@ void Purification::Update()
 	//タイマーを加算する。
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
 	//タイマーが一定の秒数経過していたら。
-	if (m_deleteTimer >= 0.48f)
-	{
+	if (m_deleteTimer >= 0.28f)
+	{        // エフェクトを停止する。
+		if (m_effectEmitter != nullptr)
+		{
+			m_effectEmitter->Stop();
+		}
+
 		//自身を削除。
 		DeleteGO(this);
-		//エフェクトを停止する。
-		m_effectEmitter->Stop();
 	}
 }
 
 //コリジョンオブジェクトの作成。
 void Purification::CreateCollision()
 {
-	//カメラの現在位置を取得。（視点位置）
+	//カメラの現在位置を取得。
 	Vector3 cameraPosition = g_camera3D->GetPosition();
-
 	//コリジョンオブジェクトの作成。
 	m_collisionObj = NewGO<CollisionObject>(0);
-
 	//箱状のコリジョンを作成。
 	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 100.0f,100.0f,100.0f});
-
 	//コリジョンの名前。
 	m_collisionObj->SetName("purification");
-
 	//オブジェクトが勝手に削除されないように。
 	m_collisionObj->SetIsEnableAutoDelete(false);
 }
@@ -90,9 +88,11 @@ void Purification::CreateEffect()
 	//エフェクトのインスタンスを作成。
 	m_effectEmitter = NewGO<EffectEmitter>(0);
 	//読み込み。
-	m_effectEmitter->Init(0);
+	m_effectEmitter->Init(1);
 	//大きさをセットする。
 	m_effectEmitter->SetScale({ 55.0f,55.0f,55.0f });
+	//m_rotation.SetRotationDegY(90.0f);
+	//m_effectEmitter->SetRotation(m_rotation);
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
 	//エフェクトを再生。

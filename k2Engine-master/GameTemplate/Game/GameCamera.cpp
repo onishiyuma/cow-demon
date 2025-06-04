@@ -45,11 +45,9 @@ void GameCamera::Update()
 	//プレイヤの注視点を設定。
 	target.z += 30.0f;
 	target.y += 100.0f;
-
+	Vector3 toCameraPosOld = m_toCameraPos;
 	if (!m_isGameOver)
 	{
-		Vector3 toCameraPosOld = m_toCameraPos;
-
 		//パッドの入力を使ってカメラを回す。
 		float x = g_pad[0]->GetRStickXF();
 		float y = g_pad[0]->GetRStickYF();
@@ -116,6 +114,19 @@ void GameCamera::Update()
 		m_position = position;
 		m_cameraForward = (target - position);
 		m_cameraForward.Normalize();
+	}
+
+	Vector3 toPosDir = m_toCameraPos;
+	toPosDir.Normalize();
+	if (toPosDir.y < m_cameraYMin)
+	{
+		//カメラが上向きすぎ。
+		m_toCameraPos = toCameraPosOld;
+	}
+	else if (toPosDir.y > m_cameraYMax) 
+	{
+		//カメラが下向きすぎ。
+		m_toCameraPos = toCameraPosOld;
 	}
 
 	//視点を計算する。

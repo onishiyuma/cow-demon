@@ -7,6 +7,7 @@ bool CrossHair::Start()
 	m_spriteRender.Init("Assets/sprite/CrossHair.DDS", 120.0f, 120.0f);
 	//座標をセット。
 	m_spriteRender.SetPosition(m_position);
+	//m_spriteRender.SetMulColor(g_vec4Red);
 
 	return true;
 }

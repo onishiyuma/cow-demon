@@ -56,6 +56,20 @@ public:
 	void PlayerAttack();
 	//プレイヤーが毒状態の処理。
 	void PoisonState();
+	//鈴を鳴らすコリジョン。
+	void RingBellCollision();
+	//敵の攻撃判定用コリジョン。
+	void EnemyAttackCollision();
+	//ウザイ敵の攻撃判定用コリジョン。
+	void AnnoyingEnemyAttackCollision();
+	//ボスの毒攻撃判定用コリジョン。
+	void BossEnemyPoisonCollision();
+	//小さい敵の毒攻撃判定用コリジョン。
+	void LittleEnemyPoisonCollision();
+	//爆発攻撃判定用コリジョン。
+	void ExplosionCollision();
+
+
 
 
 	//座標を取得。
@@ -87,13 +101,13 @@ public:
 	bool				m_enemyIsCanAttack = false;					//敵に攻撃できるか。
 	bool				m_isDisplay = false;						//表示するか。
 	int					m_playerHP = 0;								//プレイヤーのHP。
-	int					m_skillCharge = 0;							//スキルチャージ。
+	int					m_skillCharge = 100;							//スキルチャージ。
 	int					m_normalATK = 0;							//通常攻撃。
 	int					m_criticalATK = 0;							//クリティカル攻撃。
 	int					m_skillATK = 0;								//スキル攻撃力。
 	int					m_stoneCount = 0;							//火打石の所持数。
 	int					m_tukuyomiATK = 0;							//月読の加護の攻撃力。
-	int					m_lanternCount = 0;							//灯籠の灯っている数。
+	int					m_lanternCount = 4;							//灯籠の灯っている数。
 private:
 	NoHeal*				m_noHeal;									//回復できない。
 	BellSpriteRender*	m_bellSpriteRender;							//鈴を使う画像。
@@ -124,10 +138,18 @@ private:
 	float				m_distSq = 0.0f;							//距離の二乗。
 	float				m_poisonTimer = 0.0f;						//毒状態のタイマー。
 	float				m_poisonCoolDown = 0.0f;					//毒状態のクールダウン。
-	float				m_invincibleTime=0.0f;						//無敵時間。
+	float				m_invincibleTime_Enemy = 0.0f;				//敵の攻撃の無敵時間。
+	float				m_invincibleTime_Annoying = 0.0f;			//ウザイ敵の攻撃の無敵時間。
+	float				m_invincibleTime_BossPoison = 0.0f;			//ボスの毒攻撃の無敵時間。
+	float				m_invincibleTime_LittlePoison = 0.0f;		//小さい敵の毒攻撃の無敵時間。
+	float				m_invincibleTime_Explosion = 0.0f;			//爆発攻撃の無敵時間。
 	bool				m_isDeleted = false;						//消されるか。
 	bool				m_isRotating = false;						//回転中か。
-	bool				m_isDamage = false;							//ダメージを受けているか
+	bool				m_isDamage_Enemy = false;					//敵からダメージを受けているか。
+	bool				m_isDamage_Annoying = false;				//ウザイ敵からダメージを受けているか。
+	bool				m_isDamage_BossPoison = false;				//ボスの毒ダメージを受けているか。
+	bool				m_isDamage_LittlePoison = false;			//小さい敵の毒ダメージを受けているか。
+	bool				m_isDamage_Explosion = false;				//爆発ダメージを受けているか。
 	int					m_playerMaxHP = 100;						//プレイヤーの最大体力。
 	
 };

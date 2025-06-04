@@ -51,6 +51,8 @@ private:
 	Vector3			cameraTargetLoakAt;					//ターゲットの方向に向いているか。
 	Vector3			m_mainPos;							//本殿の位置。
 	FontRender		m_notifyEnemyInMain;				//本殿に敵が入った時の通知。
+	const float		m_cameraYMax=0.99f;						//カメラのY方向の最大値。
+	const float		m_cameraYMin=-0.99;						//カメラのY方向の最小値。
 	float			m_nearClip = 1.0f;					//ニアークリップ
 	float			m_furClip = 20000.0f;				//ファークリップ。
 	float			m_rotateTimer = 0.0f;				//回転する時間。
