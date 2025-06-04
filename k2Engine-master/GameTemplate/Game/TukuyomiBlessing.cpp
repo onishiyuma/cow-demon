@@ -4,16 +4,26 @@
 #include "collision/CollisionObject.h"
 #include "Enemy.h"
 
+#include "sound/SoundEngine.h"
+#include "sound/soundSource.h"
+
 
 bool TukuyomiBlessing::Start()
 {
 	//エフェクトをロードする。
-	EffectEngine::GetInstance()->ResistEffect(0,u"Assets/effect/bullet.efkefc");
+	EffectEngine::GetInstance()->ResistEffect(2,u"Assets/effect/PlayerEffects/TUkuyomi/Tukuyomi.efkefc");
+	//音を読み込む。
+	g_soundEngine->ResistWaveFileBank(0, "Assets/sound/tukuyomichan.wav");
 	//インスタンスアドレスを検索する。
 	m_player = FindGO<Player>("player");
-
 	//プレイヤーの座標を取得する。
 	m_position = m_player->GetPosition();
+
+	//音を再生。
+	SoundSource* se = NewGO<SoundSource>(0);
+	se->Init(0);
+	se->Play(false);
+	se->SetVolume(0.8);
 
 	//エフェクトの作成。
 	CreateEffect();
@@ -49,8 +59,8 @@ void TukuyomiBlessing::DeleteTime()
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_deleteTimer >= m_duration)
 	{
-		DeleteGO(this);
 		m_effectEmitter->Stop();
+		DeleteGO(this);
 	}
 }
 
@@ -84,9 +94,9 @@ void TukuyomiBlessing::CreateEffect()
 	//エフェクトのインスタンスを作成。
 	m_effectEmitter=NewGO<EffectEmitter>(0);
 	//エフェクトを初期化。
-	m_effectEmitter->Init(0);
+	m_effectEmitter->Init(2);
 	//大きさを設定。
-	m_effectEmitter->SetScale({ 500.0f,2.0f,500.0f });
+	m_effectEmitter->SetScale({ 95.0f,3.0f,95.0f });
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
 	//エフェクトを再生。
