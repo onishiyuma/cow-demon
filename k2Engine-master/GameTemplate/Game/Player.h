@@ -1,5 +1,6 @@
 #pragma once
 
+class Game;
 class Shimenawa;
 class GameCamera;
 class PlayerLight;
@@ -95,6 +96,7 @@ private:
 	FontRender			m_fontRender1;								//フォントレンダー。
 	FontRender			m_fontRender2;								//フォントレンダー。
 	PlayerLight*		m_playerLight;								//プレイヤーのライト。
+	Game*               m_game;										//ゲーム。
 	Vector3				m_forward = Vector3::AxisZ;					//方向。
 	Vector3				m_moveSpeed;								//移動速度。
 	const float			m_gravity = 10.5f;							//重力。

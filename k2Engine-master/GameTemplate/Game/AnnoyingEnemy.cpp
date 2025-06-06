@@ -56,7 +56,7 @@ bool AnnoyingEnemy::Start()
 	m_animationClips[enAnimationClip_Down].Load("Assets/animData/AnnoyingEnemy/down.tka");
 	m_animationClips[enAnimationClip_Down].SetLoopFlag(false);
 
-	m_modelRender.Init("Assets/modelData/LittleEnemy/enemy.tkm", m_animationClips, enAnimationClip_Num);
+	m_modelRender.Init("Assets/modelData/fox/fox.tkm");
 
 	//座標を更新する。
 	m_modelRender.SetPosition(m_position);
@@ -93,6 +93,8 @@ bool AnnoyingEnemy::Start()
 
 void AnnoyingEnemy::Update()
 {
+	//モデルの更新。
+	m_modelRender.Update();
 	////爆発処理
 	//Explode();
 	//本殿追跡処理
@@ -108,8 +110,7 @@ void AnnoyingEnemy::Update()
 	//ステート管理。
 	ManageState();
 
-	//モデルの更新。
-	m_modelRender.Update();
+	
 }
 
 /*void Enemy::MakeAttackCollision()

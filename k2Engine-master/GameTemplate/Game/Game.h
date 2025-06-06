@@ -18,6 +18,8 @@ class LanternAttackLight;
 class BlueFlame;
 class RedFlame;
 class RingBell;
+class Mountain;
+class Tree;
 class GameClear;
 class GameOver;
 class LittleEnemy;
@@ -30,6 +32,9 @@ class UIheal;
 class MiniMap;
 class EnemyUI;
 class Load;
+class UIOne;
+class UITwo;
+class UIThree;
 
 class Game : public IGameObject
 {
@@ -72,6 +77,8 @@ public:
 	void CreateLanternAttackEffect();
 	//空の明るさ調整用関数。
 	void SetSkyLight();
+	//カウントダウンの開始。
+	void StartCountDown();
   
 	void Render(RenderContext& rc);
 
@@ -130,6 +137,9 @@ public:
 	RedFlame* m_redFlame1;
 	RedFlame* m_redFlame2;
 	RedFlame* m_redFlame3;
+
+	Mountain* m_mountain; //山。
+	Tree* m_tree; //木。
 
 	UItukuyomi* m_uiTukuyomi;
 	UIskill* m_uiSkill;
@@ -232,6 +242,18 @@ public:
 	const float		m_luminanceDawn2 = 0.1f;			//夜明け
 	const float		m_luminanceDawn3 = 0.5f;			//夜明け
 	const float		m_luminanceDay = 1.0f;				//朝（最大）
+
+	int m_timerCount = 0; //タイマーのカウント。
+	float m_countDownTimer = 3.0f;//カウントダウン時間
+	bool m_isCowntDownStart = false;//カウントダウン中かどうか
+	bool m_isCountDownEnd = false;//カウントダウン終了かどうか
+	bool m_isOne = false;//あと一秒かどうか
+	bool m_isTwo = false;//あと二秒かどうか
+	bool m_isThree = false;//あと三秒かどうか
+
+	UIOne* m_uiOne = nullptr;
+	UITwo* m_uiTwo = nullptr;
+	UIThree* m_uiThree = nullptr;
 };
 
 

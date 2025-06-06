@@ -11,6 +11,9 @@ public:
 	Title();
 	~Title();
 	bool Start();
+	void FadeIn();
+	void FontFade();
+	void SoulFade();
 	void Update();
 	void Render(RenderContext& rc);
 
@@ -18,10 +21,19 @@ private:
 	//メンバ変数。
 	FontRender		m_fontRender;				//フォントレンダー。
 	SpriteRender	m_spriteRender;				//スプライトレンダー。
+	SpriteRender    m_spriteSoul;               //魂をフェードアウトするスプライトレンダー。
 	Game*			m_game;						//ゲーム。
 	Load*			m_load;						//フェード。
-	float			m_timer;					//タイマー。
+	Vector4         m_titleColor = { 1.0f,1.0f,1.0f,0.0f };	//色。
+	Vector4         m_fontColor = { 0.0f,0.0f,0.0f,0.0f };	//フェード色。
+	Vector4         m_soulColor = { 0.0f,0.0f,0.0f,0.0f };	//魂の色。
+	int             m_fontFadeCount = 0;		//フォントフェードのカウント。	
+	float			m_timer = 0.0f;					//タイマー。
 	float 			m_titleTime = 0.0f;			//タイトルに戻るまでの時間。
-	const float 	m_maxTitleTIme = 2.0f;		//タイトルに戻るまでの最大時間。
+	float 			m_soulTime = 5.0f;			//魂の時間。
+	const float 	m_maxTitleTime = 5.0f;		//タイトルに戻るまでの最大時間。
+	bool            m_isFadeIn = false;		    //フェードイン中かどうか。
+	bool            m_isFontFade = false;		//フォントフェード中かどうか。
+	bool            m_isSoulFade = false;		//魂フェード中かどうか。
 };
 

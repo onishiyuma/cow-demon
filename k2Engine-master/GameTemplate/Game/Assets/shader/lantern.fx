@@ -1,5 +1,5 @@
 /*!
- * @brief	火打ち石用のシェーダー。
+ * @brief	灯籠用のシェーダー。
  */
 
 
@@ -98,15 +98,15 @@ float4 PSMainCore( SPSIn In, uniform int isSoftShadow )
 
     
     // ここで計算しているのは石全体に掛かる光。1000離れると光が０
-    float3 lig = lerp(0.5f * skyLuminance/*マックスの光の強さ*/, 0.0f, saturate(length(In.posInView) / 5000.0f));
+    float3 lig = lerp(0.5f * skyLuminance/*マックスの光の強さ*/, 0.0f, saturate(length(In.posInView) / 5.0f));
     // ここで計算しているのがエッジの光。
     float rimPower = 30.0f * skyLuminance;
     float3 rim = float3(
-        pow((1 - abs(In.normalInView.z)), 10.0f /*リムの絞り*/) * rimPower,
-        pow((1 - abs(In.normalInView.z)), 10.0f /*リムの絞り*/) * rimPower,
-        pow((1 - abs(In.normalInView.z)), 10.0f /*リムの絞り*/) * rimPower);
+        pow((1 - abs(In.normalInView.z)), 100.0f /*リムの絞り*/) * rimPower,
+        pow((1 - abs(In.normalInView.z)), 100.0f /*リムの絞り*/) * rimPower,
+        pow((1 - abs(In.normalInView.z)), 100.0f /*リムの絞り*/) * rimPower);
     // 2000離れるとエッジの光も０
-    rim *= lerp(1, 0, saturate(length(In.posInView) / 5000.0f));
+    rim *= lerp(1, 0, saturate(length(In.posInView) / 5.0f));
     lig += rim;
     float ambient = 0.5f * skyLuminance;
     lig += ambient;

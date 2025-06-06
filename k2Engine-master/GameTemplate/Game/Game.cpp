@@ -16,6 +16,8 @@
 #include "LanternAttackLight.h"
 #include "BlueFlame.h"
 #include "RedFlame.h"
+#include "Mountain.h"
+#include "Tree.h"
 #include "MiniMap.h"
 #include "UIStone.h"
 #include "UItukuyomi.h"
@@ -28,6 +30,10 @@
 #include "random"
 #include "EnemyUI.h"
 #include "Load.h"
+#include "UIOne.h"
+#include "UITwo.h"	
+#include "UIThree.h"
+
 
 bool Game::Start()
 {
@@ -67,9 +73,6 @@ bool Game::Start()
 	//UIの作成。
 	CreateUI();
 
-	//Enemyの作成。
-	//CreateEnemy();
-
 	return true;
 }
 
@@ -107,6 +110,8 @@ Game::~Game()
 	DeleteGO(m_player);			//プレイヤー。
 	DeleteGO(m_gameCamera);		//ゲームカメラ。
 	DeleteGO(m_backGround);		//ステージ。
+	DeleteGO(m_mountain);		//山。
+	DeleteGO(m_tree);			//木。
 	DeleteGO(m_crossHair);		//クロスヘアー。
 	DeleteGO(m_ringBell);		//ベル。
 
@@ -160,6 +165,7 @@ Game::~Game()
 	DeleteGO(m_uiHeal);
 	DeleteGO(m_uiStone);
 	DeleteGO(m_enemyUI);
+	//DeleteGO(m_countDown);
 }
 
 void Game::Update()
@@ -168,37 +174,37 @@ void Game::Update()
 	{
 		return;
 	}
-	m_timer += g_gameTime->GetFrameDeltaTime();
 
-	//タイマーを表示する用関数。
-	UITimer();
-	//ゲームーオーバーやゲームクリアーを呼び出す関数。
-	GameManager();
-    //灯籠用ライトのステート
-	LanternLightState();
-	//灯籠用ライトの作成
-	CreateLanternLight();
-	//灯籠用エフェクトの作成
-	CreateLanternEffect();
-	//攻撃灯籠用ライトのステート
-	LanternAttackLightState();
-	//攻撃灯籠用ライトの作成
-	CreateLanternAttackLight();
-	//攻撃灯籠用エフェクトの作成
-	CreateLanternAttackEffect();
-
-	m_timer += g_gameTime->GetFrameDeltaTime();
-
-	//ゲーム開始から30秒経ったら
-  if (m_timer >= 150.0f) 
-  {
-		//エネミーの作成
-		CreateEnemy();
-  }
-	//空の明るさ調整
-	SetSkyLight();
-	//敵のスポーン処理と敵が来たことを通知する。
-	NotifiyEnemy();
+	
+	if (m_isCowntDownStart == false) {
+		m_countDownTimer -= g_gameTime->GetFrameDeltaTime();
+		//カウントダウンの開始。
+		StartCountDown();
+	}
+	else if (m_isCowntDownStart == true){
+		//タイマーを表示する用関数。
+		UITimer();
+		m_timer += g_gameTime->GetFrameDeltaTime();
+		//ゲームーオーバーやゲームクリアーを呼び出す関数。
+		GameManager();
+		//灯籠用ライトのステート
+		LanternLightState();
+		//灯籠用ライトの作成
+		CreateLanternLight();
+		//灯籠用エフェクトの作成
+		CreateLanternEffect();
+		//攻撃灯籠用ライトのステート
+		LanternAttackLightState();
+		//攻撃灯籠用ライトの作成
+		CreateLanternAttackLight();
+		//攻撃灯籠用エフェクトの作成
+		CreateLanternAttackEffect();
+		//空の明るさ調整
+		SetSkyLight();
+		//敵のスポーン処理と敵が来たことを通知する。
+		NotifiyEnemy();
+	}
+	
 }
 
 //ゲームクリア、ゲームオーバーの判定処理。
@@ -360,6 +366,43 @@ void Game::SetSkyLight()
 	}
 }
 
+//ゲーム前のカウントダウンを行う関数。
+void Game::StartCountDown()
+{
+	
+	if (m_countDownTimer <= 3.0f && !m_isThree) {
+		m_uiThree = NewGO<UIThree>(0, "UIThree");
+		m_isThree = true;
+	}
+	else if (m_countDownTimer < 2.0f && m_countDownTimer > 1.0f && !m_isTwo) {
+		if (m_uiThree != nullptr && m_uiThree->m_isMove) {
+			DeleteGO(m_uiThree);
+			m_uiThree = nullptr;
+			m_uiTwo = NewGO<UITwo>(0, "UITwo");
+			m_isTwo = true;
+		}
+	}
+	else if (m_countDownTimer < 1.0f && m_countDownTimer > 0.0f && !m_isOne) {
+		if (m_uiTwo != nullptr && m_uiTwo->m_isMove) {
+			DeleteGO(m_uiTwo);
+			m_uiTwo = nullptr;
+			m_uiOne = NewGO<UIOne>(0, "UIOne");
+			m_isOne = true;
+		}
+	}
+	else if (m_countDownTimer <= 0.0f) {
+		if (m_uiOne != nullptr && m_uiOne->m_isMove) {
+			//DeleteGO(m_uiOne);
+			m_uiOne = nullptr;
+			m_countDownTimer = 0.0f; // カウントダウンをリセット
+			/*m_isThree = false;
+			m_isTwo = false;
+			m_isOne = false;*/
+			m_isCowntDownStart = true;
+		}
+	}
+}
+
 //オブジェクト作成用関数。
 void Game::CreateObject()
 {
@@ -369,6 +412,10 @@ void Game::CreateObject()
 	m_backGround = NewGO<BackGround>(0);
 	//ベルの作成。
 	m_ringBell = NewGO<RingBell>(0, "ringbell");
+	//山の作成。
+	m_mountain = NewGO<Mountain>(0, "mountain");
+	//木の作成。
+	m_tree = NewGO<Tree>(0, "tree");
 	//プレイヤーの作成。
 	m_player = NewGO<Player>(0, "player");
 	//ゲームカメラの作成。
@@ -755,7 +802,7 @@ void Game::CreateEnemy()
 				EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
 				enemyUI->SetBossEnemy(boss);
 			}
-			else if (r >= 80) {
+			else if (r >= 20) {
 				//ウザイ敵
 				AnnoyingEnemy* annoying = NewGO<AnnoyingEnemy>(1, "annoyingEnemy");
 				annoying->SetPosition(Random());
@@ -816,17 +863,14 @@ void Game::CreateEnemy()
 						//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
 						//enemyUI->SetEnemy(enemy);
 					}
-					else 
+					else
 					{
 						LittleEnemy* m_littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 						m_littleEnemy->SetPosition(Random());
 						m_littleEnemyList.push_back(m_littleEnemy);//リトル敵リストに追加
-						m_enemyUI = NewGO<EnemyUI>(1,"enemyui");
+						m_enemyUI = NewGO<EnemyUI>(1, "enemyui");
 						m_enemyUI->SetLittleEnemy(m_littleEnemy);
-					else {
-						LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
-						littleEnemy->SetPosition(Random());
-						m_littleEnemyList.push_back(littleEnemy);//リトル敵リストに追加
+					
 						if (ram > 30)
 						{
 							LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
