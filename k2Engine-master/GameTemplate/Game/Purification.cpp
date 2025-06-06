@@ -12,7 +12,7 @@ bool Purification::Start()
 	m_player = FindGO<Player>("player");
 
 	//エフェクトをロードする。
-	EffectEngine::GetInstance()->ResistEffect(1, u"Assets/effect/PlayerEffects/SkillAttack/Sukill.efkefc");
+	EffectEngine::GetInstance()->ResistEffect(1, u"Assets/effect/PlayerEffects/NormalAttack/NormalAttack.efk");
 
 	//カメラの前方向を取得。
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();

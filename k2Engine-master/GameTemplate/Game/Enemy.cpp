@@ -77,7 +77,8 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
-	if (m_effectEmitter) {
+	if (m_effectEmitter)
+	{
 		m_effectEmitter->Stop();
 		DeleteGO(m_effectEmitter);
 		m_effectEmitter = nullptr;
@@ -197,11 +198,8 @@ void Enemy::Collision()
 			int ram = rand() % 100;
 			if (ram < m_player->m_criticalRate)
 			{
-				m_enemyHP -= m_player->m_criticalATK;
-
 				if (m_enemyHP <= 0)
 				{
-
 					m_enemyHP -= m_player->m_criticalATK;
 
 					if (m_enemyHP <= 0)
@@ -209,14 +207,11 @@ void Enemy::Collision()
 						//HPが0になったら。
 						m_enemyState = enEnemyState_Down;
 					}
-					else {
+					else
+					{
 						//被ダメージステートに遷移する
 						m_enemyState = enEnemyState_Damage;
 					}
-
-					//スキルを使うための。
-					m_player->m_skillCharge += CHARGE_INCREASE_AMOUNT;
-
 					//HPが0になったら。
 					m_enemyState = enEnemyState_Down;
 
@@ -233,9 +228,6 @@ void Enemy::Collision()
 
 				if (m_enemyHP <= 0)
 				{
-
-					m_enemyHP -= m_player->m_normalATK;
-
 					if (m_enemyHP <= 0)
 					{
 						//HPが0になったら。

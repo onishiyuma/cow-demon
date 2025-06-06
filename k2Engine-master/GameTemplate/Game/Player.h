@@ -101,7 +101,7 @@ public:
 	bool				m_enemyIsCanAttack = false;					//敵に攻撃できるか。
 	bool				m_isDisplay = false;						//表示するか。
 	int					m_playerHP = 0;								//プレイヤーのHP。
-	int					m_skillCharge = 100;							//スキルチャージ。
+	int					m_skillCharge = 0;							//スキルチャージ。
 	int					m_normalATK = 0;							//通常攻撃。
 	int					m_criticalATK = 0;							//クリティカル攻撃。
 	int					m_skillATK = 0;								//スキル攻撃力。
@@ -151,5 +151,4 @@ private:
 	bool				m_isDamage_LittlePoison = false;			//小さい敵の毒ダメージを受けているか。
 	bool				m_isDamage_Explosion = false;				//爆発ダメージを受けているか。
 	int					m_playerMaxHP = 100;						//プレイヤーの最大体力。
-	
 };

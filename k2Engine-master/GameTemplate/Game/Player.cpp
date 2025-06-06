@@ -16,8 +16,10 @@
 
 namespace
 {
+	//文字の座標。
 	Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };
-	float L_STICK_MOVE_SPEED = 350.0f;
+	//Lスティックの移動速度。
+	float	L_STICK_MOVE_SPEED = 350.0f;
 }
 
 
@@ -88,13 +90,10 @@ void Player::PlayerAttack()
 	{
 		//通常攻撃。
 		NormalAttack();
-
 		//スキル
 		Skill();
-
 		//月読の加護。
 		SkillTukuyomiBlessing();
-
 		//しめ縄。
 		ItemShimenawa();
 	}
@@ -168,7 +167,7 @@ void Player::NormalAttack()
 	//クールタイムを減らす。
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonLB2) && m_attackCoolDown <= 0.0f)
+	if (g_pad[0]->IsTrigger(enButtonRB2) && m_attackCoolDown <= 0.0f)
 	{
 		//クリティカルダメージ。
 		m_criticalATK = m_playerATK *m_cliticalDamage;
@@ -188,7 +187,7 @@ void Player::NormalAttack()
 void Player::Skill()
 {
 	//スキル発動。
-	if (g_pad[0]->IsTrigger(enButtonRB2) && m_skillCharge >= m_skillMax)
+	if (g_pad[0]->IsTrigger(enButtonLB2) && m_skillCharge >= m_skillMax)
 	{
 		//スキルの作成用関数を呼び出す。
 		MakeSkill();
@@ -240,21 +239,6 @@ void Player::ItemShimenawa()
 void Player::MakeNormalAttack()
 {
 	//インスタンスを作成。
-	Amulet* amulet = NewGO<Amulet>(0);
-	//座標を設定。
-	Vector3 AmuletPos = m_position;
-	//座標を少し下げる。
-	AmuletPos.y += 85.0f;
-	//座標をセットする。
-	amulet->SetPosition(AmuletPos);
-	//名前をつける。
-	amulet->SetName("amulet");
-}
-
-//スキルの作成。
-void Player::MakeSkill()
-{
-	//インスタンスを作成。
 	Purification* purification = NewGO<Purification>(0);
 	//座標を設定。
 	Vector3 PurificationPos = m_position;
@@ -265,6 +249,23 @@ void Player::MakeSkill()
 	//名前をつける。
 	purification->SetName("purification");
 }
+
+//スキルの作成。
+void Player::MakeSkill()
+{
+	//インスタンスを作成。
+	Amulet* amulet = NewGO<Amulet>(0);
+	//座標を設定。
+	Vector3 AmuletPos = m_position;
+	//座標を少し下げる。
+	AmuletPos.y += 85.0f;
+	//座標をセットする。
+	amulet->SetPosition(AmuletPos);
+	//名前をつける。
+	amulet->SetName("amulet");
+}	
+
+
 
 //月読の加護の作成関数。
 void Player::MakeTukuyomiBlessing()
