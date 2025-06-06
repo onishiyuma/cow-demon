@@ -48,6 +48,7 @@ bool Player::Start()
 	m_playerLight = NewGO<PlayerLight>(0, "playerLight");
 
 	//各種インスタンスアドレスの検索。
+	m_game = FindGO<Game>("game");
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 	m_playerLight = FindGO<PlayerLight>("playerLight");
@@ -70,9 +71,12 @@ Player::~Player()
 }
 
 void Player::Update()
-{	
-	//移動処理。
-	Move();
+{
+	if(m_game->m_isCowntDownStart==true){
+		//移動処理。
+		Move();
+	}
+  
 	//判定を呼び出す。
 	Collision();
 	//回復できるように知らせる。

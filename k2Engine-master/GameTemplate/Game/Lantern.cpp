@@ -10,11 +10,22 @@
 #include "Line.h"
 #include "SpritePush.h"
 #include "LanternLight.h"
+#include "Game.h"
 
 bool Lantern::Start() 
 {
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
+	
+	auto game = FindGO<Game>("game");
+	//火打石のモデルを読み込む。
+	
+	//m_initData.m_tkmFilePath = "Assets/modelData/lanternJapan/lantern.tkm";
+	//m_initData.m_expandConstantBuffer = &game->m_luminance;
+	//m_initData.m_expandConstantBufferSize = sizeof(game->m_luminance);
+	////火打石用のシェーダーを読み込む。
+	/*m_initData.m_fxFilePath = "Assets/shader/stone.fx";
+	m_modelRender.InitForwardRendering(m_initData);*/
 	m_modelRender.SetScale(0.6f, 0.6f, 0.6f);
 	
 
@@ -138,6 +149,11 @@ void Lantern::Update()
 
 						//灯籠に火が灯っている判定にする。
 						m_isLight = true;
+
+						/*if (!m_isLightAction) {
+							m_initData.m_fxFilePath = "Assets/shader/lantern.fx";
+							m_isLanternAction = true;
+						}*/
 					}
 				}
 			}

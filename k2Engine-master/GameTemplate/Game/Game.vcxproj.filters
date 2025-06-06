@@ -51,6 +51,11 @@
     <ClCompile Include="BellSpriteRender.cpp" />
     <ClCompile Include="NoHeal.cpp" />
     <ClCompile Include="EnemyUI.cpp" />
+    <ClCompile Include="Mountain.cpp" />
+    <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="UIOne.cpp" />
+    <ClCompile Include="UITwo.cpp" />
+    <ClCompile Include="UIThree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -104,6 +109,12 @@
     <ClInclude Include="BellSpriteRender.h" />
     <ClInclude Include="NoHeal.h" />
     <ClInclude Include="EnemyUI.h" />
+    <ClInclude Include="Mountain.h" />
+    <ClInclude Include="Tree.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="UIOne.h" />
+    <ClInclude Include="UITwo.h" />
+    <ClInclude Include="UIThree.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
@@ -157,5 +168,8 @@
     <Image Include="Assets\modelData\utc_all2.DDS" />
     <Image Include="Assets\modelData\utc_nomal.DDS" />
     <Image Include="Assets\modelData\utc_spec.DDS" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
   </ItemGroup>
 </Project>

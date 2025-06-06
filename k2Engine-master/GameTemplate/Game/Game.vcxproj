@@ -249,6 +249,7 @@
     <ClCompile Include="LittleEnemy.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MiniMap.cpp" />
+    <ClCompile Include="Mountain.cpp" />
     <ClCompile Include="NoHeal.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerLight.cpp" />
@@ -272,14 +273,18 @@
     <ClCompile Include="TimingBarB.cpp" />
     <ClCompile Include="TimingBarC.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TukuyomiBlessing.cpp" />
+    <ClCompile Include="UIOne.cpp" />
     <ClCompile Include="UIStone.cpp" />
     <ClCompile Include="UIcurseBar.cpp" />
     <ClCompile Include="UIheal.cpp" />
     <ClCompile Include="UIropeGauge.cpp" />
     <ClCompile Include="UISimenawa.cpp" />
     <ClCompile Include="UIskill.cpp" />
+    <ClCompile Include="UIThree.cpp" />
     <ClCompile Include="UItukuyomi.cpp" />
+    <ClCompile Include="UITwo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -305,12 +310,14 @@
     <ClInclude Include="Line.h" />
     <ClInclude Include="LittleEnemy.h" />
     <ClInclude Include="MiniMap.h" />
+    <ClInclude Include="Mountain.h" />
     <ClInclude Include="NoHeal.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerLight.h" />
     <ClInclude Include="Poison.h" />
     <ClInclude Include="Purification.h" />
     <ClInclude Include="RedFlame.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RingBell.h" />
     <ClInclude Include="Shimenawa.h" />
     <ClInclude Include="SpriteCollection.h" />
@@ -324,7 +331,9 @@
     <ClInclude Include="TimingBarB.h" />
     <ClInclude Include="TimingBarC.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="Tree.h" />
     <ClInclude Include="TukuyomiBlessing.h" />
+    <ClInclude Include="UIOne.h" />
     <ClInclude Include="UIStone.h" />
     <ClInclude Include="UIcurseBar.h" />
     <ClInclude Include="UIheal.h" />
@@ -332,7 +341,9 @@
     <ClInclude Include="UIScreen.h" />
     <ClInclude Include="UISimenawa.h" />
     <ClInclude Include="UIskill.h" />
+    <ClInclude Include="UIThree.h" />
     <ClInclude Include="UItukuyomi.h" />
+    <ClInclude Include="UITwo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
@@ -386,6 +397,9 @@
     <Image Include="Assets\modelData\utc_all2.DDS" />
     <Image Include="Assets\modelData\utc_nomal.DDS" />
     <Image Include="Assets\modelData\utc_spec.DDS" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
