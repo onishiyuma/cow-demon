@@ -45,11 +45,9 @@ void GameCamera::Update()
 	//プレイヤの注視点を設定。
 	target.z += 30.0f;
 	target.y += 100.0f;
-
+	Vector3 toCameraPosOld = m_toCameraPos;
 	if (!m_isGameOver)
 	{
-		Vector3 toCameraPosOld = m_toCameraPos;
-
 		//パッドの入力を使ってカメラを回す。
 		float x = g_pad[0]->GetRStickXF();
 		float y = g_pad[0]->GetRStickYF();
@@ -74,6 +72,7 @@ void GameCamera::Update()
 		m_notifyEnemyInMain.SetColor(g_vec4White);
 		m_notifyEnemyInMain.SetScale(2);
 		m_isShowNotify = true;
+
 		if (m_isShowNotify)
 		{
 			m_notifyx -= 250 * g_gameTime->GetFrameDeltaTime();
@@ -92,6 +91,7 @@ void GameCamera::Update()
 		Vector3 toShrineDir = m_mainPos - target;
 		toShrineDir.Normalize();
 
+
 		// 現在のカメラ方向と距離。
 		Vector3 currentDir = m_toCameraPos;
 		float length = currentDir.Length();
@@ -108,16 +108,29 @@ void GameCamera::Update()
 		m_isCameraRotationFin = true;
 
 		m_callGameOverTime += g_gameTime->GetFrameDeltaTime();
+		
+		Vector3 position = target + m_PosMain;
+
+		m_position = position;
+		m_cameraForward = (target - position);
+		m_cameraForward.Normalize();
 	}
 
-	Vector3 position = target + m_PosMain;
-
-    m_position = position;
-	m_cameraForward = (target - position);
-	m_cameraForward.Normalize();
+	Vector3 toPosDir = m_toCameraPos;
+	toPosDir.Normalize();
+	if (toPosDir.y < m_cameraYMin)
+	{
+		//カメラが上向きすぎ。
+		m_toCameraPos = toCameraPosOld;
+	}
+	else if (toPosDir.y > m_cameraYMax) 
+	{
+		//カメラが下向きすぎ。
+		m_toCameraPos = toCameraPosOld;
+	}
 
 	//視点を計算する。
-	Vector3 pos = target+m_toCameraPos/m_half;
+	Vector3 pos = target + m_toCameraPos / m_half;
 	//メインカメラに注視点と座標を設定する。
 	g_camera3D->SetTarget(target);
 	g_camera3D->SetPosition(pos);

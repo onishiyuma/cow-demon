@@ -14,7 +14,7 @@ Poison::Poison()
 
 Poison::~Poison()
 {
-	if (m_effectEmitter) {
+	/*if (m_effectEmitter) {
 		m_effectEmitter->Stop();
 		DeleteGO(m_effectEmitter);
 		m_effectEmitter = nullptr;
@@ -22,16 +22,11 @@ Poison::~Poison()
 	if (m_collisionObj) {
 		DeleteGO(m_collisionObj);
 		m_collisionObj = nullptr;
-	}
+	}*/
 }
 
 bool Poison::Start()
 {
-	//各種インスタンスアドレスを検索。
-	m_littleEnemy = FindGO<LittleEnemy>("littleEnemy");
-	m_bossEnemy = FindGO<BossEnemy>("bossEnemy");
-	m_player = FindGO<Player>("player");
-
 	//エフェクトを設定。
 	EffectEngine::GetInstance()->ResistEffect(4, u"Assets/Effect/LittleEnemy/Poison.efk");
 	//移動速度を設定する。
@@ -61,10 +56,10 @@ bool Poison::Start()
 
 	//コリジョンオブジェクトが自動で削除されないようにする。
 	m_collisionObj->SetIsEnableAutoDelete(false);
-    CreatEffect();
+    CreateEffect();
 	return true;
 }
-void Poison::CreatEffect()
+void Poison::CreateEffect()
 {
 	//エフェクトのインスタンスを生成する。
 	m_effectEmitter = NewGO<EffectEmitter>(0);

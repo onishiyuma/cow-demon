@@ -53,13 +53,13 @@ namespace nsK2EngineLow {
 			{ enButtonB			, 'K',			0xFFFFFFFF	},
 			{ enButtonY			, 'I',			0xFFFFFFFF	},
 			{ enButtonX			, 'L',			0xFFFFFFFF	},
-			{ enButtonSelect	, VK_SPACE,		0xFFFFFFFF	},
+			{ enButtonSelect	, VK_ESCAPE,	0xFFFFFFFF	},
 			{ enButtonStart		, VK_RETURN,	0xFFFFFFFF	},
-			{ enButtonRB1		, '7',			0xFFFFFFFF	},
-			{ enButtonRB2		, '8',			0xFFFFFFFF	},
-			{ enButtonRB3		, '9',			0xFFFFFFFF	},
+			{ enButtonRB1		, 'X',			0xFFFFFFFF	},
+			{ enButtonRB2		, VK_LBUTTON,	0xFFFFFFFF	},
+			{ enButtonRB3		, 'V',			0xFFFFFFFF	},
 			{ enButtonLB1		, 'B',			0xFFFFFFFF	},
-			{ enButtonLB2		, 'N',			0xFFFFFFFF	},
+			{ enButtonLB2		, VK_RBUTTON,	0xFFFFFFFF	},
 			{ enButtonLB3		, 'M',			0xFFFFFFFF	},
 		};
 	}

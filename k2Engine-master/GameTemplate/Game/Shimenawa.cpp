@@ -16,6 +16,8 @@ bool Shimenawa::Start()
 
 	//コリジョンを作成。
 	CreateCollision();
+	//設置。
+	Put();
 
 	return true;
 }
@@ -32,8 +34,6 @@ Shimenawa::~Shimenawa()
 
 void Shimenawa::Update()
 {
-	//設置。
-	Put();
 	//継続時間。
 	DurationTime();
 }

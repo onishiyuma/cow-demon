@@ -20,7 +20,7 @@
 		~Poison();
 		bool Start();
 		void Update();
-		void CreatEffect();
+		void CreateEffect();
 
 		//座標を設定。
 		void SetPosition(const Vector3& position)

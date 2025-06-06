@@ -9,7 +9,7 @@ namespace nsK2EngineLow {
 	/// 仮想ボタン定義
 	/// </summary>
 	enum EnButton {
-		enButtonUp,		//!<上。
+		enButtonUp,			//!<上。
 		enButtonDown,		//!<下。
 		enButtonLeft,		//!<左。
 		enButtonRight,		//!<右。
@@ -17,7 +17,7 @@ namespace nsK2EngineLow {
 		enButtonB,			//!<Bボタン。
 		enButtonX,			//!<Xボタン。
 		enButtonY,			//!<Yボタン。
-		enButtonSelect,	//!<セレクトボタン。
+		enButtonSelect,		//!<セレクトボタン。
 		enButtonStart,		//!<スタートボタン。
 		enButtonRB1,		//!<RB1ボタン。
 		enButtonRB2,		//!<RB2ボタン。
@@ -25,7 +25,7 @@ namespace nsK2EngineLow {
 		enButtonLB1,		//!<LB1ボタン。
 		enButtonLB2,		//!<LB2ボタン。
 		enButtonLB3,		//!<LB3ボタン。
-		enButtonNum,	//!<ボタンの数。
+		enButtonNum,		//!<ボタンの数。
 	};
 
 	/// <summary>

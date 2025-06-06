@@ -183,6 +183,7 @@ public:
 	int m_maxCount = 0;	//敵の最大数。
 	int m_totalCount = 0;//敵の合計。
 	int m_lanternLightState = 0;
+	int m_spawnCount=0;
 	int m_lanternEffectState = 0;
 	int m_lanternAttackLightState = 0;
 	float m_timer = 120.0f;//タイマー。
