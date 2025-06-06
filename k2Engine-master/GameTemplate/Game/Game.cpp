@@ -81,30 +81,36 @@ Game::~Game()
 	{
 		DeleteGO(enemy);
 	}
-
+	m_enemyList.clear();
 	//ミニ牛鬼。
 	for (auto* littleEnemy : m_littleEnemyList) 
 	{
 		DeleteGO(littleEnemy);
 	}
-
+	m_littleEnemyList.clear();
 	//ボス牛鬼。
 	for (auto* bossEnemy : m_bossEnemyList)
 	{
 		DeleteGO(bossEnemy);
 	}
-
+	m_bossEnemyList.clear();
 	//ウザイ敵。
 	for (auto* annoyingEnemy : m_annoyingEnemyList)
 	{
 		DeleteGO(annoyingEnemy);
 	}
+	m_annoyingEnemyList.clear();
 
-	DeleteGO(m_player);			//プレイヤー。
-	DeleteGO(m_gameCamera);		//ゲームカメラ。
-	DeleteGO(m_backGround);		//ステージ。
-	DeleteGO(m_crossHair);		//クロスヘアー。
-	DeleteGO(m_ringBell);		//ベル。
+	//プレイヤー。
+	DeleteGO(m_player);
+	//ゲームカメラ。
+	DeleteGO(m_gameCamera);
+	//ステージ。
+	DeleteGO(m_backGround);
+	//クロスヘア。
+	DeleteGO(m_crossHair);
+	//ベル。
+	DeleteGO(m_ringBell);
 
 	//火打石。
 	DeleteGO(m_stone1);
@@ -160,18 +166,9 @@ Game::~Game()
 
 void Game::Update()
 {	
-	if (m_load->isLoad())
-	{
-		return;
-	}
-
-	m_timer += g_gameTime->GetFrameDeltaTime();
-
-	//タイマーを表示する用関数。
-	UITimer();
 	//ゲームーオーバーやゲームクリアーを呼び出す関数。
 	GameManager();
-    //灯籠用ライトのステート。
+	//灯籠用ライトのステート。
 	LanternLightState();
 	//灯籠用ライトの作成。
 	CreateLanternLight();
@@ -184,16 +181,25 @@ void Game::Update()
 	//攻撃灯籠用エフェクトの作成。
 	CreateLanternAttackEffect();
 
+	if (m_load->isLoad())
+	{
+		return;
+	}
+
+	m_timer += g_gameTime->GetFrameDeltaTime();
+
+	//タイマーを表示する用関数。
+	UITimer();
+	//空の明るさ調整。
+	SetSkyLight();
+	//敵のスポーン処理と敵が来たことを通知する。
+	NotifiyEnemy();
 	//ゲーム開始から30秒経ったら。
   if (m_timer >= 150.0f) 
   {
 		//エネミーの作成。
 		CreateEnemy();
   }
-	//空の明るさ調整。
-	SetSkyLight();
-	//敵のスポーン処理と敵が来たことを通知する。
-	NotifiyEnemy();
 }
 
 //ゲームクリア、ゲームオーバーの判定処理。
@@ -389,12 +395,6 @@ Vector3 Game::Random()
 	}
 
 	return position;
-	Vector3 randomPosition;
-	//ランダムにポジションを当てはめる。
-	randomPosition.x = rand() % 800 - 400;
-	randomPosition.y = 0.0f;
-	randomPosition.z = rand() % 1000 + 500;
-	return randomPosition;
 }
 
 //火打石作成用関数。

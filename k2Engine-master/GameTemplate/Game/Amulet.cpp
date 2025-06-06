@@ -12,7 +12,7 @@ bool Amulet::Start()
 	m_player = FindGO<Player>("player");
 
 	//エフェクトの登録。
-	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/PlayerEffects/NormalAttack/NormalAttack.efk");
+	EffectEngine::GetInstance()->ResistEffect(0, u"Assets/effect/PlayerEffects/SkillAttack/Sukill.efkefc");
 
 	//カメラの前方向のベクトルを取得して、移動方向にする。
 	Matrix cameraMatrix = g_camera3D->GetCameraRotation();

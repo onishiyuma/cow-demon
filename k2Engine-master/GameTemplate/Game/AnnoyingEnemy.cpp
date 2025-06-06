@@ -515,7 +515,7 @@ void AnnoyingEnemy::ProcessExplodeStateTransition()
 	}
     
 	m_explodeTimer += g_gameTime->GetFrameDeltaTime();
-	if (m_explodeTimer > 3.0f) // 1秒間の演出後に消える
+	if (m_explodeTimer > 3.0f) //演出後に消える
 	{
 		Game* game = FindGO<Game>("game");
 		DeleteGO(this);
@@ -524,12 +524,12 @@ void AnnoyingEnemy::ProcessExplodeStateTransition()
 
 void AnnoyingEnemy::ProcessDamageStateTransition()
 {
-		//攻撃されたら距離関係なしに退散させる。
-		m_enemyState = enEnemyState_Chase;
-		Vector3 diff = m_player->GetPosition() - m_position;
-		diff.Normalize();
-		//移動速度を設定する。
-		m_moveSpeed = diff * 10.0f;
+	//攻撃されたら距離関係なしに退散させる。
+	m_enemyState = enEnemyState_Chase;
+	Vector3 diff = m_player->GetPosition() - m_position;
+	diff.Normalize();
+	//移動速度を設定する。
+	m_moveSpeed = diff * 10.0f;
 }
 
 void AnnoyingEnemy::ProcessDownStateTransition()

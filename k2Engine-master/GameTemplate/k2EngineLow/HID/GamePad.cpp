@@ -56,10 +56,10 @@ namespace nsK2EngineLow {
 			{ enButtonSelect	, VK_ESCAPE,	0xFFFFFFFF	},
 			{ enButtonStart		, VK_RETURN,	0xFFFFFFFF	},
 			{ enButtonRB1		, 'X',			0xFFFFFFFF	},
-			{ enButtonRB2		, VK_RBUTTON,	0xFFFFFFFF	},
+			{ enButtonRB2		, VK_LBUTTON,	0xFFFFFFFF	},
 			{ enButtonRB3		, 'V',			0xFFFFFFFF	},
 			{ enButtonLB1		, 'B',			0xFFFFFFFF	},
-			{ enButtonLB2		, VK_LBUTTON,	0xFFFFFFFF	},
+			{ enButtonLB2		, VK_RBUTTON,	0xFFFFFFFF	},
 			{ enButtonLB3		, 'M',			0xFFFFFFFF	},
 		};
 	}

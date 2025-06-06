@@ -14,7 +14,7 @@ Poison::Poison()
 
 Poison::~Poison()
 {
-	if (m_effectEmitter) {
+	/*if (m_effectEmitter) {
 		m_effectEmitter->Stop();
 		DeleteGO(m_effectEmitter);
 		m_effectEmitter = nullptr;
@@ -22,7 +22,7 @@ Poison::~Poison()
 	if (m_collisionObj) {
 		DeleteGO(m_collisionObj);
 		m_collisionObj = nullptr;
-	}
+	}*/
 }
 
 bool Poison::Start()

@@ -47,5 +47,4 @@ private:
 	Vector3				m_position;					//座標。
 	const float			m_duration = 10.0f;			//継続時間。
 	float				m_deleteTimer=0.0f;			//削除までの時間。
-	float				m_tukuyomiBlessingDuration;	//月読の加護の継続時間。
 };

@@ -11,7 +11,7 @@
 bool TukuyomiBlessing::Start()
 {
 	//エフェクトをロードする。
-	EffectEngine::GetInstance()->ResistEffect(2,u"Assets/effect/PlayerEffects/TUkuyomi/Tukuyomi.efkefc");
+	EffectEngine::GetInstance()->ResistEffect(12,u"Assets/effect/PlayerEffects/TUkuyomi/Tukuyomi.efkefc");
 	//音を読み込む。
 	g_soundEngine->ResistWaveFileBank(0, "Assets/sound/tukuyomichan.wav");
 	//インスタンスアドレスを検索する。
@@ -23,7 +23,7 @@ bool TukuyomiBlessing::Start()
 	SoundSource* se = NewGO<SoundSource>(0);
 	se->Init(0);
 	se->Play(false);
-	se->SetVolume(0.8);
+	se->SetVolume(0.7);
 
 	//エフェクトの作成。
 	CreateEffect();
@@ -40,8 +40,7 @@ TukuyomiBlessing::TukuyomiBlessing()
 
 TukuyomiBlessing::~TukuyomiBlessing()
 {
-	DeleteGO(m_effectEmitter);
-	DeleteGO(m_collisionObject);
+
 }
 
 void TukuyomiBlessing::Update()
@@ -55,10 +54,12 @@ void TukuyomiBlessing::Update()
 //継続時間。
 void TukuyomiBlessing::DeleteTime()
 {
+	//エフェクトを再生。
+	m_effectEmitter->Play();
 	//エフェクトの削除時間を設定。
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_deleteTimer >= m_duration)
-	{
+	{ 
 		m_effectEmitter->Stop();
 		DeleteGO(this);
 	}
@@ -94,13 +95,13 @@ void TukuyomiBlessing::CreateEffect()
 	//エフェクトのインスタンスを作成。
 	m_effectEmitter=NewGO<EffectEmitter>(0);
 	//エフェクトを初期化。
-	m_effectEmitter->Init(2);
+	m_effectEmitter->Init(12);
 	//大きさを設定。
-	m_effectEmitter->SetScale({ 95.0f,3.0f,95.0f });
+	m_effectEmitter->SetScale({ 95.0f,10.0f,95.0f });
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
 	//エフェクトを再生。
-	m_effectEmitter->Play();
+	//m_effectEmitter->Play();
 }
 
 
