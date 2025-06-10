@@ -26,7 +26,7 @@ void UIStone::Update()
 {
 	//火打石の数を表示。
 	wchar_t wcsbuf2[256];
-	swprintf_s(wcsbuf2, 256, L"火打石:%d", int(m_player->m_stoneCount));
+	swprintf_s(wcsbuf2, 256, L"火打石の数%d", int(m_player->m_stoneCount));
 
 	//表示するテキストを設定。
 	m_fontRender.SetText(wcsbuf2);

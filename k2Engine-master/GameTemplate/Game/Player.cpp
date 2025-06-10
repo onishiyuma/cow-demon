@@ -12,7 +12,8 @@
 #include "RingBell.h"
 #include "BellSpriteRender.h"
 #include "NoHeal.h"
-#include<time.h>
+#include "SpinStick.h"
+#include <time.h>
 
 namespace
 {
@@ -105,7 +106,7 @@ void Player::PlayerAttack()
 	{
 		//文字の表示。
 		wchar_t text[256] = { 0 };
-		swprintf_s(text, 256, L"灯籠を全て灯すと攻撃できるぞ！");
+		swprintf_s(text, 256, L"灯籠を全て灯すと攻撃できるぞ");
 		m_fontRender1.SetText(text);
 		m_fontRender1.SetPosition(FONT_POSITION);
 		m_fontRender1.SetColor({ g_vec4lightBlue });
@@ -234,7 +235,6 @@ void Player::ItemShimenawa()
 	}
 }
 
-
 //--------------------------------------------------------------------------------------------------------------
 //ここから作成用関数
 //--------------------------------------------------------------------------------------------------------------
@@ -339,41 +339,41 @@ void Player::Distance()
 	}
 
 	//360度回した回復。
-	if (m_totalRotation >= 360.0f)
+	if (m_totalRotation >= 720.0f)
 	{
 		//HPを回復する。
 		HealHP(100);
 		m_totalRotation = 0.0f;
 	}
 			
-	// プレイヤーと鈴の位置を取得。
+	//プレイヤーと鈴の位置を取得。
 	Vector3 bellPos = m_ringBell->GetPosition();
 	Vector3 playerPos = m_position;
 
-	// 距離を測って接触判定。
+	//距離を測って接触判定。
 	m_distSq = (playerPos - bellPos).LengthSq();
 }
 
 void Player::RotationCamera()
 {
-	// 右スティックのx,y値。
+	//右スティックのx,y値。
 	float x = g_pad[0]->GetRStickXF();
 	float y = g_pad[0]->GetRStickYF();
 
-	// 入力が小さいときは無視する。
+	//入力が小さいときは無視する(デッドゾーン)。
 	float stickLengthSq = x * x + y * y;
-	if (stickLengthSq < 0.01f) 
+	if (stickLengthSq < 0.01f)
 	{
 		return;
 	}
 
-	// スティックの現在の角度。
+	//スティックの現在の角度。
 	float angle = atan2f(y, x) * (180.0f / 3.14159265f);
 
-	// 角度差分。
+	//角度差分。
 	float delta = angle - m_prevStickAngle;
 
-	// -180〜180度の範囲に収める。
+	//-180〜180度の範囲に収める。
 	if (delta > 180.0f)
 	{
 		delta -= 360.0f;
@@ -383,37 +383,29 @@ void Player::RotationCamera()
 		delta += 360.0f;
 	}
 
-	// 累積回転量に加算。
+	//累積回転量に加算。
 	m_totalRotation += fabsf(delta);
 
-	// 現在の角度を保存。
+	//現在の角度を保存。
 	m_prevStickAngle = angle;
 
-	// スティックを回すと回復。
-	if (m_totalRotation >= 100.0f)
+	//スティックを回すと回復。
+	if (m_totalRotation >= 720.0f)
 	{
 		if (m_healCoolDown <= 0)
 		{
 			//接触していない場合は回転角をリセット。
 			m_totalRotation = 0.0f;
-			if (m_uiHeal->m_useHeal >= 0)
+			m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
+			if (m_uiHeal->m_useHeal >0)
 			{
-				m_healCoolDown = 10.0f;
 				HealHP(100);
 				m_uiHeal->m_useHeal--;
-			}
-			else
-			{
-				if (m_noHeal == nullptr)
-				{
-					m_noHeal = NewGO<NoHeal>(0);
-				}
+				m_isHealMode = false;
+				m_healCoolDown = 3.0f;
 			}
 		}
 	}
-
-	//回転量と角度をリセット。
-	m_totalRotation = 0.0f;
 }
 
 void Player::HealHP(int amount)
@@ -439,10 +431,11 @@ void Player::UpdateHealHint()
 	if (m_isDisplay)
 	{
 		wchar_t text[256] = { 0 };
-		swprintf_s(text, 256, L"本殿の前でAボタンを押してスティックを回すと回復できるぞ！");
+		swprintf_s(text, 256, L"本殿の前でAボタンを押してスティックを回すと回復できるぞ");
 		m_fontRender2.SetText(text);
-		m_fontRender2.SetPosition({ -600.0f,-300.0f,0.0f });
+		m_fontRender2.SetPosition({ -480.0f,-300.0f,0.0f });
 		m_fontRender2.SetColor(g_vec4lightBlue);
+		m_isDisplay = false;
 	}
 
 	//回復のクールタイムを減らす。
@@ -457,70 +450,113 @@ void Player::PoisonState()
 		return;
 	}
 
-	if (m_playerState==enPlayerState_Poison)
+	//毒を1秒ずつ減らす。
+	m_poisonCoolDown += g_gameTime->GetFrameDeltaTime();
+	if (m_poisonCoolDown >= 1.0f)
 	{
-		//毒を1秒ずつ減らす。
-		m_poisonCoolDown += g_gameTime->GetFrameDeltaTime();
-		if (m_poisonCoolDown >= 1.0f)
-		{
-			//毒状態の時はHPを減らす。
-			m_playerHP -= m_poisonDamage;
-			m_poisonCoolDown = 0.0f;
-		}
+		//毒状態の時はHPを減らす。
+		m_playerHP -= m_poisonDamage;
+		m_poisonCoolDown = 0.0f;
+	}
 
-		//毒状態の時はプレイヤーの状態を毒状態にする。
-		m_poisonTimer += g_gameTime->GetFrameDeltaTime();
-		if (m_poisonTimer>=m_poisonDuration)
-		{
-			//ステータスを初期化。
-			m_playerState = enPlayerState_None;
-			//初期化。
-			m_poisonTimer = 0.0f;
-			m_poisonCoolDown = 0.0f;
-		}
+	//毒状態の時はプレイヤーの状態を毒状態にする。
+	m_poisonTimer += g_gameTime->GetFrameDeltaTime();
+	if (m_poisonTimer >= m_poisonDuration)
+	{
+		//ステータスを初期化。
+		m_playerState = enPlayerState_None;
+		//初期化。
+		m_poisonTimer = 0.0f;
+		m_poisonCoolDown = 0.0f;
 	}
 }
 
 void Player::RingBellCollision()
 {
-	// 鈴のコリジョンを取得する。
 	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("ringbell");
-	bool isBellHit = false;
-
 	for (auto collision : collisions)
 	{
 		if (collision->IsHit(m_characterController))
 		{
-			isBellHit = true;
+			m_isBellHit = true;
+			if (m_uiHeal->m_useHeal < 0)
+			{
+				if (m_spinStick != nullptr)
+				{
+					DeleteGO(m_spinStick);
+					m_spinStick = nullptr;
+				}
+				if (m_bellSpriteRender != nullptr)
+				{
+					DeleteGO(m_bellSpriteRender);
+					m_bellSpriteRender = nullptr;
+				}
 
-			//コリジョン内に入ったら画像を表示する。
+				if (m_noHeal == nullptr)
+				{
+					m_noHeal = NewGO<NoHeal>(0);
+				}
+			}
+
 			if (m_bellSpriteRender == nullptr)
 			{
 				m_bellSpriteRender = NewGO<BellSpriteRender>(0);
 			}
+			Distance();
+
+			//Aボタン単押しで回復モードに入る。
 			if (g_pad[0]->IsTrigger(enButtonA))
 			{
-				if (m_distSq <= contactThresholdSq)
+				m_isHealMode = true;
+				if (m_spinStick == nullptr)
 				{
-					Distance();
-					// ヒールUIが有効な場合のみ回転処理。
-					if (!m_uiHeal->m_isDelete)
-					{
-						RotationCamera();
-					}
-					else
-					{
-						m_totalRotation = 0.0f;
-					}
-					// 接触中の鈴が見つかったら抜け出す。
-					break;
+					m_spinStick = NewGO<SpinStick>(0);
 				}
 			}
+
+			//回復モード中のみスティック回転を受け付ける。
+			if (m_isHealMode)
+			{
+				if (!m_uiHeal->m_isDelete)
+				{
+					RotationCamera();
+				}
+				else
+				{
+					m_totalRotation = 0.0f;
+				}
+			}
+			// 一定距離より離れたら画像を非表示
+			if (m_distSq > m_contactThresholdSq)
+			{
+				if (m_bellSpriteRender != nullptr)
+				{
+					DeleteGO(m_bellSpriteRender);
+					m_bellSpriteRender = nullptr;
+				}
+				if (m_spinStick != nullptr)
+				{
+					DeleteGO(m_spinStick);
+					m_spinStick = nullptr;
+				}
+				if (m_noHeal != nullptr)
+				{
+					DeleteGO(m_noHeal);
+					m_noHeal = nullptr;
+				}
+				m_isHealMode = false;
+				break;
+			}
+			break;
 		}
 	}
-
-	// 鈴に接触していなければ鈴の画像を削除する。
-	if (!isBellHit)
+	// Aボタンを押していない間は回転量と角度をリセット
+	if (!g_pad[0]->IsPress(enButtonA) && !m_isHealMode)
+	{
+		m_totalRotation = 0.0f;
+		m_prevStickAngle = 0.0f;
+	}
+	if (!m_isBellHit)
 	{
 		if (m_bellSpriteRender != nullptr)
 		{
@@ -532,10 +568,12 @@ void Player::RingBellCollision()
 			DeleteGO(m_noHeal);
 			m_noHeal = nullptr;
 		}
+		if (m_spinStick != nullptr)
+		{
+			DeleteGO(m_spinStick);
+			m_spinStick = nullptr;
+		}
 	}
-	// Aボタンを押していない間は回転量と角度をリセット。
-	m_totalRotation = 0.0f;
-	m_prevStickAngle = 0.0f;
 }
 
 void Player::EnemyAttackCollision()

@@ -56,6 +56,7 @@
     <ClCompile Include="UIOne.cpp" />
     <ClCompile Include="UITwo.cpp" />
     <ClCompile Include="UIThree.cpp" />
+    <ClCompile Include="SpinStick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="UIOne.h" />
     <ClInclude Include="UITwo.h" />
     <ClInclude Include="UIThree.h" />
+    <ClInclude Include="SpinStick.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
