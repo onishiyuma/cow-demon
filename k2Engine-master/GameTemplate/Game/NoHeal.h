@@ -21,6 +21,3 @@ private:
 	Vector3				m_position;				//座標。
 
 };
-
-
-

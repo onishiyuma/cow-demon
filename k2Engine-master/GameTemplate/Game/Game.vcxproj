@@ -258,6 +258,7 @@
     <ClCompile Include="RedFlame.cpp" />
     <ClCompile Include="RingBell.cpp" />
     <ClCompile Include="Shimenawa.cpp" />
+    <ClCompile Include="SpinStick.cpp" />
     <ClCompile Include="SpriteCollection.cpp" />
     <ClCompile Include="SpriteLight.cpp" />
     <ClCompile Include="SpriteNoStone.cpp" />
@@ -320,6 +321,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="RingBell.h" />
     <ClInclude Include="Shimenawa.h" />
+    <ClInclude Include="SpinStick.h" />
     <ClInclude Include="SpriteCollection.h" />
     <ClInclude Include="SpriteLight.h" />
     <ClInclude Include="SpriteNoStone.h" />

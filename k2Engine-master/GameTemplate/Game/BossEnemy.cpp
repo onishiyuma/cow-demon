@@ -13,7 +13,7 @@
 
 namespace
 {
-	//スキルのチャージの
+	//チャージ増加量。
 	int CHARGE_INCREASE_AMOUNT = 10;
 }
 

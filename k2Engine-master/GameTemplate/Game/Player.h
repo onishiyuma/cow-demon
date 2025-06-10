@@ -10,6 +10,7 @@ class RingBell;
 class GameCamera;
 class BellSpriteRender;
 class NoHeal;
+class SpinStick;
 
 class Player :public IGameObject
 {	
@@ -108,12 +109,13 @@ public:
 	int					m_skillATK = 0;								//スキル攻撃力。
 	int					m_stoneCount = 0;							//火打石の所持数。
 	int					m_tukuyomiATK = 0;							//月読の加護の攻撃力。
-	int					m_lanternCount = 4;							//灯籠の灯っている数。
+	int					m_lanternCount = 0;							//灯籠の灯っている数。
 private:
 	NoHeal*				m_noHeal;									//回復できない。
 	BellSpriteRender*	m_bellSpriteRender;							//鈴を使う画像。
 	RingBell*			m_ringBell;									//鈴。
 	UIheal*				m_uiHeal;									//回復のUI。
+	SpinStick*			m_spinStick;								//「スティックを回せ」の画像
 	Lantern*			m_lantern;									//灯籠。
 	GameCamera*			m_gameCamera;								//ゲームカメラ。
 	Shimenawa*			m_shimenawa;								//しめ縄。
@@ -126,7 +128,7 @@ private:
 	Vector3				m_forward = Vector3::AxisZ;					//方向。
 	Vector3				m_moveSpeed;								//移動速度。
 	const float			m_gravity = 10.5f;							//重力。
-	const float			contactThresholdSq = 100.0f * 100.0f;		//接触の閾値。
+	const float			m_contactThresholdSq = 100.0f * 100.0f;		//接触の閾値。
 	const float			m_poisonDuration = 4.0f;					//毒状態の時間。
 	const float			m_invincibleTimeDuration=1.0f;				//無敵の継続時間。
 	const int			m_poisonDamage = 1.0f;						//毒ダメージ。
@@ -152,5 +154,7 @@ private:
 	bool				m_isDamage_BossPoison = false;				//ボスの毒ダメージを受けているか。
 	bool				m_isDamage_LittlePoison = false;			//小さい敵の毒ダメージを受けているか。
 	bool				m_isDamage_Explosion = false;				//爆発ダメージを受けているか。
+	bool				m_isBellHit = false;						//回復用コリジョンに当たっているか。
+	bool				m_isHealMode = false;						//回復モード。
 	int					m_playerMaxHP = 100;						//プレイヤーの最大体力。
 };

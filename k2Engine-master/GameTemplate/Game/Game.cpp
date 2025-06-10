@@ -190,28 +190,27 @@ void Game::Update()
 
 	
 	if (m_isCowntDownStart == false) {
-		m_countDownTimer -= g_gameTime->GetFrameDeltaTime();
 		//カウントダウンの開始。
 		StartCountDown();
-	}
-	else if (m_isCowntDownStart == true){
-		//タイマーを表示する用関数。
-		UITimer();
-		m_timer += g_gameTime->GetFrameDeltaTime();
-		//ゲームーオーバーやゲームクリアーを呼び出す関数。
-		GameManager();
 		//灯籠用ライトのステート
 		LanternLightState();
 		//灯籠用ライトの作成
 		CreateLanternLight();
-		//灯籠用エフェクトの作成
-		CreateLanternEffect();
 		//攻撃灯籠用ライトのステート
 		LanternAttackLightState();
 		//攻撃灯籠用ライトの作成
 		CreateLanternAttackLight();
+
+	}
+	else if (m_isCowntDownStart == true){
+		//タイマーを表示する用関数。
+		UITimer();
 		//攻撃灯籠用エフェクトの作成
 		CreateLanternAttackEffect();
+		//灯籠用エフェクトの作成
+		CreateLanternEffect();
+		//ゲームーオーバーやゲームクリアーを呼び出す関数。
+		GameManager();
 		//空の明るさ調整
 		SetSkyLight();
 		//敵のスポーン処理と敵が来たことを通知する。
@@ -388,7 +387,8 @@ void Game::SetSkyLight()
 //ゲーム前のカウントダウンを行う関数。
 void Game::StartCountDown()
 {
-	
+	m_countDownTimer -= g_gameTime->GetFrameDeltaTime();
+
 	if (m_countDownTimer <= 3.0f && !m_isThree) {
 		m_uiThree = NewGO<UIThree>(0, "UIThree");
 		m_isThree = true;
@@ -849,8 +849,6 @@ void Game::CreateEnemy()
 				enemyUI->SetLittleEnemy(little);
 			}
 		}
-		//タイマーを減らす処理。
-		//m_timer += g_gameTime->GetFrameDeltaTime();
 		//1分目
 		if (m_timer > 120.0f && m_timer < 180.0f)
 		{
@@ -911,8 +909,6 @@ void Game::CreateEnemy()
 						}
 					}
 				}
-				//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-				//enemyUI->SetLittleEnemy(little);
 			}
 		}
 	}
@@ -939,20 +935,21 @@ void Game::CreateUI()
 
 void Game::UITimer()
 {
+	m_timer += g_gameTime->GetFrameDeltaTime();
 	//タイマーの表示。
 	wchar_t wcsbuf[256];
 
 	int minute = (int)m_timer / 60;
 
 	int sec = (int)m_timer % 60;
-	swprintf_s(wcsbuf, 256, L"AM%01d:%02d", minute, sec);
+	swprintf_s(wcsbuf, 256, L"午前%01d時%02d分", minute, sec);
 
 	//フォントを設定。
 	m_timerFontRender.SetText(wcsbuf);
 	//フォントの大きさを設定。
 	m_timerFontRender.SetScale(1.5f);
 	//フォントの位置を設定。
-	m_timerFontRender.SetPosition(Vector3(-80.0f, 500.0f, 0.0f));
+	m_timerFontRender.SetPosition(Vector3(-200.0f, 500.0f, 0.0f));
 	//フォントの色を設定。
 	m_timerFontRender.SetColor(g_vec4White);
 }
