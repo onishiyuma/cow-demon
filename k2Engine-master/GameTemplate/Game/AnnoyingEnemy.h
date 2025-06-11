@@ -116,15 +116,17 @@ public:
 	
 private:
 	//メンバ変数。
-	GameCamera*			m_gameCamera = nullptr;                     //ゲームカメラへの参照。
-	RingBell*			m_ringBell = nullptr;						//本殿への参照。
-	EffectEmitter*      m_effectEmitter = nullptr;					 //effectへの参照。
-	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションクリップ配列。
-	EnEnemyState		m_enemyState = enEnemyState_Idle;			//現在の状態。
-	int					m_ExplosionBoneId = -2;						//攻撃判定を出すボーンID。
-	int					m_enemyHP = 5;								//HP。
-	const int			m_enemyMaxHP = m_enemyHP;					//最大HP。
-	const Vector3		m_stopMove = Vector3::Zero;					//移動を止める。
+	Vector3 m_scale = { 0.7f,0.7f,0.7f };
+	GameCamera*		m_gameCamera = nullptr;                     //ゲームカメラへの参照。
+	Game* m_game = nullptr;
+	RingBell* m_ringBell = nullptr;                         //本殿への参照。
+	EffectEmitter*       m_effectEmitter = nullptr;          //effectへの参照。
+	AnimationClip	m_animationClips[enAnimationClip_Num];		//アニメーションクリップ配列。
+	EnEnemyState	m_enemyState = enEnemyState_Idle;			//現在の状態。
+	int					m_ExplosionBoneId = -2;							//攻撃判定を出すボーンID
+	int m_enemyHP = 5;
+	int m_enemyMaxHP = m_enemyHP;
+	const Vector3	m_stopMove = Vector3::Zero;					//移動を停止するためのベクトル。
 
 	//各種タイマー。
 	float		m_idleTimer = 0.0f;					//待機タイマー。

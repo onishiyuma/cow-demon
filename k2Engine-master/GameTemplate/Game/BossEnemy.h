@@ -10,6 +10,7 @@ class Player;
 class Game;
 class GameCamera;
 class RingBell;
+class LanternAttack;
 
 class BossEnemy: public EnemyBase
 {
@@ -117,8 +118,10 @@ public:
 
 private:
 	//メンバ変数。
+	Game*				m_game;
 	GameCamera*			m_gameCamera = nullptr;                      //カメラ参照。
 	RingBell*           m_ringBell = nullptr;                        //本殿参照
+	LanternAttack*      m_lanternAttack;
 	AnimationClip		m_animationClips[enAnimationClip_Num];		 //アニメーションクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;            //現在のステート。
 	EffectEmitter*      m_effectEmitter = nullptr;                   //エフェクト参照。

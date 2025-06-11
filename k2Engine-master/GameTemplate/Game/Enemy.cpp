@@ -8,6 +8,7 @@
 #include "BackGround.h"
 #include "collision/CollisionObject.h"
 #include "GameCamera.h"
+#include "LanternAttack.h"
 #include <time.h>
 #include <stdlib.h>
 
@@ -61,12 +62,15 @@ bool Enemy::Start()
 	m_ringBell = FindGO<RingBell>("ringbell");
 	m_game = FindGO<Game>("game");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
+	m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
 	
 	
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
+
+	m_enemyHP = 10;
 
 	return true;
 }
@@ -367,6 +371,45 @@ void Enemy::Collision()
 		}
 	}
 
+	//----------------------------------------
+	//攻撃用灯籠の判定管理。
+	//----------------------------------------
+	//{
+	//	float attackTimer = 0.0f;
+	//	attackTimer += g_gameTime->GetFrameDeltaTime();
+
+	//	Vector3 diff1 = m_game->m_lanternAttack1->m_position - m_position;
+	//	Vector3 diff2 = m_game->m_lanternAttack2->m_position - m_position;
+	//	Vector3 diff3 = m_game->m_lanternAttack3->m_position - m_position;
+
+	//	//灯籠に火がともっている
+	//	if (diff1.Length() >= 400.0f or diff2.Length() >= 400.0f or diff3.Length() >= 400.0f) {
+	//		if (m_lanternAttack->m_isLight == true) {
+	//			if (attackTimer >= 1.0f) {
+
+	//				m_enemyHP -= 5.0f;
+
+	//				//HPが0になったら。
+	//				if (m_enemyHP < 0)
+	//				{
+	//					//ダウンステートに遷移する。
+	//					m_enemyState = enEnemyState_Down;
+	//				}
+
+	//				else
+	//				{
+	//					//被ダメージステートに遷移する。
+	//					m_enemyState = enEnemyState_Damage;
+	//				}
+	//				attackTimer = 0.0f;
+	//				return;
+	//			}
+	//		}
+	//	}
+	//	
+
+	//}
+
 	//-----------------------------------------
 	//本殿に接触したらゲームオーバーする処理。
 	//-----------------------------------------
@@ -529,17 +572,18 @@ void Enemy::ProcessDamageStateTransition()
 
 void Enemy::ProcessDownStateTransition()
 {
+	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+
 	if (!m_isDeadFlag)
 	{
-		//死亡エフェクトを発生させる。
 		DeathEffect();
 		m_isDeadFlag = true;
 	}
-
-	if (m_modelRender.IsPlayingAnimation()==false) {
-       
-		Game* game = FindGO<Game>("game");
-		//自身を削除する
+	
+	if (m_deathEffectTimer >= 1.0f)
+	{
+		//Gameのインスタンスアドレスを検索
+		m_game->m_totalCount--;
 		DeleteGO(this);
 	}
 }
