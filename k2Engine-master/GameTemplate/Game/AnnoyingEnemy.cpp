@@ -63,7 +63,7 @@ bool AnnoyingEnemy::Start()
 	//回転を設定する。
 	m_modelRender.SetRotation(m_rotation);
 	//大きさを設定する。
-	//m_modelRender.SetScale(m_scale);
+	m_modelRender.SetScale(m_scale);
 	m_charaCon.Init(
 		60.0f,
 		60.0f,
@@ -79,6 +79,7 @@ bool AnnoyingEnemy::Start()
 	EffectEngine::GetInstance()->ResistEffect(7, u"Assets/effect/EnemyEffects/Fox_Down/Fox_Down.efk");
 	EffectEngine::GetInstance()->ResistEffect(10, u"Assets/effect/EnemyEffects/Fox_Explosion/Fox_Explosion.efk");
 
+	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_ringBell = FindGO<RingBell>("ringbell");
@@ -87,6 +88,8 @@ bool AnnoyingEnemy::Start()
 	srand((unsigned)time(NULL));
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
+
+	m_enemyHP = 5;
 
 	return true;
 }
@@ -518,7 +521,7 @@ void AnnoyingEnemy::ProcessExplodeStateTransition()
 	m_explodeTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_explodeTimer > 3.0f) //演出後に消える
 	{
-		Game* game = FindGO<Game>("game");
+		m_game->m_totalCount--;
 		DeleteGO(this);
 	}
 }
@@ -540,17 +543,18 @@ void AnnoyingEnemy::ProcessDownStateTransition()
 		return;
 	}*/
 
+	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+
 	if (!m_isDeadFlag)
 	{
 		DeathEffect();
 		m_isDeadFlag = true;
 	}
-	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
-	//ダウン時間がある程度経過したら。
+
 	if (m_deathEffectTimer >= 1.0f)
 	{
 		//Gameのインスタンスアドレスを検索
-		Game* game = FindGO<Game>("game");
+		m_game->m_totalCount--;
 		DeleteGO(this);
 	}
 }

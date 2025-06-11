@@ -2,10 +2,16 @@
 #include "Title.h"
 #include "Game.h"
 #include "Load.h"
+#include "sound/SoundEngine.h"
 
 
 bool Title::Start()
 {
+	//タイトルの背景画像を読み込む
+	m_sppriteBack.Init("Asset/sprite/Black.DDS", 1920.0f, 1080.0f);
+
+	m_sppriteBack.SetPosition(m_backPos);
+
 	//タイトルの画像を読み込む。
 	m_spriteRender.Init("Assets/sprite/cowDemonTitle.DDS", 1920.0f, 1080.0f);
 
@@ -17,6 +23,15 @@ bool Title::Start()
 	m_fontRender.SetText(L"Please Press AnyKey");
 	m_fontRender.SetPosition({ -250.0f,-300.0f,0.0f });
 	m_fontRender.SetColor(m_fontColor);
+
+	//タイトルのBGMを読み込む。
+
+	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/title.wav");
+
+	//タイトルのBGMを再生する。
+	m_titleBGM = NewGO<SoundSource>(1);
+	m_titleBGM->Init(1);
+	m_titleBGM->Play(true);
 
 	
 
@@ -35,6 +50,10 @@ Title::~Title()
 
 void Title::Update()
 {
+
+	m_sppriteBack.Update();
+	m_spriteRender.SetPosition(m_backPos);
+
 	//タイマーを加算。
 	m_timer+= g_gameTime->GetFrameDeltaTime();
 	
@@ -62,6 +81,7 @@ void Title::Update()
 				{
 					NewGO<Load>(1, "load");
 					m_spriteRender.Update();
+					DeleteGO(m_titleBGM);
 					//自身を削除する。
 					DeleteGO(this);
 				}
@@ -179,6 +199,7 @@ void Title::SoulFade()
 void Title::Render(RenderContext& rc)
 {
 	m_spriteRender.Draw(rc);
+	m_sppriteBack.Draw(rc);
 	m_spriteSoul.Draw(rc);
 	m_fontRender.Draw(rc);
 }

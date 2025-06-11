@@ -63,7 +63,7 @@ void Load::LoadingProgress()
         m_load -= 0.1f;
         if (m_load <= 0.0f) 
         {
-            NewGO<Game>(0, "game");
+            m_game=NewGO<Game>(0, "game");
             m_load = 0.0f;
             m_isFadingOut = false;
         }
@@ -85,6 +85,7 @@ void Load::LoadingProgress()
         {
             m_loadingProgress = 1.0f;
             m_drawUI = true;
+            m_game->m_isLoad = false;
             DeleteGO(this);
         }
     }

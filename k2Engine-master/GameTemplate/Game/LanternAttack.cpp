@@ -27,6 +27,8 @@ bool LanternAttack::Start()
 	m_line = FindGO<Line>("line");
 	m_spritePush = FindGO<SpritePush>("spritePush");
 
+	m_attack;
+
 	return true;
 }
 

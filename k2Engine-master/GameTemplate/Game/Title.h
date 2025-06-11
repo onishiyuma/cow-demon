@@ -1,4 +1,5 @@
 #pragma once
+#include "sound/SoundSource.h"
 
 class Game;
 class Load;
@@ -21,9 +22,12 @@ private:
 	//メンバ変数。
 	FontRender		m_fontRender;				//フォントレンダー。
 	SpriteRender	m_spriteRender;				//スプライトレンダー。
+	SpriteRender    m_sppriteBack;
 	SpriteRender    m_spriteSoul;               //魂をフェードアウトするスプライトレンダー。
+	SoundSource*    m_titleBGM;                 //タイトルのBGM。
 	Game*			m_game;						//ゲーム。
 	Load*			m_load;						//フェード。
+	Vector3         m_backPos = { 0.0f,0.0f,0.0f};
 	Vector4         m_titleColor = { 1.0f,1.0f,1.0f,0.0f };	//色。
 	Vector4         m_fontColor = { 0.0f,0.0f,0.0f,0.0f };	//フェード色。
 	Vector4         m_soulColor = { 0.0f,0.0f,0.0f,0.0f };	//魂の色。

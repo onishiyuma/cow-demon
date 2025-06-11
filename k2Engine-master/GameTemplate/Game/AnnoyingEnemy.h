@@ -115,7 +115,9 @@ public:
 	
 private:
 	//メンバ変数。
+	Vector3 m_scale = { 0.7f,0.7f,0.7f };
 	GameCamera*		m_gameCamera = nullptr;                     //ゲームカメラへの参照。
+	Game* m_game = nullptr;
 	RingBell* m_ringBell = nullptr;                         //本殿への参照。
 	EffectEmitter*       m_effectEmitter = nullptr;          //effectへの参照。
 	AnimationClip	m_animationClips[enAnimationClip_Num];		//アニメーションクリップ配列。

@@ -56,6 +56,9 @@
     <ClCompile Include="UIOne.cpp" />
     <ClCompile Include="UITwo.cpp" />
     <ClCompile Include="UIThree.cpp" />
+    <ClCompile Include="LanternArrow.cpp" />
+    <ClCompile Include="UIZero.cpp" />
+    <ClCompile Include="TimeLimit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -115,6 +118,9 @@
     <ClInclude Include="UIOne.h" />
     <ClInclude Include="UITwo.h" />
     <ClInclude Include="UIThree.h" />
+    <ClInclude Include="LanternArrow.h" />
+    <ClInclude Include="UIZero.h" />
+    <ClInclude Include="TimeLimit.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />
