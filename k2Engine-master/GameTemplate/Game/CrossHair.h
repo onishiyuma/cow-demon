@@ -1,6 +1,5 @@
 #pragma once
 
-class Ray;
 
 class CrossHair:public IGameObject
 {

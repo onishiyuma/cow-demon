@@ -59,6 +59,7 @@
     <ClCompile Include="LanternArrow.cpp" />
     <ClCompile Include="UIZero.cpp" />
     <ClCompile Include="TimeLimit.cpp" />
+    <ClCompile Include="SpinStick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="LanternArrow.h" />
     <ClInclude Include="UIZero.h" />
     <ClInclude Include="TimeLimit.h" />
+    <ClInclude Include="SpinStick.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

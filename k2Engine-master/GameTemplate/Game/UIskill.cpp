@@ -10,7 +10,7 @@ namespace
 	//スキルゲージ。
 	Vector3 SKILL_GAUGE_POSITION = Vector3(600.0f, -485.0f, 0.0f);
 	//スキルフォント。
-	Vector3 SKILL_FONT_POSITION = Vector3(600.0f, -450.0f, 0.0f);
+	Vector3 SKILL_FONT_POSITION = Vector3(620.0f, -450.0f, 0.0f);
 	//緑。
 	Vector4 GREEN = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
 	//薄い緑。
@@ -90,7 +90,7 @@ void UIskill::Update()
 	{
 		m_skillFont = 100;
 	}
-	swprintf_s(wcsbuf, 256, L"%01d％",m_skillFont);
+	swprintf_s(wcsbuf, 256, L"%01d",m_skillFont);
     m_fontRender.SetText(wcsbuf);
 	
 	m_skillSprite.Update();

@@ -197,9 +197,9 @@ void Game::Update()
 	
 	
 	if (m_isCowntDownStart == false) {
-		m_countDownTimer -= g_gameTime->GetFrameDeltaTime();
 		//カウントダウンの開始。
 		StartCountDown();
+
 	}
 	else if (m_isCowntDownStart == true){
 
@@ -236,10 +236,9 @@ void Game::Update()
 			SetSkyLight();
 			//敵のスポーン処理と敵が来たことを通知する。
 			NotifiyEnemy();
-		}
-		
-		
-	}
+    }
+  }
+
 
 	if (m_timer >= 150.0f) {
 		CreateEnemy();
@@ -425,7 +424,8 @@ void Game::SetSkyLight()
 //ゲーム前のカウントダウンを行う関数。
 void Game::StartCountDown()
 {
-	
+	m_countDownTimer -= g_gameTime->GetFrameDeltaTime();
+
 	if (m_countDownTimer <= 3.0f && !m_isThree) {
 		m_uiThree = NewGO<UIThree>(0, "UIThree");
 		m_isThree = true;
@@ -992,20 +992,21 @@ void Game::CreateUI()
 
 void Game::UITimer()
 {
+	m_timer += g_gameTime->GetFrameDeltaTime();
 	//タイマーの表示。
 	wchar_t wcsbuf[256];
 
 	int minute = (int)m_timer / 60;
 
 	int sec = (int)m_timer % 60;
-	swprintf_s(wcsbuf, 256, L"AM%01d:%02d", minute, sec);
+	swprintf_s(wcsbuf, 256, L"午前%01d時%02d分", minute, sec);
 
 	//フォントを設定。
 	m_timerFontRender.SetText(wcsbuf);
 	//フォントの大きさを設定。
 	m_timerFontRender.SetScale(1.5f);
 	//フォントの位置を設定。
-	m_timerFontRender.SetPosition(Vector3(-80.0f, 500.0f, 0.0f));
+	m_timerFontRender.SetPosition(Vector3(-200.0f, 500.0f, 0.0f));
 	//フォントの色を設定。
 	m_timerFontRender.SetColor(g_vec4White);
 }

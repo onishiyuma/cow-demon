@@ -8,9 +8,8 @@
 #include "GameCamera.h"
 #include "RingBell.h"
 
-//#include "collision/CollisionObject.h"
-#include<time.h>
-#include<stdlib.h>
+#include <time.h>
+#include <stdlib.h>
 
 namespace
 {
@@ -219,7 +218,7 @@ void AnnoyingEnemy::DeathEffect()
 void AnnoyingEnemy::IsHonden()
 {
 	//追跡ステートでないなら、追跡処理はしない
-	if (m_enemyState != enEnemyState_Honden)
+	if (m_enemyState != enEnemyState_Main)
 	{
 		return;
 	}
@@ -493,9 +492,9 @@ void AnnoyingEnemy::ProcessChaseStateTransition()
 
 void AnnoyingEnemy::ProcessHondenStateTransition()
 {
-	m_hondenTimer += g_gameTime->GetFrameDeltaTime();
+	m_mainTimer += g_gameTime->GetFrameDeltaTime();
 	//本殿に向かう時間がある程度経過したら。
-	if (m_hondenTimer >= 0.8f)
+	if (m_mainTimer >= 0.8f)
 	{
 		ProcessCommonStateTransition();
 		return;
@@ -603,7 +602,7 @@ void AnnoyingEnemy::ProcessCommonStateTransition()
 			Vector3 diff = m_ringBell->GetPosition() - m_position;
 			diff.Normalize();
 			m_moveSpeed = diff * 300.0f;
-			m_enemyState = enEnemyState_Honden;
+			m_enemyState = enEnemyState_Main;
 			return;
 		}
 	}
@@ -621,7 +620,7 @@ void AnnoyingEnemy::ManageState()
 	case enEnemyState_Chase:
 		ProcessChaseStateTransition();
 		break;
-	case enEnemyState_Honden:
+	case enEnemyState_Main:
 		ProcessHondenStateTransition();
 		break;
 		//自爆処理

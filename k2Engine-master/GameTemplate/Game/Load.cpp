@@ -22,9 +22,9 @@ bool Load::Start()
 
     // Tipsリストを初期化  
     tipsList = {
-        L"Tips：5時まで本殿を守り続けるとゲームクリアだ！",
-        L"Tips：火打石を集めて灯籠を灯すことによって敵に攻撃できるぞ！",
-        L"Tips：本殿にある鐘を鳴らすことで回復できるぞ！"
+        L"Tips「5時まで本殿を守り続けるとゲームクリアだ」",
+        L"Tips「火打石を集めて灯籠を灯すことによって敵に攻撃できるぞ」",
+        L"Tips「本殿にある鐘を鳴らすことで回復できるぞ」"
     };
 
     std::wstring wstr(tipsList[m_currentTipsIndex].begin(), tipsList[m_currentTipsIndex].end());

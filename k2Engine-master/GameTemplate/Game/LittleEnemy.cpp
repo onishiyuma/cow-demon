@@ -14,7 +14,7 @@
 
 namespace
 {
-	//スキルゲージの増加量。
+	//チャージ増加量。
 	int CHARGE_INCREASE_AMOUNT = 10;
 }
 
