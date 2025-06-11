@@ -11,6 +11,7 @@ class GameCamera;
 class BellSpriteRender;
 class NoHeal;
 class SpinStick;
+#include "graphics/effect/EffectEmitter.h"
 
 class Player :public IGameObject
 {	
@@ -70,6 +71,8 @@ public:
 	void LittleEnemyPoisonCollision();
 	//爆発攻撃判定用コリジョン。
 	void ExplosionCollision();
+	//エフェクトの作成。
+	void CreateEffect();
 
 
 
@@ -125,6 +128,7 @@ private:
 	FontRender			m_fontRender2;								//フォントレンダー。
 	PlayerLight*		m_playerLight;								//プレイヤーのライト。
 	Game*               m_game;										//ゲーム。
+	EffectEmitter*		m_effectEmitter;							//エフェクト。
 	Vector3				m_forward = Vector3::AxisZ;					//方向。
 	Vector3				m_moveSpeed;								//移動速度。
 	const float			m_gravity = 10.5f;							//重力。

@@ -21,16 +21,18 @@ public:
 	}
 
 	//カメラの座標を取得。
-	Vector3 GetCameraPos()const
+	const Vector3& GetCameraPos()const
 	{
 		return m_position;
 	}
 
 	//カメラの前方向を取得。
-	Vector3 GetCameraForward()const
+	const Vector3& GetCameraForward()const
 	{
 		return m_cameraForward;
 	}
+
+	
 
 
 public:
