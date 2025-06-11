@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "GameOver.h"
 #include "GameCamera.h"
+#include "LanternAttack.h"
 #include <time.h>
 #include<stdlib.h>
 
@@ -84,9 +85,11 @@ bool BossEnemy::Start()
 	//エフェクトを読み込む
 	EffectEngine::GetInstance()->ResistEffect(10,u"Assets/effect/EnemyEffects/Usioni_Boss_Down/Boss_Down.efk");
 
+	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_ringBell = FindGO<RingBell>("ringbell");
+	m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
 
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
@@ -388,6 +391,45 @@ void BossEnemy::Collision()
 		}
 	}
 
+	//----------------------------------------
+	//攻撃用灯籠の判定管理。
+	//----------------------------------------
+	//{
+	//	float attackTimer = 0.0f;
+	//	attackTimer += g_gameTime->GetFrameDeltaTime();
+
+	//	Vector3 diff1 = m_game->m_lanternAttack1->m_position - m_position;
+	//	Vector3 diff2 = m_game->m_lanternAttack2->m_position - m_position;
+	//	Vector3 diff3 = m_game->m_lanternAttack3->m_position - m_position;
+
+	//	//灯籠に火がともっている
+	//	if (diff1.Length() >= 400.0f or diff2.Length() >= 400.0f or diff3.Length() >= 400.0f) {
+	//		if (m_game->m_lanternAttack1->m_isLight == true or m_game->m_lanternAttack1->m_isLight == true or m_game->m_lanternAttack1->m_isLight == true) {
+	//			if (attackTimer >= 1.0f) {
+
+	//				m_enemyHP -= 5.0f;
+
+	//				//HPが0になったら。
+	//				if (m_enemyHP < 0)
+	//				{
+	//					//ダウンステートに遷移する。
+	//					m_enemyState = enEnemyState_Down;
+	//				}
+
+	//				else
+	//				{
+	//					//被ダメージステートに遷移する。
+	//					m_enemyState = enEnemyState_Damage;
+	//				}
+	//				attackTimer = 0.0f;
+	//				return;
+	//			}
+	//		}
+	//	}
+
+
+	//}
+
 	//-----------------------------------------
 	//本殿に接触したらゲームオーバーする処理。
 	//-----------------------------------------
@@ -585,7 +627,8 @@ void BossEnemy::ProcessDownStateTransition()
 	
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
-		Game* game = FindGO<Game>("game");
+		
+		m_game->m_isBoss = false;
 		DeleteGO(this);
 	}
 }

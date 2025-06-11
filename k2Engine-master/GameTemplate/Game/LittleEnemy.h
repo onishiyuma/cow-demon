@@ -11,6 +11,7 @@ class Player;
 class Game;
 class GameCamera;
 class RingBell;
+class LanternAttack;
 
 class LittleEnemy :public EnemyBase
 {
@@ -114,8 +115,10 @@ private:
 	Quaternion m_rotation;
 	/*Player* m_player=nullptr;*/
 	EffectEmitter* m_effectEmitter = nullptr;	//エフェクトの参照
+	Game* m_game = nullptr;
 	GameCamera*			m_gameCamera=nullptr;								//カメラ。
 	RingBell*           m_ringBell = nullptr;						//鈴。
+	LanternAttack*      m_lanternAttack;
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションのクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//敵の状態。
 	const Vector3		m_stopMove = Vector3::Zero;					//動きを完全停止。
@@ -128,6 +131,7 @@ private:
 	float				m_stopTimer = 0.0f;							//拘束時間。
 	float				m_mainTimer = 0.0f;							//本殿の時間。
 	float               m_hondenTimer = 0.0f;
+	float               m_deathEffectTimer = 0.0f;                  // 死亡エフェクトの表示時間
 	bool				m_isStopped = false;						//動いているか。
 	bool				m_gameoverFlag = false;						//ゲームオーバーか。
 	bool				m_isUnderAttack = false;					//攻撃を受けたか。

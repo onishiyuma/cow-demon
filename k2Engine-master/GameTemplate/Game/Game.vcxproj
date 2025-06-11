@@ -236,6 +236,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyUI.cpp" />
+    <ClCompile Include="LanternArrow.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
@@ -270,6 +271,7 @@
     </ClCompile>
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="TimeLimit.cpp" />
     <ClCompile Include="TimingBarA.cpp" />
     <ClCompile Include="TimingBarB.cpp" />
     <ClCompile Include="TimingBarC.cpp" />
@@ -286,6 +288,7 @@
     <ClCompile Include="UIThree.cpp" />
     <ClCompile Include="UItukuyomi.cpp" />
     <ClCompile Include="UITwo.cpp" />
+    <ClCompile Include="UIZero.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -299,6 +302,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyUI.h" />
+    <ClInclude Include="LanternArrow.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
@@ -329,6 +333,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="TimeLimit.h" />
     <ClInclude Include="TimingBarA.h" />
     <ClInclude Include="TimingBarB.h" />
     <ClInclude Include="TimingBarC.h" />
@@ -346,6 +351,7 @@
     <ClInclude Include="UIThree.h" />
     <ClInclude Include="UItukuyomi.h" />
     <ClInclude Include="UITwo.h" />
+    <ClInclude Include="UIZero.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

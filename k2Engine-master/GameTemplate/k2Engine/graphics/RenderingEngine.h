@@ -463,7 +463,10 @@ namespace nsK2Engine {
         {
             ReInitIBL(textureFilePath, luminance);
         }
-
+        void SetAmbientByIBLTextureLuminance(float luminance)
+        {
+            m_iblData.m_intencity = luminance;
+        }
         /// <summary>
         /// IBL環境光を無効にする。
         /// </summary>

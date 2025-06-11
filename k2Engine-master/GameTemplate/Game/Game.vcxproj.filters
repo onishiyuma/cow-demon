@@ -56,6 +56,9 @@
     <ClCompile Include="UIOne.cpp" />
     <ClCompile Include="UITwo.cpp" />
     <ClCompile Include="UIThree.cpp" />
+    <ClCompile Include="LanternArrow.cpp" />
+    <ClCompile Include="UIZero.cpp" />
+    <ClCompile Include="TimeLimit.cpp" />
     <ClCompile Include="SpinStick.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +119,9 @@
     <ClInclude Include="UIOne.h" />
     <ClInclude Include="UITwo.h" />
     <ClInclude Include="UIThree.h" />
+    <ClInclude Include="LanternArrow.h" />
+    <ClInclude Include="UIZero.h" />
+    <ClInclude Include="TimeLimit.h" />
     <ClInclude Include="SpinStick.h" />
   </ItemGroup>
   <ItemGroup>

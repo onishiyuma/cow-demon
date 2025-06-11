@@ -9,6 +9,7 @@ class EnemyBase;
 class Game;
 class GameCamera;
 class GameOver;
+class LanternAttack;
 
 class Enemy : public EnemyBase
 {
@@ -122,6 +123,7 @@ private:
 	Game*				m_game = nullptr;							//ゲーム。
 	EffectEmitter* m_effectEmitter = nullptr;					//エフェクトエミッター。
 	GameOver*           m_gameOver = nullptr;						//ゲームオーバー。
+	LanternAttack*      m_lanternAttack;
 
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションデータ。
 	ModelRender			m_modelRender;								//モデルレンダー。
@@ -150,6 +152,7 @@ private:
 	float				m_chaseTimer = 0.0f;						//追跡状態の経過時間。
 	float				m_hondenTimer = 0.0f;						//本殿移動状態の経過時間。
 	float				m_stopTimer = 0.0f;							//拘束状態の経過時間。
+	float               m_deathEffectTimer = 0.0f;                  // 死亡エフェクトの表示時間
 
 	bool				m_isStopped = false;						//拘束状態。
 	bool				m_isGameOver = false;						//ゲームオーバーか。

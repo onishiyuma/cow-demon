@@ -1,5 +1,5 @@
 #pragma once
-
+#include "sound/SoundSource.h"
 #include "Level3DRender/LevelRender.h"
 #include <vector>
 class Player;
@@ -17,6 +17,7 @@ class LanternLight;
 class LanternAttackLight;
 class BlueFlame;
 class RedFlame;
+class LanternArrow;
 class RingBell;
 class Mountain;
 class Tree;
@@ -35,6 +36,8 @@ class Load;
 class UIOne;
 class UITwo;
 class UIThree;
+class UIZero;
+class TimeLimit;
 
 class Game : public IGameObject
 {
@@ -44,6 +47,7 @@ public:
 
 	bool Start();
 	void Update();
+	void Delete();
 	//オブジェクトを作成。
 	void CreateObject();
 	//火打石の生成。
@@ -63,6 +67,8 @@ public:
 	void NotifiyEnemy();
 	//繧ｨ繝阪Α繝ｼ縺ｮ逕滓・縲・
 	void CreateEnemy();
+	//死んだ敵の数分敵を作成する
+	void CreateDeletedEnemy();
 	//繧ｲ繝ｼ繝繧ｪ繝ｼ繝舌・縲√ご繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ繧貞他縺ｶ髢｢謨ｰ縲・
 	void GameManager();
 	//灯籠用ライトのステート
@@ -71,6 +77,8 @@ public:
 	void CreateLanternLight();
 	//灯籠用エフェクトの作成
 	void CreateLanternEffect();
+	//灯籠用矢印の作成
+	void CreateLanternArrow();
 	//攻撃灯籠用ライトのステート
 	void LanternAttackLightState();
 	//攻撃灯籠用ライトの作成
@@ -101,6 +109,7 @@ public:
 	Load* m_load;//フェード処理。
 	EnemyUI*m_enemyUI;
 	SkyCube* m_skyCube;//スカイキューブ。
+	SoundSource* m_gameStartSound; //ゲームスタート音。
 
 	Stone* m_stone1; //轣ｫ謇鍋浹
 	Stone* m_stone2; //轣ｫ謇鍋浹
@@ -117,6 +126,11 @@ public:
 	Lantern* m_lantern2; //轣ｯ邀
 	Lantern* m_lantern3; //轣ｯ邀
 	Lantern* m_lantern4; //轣ｯ邀
+
+	LanternArrow* m_lanternArrow1; //轣ｯ邀縺ｮ謨ｰ
+	LanternArrow* m_lanternArrow2; //轣ｯ邀縺ｮ謨ｰ
+	LanternArrow* m_lanternArrow3; //轣ｯ邀縺ｮ謨ｰ
+	LanternArrow* m_lanternArrow4; //轣ｯ邀縺ｮ謨ｰ
 
 	LanternLight* m_lanternLight1;
 	LanternLight* m_lanternLight2;
@@ -150,9 +164,17 @@ public:
 	UIcurseBar* m_uiCurseBar;
 	UIheal* m_uiHeal;
 
+	UIOne* m_uiOne = nullptr;
+	UITwo* m_uiTwo = nullptr;
+	UIThree* m_uiThree = nullptr;
+	UIZero* m_uiZero = nullptr;
+
+	TimeLimit* m_timeLimit1;
+
 	SpriteRender m_spriteRender;//繧ｹ繝励Λ繧､繝医Ξ繝ｳ繝繝ｼ
 	FontRender m_timerFontRender;//譎りｨ・
 	FontRender m_notifyEnemyFontRender;//敵出現通知用フォントレンダー。
+	FontRender m_enemyCount;
 	Vector3 m_pos;//蠎ｧ讓・
 	Vector3 Random(); //繧ｨ繝阪Α繝ｼ縺ｮ繝ｩ繝ｳ繝繝繧ｹ繝昴・繝ｳ
 
@@ -182,14 +204,17 @@ public:
 	std::vector<BossEnemy*> m_bossEnemyList;
 	std::vector<AnnoyingEnemy*> m_annoyingEnemyList;
 
+	int m_dieCount = 0;
 	int m_maxCount = 0;	//敵の最大数。
 	int m_totalCount = 0;//敵の合計。
+	bool m_isBoss = false; //
 	int m_lanternLightState = 0;
 	int m_spawnCount=0;
 	int m_lanternEffectState = 0;
 	int m_lanternAttackLightState = 0;
 	float m_timer = 120.0f;//タイマー。
 	float m_timeLimit = 0;//蛻ｶ髯先凾髢・
+	float m_spawnTimer = 0.0f; //敵出現タイマー。
 	int m_lanternAttackEffectState = 0;
 	float m_skyLuminance = 0.0002f; //空の明るさ。
 	float m_skyAmbient = 0.0002f; //空の明るさの影響を受ける環境光。
@@ -239,12 +264,12 @@ public:
 
 	const float		m_luminanceNight = 0.0003f;			//夜の明るさ
 	const float		m_luminanceMidNight1 = 0.0005f;		//夜の明るさ
-	const float		m_luminanceMidNight2 = 0.001f;		//夜の明るさ
-	const float		m_luminanceSunrise = 0.0075f;		//日の出
-	const float		m_luminanceDawn1 = 0.05f;			//夜明け
-	const float		m_luminanceDawn2 = 0.1f;			//夜明け
-	const float		m_luminanceDawn3 = 0.5f;			//夜明け
-	const float		m_luminanceDay = 1.0f;				//朝（最大）
+	const float		m_luminanceMidNight2 = 0.0007f;		//夜の明るさ
+	const float		m_luminanceSunrise = 0.001f;		//日の出
+	const float		m_luminanceDawn1 = 0.005f;			//夜明け
+	const float		m_luminanceDawn2 = 0.007f;			//夜明け
+	const float		m_luminanceDawn3 = 0.01f;			//夜明け
+	const float		m_luminanceDay = 0.05f;				//朝（最大）
 
 	int m_timerCount = 0; //タイマーのカウント。
 	float m_countDownTimer = 3.0f;//カウントダウン時間
@@ -254,9 +279,9 @@ public:
 	bool m_isTwo = false;//あと二秒かどうか
 	bool m_isThree = false;//あと三秒かどうか
 
-	UIOne* m_uiOne = nullptr;
-	UITwo* m_uiTwo = nullptr;
-	UIThree* m_uiThree = nullptr;
+	bool m_isGameStart = false; //ゲームスタートフラグ
+	bool m_isLoad = true;//ゲーム開始前でロードが終わっているか
+	bool m_isTimeLimit = false;
 };
 
 

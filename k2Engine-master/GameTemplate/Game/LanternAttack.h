@@ -40,6 +40,7 @@ private:
 	Line*			m_line;								//線。
 	SpritePush*		m_spritePush;						//プッシュ画像。
 
+	float            m_attack = 5.0f;
 	int				m_buttonAState = 0;
 	int				m_lanternCount = 0;					//火を灯したカウント。
 	bool			m_isLightUI = false;				//灯籠の近くにいるか。
