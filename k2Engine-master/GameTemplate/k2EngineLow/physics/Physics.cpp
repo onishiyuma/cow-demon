@@ -27,23 +27,6 @@ namespace nsK2EngineLow {
 				return 0.0f;
 			}
 		};
-		struct MyRayResultCallback : public btCollisionWorld::RayResultCallback
-		{
-			Vector3 hitPos;
-			Vector3 rayStart;
-			Vector3 rayEnd;
-			bool isHit = false;
-			float hitFraction = 1.0f;
-			btScalar	addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace) override			
-			{
-				if (rayResult.m_hitFraction < hitFraction) {
-					// こちらの方が近い。
-					hitPos.Lerp(rayResult.m_hitFraction, rayStart, rayEnd);
-				}
-				isHit = true;
-				return rayResult.m_hitFraction;
-			}
-		};
 	}
 	bool PhysicsWorld::ConvexSweepTest(ICollider& collider, const Vector3& rayStart, const Vector3& rayEnd) const
 	{
@@ -75,6 +58,19 @@ namespace nsK2EngineLow {
 			hitPos = cb.hitPos;
 		}
 		return cb.isHit;
+	}
+	bool PhysicsWorld::RayTest(const Vector3& rayStart, const Vector3& rayEnd, Vector3& hitPos, MyRayResultCallback& resultCallBack)const
+	{
+		btVector3 start, end;
+		start.setValue(rayStart.x, rayStart.y, rayStart.z);
+		end.setValue(rayEnd.x, rayEnd.y, rayEnd.z);
+		resultCallBack.rayStart = rayStart;
+		resultCallBack.rayEnd = rayEnd;
+		m_dynamicWorld->rayTest(start, end, resultCallBack);
+		if (resultCallBack.isHit) {
+			hitPos = resultCallBack.hitPos;
+		}
+		return resultCallBack.isHit;
 	}
 	PhysicsWorld::PhysicsWorld()
 	{

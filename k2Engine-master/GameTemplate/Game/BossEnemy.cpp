@@ -65,7 +65,8 @@ bool BossEnemy::Start()
 	m_charaCon.Init(
 		120.0f,
 		120.0f,
-		m_position
+		m_position,
+		enCollisionAttr_Character
 	);
 
 	//ボーンのIDを取得する。

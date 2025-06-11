@@ -5,7 +5,8 @@
 bool BackGround::Start()
 {
 	//モデルの初期化を行う。
-	m_modelRender.Init("Assets/modelData/stage/stage.tkm");
+	//m_modelRender.Init("Assets/modelData/stage/stage.tkm");
+	m_modelRender.Init("Assets/modelData/ground.tkm");
 
 	//モデルのワールド行列を更新する。
 	m_modelRender.Update();
@@ -13,7 +14,7 @@ bool BackGround::Start()
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	
 	//当たり判定を有効化する。
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
 	//コリジョン作成用関数を呼び出す。
 	CreateCollision();

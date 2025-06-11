@@ -102,13 +102,13 @@ public:
 	}
 
 	//HPを取得する関数。
-	float GetHP()const
+	int GetHP()const
 	{
 		return	m_enemyHP;
 	}
 
 	//最大HPを取得する関数。
-	float GetMaxHP()const
+	int GetMaxHP()const
 	{
 		return m_enemyMaxHP;
 	}

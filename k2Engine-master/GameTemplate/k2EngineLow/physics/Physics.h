@@ -6,6 +6,24 @@
 namespace nsK2EngineLow {
 	class CharacterController;
 
+	struct MyRayResultCallback : public btCollisionWorld::RayResultCallback
+	{
+		Vector3 hitPos;
+		Vector3 rayStart;
+		Vector3 rayEnd;
+		bool isHit = false;
+		float hitFraction = 1.0f;
+		btScalar	addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace) override
+		{
+			if (rayResult.m_hitFraction < hitFraction) {
+				// こちらの方が近い。
+				hitPos.Lerp(rayResult.m_hitFraction, rayStart, rayEnd);
+			}
+			isHit = true;
+			return rayResult.m_hitFraction;
+		}
+	};
+
 	class PhysicsWorld : public Noncopyable
 	{
 		static PhysicsWorld* m_instance;	//唯一のインスタンス。
@@ -121,6 +139,7 @@ namespace nsK2EngineLow {
 		/// <param name="hitPos">交点の格納先</param>
 		/// <returns>trueが返ってきたら衝突している。</returns>
 		bool RayTest(const Vector3& rayStart, const Vector3& rayEnd, Vector3& hitPos) const;
+		bool RayTest(const Vector3& rayStart, const Vector3& rayEnd, Vector3& hitPos,MyRayResultCallback&resultCallBack)const;
 		/*!
 		* @brief	コリジョンオブジェクトをワールドに登録。
 		*@param[in]	colliObj	コリジョンオブジェクト。

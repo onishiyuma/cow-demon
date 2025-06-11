@@ -21,6 +21,8 @@ namespace
 	Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };
 	//Lスティックの移動速度。
 	float	L_STICK_MOVE_SPEED = 350.0f;
+	//エフェクトの大きさ。
+	Vector3 EFFECT_SCALE = { 55.0f,55.0f,55.0f };
 }
 
 
@@ -28,6 +30,7 @@ bool Player::Start()
 {
 	//モデルを読み込む。
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	EffectEngine::GetInstance()->ResistEffect(11, u"Assets/effect/RingBellEffect/Heal.efk");
 
 	//モデルの座標をセットする。
 	m_position.Set(70.0f, 0.0f, -1000.0f);
@@ -69,11 +72,13 @@ Player::Player()
 Player::~Player()
 {
 	DeleteGO(m_playerLight);
+	DeleteGO(m_effectEmitter);
 }
 
 void Player::Update()
 {
-	if(m_game->m_isCowntDownStart==true){
+	if(m_game->m_isCowntDownStart==true)
+	{
 		//移動処理。
 		Move();
 	}
@@ -399,9 +404,15 @@ void Player::RotationCamera()
 			m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
 			if (m_uiHeal->m_useHeal >0)
 			{
+				//回復するHPをセット。
 				HealHP(100);
+				//回復のエフェクトを再生。
+				CreateEffect();
+				//回復の回数を減らす。
 				m_uiHeal->m_useHeal--;
+				//回復モードを戻す。
 				m_isHealMode = false;
+				//回復にクールタイムを設ける。
 				m_healCoolDown = 3.0f;
 			}
 		}
@@ -497,11 +508,11 @@ void Player::RingBellCollision()
 					m_noHeal = NewGO<NoHeal>(0);
 				}
 			}
-
 			if (m_bellSpriteRender == nullptr)
 			{
 				m_bellSpriteRender = NewGO<BellSpriteRender>(0);
 			}
+
 			Distance();
 
 			//Aボタン単押しで回復モードに入る。
@@ -749,6 +760,20 @@ void Player::ExplosionCollision()
 			m_isDamage_Explosion = false;
 		}
 	}
+}
+
+void Player::CreateEffect()
+{
+	//エフェクトエミッターのインスタンスを生成。
+	m_effectEmitter = NewGO<EffectEmitter>(0);
+	m_effectEmitter->Init(11);
+	//エフェクトのサイズを設定する。
+	m_effectEmitter->SetScale(EFFECT_SCALE);
+
+	//エフェクトの座標を設定する。
+	m_effectEmitter->SetPosition(m_position);
+	//エフェクトを再生。
+	m_effectEmitter->Play();
 }
 
 void Player::Render(RenderContext& rc)

@@ -33,15 +33,11 @@
 #include "UIOne.h"
 #include "UITwo.h"	
 #include "UIThree.h"
+#include <btBulletDynamicsCommon.h>
 
 
 bool Game::Start()
 {
-	//インスタンスアドレスを検索。
-	m_load = FindGO<Load>("load");
-	m_gameCamera = FindGO<GameCamera>("gamecamera");
-	m_enemy = FindGO<Enemy>("enemy");
-
 	//ステージ全体を暗くする。
 	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
 	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
@@ -72,6 +68,12 @@ bool Game::Start()
 
 	//UIの作成。
 	CreateUI();
+
+	//インスタンスアドレスを検索。
+	m_load = FindGO<Load>("load");
+	m_gameCamera = FindGO<GameCamera>("gamecamera");
+	m_enemy = FindGO<Enemy>("enemy");
+	m_crossHair = FindGO<CrossHair>("crosshair");
 
 	return true;
 }
@@ -115,16 +117,6 @@ Game::~Game()
 	DeleteGO(m_tree);			//木。
 	DeleteGO(m_crossHair);		//クロスヘアー。
 	DeleteGO(m_ringBell);		//ベル。
-	//プレイヤー。
-	DeleteGO(m_player);
-	//ゲームカメラ。
-	DeleteGO(m_gameCamera);
-	//ステージ。
-	DeleteGO(m_backGround);
-	//クロスヘア。
-	DeleteGO(m_crossHair);
-	//ベル。
-	DeleteGO(m_ringBell);
 
 	//火打石。
 	DeleteGO(m_stone1);
@@ -181,7 +173,8 @@ Game::~Game()
 
 void Game::Update()
 {	
-
+	//クロスヘア内に敵が入っていれば赤くする。
+	HitCrossHair();
 	if (m_load->isLoad())
 	{
 		return;
@@ -189,7 +182,8 @@ void Game::Update()
 
 
 	
-	if (m_isCowntDownStart == false) {
+	if (!m_isCowntDownStart)
+	{
 		//カウントダウンの開始。
 		StartCountDown();
 		//灯籠用ライトのステート
@@ -202,7 +196,8 @@ void Game::Update()
 		CreateLanternAttackLight();
 
 	}
-	else if (m_isCowntDownStart == true){
+	else if (m_isCowntDownStart)
+	{
 		//タイマーを表示する用関数。
 		UITimer();
 		//攻撃灯籠用エフェクトの作成
@@ -918,7 +913,7 @@ void Game::CreateEnemy()
 void Game::CreateUI()
 {
 	//クロスヘアーを表示。
-	m_crossHair = NewGO<CrossHair>(0);
+	m_crossHair = NewGO<CrossHair>(0, "crosshair");
 	//月読の加護のUI。
 	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
 	//スキルUI。
@@ -952,6 +947,11 @@ void Game::UITimer()
 	m_timerFontRender.SetPosition(Vector3(-200.0f, 500.0f, 0.0f));
 	//フォントの色を設定。
 	m_timerFontRender.SetColor(g_vec4White);
+}
+
+void Game::HitCrossHair()
+{
+
 }
 
 void Game::NotifiyEnemy()

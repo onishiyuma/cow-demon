@@ -66,7 +66,8 @@ bool AnnoyingEnemy::Start()
 	m_charaCon.Init(
 		60.0f,
 		60.0f,
-		m_position
+		m_position,
+		enCollisionAttr_Character
 	);
 
 	//ボーンのIDを取得する。
