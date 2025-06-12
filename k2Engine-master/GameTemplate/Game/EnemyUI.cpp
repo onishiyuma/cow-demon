@@ -297,10 +297,13 @@ void EnemyUI::SetBossEnemy(BossEnemy* bossEnemy)
 
 void EnemyUI::Render(RenderContext& rc)
 {
-	if (m_enemy&& !Angle(m_enemy))return;
-	if (m_littleEnemy&& !Angle(m_littleEnemy))return;
-	if (m_annoyingEnemy && !Angle(m_annoyingEnemy))return;
-	if (m_bossEnemy && !Angle(m_bossEnemy))return;
+	if ((m_enemy && !Angle(m_enemy)) ||
+		(m_littleEnemy && !Angle(m_littleEnemy)) ||
+		(m_annoyingEnemy && !Angle(m_annoyingEnemy)) ||
+		(m_bossEnemy && !Angle(m_bossEnemy)))
+	{
+		return;
+	}
 
 	m_HPFreamSprite.Draw(rc);
 	m_HPSprite.Draw(rc);
