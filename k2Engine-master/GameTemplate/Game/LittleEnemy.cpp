@@ -66,7 +66,7 @@ bool LittleEnemy::Start()
 		50.0f,
 		50.0f,
 		m_position,
-		enCollisionAttr_Character
+		enCollisionAttr_Enemy
 	);
 
 	//大きさを設定。

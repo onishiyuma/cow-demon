@@ -52,7 +52,7 @@ void Shimenawa::CreateCollision()
 {
 	m_collisionObject = NewGO<CollisionObject>(0);
 	//箱状のコリジョンを作成。
-	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { 500.0f,1.0f,500.0f });
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { 700.0f,1.0f,700.0f });
 	//名前を付ける。
 	m_collisionObject->SetName("Shimenawa");;
 	//オブジェクトが削除されないようにする。

@@ -49,10 +49,11 @@ void CrossHair::Update()
 void CrossHair::HitRayCast()
 {
 	const Vector3 cameraPos = g_camera3D->GetPosition();
-	Vector3 rayTestEnd = cameraPos - g_camera3D->GetTarget();
-	rayTestEnd.Normalize();
+	Vector3 cameraForward = g_camera3D->GetTarget() - cameraPos;
+	cameraForward.Normalize();
+	cameraForward.Scale(2600.0f);
+	Vector3 rayTestEnd = cameraPos + cameraForward;
 	Vector3 hitPoint;
-	rayTestEnd.Scale(1000.0f);
 	if (rayTestEnd.Length() >= 0.01)
 	{
 		EnemyRayResultCallback cb;
