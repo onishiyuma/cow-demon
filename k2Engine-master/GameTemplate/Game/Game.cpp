@@ -208,12 +208,10 @@ void Game::Update()
 			
 			//タイマーを表示する用関数。
 			UITimer();
-			m_timer += g_gameTime->GetFrameDeltaTime();
 			//ゲームーオーバーやゲームクリアーを呼び出す関数。
 			GameManager();
 			//灯籠用ライトのステート
 			LanternLightState();
-			
 			//灯籠用ライトの作成
 			CreateLanternLight();
 			//灯籠用エフェクトの作成

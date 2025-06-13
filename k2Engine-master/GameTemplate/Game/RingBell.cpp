@@ -100,9 +100,5 @@ void RingBell::MoveArrow()
 void RingBell::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
-	if (!m_player->m_isDisplay)
-	{
-		return;
-	}
 	m_arrowModel.Draw(rc);
 }
