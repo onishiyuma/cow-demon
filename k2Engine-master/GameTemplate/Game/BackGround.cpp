@@ -5,8 +5,8 @@
 bool BackGround::Start()
 {
 	//モデルの初期化を行う。
-	//m_modelRender.Init("Assets/modelData/stage/stage.tkm");
-	m_modelRender.Init("Assets/modelData/ground.tkm");
+	m_modelRender.Init("Assets/modelData/stage/stage.tkm");
+	//m_modelRender.Init("Assets/modelData/ground.tkm");
 
 	//モデルのワールド行列を更新する。
 	m_modelRender.Update();

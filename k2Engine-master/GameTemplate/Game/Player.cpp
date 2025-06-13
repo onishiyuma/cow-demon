@@ -20,7 +20,7 @@ namespace
 	//文字の座標。
 	Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };
 	//Lスティックの移動速度。
-	float	L_STICK_MOVE_SPEED = 350.0f;
+	float L_STICK_MOVE_SPEED = 350.0f;
 	//エフェクトの大きさ。
 	Vector3 EFFECT_SCALE = { 55.0f,55.0f,55.0f };
 }
@@ -106,15 +106,6 @@ void Player::PlayerAttack()
 		SkillTukuyomiBlessing();
 		//しめ縄。
 		ItemShimenawa();
-	}
-	else
-	{
-		//文字の表示。
-		wchar_t text[256] = { 0 };
-		swprintf_s(text, 256, L"灯籠を全て灯すと攻撃できるぞ");
-		m_fontRender1.SetText(text);
-		m_fontRender1.SetPosition(FONT_POSITION);
-		m_fontRender1.SetColor({ g_vec4lightBlue });
 	}
 }
 
@@ -441,11 +432,6 @@ void Player::UpdateHealHint()
 	//一回だけ表示させたいので。
 	if (m_isDisplay)
 	{
-		wchar_t text[256] = { 0 };
-		swprintf_s(text, 256, L"本殿の前でAボタンを押してスティックを回すと回復できるぞ");
-		m_fontRender2.SetText(text);
-		m_fontRender2.SetPosition({ -480.0f,-300.0f,0.0f });
-		m_fontRender2.SetColor(g_vec4lightBlue);
 		m_isDisplay = false;
 	}
 
@@ -778,15 +764,9 @@ void Player::CreateEffect()
 
 void Player::Render(RenderContext& rc)
 {
-	//灯籠が灯っていれば描画しない。
-	if (!m_enemyIsCanAttack)
-	{
-		m_fontRender1.Draw(rc);
-	}
 	//HPが100以上あれば描画しない。
 	if (m_playerHP<=90)
 	{
-		m_fontRender2.Draw(rc);
 		m_isDisplay = false;
 	}
 }

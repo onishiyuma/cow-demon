@@ -112,7 +112,7 @@ public:
 	int						m_skillATK = 0;								//スキル攻撃力。
 	int						m_stoneCount = 0;							//火打石の所持数。
 	int						m_tukuyomiATK = 0;							//月読の加護の攻撃力。
-	int						m_lanternCount = 4;							//灯籠の灯っている数。
+	int						m_lanternCount = 0;							//灯籠の灯っている数。
 private:
 	NoHeal*					m_noHeal;									//回復できない。
 	BellSpriteRender*		m_bellSpriteRender;							//鈴を使う画像。
