@@ -94,14 +94,14 @@ void Load::LoadingProgress()
             //ゲームモードだったら。
             if (m_gameManagement->m_isGame == true) {
                 m_loadingProgress = 1.0f;
-                m_drawUI = true;
+                m_isdrawUI = true;
                 m_game->m_isLoad = false;
                 DeleteGO(this);
             }
             //チュートリアルモードだったら。
             else if (m_gameManagement->m_isTutorial == true) {
                 m_loadingProgress = 1.0f;
-                m_drawUI = true;
+                m_isdrawUI = true;
                 m_tutorial->m_isLoad = false;
                 DeleteGO(this);
             }

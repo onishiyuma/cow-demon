@@ -14,6 +14,7 @@ class BellSpriteRender;
 class NoHeal;
 class SpinStick;
 #include "graphics/effect/EffectEmitter.h"
+#include "sound/SoundSource.h"
 
 class Player :public IGameObject
 {	
@@ -93,6 +94,11 @@ public:
 
 public:
 	//メンバ変数。
+	SoundSource* m_nomalAttack; 
+	SoundSource* m_skill;
+	SoundSource* m_simenawa; 
+	SoundSource* m_hell; 
+	EffectEmitter* m_effectEmitter;
 	enPlayerState		m_playerState = enPlayerState_None;			//プレイヤーの状態。
 	Vector3				m_position = Vector3::Zero;					//座標。
 	const float			m_collectTime = 15.0f;						//しめ縄を取る時間。

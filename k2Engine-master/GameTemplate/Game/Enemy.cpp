@@ -121,6 +121,10 @@ void Enemy::Update()
 		PlayAnimation();
 		//モデルの更新。
 		m_modelRender.Update();
+
+		if (m_game->m_timer >= 300.0f) {
+			DeleteGO(this);
+		}
 	}
 	//チュートリアルモードだったら。
 	else if (m_gameManagement->m_isTutorial == true) {

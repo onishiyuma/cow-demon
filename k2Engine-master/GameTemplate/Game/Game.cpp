@@ -67,7 +67,7 @@ bool Game::Start()
 	CreateLantern();
 
 	//攻撃用灯籠の作成。
-	CreateAttackLantern();
+	//CreateAttackLantern();
 
 	//UIの作成。
 	CreateUI();
@@ -130,9 +130,9 @@ Game::~Game()
 	DeleteGO(m_ringBell);		//ベル。
 
 	//火打石。
-	DeleteGO(m_stone1);
+	/*DeleteGO(m_stone1);
 	DeleteGO(m_stone2);
-	DeleteGO(m_stone3);
+	DeleteGO(m_stone3);*/
 	DeleteGO(m_stone4);
 	DeleteGO(m_stone5);
 	DeleteGO(m_stone6);
@@ -162,20 +162,20 @@ Game::~Game()
 	DeleteGO(m_lanternArrow3);
 	DeleteGO(m_lanternArrow4);
 
-	//攻撃用灯籠。
-	DeleteGO(m_lanternAttack1);
-	DeleteGO(m_lanternAttack2);
-	DeleteGO(m_lanternAttack3);
+	////攻撃用灯籠。
+	//DeleteGO(m_lanternAttack1);
+	//DeleteGO(m_lanternAttack2);
+	//DeleteGO(m_lanternAttack3);
 
-	//攻撃灯籠用ライト。
-	DeleteGO(m_lanternAttackLight1);
-	DeleteGO(m_lanternAttackLight2);
-	DeleteGO(m_lanternAttackLight3);
+	////攻撃灯籠用ライト。
+	//DeleteGO(m_lanternAttackLight1);
+	//DeleteGO(m_lanternAttackLight2);
+	//DeleteGO(m_lanternAttackLight3);
 
-	//攻撃灯籠用エフェクト。
-	DeleteGO(m_redFlame1);
-	DeleteGO(m_redFlame2);
-	DeleteGO(m_redFlame3);
+	////攻撃灯籠用エフェクト。
+	//DeleteGO(m_redFlame1);
+	//DeleteGO(m_redFlame2);
+	//DeleteGO(m_redFlame3);
 
 	//UI関連。
 	DeleteGO(m_uiTukuyomi);
@@ -213,9 +213,14 @@ void Game::Update()
 			m_gameStartSound = NewGO<SoundSource>(2);
 			m_gameStartSound->Init(2);
 			m_gameStartSound->Play(false);
+			g_soundEngine->ResistWaveFileBank(62, "Assets/sound/stage.wav");
+			m_stage = NewGO<SoundSource>(62);
+			m_stage->Init(62);
+			m_stage->Play(false);
 			m_isGameStart = true;
 		}
 		else {
+			
 			
 			//タイマーを表示する用関数。
 			UITimer();
@@ -229,11 +234,11 @@ void Game::Update()
 			//灯籠用エフェクトの作成
 			CreateLanternEffect();
 			//攻撃灯籠用ライトのステート
-			LanternAttackLightState();
+			//LanternAttackLightState();
 			//攻撃灯籠用ライトの作成
-			CreateLanternAttackLight();
+			//CreateLanternAttackLight();
 			//攻撃灯籠用エフェクトの作成
-			CreateLanternAttackEffect();
+			//CreateLanternAttackEffect();
 			//空の明るさ調整
 			SetSkyLight();
 			//敵のスポーン処理と敵が来たことを通知する。
@@ -505,7 +510,7 @@ Vector3 Game::Random()
 void Game::CreateStone()
 {
 	// 火打石を表示。
-	m_stone1 = NewGO<Stone>(0, "stone1");
+	/*m_stone1 = NewGO<Stone>(0, "stone1");
 	m_stone1->m_position = { 1500.0f,-25.0f,2200.0f };
 	m_stone1->m_firstPosition = m_stone1->m_position;
 
@@ -515,7 +520,7 @@ void Game::CreateStone()
 
 	m_stone3 = NewGO<Stone>(0, "stone3");
 	m_stone3->m_position = { -180.0f,-25.0f,2400.0f };
-	m_stone3->m_firstPosition = m_stone3->m_position;
+	m_stone3->m_firstPosition = m_stone3->m_position;*/
 
 	m_stone4 = NewGO<Stone>(0, "stone4");
 	m_stone4->m_position = { -700.0f,-25.0f,-400.0f };
