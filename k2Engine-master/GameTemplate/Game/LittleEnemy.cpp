@@ -65,7 +65,8 @@ bool LittleEnemy::Start()
 	m_charaCon.Init(
 		50.0f,
 		50.0f,
-		m_position
+		m_position,
+		enCollisionAttr_Enemy
 	);
 
 	//大きさを設定。

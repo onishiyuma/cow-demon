@@ -31,7 +31,7 @@ void UIStone::Update()
 	//表示するテキストを設定。
 	m_fontRender.SetText(wcsbuf2);
 	//フォントの位置を設定。
-	m_fontRender.SetPosition(Vector3(-900.0f, -300.0f, 0.0f));
+	m_fontRender.SetPosition(Vector3(-190.0f, -350.0f, 0.0f));
 	//フォントの大きさを設定。
 	m_fontRender.SetScale(1.5f);
 	//フォントの色を設定。

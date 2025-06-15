@@ -62,6 +62,8 @@ public:
 	void ButtonUI();
 	//UIのタイマー。
 	void UITimer();
+	//敵が照準の中に入ったか。
+	void HitCrossHair();
 	//敵の出現を通知。
 	void NotifiyEnemy();
 	//繧ｨ繝阪Α繝ｼ縺ｮ逕滓・縲・

@@ -14,7 +14,7 @@ Poison::Poison()
 
 Poison::~Poison()
 {
-	/*if (m_effectEmitter) {
+	if (m_effectEmitter) {
 		m_effectEmitter->Stop();
 		DeleteGO(m_effectEmitter);
 		m_effectEmitter = nullptr;
@@ -22,7 +22,7 @@ Poison::~Poison()
 	if (m_collisionObj) {
 		DeleteGO(m_collisionObj);
 		m_collisionObj = nullptr;
-	}*/
+	}
 }
 
 bool Poison::Start()
@@ -32,8 +32,9 @@ bool Poison::Start()
 	//移動速度を設定する。
 	m_moveSpeed = Vector3::AxisZ;
 	m_rotation.Apply(m_moveSpeed);
-	m_position += m_moveSpeed * 50.0f;
 	m_moveSpeed *= 1200.0f;
+	m_position += m_moveSpeed * 50.0f;
+
 	//回転を設定する
 	m_rotation.AddRotationDegY(0.0f);
 
@@ -81,6 +82,12 @@ void Poison::Update()
 	//コリジョンオブジェクトに座標を設定する。
 	m_collisionObj->SetPosition(m_position);
 	m_collisionObj->SetRotation(m_rotation);
+	//エフェクトも同じ速度にしたいので。
+	if (m_effectEmitter) 
+	{
+		m_effectEmitter->SetPosition(m_position);
+		m_effectEmitter->SetRotation(m_rotation);
+	}
 	
 	//タイマーを加算。
 	m_timer += g_gameTime->GetFrameDeltaTime();

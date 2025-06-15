@@ -22,7 +22,9 @@ namespace
 	//文字の座標。
 	Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };
 	//Lスティックの移動速度。
-	float	L_STICK_MOVE_SPEED = 350.0f;
+	float L_STICK_MOVE_SPEED = 350.0f;
+	//エフェクトの大きさ。
+	Vector3 EFFECT_SCALE = { 55.0f,55.0f,55.0f };
 }
 
 
@@ -30,6 +32,7 @@ bool Player::Start()
 {
 	//モデルを読み込む。
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	EffectEngine::GetInstance()->ResistEffect(11, u"Assets/effect/RingBellEffect/Heal.efk");
 
 	//モデルの座標をセットする。
 	m_position.Set(70.0f, 0.0f, -1000.0f);
@@ -81,6 +84,7 @@ Player::Player()
 Player::~Player()
 {
 	DeleteGO(m_playerLight);
+	DeleteGO(m_effectEmitter);
 }
 
 void Player::Update()
@@ -120,6 +124,7 @@ void Player::Update()
 		
 	}
 	
+	
 }
 
 void Player::PlayerAttack()
@@ -148,6 +153,7 @@ void Player::PlayerAttack()
 			m_fontRender1.SetColor({ g_vec4lightBlue });
 		}
 	}
+
 	//チュートリアルモードだったら。
 	else if (m_gameManagement->m_isTutorial == true) {
 
@@ -456,9 +462,15 @@ void Player::RotationCamera()
 			m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
 			if (m_uiHeal->m_useHeal >0)
 			{
+				//回復するHPをセット。
 				HealHP(100);
+				//回復のエフェクトを再生。
+				CreateEffect();
+				//回復の回数を減らす。
 				m_uiHeal->m_useHeal--;
+				//回復モードを戻す。
 				m_isHealMode = false;
+				//回復にクールタイムを設ける。
 				m_healCoolDown = 3.0f;
 			}
 		}
@@ -487,11 +499,6 @@ void Player::UpdateHealHint()
 	//一回だけ表示させたいので。
 	if (m_isDisplay)
 	{
-		wchar_t text[256] = { 0 };
-		swprintf_s(text, 256, L"本殿の前でAボタンを押してスティックを回すと回復できるぞ");
-		m_fontRender2.SetText(text);
-		m_fontRender2.SetPosition({ -480.0f,-300.0f,0.0f });
-		m_fontRender2.SetColor(g_vec4lightBlue);
 		m_isDisplay = false;
 	}
 
@@ -554,11 +561,11 @@ void Player::RingBellCollision()
 					m_noHeal = NewGO<NoHeal>(0);
 				}
 			}
-
 			if (m_bellSpriteRender == nullptr)
 			{
 				m_bellSpriteRender = NewGO<BellSpriteRender>(0);
 			}
+
 			Distance();
 
 			//Aボタン単押しで回復モードに入る。
@@ -808,17 +815,25 @@ void Player::ExplosionCollision()
 	}
 }
 
+void Player::CreateEffect()
+{
+	//エフェクトエミッターのインスタンスを生成。
+	m_effectEmitter = NewGO<EffectEmitter>(0);
+	m_effectEmitter->Init(11);
+	//エフェクトのサイズを設定する。
+	m_effectEmitter->SetScale(EFFECT_SCALE);
+
+	//エフェクトの座標を設定する。
+	m_effectEmitter->SetPosition(m_position);
+	//エフェクトを再生。
+	m_effectEmitter->Play();
+}
+
 void Player::Render(RenderContext& rc)
 {
-	//灯籠が灯っていれば描画しない。
-	if (!m_enemyIsCanAttack)
-	{
-		m_fontRender1.Draw(rc);
-	}
 	//HPが100以上あれば描画しない。
 	if (m_playerHP<=90)
 	{
-		m_fontRender2.Draw(rc);
 		m_isDisplay = false;
 	}
 }

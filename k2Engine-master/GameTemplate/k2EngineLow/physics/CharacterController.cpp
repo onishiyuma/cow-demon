@@ -100,6 +100,7 @@ namespace nsK2EngineLow {
 						dist = distTmp;
 						hitNormal = hitNormalTmp;
 					}
+			
 				}
 				return 0.0f;
 			}
@@ -107,7 +108,7 @@ namespace nsK2EngineLow {
 	}
 
 
-	void CharacterController::Init(float radius, float height, const Vector3& position)
+	void CharacterController::Init(float radius, float height, const Vector3& position,int collisionAttr)
 	{
 		m_position = position;
 		//コリジョン作成。
@@ -124,7 +125,7 @@ namespace nsK2EngineLow {
 		//剛体の位置を更新。
 		trans.setOrigin(btVector3(position.x, position.y + m_height * 0.5f + m_radius, position.z));
 		//@todo 未対応。trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
-		m_rigidBody.GetBody()->setUserIndex(enCollisionAttr_Character);
+		m_rigidBody.GetBody()->setUserIndex(collisionAttr);
 		m_rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
 
 		m_isInited = true;

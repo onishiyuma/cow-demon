@@ -102,13 +102,13 @@ public:
 	}
 
 	//HPを取得する関数。
-	float GetHP()const
+	int GetHP()const
 	{
 		return	m_enemyHP;
 	}
 
 	//最大HPを取得する関数。
-	float GetMaxHP()const
+	int GetMaxHP()const
 	{
 		return m_enemyMaxHP;
 	}
@@ -116,16 +116,16 @@ public:
 	
 private:
 	//メンバ変数。
-	Vector3 m_scale = { 0.7f,0.7f,0.7f };
+	Vector3			m_scale = { 0.7f,0.7f,0.7f };//大きさ。
 	GameCamera*		m_gameCamera = nullptr;                     //ゲームカメラへの参照。
-	Game* m_game = nullptr;
-	RingBell* m_ringBell = nullptr;                         //本殿への参照。
-	EffectEmitter*       m_effectEmitter = nullptr;          //effectへの参照。
+	Game*			m_game = nullptr;							//ゲームへの参照。
+	RingBell*		m_ringBell = nullptr;                       //本殿への参照。
+	EffectEmitter*  m_effectEmitter = nullptr;					//effectへの参照。
 	AnimationClip	m_animationClips[enAnimationClip_Num];		//アニメーションクリップ配列。
 	EnEnemyState	m_enemyState = enEnemyState_Idle;			//現在の状態。
-	int					m_ExplosionBoneId = -2;							//攻撃判定を出すボーンID
-	int m_enemyHP = 5;
-	int m_enemyMaxHP = m_enemyHP;
+	int				m_ExplosionBoneId = -2;						//攻撃判定を出すボーンID
+	int				m_enemyHP = 5;								//HP
+	const int		m_enemyMaxHP = m_enemyHP;					//最大体力。
 	const Vector3	m_stopMove = Vector3::Zero;					//移動を停止するためのベクトル。
 
 	//各種タイマー。

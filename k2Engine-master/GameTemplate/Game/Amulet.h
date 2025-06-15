@@ -18,16 +18,16 @@ public:
 	void CreateEffect();
 
 public:
-	//座標をセットする。
-	void SetPosition(const Vector3& position)
-	{
-		m_position = position;
-	}
-
 	//座標を取得する。
 	const Vector3& GetPosition()const
 	{
 		return m_position;
+	}
+
+	//座標をセットする。
+	void SetPosition(const Vector3& position)
+	{
+		m_position = position;
 	}
 
 	//回転をセットする。

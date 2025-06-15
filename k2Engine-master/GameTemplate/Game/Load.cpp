@@ -12,7 +12,14 @@ namespace
 bool Load::Start()  
 {  
     //ロード画像。  
-    m_spriteLoad.Init("Assets/sprite/Load.dds",1920,1080);  
+    //m_spriteLoad.Init("Assets/sprite/Load.dds", 1920, 1080);
+    m_spriteLoad_1.Init("Assets/sprite/Load_1.dds", 1920, 1080);
+    m_spriteLoad_2.Init("Assets/sprite/Load_2.dds", 1920, 1080);
+    m_spriteLoad_3.Init("Assets/sprite/Load_3.dds", 1920, 1080);
+
+    tipsList.push_back(&m_spriteLoad_1);
+    tipsList.push_back(&m_spriteLoad_2);
+    tipsList.push_back(&m_spriteLoad_3);
 
     //マスク画像。  
     m_spriteMask.Init("Assets/sprite/Black.dds", 100, 150);  
@@ -21,17 +28,6 @@ bool Load::Start()
     //ゲージ画像。  
     m_spriteLoadGage.Init("Assets/sprite/gauge.dds", 150, 150);  
     m_spriteLoadGage.SetPosition(Vector3(850.0f, -430.0f, 0.0f));  
-
-    // Tipsリストを初期化  
-    tipsList = {
-        L"Tips「5時まで本殿を守り続けるとゲームクリアだ」",
-        L"Tips「火打石を集めて灯籠を灯すことによって敵に攻撃できるぞ」",
-        L"Tips「本殿にある鐘を鳴らすことで回復できるぞ」"
-    };
-
-    std::wstring wstr(tipsList[m_currentTipsIndex].begin(), tipsList[m_currentTipsIndex].end());
-    m_fontRenderTips.SetText(wstr.c_str());
-	m_fontRenderTips.SetPosition(FONTRENDER_PSOITION);
 
     //初期化。  
     m_load = 1.0f;  
@@ -125,23 +121,32 @@ void Load::LoadingProgress()
 
 void Load::Tips()
 {
-	//時間経過でTipsを更新。
+    m_tipTimer += g_gameTime->GetFrameDeltaTime();
+
+    //いずれかのボタンを押してTips更新。
     if (g_pad[0]->IsTriggerAnyKey())
     {
         //Tipsの表示時間をリセット。
         m_tipTimer = 0.0f;
-        //Tipsのインデックスを更新。
+        //更新。
         m_currentTipsIndex = (m_currentTipsIndex + 1) % tipsList.size();
-        //表示するTipsを更新。
-        std::wstring wstr(tipsList[m_currentTipsIndex].begin(), tipsList[m_currentTipsIndex].end());
-        m_fontRenderTips.SetText(wstr.c_str());
+    }
+
+    //時間でもTipsを更新。
+    if (m_tipTimer > m_tipsInterval)
+    {
+        //Tipsの表示時間をリセット。
+        m_tipTimer = 0.0f;
+        //更新。
+        m_currentTipsIndex = (m_currentTipsIndex + 1) % tipsList.size();
     }
 }
 
 void Load::Render(RenderContext& rc)
 {
-    m_spriteLoad.Draw(rc);
+    if (!tipsList.empty())
+    {
+        tipsList[m_currentTipsIndex]->Draw(rc);
+    }
     m_spriteLoadGage.Draw(rc);
-    m_spriteMask.Draw(rc);
-    m_fontRenderTips.Draw(rc);
-}
+    m_spriteMask.Draw(rc);}

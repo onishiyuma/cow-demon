@@ -51,16 +51,13 @@ public:
 	{
 		m_position = position; 
 	}
-	//座標を取得。
-	const Vector3& GetPosition() const 
-	{
-		return m_position;
-	}
+
 	//回転をセット。
 	void SetRotation(const Quaternion& rotation)
 	{
 		m_rotation = rotation;
 	}
+
 	//大きさをセット。
 	void SetScale(const Vector3& scale)
 	{
@@ -75,6 +72,12 @@ public:
     bool IsDead() const
 	{
 		return m_isDeadFlag;
+	}
+
+	//座標を取得。
+	const Vector3& GetPosition() const
+	{
+		return m_position;
 	}
 
 	float GetHP()const

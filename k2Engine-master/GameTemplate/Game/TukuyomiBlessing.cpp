@@ -40,7 +40,8 @@ TukuyomiBlessing::TukuyomiBlessing()
 
 TukuyomiBlessing::~TukuyomiBlessing()
 {
-
+	DeleteGO(m_collisionObject);
+	DeleteGO(m_effectEmitter);
 }
 
 void TukuyomiBlessing::Update()
@@ -82,7 +83,7 @@ void TukuyomiBlessing::CreateCollision()
 	//コリジョンを作成
 	m_collisionObject = NewGO <CollisionObject>(0);
 	//球状のコリジョンを作成する。
-	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { 500.0f,1.0f,500.0f });
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { 550.0f,1.0f,550.0f });
 	//名前を付ける。
 	m_collisionObject->SetName("Tukuyomi");
 	//オブジェクトが自動で削除されないようにする。
@@ -97,7 +98,9 @@ void TukuyomiBlessing::CreateEffect()
 	//エフェクトを初期化。
 	m_effectEmitter->Init(12);
 	//大きさを設定。
+
 	m_effectEmitter->SetScale({ 100.0f,50.0f,100.0f });
+
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
 	//エフェクトを再生。

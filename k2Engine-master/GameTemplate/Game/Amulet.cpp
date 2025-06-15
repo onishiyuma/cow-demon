@@ -19,6 +19,9 @@ bool Amulet::Start()
 	m_direction = Vector3(cameraMatrix.m[2][0], cameraMatrix.m[2][1], cameraMatrix.m[2][2]);
 	m_direction.Normalize();
 
+	//プレイヤーの座標を持ってくる。
+	m_position = m_player->GetPosition();
+
 	//移動速度の設定。
 	m_moveSpeed = m_direction * m_amuletSpeed;
 
@@ -44,7 +47,7 @@ Amulet::~Amulet()
 
 void Amulet::Update()	
 {
-	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime() * 4.0f;
+	m_position += m_moveSpeed * g_gameTime->GetFrameDeltaTime()*4.0f;
 
 	if (m_effectEmitter->GetEffect() != nullptr)
 	{

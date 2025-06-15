@@ -13,6 +13,7 @@ class GameCamera;
 class BellSpriteRender;
 class NoHeal;
 class SpinStick;
+#include "graphics/effect/EffectEmitter.h"
 
 class Player :public IGameObject
 {	
@@ -72,6 +73,8 @@ public:
 	void LittleEnemyPoisonCollision();
 	//爆発攻撃判定用コリジョン。
 	void ExplosionCollision();
+	//エフェクトの作成。
+	void CreateEffect();
 
 
 
@@ -161,4 +164,6 @@ private:
 	bool				m_isBellHit = false;						//回復用コリジョンに当たっているか。
 	bool				m_isHealMode = false;						//回復モード。
 	int					m_playerMaxHP = 100;						//プレイヤーの最大体力。
+
+
 };

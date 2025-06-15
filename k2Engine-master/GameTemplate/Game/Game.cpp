@@ -41,11 +41,6 @@
 
 bool Game::Start()
 {
-	//インスタンスアドレスを検索。
-	m_load = FindGO<Load>("load");
-	m_gameCamera = FindGO<GameCamera>("gamecamera");
-	m_enemy = FindGO<Enemy>("enemy");
-
 	//ステージ全体を暗くする。
 	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
 	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
@@ -76,9 +71,14 @@ bool Game::Start()
 
 	//UIの作成。
 	CreateUI();
-
+  
 	//ボタンUIの作成。
 	ButtonUI();
+
+	//インスタンスアドレスを検索。
+	m_load = FindGO<Load>("load");
+	m_gameCamera = FindGO<GameCamera>("gamecamera");
+	m_enemy = FindGO<Enemy>("enemy");
 
 	//灯籠用矢印の作成。
 	CreateLanternArrow();
@@ -198,8 +198,8 @@ void Game::Update()
 		}
 	}
 	
-	
-	if (m_isCowntDownStart == false) {
+	if (!m_isCowntDownStart)
+	{
 		//カウントダウンの開始。
 		StartCountDown();
 
@@ -224,7 +224,6 @@ void Game::Update()
 			GameManager();
 			//灯籠用ライトのステート
 			LanternLightState();
-			
 			//灯籠用ライトの作成
 			CreateLanternLight();
 			//灯籠用エフェクトの作成
@@ -978,7 +977,7 @@ void Game::CreateDeletedEnemy()
 void Game::CreateUI()
 {
 	//クロスヘアーを表示。
-	m_crossHair = NewGO<CrossHair>(0);
+	m_crossHair = NewGO<CrossHair>(0, "crosshair");
 	//月読の加護のUI。
 	m_uiTukuyomi = NewGO<UItukuyomi>(0, "uitukuyomi");
 	//スキルUI。
@@ -1045,6 +1044,11 @@ void Game::UITimer()
 	m_timerFontRender.SetPosition(Vector3(-200.0f, 500.0f, 0.0f));
 	//フォントの色を設定。
 	m_timerFontRender.SetColor(g_vec4White);
+}
+
+void Game::HitCrossHair()
+{
+
 }
 
 void Game::NotifiyEnemy()

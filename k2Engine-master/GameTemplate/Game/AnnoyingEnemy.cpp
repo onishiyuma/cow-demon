@@ -66,7 +66,8 @@ bool AnnoyingEnemy::Start()
 	m_charaCon.Init(
 		60.0f,
 		60.0f,
-		m_position
+		m_position,
+		enCollisionAttr_Enemy
 	);
 
 	//ボーンのIDを取得する。
@@ -390,6 +391,11 @@ void AnnoyingEnemy::Collision()
 			//停止中の処理。
 			else if (m_isStopped)
 			{
+				//動きを止める。
+				m_moveSpeed = m_stopMove;
+				//アニメーションも止める。
+				m_enemyState = enEnemyState_Idle;
+				//タイマーを減らす。
 				m_stopTimer -= g_gameTime->GetFrameDeltaTime();
 
 				if (m_stopTimer <= 0.0f)
