@@ -11,6 +11,8 @@ class Line;
 class SpritePush;
 class LanternLight;
 
+#include "sound/SoundSource.h"
+
 class Lantern : public IGameObject
 {
 public:
@@ -43,6 +45,7 @@ private:
 	SpritePush*			m_spritePush;				//プッシュ画像。
 	LanternLight*		m_lanternLight = nullptr;	//灯籠。
 	ModelInitData       m_initData;
+	SoundSource* m_light;
 	bool				m_isNoStoneUI = false;		//火打石があるか。
 	bool				m_isLanternAction = false;	//「A:火を灯す」灯籠を灯したか。
 	bool				m_isLightUI = false;		//灯籠の近くにいるか。

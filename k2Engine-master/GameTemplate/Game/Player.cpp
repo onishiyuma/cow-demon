@@ -305,6 +305,10 @@ void Player::ItemShimenawa()
 //通常攻撃作成。
 void Player::MakeNormalAttack()
 {
+	g_soundEngine->ResistWaveFileBank(72, "Assets/sound/nnomalAttack.wav");
+	m_nomalAttack = NewGO<SoundSource>(72);
+	m_nomalAttack->Init(72);
+	m_nomalAttack->Play(false);
 	//インスタンスを作成。
 	Purification* purification = NewGO<Purification>(0);
 	//座標を設定。
@@ -320,6 +324,10 @@ void Player::MakeNormalAttack()
 //スキルの作成。
 void Player::MakeSkill()
 {
+	g_soundEngine->ResistWaveFileBank(52, "Assets/sound/skill.wav");
+	m_skill = NewGO<SoundSource>(52);
+	m_skill->Init(52);
+	m_skill->Play(false);
 	//インスタンスを作成。
 	Amulet* amulet = NewGO<Amulet>(0);
 	//座標を設定。
@@ -351,6 +359,10 @@ void Player::MakeTukuyomiBlessing()
 //しめ縄の作成。
 void Player::MakeShimenawa()
 {
+	g_soundEngine->ResistWaveFileBank(53, "Assets/sound/rope.wav");
+	m_simenawa = NewGO<SoundSource>(53);
+	m_simenawa->Init(53);
+	m_simenawa->Play(false);
 	//インスタンスを作成。
 	Shimenawa* shimenawa = NewGO<Shimenawa>(0);
 	//座標を設定。
@@ -462,6 +474,10 @@ void Player::RotationCamera()
 			m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
 			if (m_uiHeal->m_useHeal >0)
 			{
+				g_soundEngine->ResistWaveFileBank(50, "Assets/sound/hell.wav");
+				m_hell = NewGO<SoundSource>(50);
+				m_hell->Init(50);
+				m_hell->Play(false);
 				//回復するHPをセット。
 				HealHP(100);
 				//回復のエフェクトを再生。

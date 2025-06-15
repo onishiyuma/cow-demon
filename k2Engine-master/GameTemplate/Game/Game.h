@@ -111,6 +111,7 @@ public:
 	EnemyUI*m_enemyUI;
 	SkyCube* m_skyCube;//スカイキューブ。
 	SoundSource* m_gameStartSound; //ゲームスタート音。
+	SoundSource* m_stage; //ゲームスタート音。
 
 	Stone* m_stone1; //轣ｫ謇鍋浹
 	Stone* m_stone2; //轣ｫ謇鍋浹
@@ -292,6 +293,8 @@ public:
 	bool m_isGameStart = false; //ゲームスタートフラグ
 	bool m_isLoad = true;//ゲーム開始前でロードが終わっているか
 	bool m_isTimeLimit = false;
+
+	int m_endTimer = 0.0f;
 };
 
 

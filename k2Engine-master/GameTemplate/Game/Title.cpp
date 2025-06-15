@@ -21,8 +21,8 @@ bool Title::Start()
 	m_spriteSoul.SetMulColor(m_soulColor);
 	
 	//文字の表示。
-	m_fontRender.SetText(L"A ゲーム or B チュートリアル");
-	m_fontRender.SetPosition({ -250.0f,-300.0f,0.0f });
+	m_fontRender.SetText(L"A ゲームスタート");
+	m_fontRender.SetPosition({ -200.0f,-300.0f,0.0f });
 	m_fontRender.SetColor(m_fontColor);
 
 	//タイトルのBGMを読み込む。

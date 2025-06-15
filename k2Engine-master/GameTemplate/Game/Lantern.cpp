@@ -147,6 +147,10 @@ void Lantern::Update()
 						DeleteGO(m_line);
 						DeleteGO(m_spritePush);
 
+						g_soundEngine->ResistWaveFileBank(63, "Assets/sound/lighting.wav");
+						m_light = NewGO<SoundSource>(63);
+						m_light->Init(63);
+						m_light->Play(false);
 						//灯籠に火が灯っている判定にする。
 						m_isLight = true;
 
