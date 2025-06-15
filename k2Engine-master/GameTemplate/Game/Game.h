@@ -59,6 +59,7 @@ public:
 	void CreateAttackLantern();
 	//UI繧帝未謨ｰ蛹悶・
 	void CreateUI();
+	void ButtonUI();
 	//UIのタイマー。
 	void UITimer();
 	//敵が照準の中に入ったか。
@@ -177,6 +178,15 @@ public:
 	FontRender m_enemyCount;
 	Vector3 m_pos;//蠎ｧ讓・
 	Vector3 Random(); //繧ｨ繝阪Α繝ｼ縺ｮ繝ｩ繝ｳ繝繝繧ｹ繝昴・繝ｳ
+
+	//ボタンUIの表示
+	FontRender                m_skip;
+	SpriteRender              m_bButton;
+	FontRender                m_fontNomalAttack;
+	SpriteRender              m_xButton;
+	SpriteRender              m_yButton;
+	SpriteRender              m_ltButton;
+	SpriteRender              m_rtButton;
 
 	//謨ｵ縺ｮ荳隕ｧ繧貞叙蠕励☆繧九◆繧√・繝｡繧ｽ繝・ラ繧貞叙蠕・
 	const std::vector<Enemy*>& GetEnemies()const

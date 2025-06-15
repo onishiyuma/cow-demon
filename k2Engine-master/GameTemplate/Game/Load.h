@@ -1,6 +1,8 @@
 #pragma once
 
 class Game;
+class Tutorial;
+class GameManagement;
 
 class Load : public IGameObject
 {
@@ -36,6 +38,8 @@ private:
 	//メンバ変数。
 	std::vector<SpriteRender*>tipsList;
 	Game*				m_game = nullptr;			//ゲームのインスタンス。
+	Tutorial*           m_tutorial;
+	GameManagement*     m_gameManagement;
 	SpriteRender		m_spriteLoad;				//ロードの画像。
 	SpriteRender		m_spriteLoad_1;				//ロードの画像。
 	SpriteRender		m_spriteLoad_2;				//ロードの画像。

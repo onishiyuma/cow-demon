@@ -60,6 +60,13 @@
     <ClCompile Include="UIZero.cpp" />
     <ClCompile Include="TimeLimit.cpp" />
     <ClCompile Include="SpinStick.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
+    <ClCompile Include="GameManagement.cpp" />
+    <ClCompile Include="SpriteAttack.cpp" />
+    <ClCompile Include="SpriteSkil.cpp" />
+    <ClCompile Include="SpriteSimenawa.cpp" />
+    <ClCompile Include="SpriteTukuyomi.cpp" />
+    <ClCompile Include="SpriteClear.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -123,6 +130,13 @@
     <ClInclude Include="UIZero.h" />
     <ClInclude Include="TimeLimit.h" />
     <ClInclude Include="SpinStick.h" />
+    <ClInclude Include="Tutorial.h" />
+    <ClInclude Include="GameManagement.h" />
+    <ClInclude Include="SpriteAttack.h" />
+    <ClInclude Include="SpriteSkil.h" />
+    <ClInclude Include="SpriteSimenawa.h" />
+    <ClInclude Include="SpriteTukuyomi.h" />
+    <ClInclude Include="SpriteClear.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

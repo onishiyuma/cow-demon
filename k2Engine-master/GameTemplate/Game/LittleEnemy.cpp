@@ -570,7 +570,7 @@ void LittleEnemy::ProcessDownStateTransition()
 
 		// null チェック
 		if (m_game != nullptr) {
-			m_game->m_totalCount--;
+		//m_game->m_totalCount--;
 		}
 	}
 	

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Load.h"
 #include "Game.h"
+#include "Tutorial.h"
+#include "GameManagement.h"
  
 namespace
 {
@@ -29,6 +31,8 @@ bool Load::Start()
 
     //初期化。  
     m_load = 1.0f;  
+
+    m_gameManagement = FindGO<GameManagement>("gameManagement");
 
     return true;  
 }
@@ -59,9 +63,17 @@ void Load::LoadingProgress()
         m_load -= 0.1f;
         if (m_load <= 0.0f) 
         {
-            m_game=NewGO<Game>(0, "game");
-            m_load = 0.0f;
-            m_isFadingOut = false;
+            if (m_gameManagement->m_isGame == true) {
+                m_game = NewGO<Game>(0, "game");
+                m_load = 0.0f;
+                m_isFadingOut = false;
+            }
+            else if (m_gameManagement->m_isTutorial == true) {
+                m_tutorial = NewGO<Tutorial>(0, "tutorial");
+                m_load = 0.0f;
+                m_isFadingOut = false;
+            }
+            
         }
     }
     else
@@ -79,10 +91,21 @@ void Load::LoadingProgress()
         m_loadingProgress += 0.1f * g_gameTime->GetFrameDeltaTime();
         if (m_loadingProgress > 1.0f)
         {
-            m_loadingProgress = 1.0f;
-            m_isdrawUI = true;
-            m_game->m_isLoad = false;
-            DeleteGO(this);
+            //ゲームモードだったら。
+            if (m_gameManagement->m_isGame == true) {
+                m_loadingProgress = 1.0f;
+                m_drawUI = true;
+                m_game->m_isLoad = false;
+                DeleteGO(this);
+            }
+            //チュートリアルモードだったら。
+            else if (m_gameManagement->m_isTutorial == true) {
+                m_loadingProgress = 1.0f;
+                m_drawUI = true;
+                m_tutorial->m_isLoad = false;
+                DeleteGO(this);
+            }
+            
         }
     }
 

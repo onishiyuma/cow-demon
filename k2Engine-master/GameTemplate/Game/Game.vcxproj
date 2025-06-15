@@ -236,6 +236,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyUI.cpp" />
+    <ClCompile Include="GameManagement.cpp" />
     <ClCompile Include="LanternArrow.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -260,10 +261,15 @@
     <ClCompile Include="RingBell.cpp" />
     <ClCompile Include="Shimenawa.cpp" />
     <ClCompile Include="SpinStick.cpp" />
+    <ClCompile Include="SpriteAttack.cpp" />
+    <ClCompile Include="SpriteClear.cpp" />
     <ClCompile Include="SpriteCollection.cpp" />
     <ClCompile Include="SpriteLight.cpp" />
     <ClCompile Include="SpriteNoStone.cpp" />
     <ClCompile Include="SpritePush.cpp" />
+    <ClCompile Include="SpriteSimenawa.cpp" />
+    <ClCompile Include="SpriteSkil.cpp" />
+    <ClCompile Include="SpriteTukuyomi.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -278,6 +284,7 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TukuyomiBlessing.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="UIOne.cpp" />
     <ClCompile Include="UIStone.cpp" />
     <ClCompile Include="UIcurseBar.cpp" />
@@ -302,6 +309,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyUI.h" />
+    <ClInclude Include="GameManagement.h" />
     <ClInclude Include="LanternArrow.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Game.h" />
@@ -326,10 +334,15 @@
     <ClInclude Include="RingBell.h" />
     <ClInclude Include="Shimenawa.h" />
     <ClInclude Include="SpinStick.h" />
+    <ClInclude Include="SpriteAttack.h" />
+    <ClInclude Include="SpriteClear.h" />
     <ClInclude Include="SpriteCollection.h" />
     <ClInclude Include="SpriteLight.h" />
     <ClInclude Include="SpriteNoStone.h" />
     <ClInclude Include="SpritePush.h" />
+    <ClInclude Include="SpriteSimenawa.h" />
+    <ClInclude Include="SpriteSkil.h" />
+    <ClInclude Include="SpriteTukuyomi.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="system\system.h" />
@@ -340,6 +353,7 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TukuyomiBlessing.h" />
+    <ClInclude Include="Tutorial.h" />
     <ClInclude Include="UIOne.h" />
     <ClInclude Include="UIStone.h" />
     <ClInclude Include="UIcurseBar.h" />

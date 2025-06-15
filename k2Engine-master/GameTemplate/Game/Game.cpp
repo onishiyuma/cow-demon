@@ -71,11 +71,15 @@ bool Game::Start()
 
 	//UIの作成。
 	CreateUI();
+  
+	//ボタンUIの作成。
+	ButtonUI();
 
 	//インスタンスアドレスを検索。
 	m_load = FindGO<Load>("load");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_enemy = FindGO<Enemy>("enemy");
+
 	//灯籠用矢印の作成。
 	CreateLanternArrow();
 
@@ -186,7 +190,14 @@ Game::~Game()
 }
 
 void Game::Update()
-{		
+{	
+	if (m_isLoad == true) {
+		if (m_load->isLoad())
+		{
+			return;
+		}
+	}
+	
 	if (!m_isCowntDownStart)
 	{
 		//カウントダウンの開始。
@@ -208,6 +219,7 @@ void Game::Update()
 			
 			//タイマーを表示する用関数。
 			UITimer();
+			//m_timer += g_gameTime->GetFrameDeltaTime();
 			//ゲームーオーバーやゲームクリアーを呼び出す関数。
 			GameManager();
 			//灯籠用ライトのステート
@@ -906,17 +918,17 @@ void Game::CreateEnemy()
 	}
 	
 	
-	wchar_t wcsbuf2[256];
-	swprintf_s(wcsbuf2, 256, L"敵:%d", int(m_totalCount));
+	//wchar_t wcsbuf2[256];
+	//swprintf_s(wcsbuf2, 256, L"敵:%d", int(m_totalCount));
 
-	//表示するテキストを設定。
-	m_enemyCount.SetText(wcsbuf2);
-	//フォントの位置を設定。
-	m_enemyCount.SetPosition(Vector3(500.0f, 300.0f, 0.0f));
-	//フォントの大きさを設定。
-	m_enemyCount.SetScale(1.5f);
-	//フォントの色を設定。
-	m_enemyCount.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	////表示するテキストを設定。
+	//m_enemyCount.SetText(wcsbuf2);
+	////フォントの位置を設定。
+	//m_enemyCount.SetPosition(Vector3(500.0f, 300.0f, 0.0f));
+	////フォントの大きさを設定。
+	//m_enemyCount.SetScale(1.5f);
+	////フォントの色を設定。
+	//m_enemyCount.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
 }
 
@@ -980,6 +992,39 @@ void Game::CreateUI()
 	m_uiStone = NewGO<UIStone>(0, "uiStone");
 }
 
+void Game::ButtonUI()
+{
+	//通常攻撃
+	m_fontNomalAttack.SetText(L":通常攻撃");
+	m_fontNomalAttack.SetPosition(Vector3(-750.0f, -250.0f, 0.0f));
+	m_fontNomalAttack.SetScale(1.0f);
+	m_fontNomalAttack.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+
+	//Xボタン
+	m_xButton.Init("Assets/sprite/X.DDS", 1920, 1080);
+	m_xButton.SetPosition({ 710.0f,-520.0f,0.0f });
+	m_xButton.SetScale({ 0.3f,0.3f,0.3f });
+	m_xButton.Update();
+
+	//Yボタン
+	m_yButton.Init("Assets/sprite/Y.DDS", 1920, 1080);
+	m_yButton.SetPosition({ 420.0f,-520.0f,0.0f });
+	m_yButton.SetScale({ 0.3f,0.3f,0.3f });
+	m_yButton.Update();
+
+	//LTボタン
+	m_ltButton.Init("Assets/sprite/LT.DDS", 1920, 1080);
+	m_ltButton.SetPosition({ 570.0f,-520.0f,0.0f });
+	m_ltButton.SetScale({ 0.3f,0.3f,0.3f });
+	m_ltButton.Update();
+
+	//RTボタン
+	m_rtButton.Init("Assets/sprite/RT.DDS", 1920, 1080);
+	m_rtButton.SetPosition({ -830.0f,-280.0f,0.0f });
+	m_rtButton.SetScale({ 0.5f,0.5f,0.5f });
+	m_rtButton.Update();
+}
+
 void Game::UITimer()
 {
 	m_timer += g_gameTime->GetFrameDeltaTime();
@@ -1036,4 +1081,9 @@ void Game::Render(RenderContext& rc)
 	m_timerFontRender.Draw(rc);
 	m_notifyEnemyFontRender.Draw(rc);
 	m_enemyCount.Draw(rc);
+	m_fontNomalAttack.Draw(rc);
+	m_xButton.Draw(rc);
+	m_yButton.Draw(rc);
+	m_ltButton.Draw(rc);
+	m_rtButton.Draw(rc);
 }

@@ -56,6 +56,6 @@ private:
 	Vector3				m_scale = Vector3::One;			//大きさ。
 	Vector3				m_moveVec;						//移動するベクトル。
 	Quaternion			m_rotation;						//回転。
-	const float			m_purificationSpeed = 2000.0f;	//お祓いの移動速度。
+	const float			m_purificationSpeed = 1000.0f;	//お祓いの移動速度。
 	float				m_deleteTimer = 0.0f;			//削除を管理するタイマー。
 };
