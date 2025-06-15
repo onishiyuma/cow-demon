@@ -1,7 +1,9 @@
 
 #include "stdafx.h"
+#include "GameManagement.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Tutorial.h"
 #include "Game.h"
 #include "GameOver.h"
 #include "RingBell.h"
@@ -58,13 +60,21 @@ bool Enemy::Start()
 		OneAnimationEvent(clipName, eventName);
 		});
 	//インスタンスアドレスを検索する。
-	m_player = FindGO<Player>("player");
-	m_ringBell = FindGO<RingBell>("ringbell");
-	m_game = FindGO<Game>("game");
+	m_gameManagement = FindGO<GameManagement>("gameManagement");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
-	m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
-	
-	
+	m_player = FindGO<Player>("player");
+
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
+		m_game = FindGO<Game>("game");
+		m_ringBell = FindGO<RingBell>("ringbell");
+		m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
+	}
+	//チュートリアルモードだったら。
+	if (m_gameManagement->m_isTutorial == true) {
+		m_tutorial = FindGO<Tutorial>("tutorial");
+	}
+
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
 	m_forward = Vector3::AxisZ;
@@ -92,22 +102,60 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
-	//追跡処理。
-	Chase();
-	//本殿追跡処理。
-	IsHonden();
-	//回転処理。
-	Rotation();
-	//当たり判定。
-	Collision();
-	//攻撃処理。
-	Attack();
-	//ステートの遷移処理。
-	ManageState();
-	//アニメーションの再生。
-	PlayAnimation();
-	//モデルの更新。
-	m_modelRender.Update();
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
+		//追跡処理。
+		Chase();
+		//本殿追跡処理。
+		IsHonden();
+		//回転処理。
+		Rotation();
+		//当たり判定。
+		Collision();
+		//攻撃処理。
+		Attack();
+		//ステートの遷移処理。
+		ManageState();
+		//アニメーションの再生。
+		PlayAnimation();
+		//モデルの更新。
+		m_modelRender.Update();
+	}
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isTutorial == true) {
+
+		if (m_tutorial->m_clearCount == 3) {
+			//追跡処理。
+			Chase();
+			//当たり判定。
+			Collision();
+			//攻撃処理。
+			//Attack();
+			//ステートの遷移処理。
+			ManageState();
+			//アニメーションの再生。
+			PlayAnimation();
+			//モデルの更新。
+			m_modelRender.Update();
+		}
+		else {
+			//当たり判定。
+			Collision();
+			//攻撃処理。
+			Attack();
+			//ステートの遷移処理。
+			ManageState();
+			//アニメーションの再生。
+			PlayAnimation();
+			//エネミーの向きの設定。
+			m_rotation.SetRotationY(90.0f);
+			m_modelRender.SetRotation(m_rotation);
+			//モデルの更新。
+			m_modelRender.Update();
+		}
+		
+	}
+	
 }
 
 void Enemy::Rotation()
@@ -383,14 +431,14 @@ void Enemy::Collision()
 	//	Vector3 diff3 = m_game->m_lanternAttack3->m_position - m_position;
 
 	//	//灯籠に火がともっている
-	//	if (diff1.Length() >= 400.0f or diff2.Length() >= 400.0f or diff3.Length() >= 400.0f) {
-	//		if (m_lanternAttack->m_isLight == true) {
-	//			if (attackTimer >= 1.0f) {
+	//	if (diff1.Length() <= 400.0f or diff2.Length() <= 400.0f or diff3.Length() <= 400.0f) {
+	//		if (attackTimer >= 1.0f) {
+	//			if (m_lanternAttack->m_isLight == true) {
 
 	//				m_enemyHP -= 5.0f;
 
 	//				//HPが0になったら。
-	//				if (m_enemyHP < 0)
+	//				if (m_enemyHP < 0.0f)
 	//				{
 	//					//ダウンステートに遷移する。
 	//					m_enemyState = enEnemyState_Down;
@@ -402,7 +450,6 @@ void Enemy::Collision()
 	//					m_enemyState = enEnemyState_Damage;
 	//				}
 	//				attackTimer = 0.0f;
-	//				return;
 	//			}
 	//		}
 	//	}
@@ -413,6 +460,7 @@ void Enemy::Collision()
 	//-----------------------------------------
 	//本殿に接触したらゲームオーバーする処理。
 	//-----------------------------------------
+	if (m_gameManagement->m_isGame == true) 
 	{
 		//本殿に触れたらゲームオーバー。
 		const auto& collisions = g_collisionObjectManager->FindMatchForwardNameCollisionObjects("gameover_collision");
@@ -572,20 +620,39 @@ void Enemy::ProcessDamageStateTransition()
 
 void Enemy::ProcessDownStateTransition()
 {
-	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+	if (m_gameManagement->m_isGame == true) {
 
-	if (!m_isDeadFlag)
-	{
-		DeathEffect();
-		m_isDeadFlag = true;
+		m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+
+		if (!m_isDeadFlag)
+		{
+			DeathEffect();
+			m_isDeadFlag = true;
+		}
+
+		if (m_deathEffectTimer >= 1.0f)
+		{
+			//Gameのインスタンスアドレスを検索
+			m_game->m_totalCount--;
+			DeleteGO(this);
+		}
+	}
+	else if (m_gameManagement->m_isTutorial == true) {
+
+		m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+
+		if (!m_isDeadFlag)
+		{
+			DeathEffect();
+			m_isDeadFlag = true;
+		}
+
+		if (m_deathEffectTimer >= 1.0f)
+		{
+			DeleteGO(this);
+		}
 	}
 	
-	if (m_deathEffectTimer >= 1.0f)
-	{
-		//Gameのインスタンスアドレスを検索
-		m_game->m_totalCount--;
-		DeleteGO(this);
-	}
 }
 
 void Enemy::ProcessMainStateTransition()
@@ -613,9 +680,59 @@ void Enemy::ProcessCommonStateTransition()
 	m_chaseTimer = 0.0f;
 	m_hondenTimer = 0.0f;
 
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
 
-	if (SearchMain() == true)
-	{   //プレイヤーを見つけたら。
+		if (SearchMain() == true)
+		{   
+			//プレイヤーを見つけたら。
+			if (SearchPlayer() == true) {
+				Vector3 diff = m_player->GetPosition() - m_position;
+				//ベクトルを正規化する。
+				diff.Normalize();
+				//移動速度を設定する。
+				m_moveSpeed = diff * 150.0f;
+				//攻撃できる距離なら。
+				int ram = rand() % 100;
+				if (IsCanAttack() == true)
+				{
+					if (ram > 70)
+					{
+
+
+						m_enemyState = enEnemyState_Attack;
+						m_isUnderAttack = false;
+						return;
+					}
+
+					else
+					{
+						m_enemyState = enEnemyState_Chase;
+					}
+
+				}
+				//攻撃できない距離なら。
+				else
+				{
+					m_enemyState = enEnemyState_Chase;
+					return;
+				}
+			}
+			else {
+				Vector3 diff = m_ringBell->GetPosition() - m_position;
+				diff.Normalize();
+				m_moveSpeed = diff * 150.0f;
+
+				m_enemyState = enEnemyState_Honden;
+				return;
+			}
+
+		}
+	}
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isTutorial == true) {
+
+		//プレイヤーを見つけたら。
 		if (SearchPlayer() == true) {
 			Vector3 diff = m_player->GetPosition() - m_position;
 			//ベクトルを正規化する。
@@ -656,8 +773,8 @@ void Enemy::ProcessCommonStateTransition()
 			m_enemyState = enEnemyState_Honden;
 			return;
 		}
-
 	}
+	
 }
 
 void Enemy::ManageState()

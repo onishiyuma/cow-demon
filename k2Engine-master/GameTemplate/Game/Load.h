@@ -1,6 +1,8 @@
 #pragma once
 
 class Game;
+class Tutorial;
+class GameManagement;
 
 class Load : public IGameObject
 {
@@ -36,6 +38,8 @@ private:
 	//メンバ変数。
 	std::vector<std::wstring> tipsList;				//表示するtipsを入れる可変長配列。
 	Game*				m_game = nullptr;			//ゲームのインスタンス。
+	Tutorial*           m_tutorial;
+	GameManagement*     m_gameManagement;
 	SpriteRender		m_spriteLoad;				//ロードの画像。
 	SpriteRender		m_spriteLoadGage;			//ロードゲージ用スプライト。
 	SpriteRender		m_spriteMask;				//マスクを動かす。

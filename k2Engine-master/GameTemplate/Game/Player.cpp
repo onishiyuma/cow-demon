@@ -13,6 +13,8 @@
 #include "BellSpriteRender.h"
 #include "NoHeal.h"
 #include "SpinStick.h"
+#include "GameManagement.h"
+#include "Tutorial.h"
 #include <time.h>
 
 namespace
@@ -49,15 +51,25 @@ bool Player::Start()
 	m_playerLight = NewGO<PlayerLight>(0, "playerLight");
 
 	//各種インスタンスアドレスの検索。
-	m_game = FindGO<Game>("game");
+	m_gameManagement = FindGO<GameManagement>("gameManagement");
+
+	//常時参照するアドレス。
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 	m_playerLight = FindGO<PlayerLight>("playerLight");
-	m_lantern = FindGO<Lantern>("lantern");
 	m_uiHeal = FindGO<UIheal>("uiheal");
-	m_ringBell = FindGO<RingBell>("ringbell");
 
-
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
+		m_game = FindGO<Game>("game");
+		m_lantern = FindGO<Lantern>("lantern");
+		m_ringBell = FindGO<RingBell>("ringbell");
+	}
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isTutorial == true) {
+		m_tutorial = FindGO<Tutorial>("tutorial");
+	}
+	
 	return true;
 }
 
@@ -73,44 +85,89 @@ Player::~Player()
 
 void Player::Update()
 {
-	if(m_game->m_isCowntDownStart==true){
-		//移動処理。
-		Move();
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
+		if (m_game->m_isCowntDownStart == true) {
+			//移動処理。
+			Move();
+		}
+		//判定を呼び出す。
+		Collision();
+		//回復できるように知らせる。
+		UpdateHealHint();
+		//攻撃。
+		PlayerAttack();
+		//毒状態の時はHPを減らす。
+		PoisonState();
 	}
-  
-	//判定を呼び出す。
-	Collision();
-	//回復できるように知らせる。
-	UpdateHealHint();
-	//攻撃。
-	PlayerAttack();
-	//毒状態の時はHPを減らす。
-	PoisonState();
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isTutorial == true) {
+		if (m_tutorial->m_isSprite == true) {
+			//移動処理。
+			Move();
+			//判定を呼び出す。
+			Collision();
+			//回復できるように知らせる。
+			UpdateHealHint();
+			//攻撃。
+			PlayerAttack();
+			//毒状態の時はHPを減らす。
+			PoisonState();
+		}
+		else {
+
+		}
+		
+	}
+	
 }
 
 void Player::PlayerAttack()
 {
-	//灯籠に火が灯っていれば攻撃できる。
-	if (m_enemyIsCanAttack)
-	{
-		//通常攻撃。
-		NormalAttack();
-		//スキル
-		Skill();
-		//月読の加護。
-		SkillTukuyomiBlessing();
-		//しめ縄。
-		ItemShimenawa();
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
+		//灯籠に火が灯っていれば攻撃できる。
+		if (m_enemyIsCanAttack)
+		{
+			//通常攻撃。
+			NormalAttack();
+			//スキル
+			Skill();
+			//月読の加護。
+			SkillTukuyomiBlessing();
+			//しめ縄。
+			ItemShimenawa();
+		}
+		else
+		{
+			//文字の表示。
+			wchar_t text[256] = { 0 };
+			swprintf_s(text, 256, L"灯籠を全て灯すと攻撃できるぞ");
+			m_fontRender1.SetText(text);
+			m_fontRender1.SetPosition(FONT_POSITION);
+			m_fontRender1.SetColor({ g_vec4lightBlue });
+		}
 	}
-	else
-	{
-		//文字の表示。
-		wchar_t text[256] = { 0 };
-		swprintf_s(text, 256, L"灯籠を全て灯すと攻撃できるぞ");
-		m_fontRender1.SetText(text);
-		m_fontRender1.SetPosition(FONT_POSITION);
-		m_fontRender1.SetColor({ g_vec4lightBlue });
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isTutorial == true) {
+
+		if (m_tutorial->m_clearCount < 2) {
+			//通常攻撃。
+			NormalAttack();
+			//スキル
+			Skill();
+		}
+		else if (m_tutorial->m_clearCount == 2) {
+			//しめ縄。
+			ItemShimenawa();
+		}
+		else if (m_tutorial->m_clearCount == 3) {
+			//月読の加護。
+			SkillTukuyomiBlessing();
+		}
+		
 	}
+	
 }
 
 void Player::Move()

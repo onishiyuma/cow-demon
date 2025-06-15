@@ -116,6 +116,12 @@ void GameCamera::Update()
 		m_cameraForward.Normalize();
 	}
 
+	Vector3 position = target + m_PosMain;
+
+	m_position = position;
+	m_cameraForward = (target - position);
+	m_cameraForward.Normalize();
+
 	Vector3 toPosDir = m_toCameraPos;
 	toPosDir.Normalize();
 	if (toPosDir.y < m_cameraYMin)

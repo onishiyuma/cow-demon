@@ -1,11 +1,13 @@
 #pragma once
 #include "EnemyBase.h"
 #include "graphics/effect/EffectEmitter.h"
+class GameManagement;
 class Player;
 class BackGround;
 class Collision;
 class RingBell;
 class EnemyBase;
+class Tutorial;
 class Game;
 class GameCamera;
 class GameOver;
@@ -117,9 +119,11 @@ public:
 	void Collision() override;
 private:
 	//メンバ変数。
+	GameManagement*     m_gameManagement = nullptr;
 	GameCamera*			m_gameCamera = nullptr;						//ゲームカメラ。
 	Player*				m_player = nullptr;							//プレイヤー。
 	RingBell*			m_ringBell = nullptr;						//鈴。
+	Tutorial*           m_tutorial;
 	Game*				m_game = nullptr;							//ゲーム。
 	EffectEmitter* m_effectEmitter = nullptr;					//エフェクトエミッター。
 	GameOver*           m_gameOver = nullptr;						//ゲームオーバー。

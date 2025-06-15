@@ -1,5 +1,7 @@
 #pragma once
 
+class GameManagement;
+class Tutorial;
 class Game;
 class Shimenawa;
 class GameCamera;
@@ -106,9 +108,9 @@ public:
 	int					m_skillCharge = 0;							//スキルチャージ。
 	int					m_normalATK = 0;							//通常攻撃。
 	int					m_criticalATK = 0;							//クリティカル攻撃。
-	int					m_skillATK = 0;								//スキル攻撃力。
+	int					m_skillATK = 100;								//スキル攻撃力。
 	int					m_stoneCount = 0;							//火打石の所持数。
-	int					m_tukuyomiATK = 0;							//月読の加護の攻撃力。
+	int					m_tukuyomiATK = 5;							//月読の加護の攻撃力。
 	int					m_lanternCount = 0;							//灯籠の灯っている数。
 private:
 	NoHeal*				m_noHeal;									//回復できない。
@@ -124,7 +126,9 @@ private:
 	FontRender			m_fontRender1;								//フォントレンダー。
 	FontRender			m_fontRender2;								//フォントレンダー。
 	PlayerLight*		m_playerLight;								//プレイヤーのライト。
+	Tutorial*          m_tutorial;                                 //チュートリアルモード
 	Game*               m_game;										//ゲーム。
+	GameManagement*     m_gameManagement;                           //ゲームの流れ管理
 	Vector3				m_forward = Vector3::AxisZ;					//方向。
 	Vector3				m_moveSpeed;								//移動速度。
 	const float			m_gravity = 10.5f;							//重力。

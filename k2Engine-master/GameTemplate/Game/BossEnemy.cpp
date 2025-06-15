@@ -82,7 +82,7 @@ bool BossEnemy::Start()
 		});
 
 	//エフェクトを読み込む
-	EffectEngine::GetInstance()->ResistEffect(10,u"Assets/effect/EnemyEffects/Usioni_Boss_Down/Boss_Down.efk");
+	EffectEngine::GetInstance()->ResistEffect(100,u"Assets/effect/EnemyEffects/Usioni_Boss_Down/Boss_Down.efk");
 
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
@@ -521,7 +521,7 @@ void BossEnemy::DeathEffect()
 
 	//エフェクトの生成
     m_effectEmitter = NewGO<EffectEmitter>(0);
-	m_effectEmitter->Init(10);//番号はRegistの登録番号
+	m_effectEmitter->Init(100);//番号はRegistの登録番号
 	m_effectEmitter->SetPosition(m_effectPosition);
 	m_effectEmitter->SetScale(Vector3(30.0f, 30.0f, 30.0f));//大きさは調整
 	m_effectEmitter->Play();//エフェクトの再生

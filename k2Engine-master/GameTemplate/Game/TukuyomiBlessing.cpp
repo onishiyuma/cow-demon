@@ -11,7 +11,7 @@
 bool TukuyomiBlessing::Start()
 {
 	//エフェクトをロードする。
-	EffectEngine::GetInstance()->ResistEffect(12,u"Assets/effect/PlayerEffects/TUkuyomi/Tukuyomi.efkefc");
+	EffectEngine::GetInstance()->ResistEffect(12,u"Assets/effect/PlayerEffects/TUkuyomi/Tukuyomi.efk");
 	//音を読み込む。
 	g_soundEngine->ResistWaveFileBank(0, "Assets/sound/tukuyomichan.wav");
 	//インスタンスアドレスを検索する。
@@ -97,7 +97,7 @@ void TukuyomiBlessing::CreateEffect()
 	//エフェクトを初期化。
 	m_effectEmitter->Init(12);
 	//大きさを設定。
-	m_effectEmitter->SetScale({ 95.0f,10.0f,95.0f });
+	m_effectEmitter->SetScale({ 100.0f,50.0f,100.0f });
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
 	//エフェクトを再生。

@@ -3,6 +3,7 @@
 
 class Game;
 class Load;
+class GameManagement;
 
 //タイトルクラス。
 class Title:public IGameObject
@@ -17,6 +18,8 @@ public:
 	void SoulFade();
 	void Update();
 	void Render(RenderContext& rc);
+
+	GameManagement* m_gameManagement = nullptr;
 
 private:
 	//メンバ変数。

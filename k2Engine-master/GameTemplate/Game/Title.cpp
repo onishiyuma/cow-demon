@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Load.h"
 #include "sound/SoundEngine.h"
+#include "GameManagement.h"
 
 
 bool Title::Start()
@@ -20,7 +21,7 @@ bool Title::Start()
 	m_spriteSoul.SetMulColor(m_soulColor);
 	
 	//文字の表示。
-	m_fontRender.SetText(L"Please Press AnyKey");
+	m_fontRender.SetText(L"A ゲーム or B チュートリアル");
 	m_fontRender.SetPosition({ -250.0f,-300.0f,0.0f });
 	m_fontRender.SetColor(m_fontColor);
 
@@ -33,6 +34,7 @@ bool Title::Start()
 	m_titleBGM->Init(1);
 	m_titleBGM->Play(true);
 
+	m_gameManagement = FindGO<GameManagement>("gameManagement");
 	
 
 	return true;
@@ -77,13 +79,32 @@ void Title::Update()
 				m_timer = m_maxTitleTime;
 
 				//タイトルからインゲームへ移行。
-				if (m_timer > 0.1f && g_pad[0]->IsPressAnyKey())
+				if (m_timer > 0.1f && g_pad[0]->IsPress(enButtonA))
 				{
-					NewGO<Load>(1, "load");
-					m_spriteRender.Update();
-					DeleteGO(m_titleBGM);
-					//自身を削除する。
-					DeleteGO(this);
+					if (m_gameManagement->m_isGame == false) {
+
+						m_gameManagement->m_isGame = true;
+						NewGO<Load>(1, "load");
+						m_spriteRender.Update();
+						DeleteGO(m_titleBGM);
+						//自身を削除する。
+						DeleteGO(this);
+
+					}
+				}
+				//タイトルからチュートリアルへ移行。
+				else if(m_timer > 0.1f && g_pad[0]->IsPress(enButtonB)) 
+				{
+					if (m_gameManagement->m_isTutorial == false) {
+
+						m_gameManagement->m_isTutorial = true;
+						NewGO<Load>(1, "load");
+						m_spriteRender.Update();
+						DeleteGO(m_titleBGM);
+						//自身を削除する。
+						DeleteGO(this);
+
+					}
 				}
 			}
 		}
