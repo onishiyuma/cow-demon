@@ -1000,34 +1000,34 @@ void Game::CreateUI()
 void Game::ButtonUI()
 {
 	//通常攻撃
-	m_fontNomalAttack.SetText(L":通常攻撃");
-	m_fontNomalAttack.SetPosition(Vector3(-750.0f, -250.0f, 0.0f));
-	m_fontNomalAttack.SetScale(1.0f);
-	m_fontNomalAttack.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	m_fontNormalAttackButton.SetText(L":通常攻撃");
+	m_fontNormalAttackButton.SetPosition(Vector3(-750.0f, -250.0f, 0.0f));
+	m_fontNormalAttackButton.SetScale(1.0f);
+	m_fontNormalAttackButton.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
 	//Xボタン
-	m_xButton.Init("Assets/sprite/X.DDS", 1920, 1080);
-	m_xButton.SetPosition({ 710.0f,-520.0f,0.0f });
-	m_xButton.SetScale({ 0.3f,0.3f,0.3f });
-	m_xButton.Update();
+	m_buttonX.Init("Assets/sprite/X.DDS", 1920, 1080);
+	m_buttonX.SetPosition({ 710.0f,-520.0f,0.0f });
+	m_buttonX.SetScale({ 0.3f,0.3f,0.3f });
+	m_buttonX.Update();
 
 	//Yボタン
-	m_yButton.Init("Assets/sprite/Y.DDS", 1920, 1080);
-	m_yButton.SetPosition({ 420.0f,-520.0f,0.0f });
-	m_yButton.SetScale({ 0.3f,0.3f,0.3f });
-	m_yButton.Update();
+	m_buttonY.Init("Assets/sprite/Y.DDS", 1920, 1080);
+	m_buttonY.SetPosition({ 420.0f,-520.0f,0.0f });
+	m_buttonY.SetScale({ 0.3f,0.3f,0.3f });
+	m_buttonY.Update();
 
 	//LTボタン
-	m_ltButton.Init("Assets/sprite/LT.DDS", 1920, 1080);
-	m_ltButton.SetPosition({ 570.0f,-520.0f,0.0f });
-	m_ltButton.SetScale({ 0.3f,0.3f,0.3f });
-	m_ltButton.Update();
+	m_buttonLT.Init("Assets/sprite/LT.DDS", 1920, 1080);
+	m_buttonLT.SetPosition({ 570.0f,-520.0f,0.0f });
+	m_buttonLT.SetScale({ 0.3f,0.3f,0.3f });
+	m_buttonLT.Update();
 
 	//RTボタン
-	m_rtButton.Init("Assets/sprite/RT.DDS", 1920, 1080);
-	m_rtButton.SetPosition({ -830.0f,-280.0f,0.0f });
-	m_rtButton.SetScale({ 0.5f,0.5f,0.5f });
-	m_rtButton.Update();
+	m_buttonRT.Init("Assets/sprite/RT.DDS", 1920, 1080);
+	m_buttonRT.SetPosition({ -830.0f,-280.0f,0.0f });
+	m_buttonRT.SetScale({ 0.5f,0.5f,0.5f });
+	m_buttonRT.Update();
 }
 
 void Game::UITimer()
@@ -1086,9 +1086,9 @@ void Game::Render(RenderContext& rc)
 	m_timerFontRender.Draw(rc);
 	m_notifyEnemyFontRender.Draw(rc);
 	m_enemyCount.Draw(rc);
-	m_fontNomalAttack.Draw(rc);
-	m_xButton.Draw(rc);
-	m_yButton.Draw(rc);
-	m_ltButton.Draw(rc);
-	m_rtButton.Draw(rc);
+	m_fontNormalAttackButton.Draw(rc);
+	m_buttonX.Draw(rc);
+	m_buttonY.Draw(rc);
+	m_buttonLT.Draw(rc);
+	m_buttonRT.Draw(rc);
 }
