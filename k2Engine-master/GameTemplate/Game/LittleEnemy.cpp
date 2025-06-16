@@ -112,9 +112,9 @@ void LittleEnemy::Update()
 	//モデルレンダーの更新。
 	m_modelRender.Update();
 
-	if (m_game->m_timer >= 300.0f) {
+	/*if (m_game->m_timer >= 300.0f) {
 		DeleteGO(this);
-	}
+	}*/
 }
 
 void LittleEnemy::Rotation()

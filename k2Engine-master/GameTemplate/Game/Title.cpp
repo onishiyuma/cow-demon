@@ -92,20 +92,20 @@ void Title::Update()
 
 					}
 				}
-				//タイトルからチュートリアルへ移行。
-				else if(m_timer > 0.1f && g_pad[0]->IsPress(enButtonB)) 
-				{
-					if (m_gameManagement->m_isTutorial == false) {
+				////タイトルからチュートリアルへ移行。
+				//else if(m_timer > 0.1f && g_pad[0]->IsPress(enButtonB)) 
+				//{
+				//	if (m_gameManagement->m_isTutorial == false) {
 
-						m_gameManagement->m_isTutorial = true;
-						NewGO<Load>(1, "load");
-						m_spriteRender.Update();
-						DeleteGO(m_titleBGM);
-						//自身を削除する。
-						DeleteGO(this);
+				//		m_gameManagement->m_isTutorial = true;
+				//		NewGO<Load>(1, "load");
+				//		m_spriteRender.Update();
+				//		DeleteGO(m_titleBGM);
+				//		//自身を削除する。
+				//		DeleteGO(this);
 
-					}
-				}
+				//	}
+				//}
 			}
 		}
 		

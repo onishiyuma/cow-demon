@@ -113,9 +113,9 @@ void AnnoyingEnemy::Update()
 	//ステート管理。
 	ManageState();
 
-	if (m_game->m_timer >= 300.0f) {
+	/*if (m_game->m_timer >= 300.0f) {
 		DeleteGO(this);
-	}
+	}*/
 	
 }
 
