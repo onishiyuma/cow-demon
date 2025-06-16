@@ -2,6 +2,7 @@
 #include "sound/SoundSource.h"
 #include "Level3DRender/LevelRender.h"
 #include <vector>
+
 class Player;
 class GameCamera;
 class BackGround;
@@ -47,18 +48,18 @@ public:
 
 	bool Start();
 	void Update();
-	void Delete();
+	void Render(RenderContext& rc);
 	//オブジェクトを作成。
 	void CreateObject();
 	//火打石の生成。
-	//轣ｫ謇鍋浹縺ｮ逕滓・縲・
 	void CreateStone();
-	//轣ｯ邀縺ｮ菴懈・縲・
+	//灯籠の生成。
 	void CreateLantern();
-	//謾ｻ謦・畑轣ｯ邀縺ｮ菴懈・縲・
+	//攻撃灯籠用の生成。
 	void CreateAttackLantern();
-	//UI繧帝未謨ｰ蛹悶・
+	//UIの作成。
 	void CreateUI();
+	//ボタンを押すUIの作成。
 	void ButtonUI();
 	//UIのタイマー。
 	void UITimer();
@@ -66,235 +67,246 @@ public:
 	void HitCrossHair();
 	//敵の出現を通知。
 	void NotifiyEnemy();
-	//繧ｨ繝阪Α繝ｼ縺ｮ逕滓・縲・
+	//敵の生成。
 	void CreateEnemy();
-	//死んだ敵の数分敵を作成する
+	//死んだ敵の数分敵を作成する。
 	void CreateDeletedEnemy();
-	//繧ｲ繝ｼ繝繧ｪ繝ｼ繝舌・縲√ご繝ｼ繝繧ｯ繝ｪ繧｢繝ｼ繧貞他縺ｶ髢｢謨ｰ縲・
+	//敵の動作を管理する。
 	void GameManager();
-	//灯籠用ライトのステート
+	//灯籠用ライトのステート。
 	void LanternLightState();
-	//灯籠用ライトの作成
+	//灯籠用ライトの作成。
 	void CreateLanternLight();
-	//灯籠用エフェクトの作成
+	//灯籠用エフェクトの作成。
 	void CreateLanternEffect();
-	//灯籠用矢印の作成
+	//灯籠用矢印の作成。
 	void CreateLanternArrow();
-	//攻撃灯籠用ライトのステート
+	//攻撃灯籠用ライトのステート。
 	void LanternAttackLightState();
-	//攻撃灯籠用ライトの作成
+	//攻撃灯籠用ライトの作成。
 	void CreateLanternAttackLight();
-	//攻撃灯籠用エフェクトの作成
+	//攻撃灯籠用エフェクトの作成。
 	void CreateLanternAttackEffect();
 	//空の明るさ調整用関数。
 	void SetSkyLight();
 	//カウントダウンの開始。
 	void StartCountDown();
-  
-	void Render(RenderContext& rc);
-
-
-	//メンバ変数。
-	GameClear*m_gameClear;//ゲームクリアー。
-	RingBell* m_ringBell;//鈴。
-	BackGround* m_backGround;//背景。
-	GameCamera* m_gameCamera;//ゲームカメラ。
-	Player*m_player;//プレイヤー。
-	Enemy* m_enemy ;//敵。
-	LittleEnemy* m_littleEnemy;//小さい敵。
-	AnnoyingEnemy* m_annoyingEnemy;
-	BossEnemy* m_bossEnemy;//ボス。
-	CrossHair*m_crossHair;//クロスヘアー。
-	ModelRender m_modelRender;//モデルレンダー。
-	Shimenawa* m_shimenawa;//しめ縄。
-	Load* m_load;//フェード処理。
-	EnemyUI*m_enemyUI;
-	SkyCube* m_skyCube;//スカイキューブ。
-	SoundSource* m_gameStartSound; //ゲームスタート音。
-	SoundSource* m_stage; //ゲームスタート音。
-
-	Stone* m_stone1; //轣ｫ謇鍋浹
-	Stone* m_stone2; //轣ｫ謇鍋浹
-	Stone* m_stone3; //轣ｫ謇鍋浹
-	Stone* m_stone4; //轣ｫ謇鍋浹
-	Stone* m_stone5; //轣ｫ謇鍋浹
-	Stone* m_stone6; //轣ｫ謇鍋浹
-	Stone* m_stone7; //轣ｫ謇鍋浹
-
-	UIStone* m_uiStone; //轣ｫ謇鍋浹縺ｮ謨ｰ
-
-	Lantern* m_lantern;
-	Lantern* m_lantern1; //轣ｯ邀
-	Lantern* m_lantern2; //轣ｯ邀
-	Lantern* m_lantern3; //轣ｯ邀
-	Lantern* m_lantern4; //轣ｯ邀
-
-	LanternArrow* m_lanternArrow1; //轣ｯ邀縺ｮ謨ｰ
-	LanternArrow* m_lanternArrow2; //轣ｯ邀縺ｮ謨ｰ
-	LanternArrow* m_lanternArrow3; //轣ｯ邀縺ｮ謨ｰ
-	LanternArrow* m_lanternArrow4; //轣ｯ邀縺ｮ謨ｰ
-
-	LanternLight* m_lanternLight1;
-	LanternLight* m_lanternLight2;
-	LanternLight* m_lanternLight3;
-	LanternLight* m_lanternLight4;
-
-	BlueFlame* m_blueFlame1;
-	BlueFlame* m_blueFlame2;
-	BlueFlame* m_blueFlame3;
-	BlueFlame* m_blueFlame4;
-
-	LanternAttack* m_lanternAttack1; //謾ｻ謦・畑轣ｯ邀
-	LanternAttack* m_lanternAttack2; //謾ｻ謦・畑轣ｯ邀
-	LanternAttack* m_lanternAttack3; //謾ｻ謦・畑轣ｯ邀
-
-	LanternAttackLight* m_lanternAttackLight1;
-	LanternAttackLight* m_lanternAttackLight2;
-	LanternAttackLight* m_lanternAttackLight3;
-
-	RedFlame* m_redFlame1;
-	RedFlame* m_redFlame2;
-	RedFlame* m_redFlame3;
-
-	Mountain* m_mountain; //山。
-	Tree* m_tree; //木。
-
-	UItukuyomi* m_uiTukuyomi;
-	UIskill* m_uiSkill;
-	UISimenawa* m_uiSimenawa;
-	/*MiniMap* m_miniMap;*/
-	UIcurseBar* m_uiCurseBar;
-	UIheal* m_uiHeal;
-
-	UIOne* m_uiOne = nullptr;
-	UITwo* m_uiTwo = nullptr;
-	UIThree* m_uiThree = nullptr;
-	UIZero* m_uiZero = nullptr;
-
-	TimeLimit* m_timeLimit1;
-
-	SpriteRender m_spriteRender;//繧ｹ繝励Λ繧､繝医Ξ繝ｳ繝繝ｼ
-	FontRender m_timerFontRender;//譎りｨ・
-	FontRender m_notifyEnemyFontRender;//敵出現通知用フォントレンダー。
-	FontRender m_enemyCount;
-	Vector3 m_pos;//蠎ｧ讓・
-	Vector3 Random(); //繧ｨ繝阪Α繝ｼ縺ｮ繝ｩ繝ｳ繝繝繧ｹ繝昴・繝ｳ
-
-	//ボタンUIの表示
-	FontRender                m_skip;
-	SpriteRender              m_bButton;
-	FontRender                m_fontNomalAttack;
-	SpriteRender              m_xButton;
-	SpriteRender              m_yButton;
-	SpriteRender              m_ltButton;
-	SpriteRender              m_rtButton;
-
-	//謨ｵ縺ｮ荳隕ｧ繧貞叙蠕励☆繧九◆繧√・繝｡繧ｽ繝・ラ繧貞叙蠕・
+public:
+	//敵のリスト。
+	std::vector<Enemy*>   m_enemyList;
+	//小さい敵のリスト。
+	std::vector<LittleEnemy*> m_littleEnemyList;
+	//ボスのリスト。
+	std::vector<BossEnemy*> m_bossEnemyList;
+	//ウザイ敵のリスト。
+	std::vector<AnnoyingEnemy*> m_annoyingEnemyList;
+public:
+	//敵のリストを取得する関数。
 	const std::vector<Enemy*>& GetEnemies()const
 	{
 		return m_enemyList;
 	}
 
+	//小さい敵のリストを取得する関数。
 	const std::vector<LittleEnemy*>& GetLittleEnemies() const
 	{
 		return m_littleEnemyList;
 	}
-	
+
+	//ボスのリストを取得する関数。
 	const std::vector<BossEnemy*>& GetBossEnemy() const
 	{
 		return m_bossEnemyList;
 	}
 
+	//ウザイ敵のリストを取得する関数。
 	const std::vector<AnnoyingEnemy*>& GetAnnoyingEnemy() const
 	{
 		return m_annoyingEnemyList;
 	}
+private:
+	//メンバ変数。
+	GameClear*				m_gameClear;						//ゲームクリアー。
+	RingBell*				m_ringBell;							//鈴。
+	BackGround*				m_backGround;						//背景。
+	Mountain*				m_mountain;							//山。
+	Tree*					m_tree;								//木。
+	GameCamera*				m_gameCamera;						//ゲームカメラ。
+	Player*					m_player;							//プレイヤー。
+	Enemy*					m_enemy;							//敵。
+	LittleEnemy*			m_littleEnemy;						//小さい敵。
+	AnnoyingEnemy*			m_annoyingEnemy;					//嫌な敵。
+	BossEnemy*				m_bossEnemy;						//ボス。
+	CrossHair*				m_crossHair;						//クロスヘアー。
+	ModelRender				m_modelRender;						//モデルレンダー。
+	Shimenawa*				m_shimenawa;						//しめ縄。
+	Load*					m_load;								//ロード。
+	SkyCube*				m_skyCube;							//スカイキューブ。
+	SoundSource*			m_gameStartSound;					//ゲームスタート音。
+	SoundSource*			m_stage; 							//ゲームスタート音。
+	
+	//火打石。
+	Stone*					m_stone1;							//火打石。
+	Stone*					m_stone2;							//火打石。
+	Stone*					m_stone3;							//火打石。
+	Stone*					m_stone4;							//火打石。
+	Stone*					m_stone5;							//火打石。
+	Stone*					m_stone6;							//火打石。
+	Stone*					m_stone7;							//火打石。
 
-	std::vector<Enemy*>   m_enemyList;
-	std::vector<LittleEnemy*> m_littleEnemyList;
-	std::vector<BossEnemy*> m_bossEnemyList;
-	std::vector<AnnoyingEnemy*> m_annoyingEnemyList;
+	//灯籠。
+	Lantern*				m_lantern;							//灯籠。
+	Lantern*				m_lantern1;							//灯籠。
+	Lantern*				m_lantern2;							//灯籠。
+	Lantern*				m_lantern3;							//灯籠。
+	Lantern*				m_lantern4;							//灯籠。
 
-	int m_dieCount = 0;
-	int m_maxCount = 0;	//敵の最大数。
-	int m_totalCount = 0;//敵の合計。
-	bool m_isBoss = false; //
-	int m_lanternLightState = 0;
-	int m_spawnCount=0;
-	int m_lanternEffectState = 0;
-	int m_lanternAttackLightState = 0;
-	float m_timer = 120.0f;//タイマー。
-	float m_timeLimit = 0;//蛻ｶ髯先凾髢・
-	float m_spawnTimer = 0.0f; //敵出現タイマー。
-	int m_lanternAttackEffectState = 0;
-	float m_skyLuminance = 0.0002f; //空の明るさ。
-	float m_skyAmbient = 0.0002f; //空の明るさの影響を受ける環境光。
-	float m_notifyx = 0.0f; //敵出現通知のX座標。
-	bool m_lanternAction = false;
-	bool m_isShowNotify=false; //敵出現通知を表示するかどうか。
-	//灯籠用ライトのフラグ
-	bool m_lanternLightFlag = false;
-	bool m_lanternLightFlag1 = false;
-	bool m_lanternLightFlag2 = false;
-	bool m_lanternLightFlag3 = false;
-	bool m_lanternLightFlag4 = false;
-	//灯籠用エフェクトのフラグ
-	bool m_lanternEffectFlag1 = false;
-	bool m_lanternEffectFlag2 = false;
-	bool m_lanternEffectFlag3 = false;
-	bool m_lanternEffectFlag4 = false;
-	//攻撃灯籠用ライトのフラグ
-	bool m_lanternAttackLightFlag1 = false;
-	bool m_lanternAttackLightFlag2 = false;
-	bool m_lanternAttackLightFlag3 = false;
-	//攻撃灯籠用エフェクトのフラグ
-	bool m_lanternAttackEffectFlag1 = false;
-	bool m_lanternAttackEffectFlag2 = false;
-	bool m_lanternAttackEffectFlag3 = false;
-	//空の明るさのフラグ
-	bool m_isNight = false;
-	bool m_isMidNight1 = false;
-	bool m_isMidNight2 = false;
-	bool m_isSunrise = false;
-	bool m_isDawn1 = false;
-	bool m_isDawn2 = false; 
-	bool m_isDawn3 = false;
-	bool m_isDay = false;
+	//灯籠の位置を示す矢印。
+	LanternArrow*			m_lanternArrow1;					//灯籠矢印。
+	LanternArrow*			m_lanternArrow2;					//灯籠矢印。
+	LanternArrow*			m_lanternArrow3;					//灯籠矢印。
+	LanternArrow*			m_lanternArrow4;					//灯籠矢印。
 
-	float m_luminance = 0.0f; //空の明るさの変化量。
-  
-	const float		m_nightStart = 0.0f;
-	const float		m_phase1Start = 120.0f;  //夜明けの始まり
-	const float		m_phase2Start = 180.0f;  //少し明るくなる
-	const float		m_phase3Start = 210.0f;  //少し明るくなる
-	const float		m_phase4Start = 240.0f;  //日の出開始
-	const float		m_phase5Start = 250.0f;  //少しずつ明ける
-	const float		m_phase6Start = 260.0f;  //少しずつ明ける
-	const float		m_phase7Start = 270.0f;  //少しずつ明ける
-	const float		m_dayStart = 290.0f;     //朝になる
+	//灯籠用ライト。
+	LanternLight*			m_lanternLight1;					//灯籠用ライト。
+	LanternLight*			m_lanternLight2;					//灯籠用ライト。
+	LanternLight*			m_lanternLight3;					//灯籠用ライト。
+	LanternLight*			m_lanternLight4;					//灯籠用ライト。
 
-	const float		m_luminanceNight = 0.0003f;			//夜の明るさ
-	const float		m_luminanceMidNight1 = 0.0005f;		//夜の明るさ
-	const float		m_luminanceMidNight2 = 0.0007f;		//夜の明るさ
-	const float		m_luminanceSunrise = 0.001f;		//日の出
-	const float		m_luminanceDawn1 = 0.005f;			//夜明け
-	const float		m_luminanceDawn2 = 0.007f;			//夜明け
-	const float		m_luminanceDawn3 = 0.01f;			//夜明け
-	const float		m_luminanceDay = 0.05f;				//朝（最大）
+	//青い炎。
+	BlueFlame*				m_blueFlame1;						//青い炎。
+	BlueFlame*				m_blueFlame2;						//青い炎。
+	BlueFlame*				m_blueFlame3;						//青い炎。
+	BlueFlame*				m_blueFlame4;						//青い炎。
 
-	int m_timerCount = 0; //タイマーのカウント。
-	float m_countDownTimer = 3.0f;//カウントダウン時間
-	bool m_isCowntDownStart = false;//カウントダウン中かどうか
-	bool m_isCountDownEnd = false;//カウントダウン終了かどうか
-	bool m_isOne = false;//あと一秒かどうか
-	bool m_isTwo = false;//あと二秒かどうか
-	bool m_isThree = false;//あと三秒かどうか
+	//赤い炎。
+	RedFlame*				m_redFlame1;						//赤い炎。
+	RedFlame*				m_redFlame2;						//赤い炎。
+	RedFlame*				m_redFlame3;						//赤い炎。
+	
+	//攻撃灯籠。
+	LanternAttack*			m_lanternAttack1;					//攻撃用灯籠。
+	LanternAttack*			m_lanternAttack2;					//攻撃用灯籠。
+	LanternAttack*			m_lanternAttack3;					//攻撃用灯籠。
 
-	bool m_isGameStart = false; //ゲームスタートフラグ
-	bool m_isLoad = true;//ゲーム開始前でロードが終わっているか
-	bool m_isTimeLimit = false;
+	//攻撃灯籠用ライト。
+	LanternAttackLight*		m_lanternAttackLight1;				//攻撃灯籠用ライト。
+	LanternAttackLight*		m_lanternAttackLight2;				//攻撃灯籠用ライト。
+	LanternAttackLight*		m_lanternAttackLight3;				//攻撃灯籠用ライト。
 
-	int m_endTimer = 0.0f;
+	//UI。
+	UItukuyomi*				m_uiTukuyomi;						//月読の加護のUI
+	UIskill*				m_uiSkill;							//スキルのUI
+	UISimenawa*				m_uiSimenawa;						//しめ縄のUI
+	UIcurseBar*				m_uiCurseBar;						//呪いバーのUI
+	UIheal*					m_uiHeal;							//回復のUI
+	EnemyUI*				m_enemyUI;							//敵UI。
+	UIStone*				m_uiStone;							//火打石UI。
+
+	//カウントダウン用。
+	UIThree*				m_uiThree = nullptr;				//カウントダウン3。
+	UITwo*					m_uiTwo = nullptr;					//カウントダウン2。
+	UIOne*					m_uiOne = nullptr;					//カウントダウン1。
+	UIZero*					m_uiZero = nullptr;					//カウントダウン0。
+
+	//タイムリミットを知らせるUI。
+	TimeLimit*				m_timeLimit1;						//タイムリミット用UI。
+	
+	//スプライトレンダー・フォントレンダー。
+	SpriteRender			m_spriteRender;						//スプライトレンダー。
+	FontRender				m_timerFontRender;					//フォントレンダー。
+	FontRender				m_notifyEnemyFontRender;			//敵出現通知用フォントレンダー。
+	FontRender				m_fontNormalAttack;					//通常攻撃用フォントレンダー。
+	FontRender				m_enemyCount;						//敵のカウントを表示するフォントレンダー。
+
+	//ボタンUIの表示。
+	FontRender				m_skip;								//スキップ用フォントレンダー。
+	SpriteRender			m_buttonB;							//Bボタン。
+	FontRender				m_fontNormalAttackButton;			//通常攻撃用フォントレンダー。
+	SpriteRender			m_buttonX;							//Xボタン。
+	SpriteRender			m_buttonY;							//Yボタン。
+	SpriteRender			m_buttonLT;							//LTボタン。
+	SpriteRender			m_buttonRT;							//RTボタン。
+
+	Vector3					m_EnemyRandompos;					//敵の座標。
+	Vector3					Random();							//ランダムに敵を出現させる。
+public:
+	bool					m_isBoss = false;					//ボスかどうか。
+	bool					m_isCowntDownStart = false;			//カウントダウン中かどうか
+	bool					m_isLoad = true;					//ゲーム開始前でロードが終わっているか
+	float					m_luminance = 0.0f;					//空の明るさの変化量。
+	int						m_dieCount = 0;						//倒された敵の数。
+	int						m_maxCount = 0;						//敵の最大数。
+	int						m_totalCount = 0;					//敵の合計。
+private:
+	int						m_lanternLightState = 0;			//灯籠の光状態。
+	int						m_spawnCount=0;						//出現した敵の数。
+	int						m_lanternEffectState = 0;			//灯籠のエフェクト状態。
+	int						m_lanternAttackLightState = 0;		//攻撃灯籠の光状態。
+	int						m_lanternAttackEffectState = 0;		//攻撃灯籠のエフェクト状態。
+	int						m_endTimer = 0;						//ゲーム終了までの時間。
+	int						m_timerCount = 0;					//タイマーのカウント。
+	float					m_countDownTimer = 3.0f;			//カウントダウン時間。
+	float					m_timer = 120.0f;					//タイマー。
+	float					m_timeLimit = 0;					//タイムリミット。
+	float					m_spawnTimer = 0.0f;				//敵出現タイマー。
+	float					m_skyLuminance = 0.0002f;			//空の明るさ。
+	float					m_skyAmbient = 0.0002f;				//空の明るさの影響を受ける環境光。
+	float					m_notifyx = 0.0f;					//敵出現通知のX座標。	
+	const float				m_nightStart = 0.0f;
+	const float				m_phase1Start = 120.0f;				//夜明けの始まり。
+	const float				m_phase2Start = 180.0f;				//少し明るくなる。
+	const float				m_phase3Start = 210.0f;				//少し明るくなる。
+	const float				m_phase4Start = 240.0f;				//日の出開始。
+	const float				m_phase5Start = 250.0f;				//少しずつ明ける。
+	const float				m_phase6Start = 260.0f;				//少しずつ明ける。
+	const float				m_phase7Start = 270.0f;				//少しずつ明ける。
+	const float				m_dayStart = 290.0f;				//朝になる。
+	const float				m_luminanceNight = 0.0003f;			//夜の明るさ。
+	const float				m_luminanceMidNight1 = 0.0005f;		//夜の明るさ。
+	const float				m_luminanceMidNight2 = 0.0007f;		//夜の明るさ。
+	const float				m_luminanceSunrise = 0.001f;		//日の出。
+	const float				m_luminanceDawn1 = 0.005f;			//夜明け。
+	const float				m_luminanceDawn2 = 0.007f;			//夜明け。
+	const float				m_luminanceDawn3 = 0.01f;			//夜明け。
+	const float				m_luminanceDay = 0.05f;				//朝（最大）。
+	bool					m_islanternAction = false;			//灯籠のアクションかどうか。
+	bool					m_isShowNotify=false;				//敵出現通知を表示するかどうか。
+	//灯籠用ライトのフラグ。
+	bool					m_lanternLightFlag = false;
+	bool					m_lanternLightFlag1 = false;
+	bool					m_lanternLightFlag2 = false;
+	bool					m_lanternLightFlag3 = false;
+	bool					m_lanternLightFlag4 = false;
+	//灯籠用エフェクトのフラグ。
+	bool					m_lanternEffectFlag1 = false;
+	bool					m_lanternEffectFlag2 = false;
+	bool					m_lanternEffectFlag3 = false;
+	bool					m_lanternEffectFlag4 = false;
+	//攻撃灯籠用ライトのフラグ。
+	bool					m_lanternAttackLightFlag1 = false;
+	bool					m_lanternAttackLightFlag2 = false;
+	bool					m_lanternAttackLightFlag3 = false;
+	//攻撃灯籠用エフェクトのフラグ。
+	bool					m_lanternAttackEffectFlag1 = false;
+	bool					m_lanternAttackEffectFlag2 = false;
+	bool					m_lanternAttackEffectFlag3 = false;
+	//空の明るさのフラグ。
+	bool					m_isNight = false;
+	bool					m_isMidNight1 = false;
+	bool					m_isMidNight2 = false;
+	bool					m_isSunrise = false;
+	bool					m_isDawn1 = false;
+	bool					m_isDawn2 = false; 
+	bool					m_isDawn3 = false;
+	bool					m_isDay = false;
+
+	bool					m_isCountDownEnd = false;				//カウントダウン終了かどうか。
+	bool					m_isOne = false;						//あと一秒かどうか。
+	bool					m_isTwo = false;						//あと二秒かどうか。
+	bool					m_isThree = false;						//あと三秒かどうか。
+	bool					m_isGameStart = false;					//ゲームスタートフラグ。
+	bool					m_isTimeLimit = false;					//タイムリミットかどうか。
 };
 
 
