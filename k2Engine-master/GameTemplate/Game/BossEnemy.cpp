@@ -34,29 +34,26 @@ BossEnemy::~BossEnemy()
 bool BossEnemy::Start()
 {
 	//待機。
-	m_animationClips[enAnimationClip_Idle].Load("Assets/animData/BossEnemy/idle.tka");
+	m_animationClips[enAnimationClip_Idle].Load("Assets/animData/Boss/idle.tka");
 	m_animationClips[enAnimationClip_Idle].SetLoopFlag(true);
-	//歩き。
-	m_animationClips[enAnimationClip_walk].Load("Assets/animData/BossEnemy/walk.tka");
-	m_animationClips[enAnimationClip_walk].SetLoopFlag(true);
 	//走り。
-	m_animationClips[enAnimationClip_Run].Load("Assets/animData/BossEnemy/run.tka");
+	m_animationClips[enAnimationClip_Run].Load("Assets/animData/Boss/Move.tka");
 	m_animationClips[enAnimationClip_Run].SetLoopFlag(true);
 	//近接攻撃
-	m_animationClips[enAnimationClip_Attack].Load("Assets/animData/BossEnemy/attack.tka");
-	m_animationClips[enAnimationClip_Attack].SetLoopFlag(true);
+	m_animationClips[enAnimationClip_Attack].Load("Assets/animData/Boss/Attack.tka");
+	m_animationClips[enAnimationClip_Attack].SetLoopFlag(false);
 	//毒ブレス。
-	m_animationClips[enAnimationClip_Poison].Load("Assets/animData/BossEnemy/poison.tka");
-	m_animationClips[enAnimationClip_Poison].SetLoopFlag(true);
+	m_animationClips[enAnimationClip_Poison].Load("Assets/animData/Boss/Poison.tka");
+	m_animationClips[enAnimationClip_Poison].SetLoopFlag(false);
 	//ダメージ。
-	m_animationClips[enAnimationClip_Damage].Load("Assets/animData/BossEnemy/receivedamage.tka");
+	m_animationClips[enAnimationClip_Damage].Load("Assets/animData/Boss/Damage.tka");
 	m_animationClips[enAnimationClip_Damage].SetLoopFlag(false);
 	//ダウン。
-	m_animationClips[enAnimationClip_Down].Load("Assets/animData/BossEnemy/down.tka");
+	m_animationClips[enAnimationClip_Down].Load("Assets/animData/Boss/Down.tka");
 	m_animationClips[enAnimationClip_Down].SetLoopFlag(false);
 
 	//モデルを初期化。
-	m_modelRender.Init("Assets/modelData/LittleEnemy/enemy.tkm", m_animationClips, enAnimationClip_Num);
+	m_modelRender.Init("Assets/modelData/Boss/Boss.tkm", m_animationClips, enAnimationClip_Num);
 
 	//座標を更新する。
 	m_modelRender.SetPosition(m_position);
@@ -554,14 +551,7 @@ void BossEnemy::ProcessChaseStateTransition()
 
 void BossEnemy::ProcessHondenStateTransition()
 {
-	////攻撃ができる距離になったら
-	//if (IsCanAttack() == true)
-	//{
-	//	//他のステートに遷移する
-	//	ProcessCommonStateTransition();
-	//	return;
-	//}
-
+	
 	m_hondenTimer += g_gameTime->GetFrameDeltaTime();
 	//追跡時移行がある程度経過したら
 	if (m_hondenTimer >= 0.8f)
@@ -656,7 +646,7 @@ void BossEnemy::ProcessCommonStateTransition()
 			if (IsCanAttack() == true)
 			{
 				int ram = rand() % 100;
-				if (ram > 70)
+				if (ram > 10)
 				{
 
 					m_enemyState = enEnemyState_Attack;
@@ -757,7 +747,7 @@ void BossEnemy::PlayAnimation()
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
 	case BossEnemy::enEnemyState_Attack:
-		m_modelRender.SetAnimationSpeed(1.6f);
+		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Attack,0.1f);
 		break;
 		//遠距離攻撃ステート
@@ -783,15 +773,15 @@ void BossEnemy::PlayAnimation()
 void BossEnemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
 {
 	(void)clipName;
-	if (wcscmp(eventName, L"attack_start") == 0) {
+	if (wcscmp(eventName, L"Boss_Start") == 0) {
 		//攻撃中判定をtrueにする。
 		m_isUnderAttack = true;
 	}
-	else if (wcscmp(eventName, L"attack_end") == 0) {
+	else if (wcscmp(eventName, L"Boss_End") == 0) {
 		m_isUnderAttack = false;
 	}
 
-	if (wcscmp(eventName, L"magic_attack") == 0) {
+	if (wcscmp(eventName, L"Boss_Poison") == 0) {
 		MakePoison();
 	}
 }
@@ -801,7 +791,7 @@ const bool BossEnemy::IsCanAttack()const
 	//プレイヤーとの距離ベクトルを取得。
 	Vector3 diff = m_player->GetPosition() - m_position;
 	//エネミーとプレイヤーの距離が近かったら
-	if (diff.LengthSq() <= 100.0f * 100.0f)
+	if (diff.LengthSq() <= 200.0f * 200.0f)
 	{
 		//攻撃可
 		return true;

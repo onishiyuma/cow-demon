@@ -35,26 +35,23 @@ LittleEnemy::~LittleEnemy()
 bool LittleEnemy::Start()
 {  
 	//アニメーションの読み込みとループ設定。
-	m_animationClips[enAnimationClip_Idle].Load("Assets/animData/littleEnemy/idle.tka");
+	m_animationClips[enAnimationClip_Idle].Load("Assets/animData/Little/idle.tka");
 	m_animationClips[enAnimationClip_Idle].SetLoopFlag(true);
 
-	m_animationClips[enAnimationClip_Walk].Load("Assets/animData/littleEnemy/walk.tka");
-	m_animationClips[enAnimationClip_Walk].SetLoopFlag(true);
-
-	m_animationClips[enAnimationClip_Run].Load("Assets/animData/littleEnemy/run.tka");
+	m_animationClips[enAnimationClip_Run].Load("Assets/animData/Little/Move.tka");
 	m_animationClips[enAnimationClip_Run].SetLoopFlag(true);
 
-	m_animationClips[enAnimationClip_Poison].Load("Assets/animData/littleEnemy/poison.tka");
-	m_animationClips[enAnimationClip_Poison].SetLoopFlag(true);
+	m_animationClips[enAnimationClip_Poison].Load("Assets/animData/Little/Poison.tka");
+	m_animationClips[enAnimationClip_Poison].SetLoopFlag(false);
 
-	m_animationClips[enAnimationClip_Damage].Load("Assets/animData/littleEnemy/receivedamage.tka");
+	m_animationClips[enAnimationClip_Damage].Load("Assets/animData/Little/Damage.tka");
 	m_animationClips[enAnimationClip_Damage].SetLoopFlag(false);
 	
-	m_animationClips[enAnimationClip_Down].Load("Assets/animData/littleEnemy/down.tka");
+	m_animationClips[enAnimationClip_Down].Load("Assets/animData/Little/Down.tka");
 	m_animationClips[enAnimationClip_Down].SetLoopFlag(false);
 
 	//モデルの初期化。
-	m_modelRender.Init("Assets/modelData/LittleEnemy/enemy.tkm", m_animationClips, enAnimationClip_Num);
+	m_modelRender.Init("Assets/modelData/Little/Little.tkm", m_animationClips, enAnimationClip_Num);
 	EffectEngine::GetInstance()->ResistEffect(8, u"Assets/effect/EnemyEffects/Usioni_Little_Down/Little_Down.efk");
 	//座標を設定。
 	m_modelRender.SetPosition(m_position);
@@ -611,6 +608,7 @@ void LittleEnemy::ProcessCommonStateTransition()
 				if (ram > 80)
 				{
 					m_enemyState = enEnemyState_Poison;
+
 					return;
 				}
 
@@ -717,7 +715,7 @@ void LittleEnemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* even
 {
 	(void)clipName;
 	//アニメーションイベントの処理。
-	if (wcscmp(eventName, L"magic_attack") == 0) {
+	if (wcscmp(eventName, L"Little_Poison") == 0) {
 		MakePoison();
 	}
 }
