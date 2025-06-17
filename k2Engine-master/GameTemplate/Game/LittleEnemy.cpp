@@ -608,7 +608,7 @@ void LittleEnemy::ProcessCommonStateTransition()
 				if (ram > 80)
 				{
 					m_enemyState = enEnemyState_Poison;
-
+					/*MakePoison();*/
 					return;
 				}
 

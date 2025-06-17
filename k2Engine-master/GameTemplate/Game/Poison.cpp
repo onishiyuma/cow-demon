@@ -28,12 +28,13 @@ Poison::~Poison()
 bool Poison::Start()
 {
 	//エフェクトを設定。
-	EffectEngine::GetInstance()->ResistEffect(4, u"Assets/Effect/LittleEnemy/Poison.efk");
+	EffectEngine::GetInstance()->ResistEffect(4, u"Assets/effect/LittleEnemy/Poison.efk");
 	//移動速度を設定する。
 	m_moveSpeed = Vector3::AxisZ;
 	m_rotation.Apply(m_moveSpeed);
+    m_position += m_moveSpeed * 50.0f;
 	m_moveSpeed *= 1200.0f;
-	m_position += m_moveSpeed * 50.0f;
+	
 
 	//回転を設定する
 	m_rotation.AddRotationDegY(0.0f);
@@ -71,6 +72,7 @@ void Poison::CreateEffect()
 	m_effectEmitter->SetRotation(m_rotation);
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
+
 	m_effectEmitter->Play();
 }
 
@@ -82,12 +84,6 @@ void Poison::Update()
 	//コリジョンオブジェクトに座標を設定する。
 	m_collisionObj->SetPosition(m_position);
 	m_collisionObj->SetRotation(m_rotation);
-	//エフェクトも同じ速度にしたいので。
-	if (m_effectEmitter) 
-	{
-		m_effectEmitter->SetPosition(m_position);
-		m_effectEmitter->SetRotation(m_rotation);
-	}
 	
 	//タイマーを加算。
 	m_timer += g_gameTime->GetFrameDeltaTime();

@@ -577,7 +577,7 @@ void BossEnemy::ProcessAttackStateTransition()
 
 void BossEnemy::ProcessPoisonAttackStateTransition()
 {
-
+	
 	//遠距離攻撃アニメーションの再生が終わったら。
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
@@ -675,6 +675,7 @@ void BossEnemy::ProcessCommonStateTransition()
 				{
 					//遠距離攻撃ステートに遷移する。
 					m_enemyState = enEnemyState_Poison;
+					/*MakePoison();*/
 					return;
 				}
 			}
