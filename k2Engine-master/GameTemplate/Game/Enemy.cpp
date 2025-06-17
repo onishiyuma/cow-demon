@@ -24,21 +24,19 @@ namespace
 bool Enemy::Start()
 {
 	//アニメーションクリップの読み込み。
-	m_animationClips[enAnimationClip_Idle].Load("Assets/animData/enemy/idle.tka");
+	m_animationClips[enAnimationClip_Idle].Load("Assets/animData/Normal/idle.tka");
 	m_animationClips[enAnimationClip_Idle].SetLoopFlag(true);
-	m_animationClips[enAnimationClip_Walk].Load("Assets/animData/enemy/walk.tka");
-	m_animationClips[enAnimationClip_Walk].SetLoopFlag(true);
-	m_animationClips[enAnimationClip_Run].Load("Assets/animData/enemy/run.tka");
+	m_animationClips[enAnimationClip_Run].Load("Assets/animData/Normal/move.tka");
 	m_animationClips[enAnimationClip_Run].SetLoopFlag(true);
-	m_animationClips[enAnimationClip_Attack].Load("Assets/animData/enemy/attack.tka");
+	m_animationClips[enAnimationClip_Attack].Load("Assets/animData/Normal/Attack.tka");
 	m_animationClips[enAnimationClip_Attack].SetLoopFlag(false);
-	m_animationClips[enAnimationClip_Damage].Load("Assets/animData/enemy/receivedamage.tka");
+	m_animationClips[enAnimationClip_Damage].Load("Assets/animData/Normal/Damage.tka");
 	m_animationClips[enAnimationClip_Damage].SetLoopFlag(false);
-	m_animationClips[enAnimationClip_Down].Load("Assets/animData/enemy/down.tka");
+	m_animationClips[enAnimationClip_Down].Load("Assets/animData/Normal/Down.tka");
 	m_animationClips[enAnimationClip_Down].SetLoopFlag(false);
 
 	//モデルとアニメーションの初期化。
-	m_modelRender.Init("Assets/modelData/enemy/enemy.tkm", m_animationClips, enAnimationClip_Num);
+	m_modelRender.Init("Assets/modelData/Normal/test.tkm", m_animationClips, enAnimationClip_Num);
 	EffectEngine::GetInstance()->ResistEffect(6,u"Assets/effect/EnemyEffects/Usioni_Down/Usioni_Down.efk");
 	////座標を更新する。
 	m_modelRender.SetPosition(m_farstPosition);
@@ -848,11 +846,11 @@ void Enemy::PlayAnimation()
 void Enemy::OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
 {
 	(void)clipName;
-	if (wcscmp(eventName, L"attack_start") == 0) {
+	if (wcscmp(eventName, L"Attack_Start") == 0) {
 		//攻撃中判定をtrueにする。
 		m_isUnderAttack = true;
 	}
-	else if (wcscmp(eventName, L"attack_end") == 0) {
+	else if (wcscmp(eventName, L"Attack_End") == 0) {
 		m_isUnderAttack = false;
 	}
 }

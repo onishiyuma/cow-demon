@@ -95,12 +95,13 @@ public:
 	//メンバ変数。
 	enPlayerState		m_playerState = enPlayerState_None;			//プレイヤーの状態。
 	Vector3				m_position = Vector3::Zero;					//座標。
+	EffectEmitter* m_effectEmitter = nullptr;                   //エフェクト参照。
 	const float			m_collectTime = 15.0f;						//しめ縄を取る時間。
 	const float			m_tukuyomiMax = 0.0f;						//月読の加護の最大値。
-	const int			m_playerATK = 5;							//プレイヤーの攻撃力。
+	const int			m_playerATK = 3;							//プレイヤーの攻撃力。
 	const int			m_skillMax = 100;							//スキルの最大値。
-	const int			m_skillMagnification = 5;					//スキルの倍率。
-	const int			m_TukuyomiMagnification = 7;				//月読の加護の倍率。
+	const int			m_skillMagnification = 1000;					//スキルの倍率。
+	const float			m_TukuyomiMagnification = 0.5;				//月読の加護の倍率。
 	const int			m_criticalRate = 20;						//クリティカル率。
 	const int			m_cliticalDamage = 2;						//クリティカルダメージ。
 	float				m_tukuyomiBlessingCoolDown = 0.0f;			//月読の加護のクールダウン。
@@ -114,7 +115,7 @@ public:
 	int					m_skillATK = 100;								//スキル攻撃力。
 	int					m_stoneCount = 0;							//火打石の所持数。
 	int					m_tukuyomiATK = 5;							//月読の加護の攻撃力。
-	int					m_lanternCount = 0;							//灯籠の灯っている数。
+	int					m_lanternCount = 4;							//灯籠の灯っている数。
 private:
 	NoHeal*				m_noHeal;									//回復できない。
 	BellSpriteRender*	m_bellSpriteRender;							//鈴を使う画像。
