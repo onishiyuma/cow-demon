@@ -39,49 +39,71 @@
 #include "TimeLimit.h"
 
 
+namespace
+{
+	const Vector3	SET_AMBIENT = { 0.0001f, 0.0001f, 0.0001f };				//環境光の初期値。
+	const Vector3	SET_SKY_AMBIENT = { 1.0f, 1.0f, 1.0f };						//空の環境光の初期値。
+	const Vector3	SET_DIRECTION = { 0.0f, 0.0f, 0.0f };						//方向光の初期値。
+	const Vector3	SET_DIRECTION_LIGHT_COLOR = { 0.0f, 0.0f, 0.0f };			//方向光の色の初期値。
+	const Vector3	SET_DIRECTION_LIGHT = { 1.0f, 1.0f, 1.0f };					//方向光の強さ。
+	const Vector3	ENEMY_SPAWN_POSITION_Mid = { 0.0f, 0.0f, 3000.0f };			//敵のスポーン位置。
+	const Vector3	ENEMY_SPAWN_POSITION_Left = { -1000.0f, 0.0f, 3000.0f };	//敵のスポーン位置。
+	const Vector3	ENEMY_SPAWN_POSITION_Right = { 1000.0f, 0.0f, 3000.0f };	//敵のスポーン位置。
+	const Vector3	FONT_RENDER_POSITION = { - 200.0f, 500.0f, 0.0f};			//フォントの表示位置。
+	const float		SET_SKY_LUMINANCE = 1000.0f;								//空の光の強さ。
+	const float		ENEMY_SPAWN_TIME = 150.0f;									//敵のスポーン時間。
+	const float		TIME_LIMIT_NOTIFY = 120.0f;									//時間制限の通知時間。
+	const float		GAMELEAR_TIME = 300.0f;										//ゲームクリアの時間。
+	const float		NONE_PLAYER_HP=0;											//プレイヤーのHPがなくなった。
+	const float		TIMELIIT_TIME = 180.0f;										//制限時間。
+	const float		Set_FONT_SCALE = 1.5f;										//フォントのスケール。
+	const float		Set_FONT_NOTIFY_SCALE = 2.0f;								//フォントの通知スケール。
+	const float		NOTIFY_SCROLL_SPEED = 230.0f;								//敵出現通知のスクロール速度。
+	const float		NOTIFY_POSITION_X = -1400;									//敵出現通知のX座標。
+	const float		NOTIFY_POSITION_Y = 400.0f;									//敵出現通知のY座標。
+	const float		LANTERN_EFFECT_TRIGGER_DISTANCE = 100.0f;					//灯籠用エフェクトの判定距離。
+	const int		MAX_LANTERN_COUNT = 4;										//灯籠の最大数。
+	const int		SECONDS_IN_MINUTE = 60;										//1分の秒数。
+	const int		WCS_BUFFER_SIZE = 256;										//バッファサイズ。
+}
+
 bool Game::Start()
 {
 	//ステージ全体を暗くする。
-	g_sceneLight->SetAmbient(Vector3(0.0001f, 0.0001f, 0.0001f));
-	g_sceneLight->SetDirectionLight(0, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
-
-	//x軸の向き。
-	m_notifyx = 1000.0f;
+	g_sceneLight->SetAmbient(SET_AMBIENT);
+	g_sceneLight->SetDirectionLight(0, SET_DIRECTION_LIGHT,SET_DIRECTION_LIGHT_COLOR);
 
 	//空の作成。
 	m_skyCube = NewGO<SkyCube>(0, "skyCube");
 	m_skyCube->SetType(enSkyCubeType_NightToon);
-	m_skyCube->SetScale(1000.0f);
+	m_skyCube->SetScale(SET_SKY_LUMINANCE);
+
 	//空の光の強さ。
 	m_skyCube->SetLuminance(m_skyLuminance);
+
 	//空の光から影響する環境光の強さ
 	g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(),m_skyAmbient);
 
+	//敵出現通知のX座標。
+	m_notifyx = 1000.0f;	
+
 	//オブジェクトの作成。
 	CreateObject();
-
 	//火打石の作成。
 	CreateStone();
-
 	//灯籠の作成。
 	CreateLantern();
-
-	//攻撃用灯籠の作成。
-	//CreateAttackLantern();
-
 	//UIの作成。
 	CreateUI();
-  
 	//ボタンUIの作成。
 	ButtonUI();
+	//灯籠用矢印の作成。
+	CreateLanternArrow();
 
 	//インスタンスアドレスを検索。
 	m_load = FindGO<Load>("load");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_enemy = FindGO<Enemy>("enemy");
-
-	//灯籠用矢印の作成。
-	CreateLanternArrow();
 
 	return true;
 }
@@ -130,9 +152,6 @@ Game::~Game()
 	DeleteGO(m_ringBell);		//ベル。
 
 	//火打石。
-	/*DeleteGO(m_stone1);
-	DeleteGO(m_stone2);
-	DeleteGO(m_stone3);*/
 	DeleteGO(m_stone4);
 	DeleteGO(m_stone5);
 	DeleteGO(m_stone6);
@@ -162,21 +181,6 @@ Game::~Game()
 	DeleteGO(m_lanternArrow3);
 	DeleteGO(m_lanternArrow4);
 
-	////攻撃用灯籠。
-	//DeleteGO(m_lanternAttack1);
-	//DeleteGO(m_lanternAttack2);
-	//DeleteGO(m_lanternAttack3);
-
-	////攻撃灯籠用ライト。
-	//DeleteGO(m_lanternAttackLight1);
-	//DeleteGO(m_lanternAttackLight2);
-	//DeleteGO(m_lanternAttackLight3);
-
-	////攻撃灯籠用エフェクト。
-	//DeleteGO(m_redFlame1);
-	//DeleteGO(m_redFlame2);
-	//DeleteGO(m_redFlame3);
-
 	//UI関連。
 	DeleteGO(m_uiTukuyomi);
 	DeleteGO(m_uiSkill);
@@ -185,74 +189,70 @@ Game::~Game()
 	DeleteGO(m_uiHeal);
 	DeleteGO(m_uiStone);
 	DeleteGO(m_enemyUI);
-	//DeleteGO(m_countDown);
 	DeleteGO(m_skyCube);
 }
 
 void Game::Update()
 {	
-	if (m_isLoad == true) {
-		if (m_load->isLoad())
-		{
-			return;
-		}
+	//ロードが完了していない場合はUpdateしない。
+	if (m_isLoad && m_load->isLoad())
+	{
+		return;
 	}
 	
+	//カウントダウンを開始。
 	if (!m_isCowntDownStart)
 	{
 		//カウントダウンの開始。
 		StartCountDown();
 
 	}
-	else if (m_isCowntDownStart == true){
+	else if (m_isCowntDownStart){
 
-		if (m_isGameStart == false) {
-			m_uiZero = NewGO<UIZero>(0,"UIZero");
+		if (!m_isGameStart) {
 			//カウントダウンが終わったら、ゲーム開始。
+			m_uiZero = NewGO<UIZero>(0,"UIZero");
+			//スタートの音を鳴らす。
 			g_soundEngine->ResistWaveFileBank(2, "Assets/sound/gameStart.wav");
 			m_gameStartSound = NewGO<SoundSource>(2);
 			m_gameStartSound->Init(2);
 			m_gameStartSound->Play(false);
+			//ステージ用のBGMを鳴らす。
 			g_soundEngine->ResistWaveFileBank(62, "Assets/sound/stage.wav");
 			m_stage = NewGO<SoundSource>(62);
 			m_stage->Init(62);
 			m_stage->Play(false);
+			//ゲームスタートのフラグを立てる。
 			m_isGameStart = true;
 		}
-		else {
-			
-			
+		else 
+		{
 			//タイマーを表示する用関数。
 			UITimer();
-			//m_timer += g_gameTime->GetFrameDeltaTime();
 			//ゲームーオーバーやゲームクリアーを呼び出す関数。
 			GameManager();
-			//灯籠用ライトのステート
+			//灯籠用ライトのステート。
 			LanternLightState();
-			//灯籠用ライトの作成
+			//灯籠用ライトの作成。
 			CreateLanternLight();
 			//灯籠用エフェクトの作成
 			CreateLanternEffect();
-			//攻撃灯籠用ライトのステート
-			//LanternAttackLightState();
-			//攻撃灯籠用ライトの作成
-			//CreateLanternAttackLight();
-			//攻撃灯籠用エフェクトの作成
-			//CreateLanternAttackEffect();
-			//空の明るさ調整
+			//空の明るさ調整。
 			SetSkyLight();
 			//敵のスポーン処理と敵が来たことを通知する。
 			NotifiyEnemy();
-    }
-  }
+		}	
+	}
 
 
-	if (m_timer >= 150.0f) {
+	if (m_timer >= ENEMY_SPAWN_TIME) {
+		//一定時間経過したら敵をスポーンさせる。
 		CreateEnemy();
 	}
 
-	if (m_timer >= 120.0f) {
+	if (m_timer >= TIME_LIMIT_NOTIFY) {
 		if (!m_isTimeLimit) {
+			//ゲームクリアが近いことを知らせる。
 			m_timeLimit1 = NewGO<TimeLimit>(0, "timeLimit");
 			m_isTimeLimit = true;
 		}
@@ -264,12 +264,13 @@ void Game::Update()
 void Game::GameManager()
 {
 	//敵から本殿を守り切ったらゲームクリア。
-	if (m_timer >= 300.0f)
+	if (m_timer >= GAMELEAR_TIME)
 	{
 		NewGO<GameClear>(0);
 		DeleteGO(this);
 	}
 
+	//敵が本殿に入ったらイージングしてゲームオーバー。
 	if (m_gameCamera->m_isCameraRotationFin && m_gameCamera->m_callGameOverTime >= m_gameCamera->m_waitTime)
 	{
 		NewGO<GameOver>(0);
@@ -277,7 +278,7 @@ void Game::GameManager()
 	}
 
 	//呪いの抵抗値がなくなったら。
-	if (m_player->m_playerHP <= 0)
+	if (m_player->m_playerHP <= NONE_PLAYER_HP)
 	{
 		NewGO<GameOver>(0);
 		DeleteGO(this);
@@ -291,7 +292,7 @@ void Game::SetSkyLight()
 {
 	//完全な夜。
 	if (m_timer > m_phase1Start && m_timer < m_phase2Start) {
-		if (m_isNight != true) {
+		if (!m_isNight) {
 			//夜の明るさに設定。
 			m_luminance = m_luminanceNight;
 			//それぞれ夜の明るさに変更する。
@@ -301,13 +302,12 @@ void Game::SetSkyLight()
 			m_skyCube->SetLuminance(m_skyLuminance);
 			g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
 			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
-			
 			m_isNight = true;
 		}
 	}
 	//真夜中。
 	else if (m_timer > m_phase2Start && m_timer < m_phase3Start) {
-		if (m_isMidNight1 != true) {
+		if (!m_isMidNight1) {
 			//真夜中の明るさに設定。
 			m_luminance = m_luminanceMidNight1;
 			//それぞれ真夜中の明るさに変更する。
@@ -322,7 +322,7 @@ void Game::SetSkyLight()
 	}
 	//真夜中。
 	else if (m_timer > m_phase3Start && m_timer < m_phase4Start) {
-		if (m_isMidNight2 != true) {
+		if (!m_isMidNight2) {
 			//真夜中の明るさに設定。
 			m_luminance = m_luminanceMidNight2;
 			//それぞれ真夜中の明るさに変更する。
@@ -337,7 +337,7 @@ void Game::SetSkyLight()
 	}
 	//日の出開始。
 	else if (m_timer > m_phase4Start && m_timer < m_phase5Start) {
-		if (m_isSunrise != true) {
+		if (!m_isSunrise) {
 			//日の出の明るさに設定。
 			m_luminance = m_luminanceSunrise;
 			//それぞれ日の出の明るさに変更する。
@@ -348,84 +348,11 @@ void Game::SetSkyLight()
 			g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
 			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
 			//ステージ全体の光の影響を調整する。
-			g_sceneLight->SetAmbient(Vector3(1.0f,1.0f, 1.0f));
-			g_sceneLight->SetDirectionLight(0, Vector3(1.0f,1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f));
+			g_sceneLight->SetAmbient(SET_SKY_AMBIENT);
+			g_sceneLight->SetDirectionLight(0, SET_DIRECTION_LIGHT, SET_DIRECTION_LIGHT_COLOR);
 			m_isSunrise = true;
 		}
 	}
-	////夜明け中。
-	//else if (m_timer > m_phase5Start && m_timer < m_phase6Start) {
-	//	if (m_isDawn1 != true) {
-	//		//夜明けの明るさに設定。
-	//		m_luminance = m_luminanceDawn1;
-	//		//それぞれ夜明けの明るさに変更する。
-	//		m_skyLuminance = m_luminance;
-	//		m_skyAmbient = m_luminance;
-	//		//適用。
-	//		m_skyCube->SetLuminance(m_skyLuminance);
-	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
-	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
-	//		//ステージ全体の光の影響をする。
-	//		g_sceneLight->SetAmbient(Vector3(1.0f, 1.0f, 1.0f));
-	//		g_sceneLight->SetDirectionLight(0, Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f));
-	//		m_isDawn1 = true;
-	//	}
-	//	
-	//}
-	////夜明け中。
-	//else if (m_timer > m_phase6Start && m_timer < m_phase7Start) {
-	//	if (m_isDawn2 != true) {
-	//		//夜明けの明るさに設定。
-	//		m_luminance = m_luminanceDawn2;
-	//		//それぞれ夜明けの明るさに変更する。
-	//		m_skyLuminance = m_luminance;
-	//		m_skyAmbient = m_luminance;
-	//		//適用。
-	//		m_skyCube->SetLuminance(m_skyLuminance);
-	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
-	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
-	//		//ステージ全体の光の影響を調整する。
-	//		g_sceneLight->SetAmbient(Vector3(1.0f, 1.0f, 1.0f));
-	//		g_sceneLight->SetDirectionLight(0, Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f));
-	//		m_isDawn2 = true;
-	//	}
-	//}
-	////夜明け中。
-	//else if (m_timer > m_phase7Start && m_timer < m_dayStart) {
-	//	if (m_isDawn3 != true) {
-	//		//夜明けの明るさに設定。
-	//		m_luminance = m_luminanceDawn3;
-	//		//それぞれ夜明けの明るさに変更する。
-	//		m_skyLuminance = m_luminance;
-	//		m_skyAmbient = m_luminance;
-	//		//適用。
-	//		m_skyCube->SetLuminance(m_skyLuminance);
-	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
-	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
-	//		//ステージ全体の光の影響を調整する。
-	//		g_sceneLight->SetAmbient(Vector3(1.0f, 1.0f, 1.0f));
-	//		g_sceneLight->SetDirectionLight(0, Vector3(1.0f,1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f));
-	//		m_isDawn3 = true;
-	//	}
-	//}
-	////朝。
-	//else if (m_timer > m_dayStart) {
-	//	if (m_isDay != true) {
-	//		//朝の明るさに設定。
-	//		m_luminance = m_luminanceDay;
-	//		//それぞれ朝の明るさに変更する。
-	//		m_skyLuminance = m_luminance;
-	//		m_skyAmbient = m_luminance;
-	//		//適用。
-	//		m_skyCube->SetLuminance(m_skyLuminance);
-	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
-	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
-	//		//ステージ全体の光の影響を調整する。
-	//		g_sceneLight->SetAmbient(Vector3(1.0f, 1.0f, 1.0f));
-	//		g_sceneLight->SetDirectionLight(0, Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f));
-	//		m_isDay = true;
-	//	}
-	//}
 }
 
 //ゲーム前のカウントダウンを行う関数。
@@ -455,12 +382,8 @@ void Game::StartCountDown()
 	}
 	else if (m_countDownTimer <= 0.0f) {
 		if (m_uiOne != nullptr && m_uiOne->m_isMove) {
-			//DeleteGO(m_uiOne);
 			m_uiOne = nullptr;
-			m_countDownTimer = 0.0f; // カウントダウンをリセット
-			/*m_isThree = false;
-			m_isTwo = false;
-			m_isOne = false;*/
+			m_countDownTimer = 0.0f;//カウントダウンをリセット。
 			m_isCowntDownStart = true;
 		}
 	}
@@ -470,7 +393,7 @@ void Game::StartCountDown()
 void Game::CreateObject()
 {
 	//制限時間の設定。
-	m_timeLimit = 180.0f;
+	m_timeLimit = TIMELIIT_TIME;
 	//背景の作成。
 	m_backGround = NewGO<BackGround>(0);
 	//ベルの作成。
@@ -493,13 +416,13 @@ Vector3 Game::Random()
 	switch (spawnRandom)
 	{
 	case 0:
-		position = { 0.0f, 0.0f, 3000.0f };
+		position = ENEMY_SPAWN_POSITION_Mid;
 		break;
 	case 1:
-		position = { 1000.0f, 0.0f, 3000.0f };
+		position = ENEMY_SPAWN_POSITION_Right;
 		break;
 	case 2:
-		position = { -1000.0f, 0.0f, 3000.0f };
+		position = ENEMY_SPAWN_POSITION_Left;
 		break;
 	}
 
@@ -510,20 +433,8 @@ Vector3 Game::Random()
 void Game::CreateStone()
 {
 	// 火打石を表示。
-	/*m_stone1 = NewGO<Stone>(0, "stone1");
-	m_stone1->m_position = { 1500.0f,-25.0f,2200.0f };
-	m_stone1->m_firstPosition = m_stone1->m_position;
-
-	m_stone2 = NewGO<Stone>(0, "stone2");
-	m_stone2->m_position = { -900.0f,-25.0f,2300.0f };
-	m_stone2->m_firstPosition = m_stone2->m_position;
-
-	m_stone3 = NewGO<Stone>(0, "stone3");
-	m_stone3->m_position = { -180.0f,-25.0f,2400.0f };
-	m_stone3->m_firstPosition = m_stone3->m_position;*/
-
 	m_stone4 = NewGO<Stone>(0, "stone4");
-	m_stone4->m_position = { -700.0f,-25.0f,-400.0f };
+	m_stone4->m_position ={ -700.0f,-25.0f,-400.0f };
 	m_stone4->m_firstPosition = m_stone4->m_position;
 
 	m_stone5 = NewGO<Stone>(0, "stone5");
@@ -542,7 +453,7 @@ void Game::CreateStone()
 //灯籠作成用関数。
 void Game::CreateLantern()
 {
-	//灯籠のモデルを表示
+	//灯籠のモデルを表示。
 	m_lantern1 = NewGO<Lantern>(0, "lantern1");
 	m_lantern1->m_position = { 500.0f,-50.0f,1000.0f };
 	m_lantern1->m_firstPosition = m_lantern1->m_position;
@@ -560,7 +471,7 @@ void Game::CreateLantern()
 	m_lantern4->m_firstPosition = m_lantern4->m_position;
 }
 
-//灯籠用ライトのステート
+//灯籠用ライトのステート。
 void Game::LanternLightState()
 {
 	//プレイヤーと灯籠の距離をそれぞれ計算する。
@@ -573,37 +484,37 @@ void Game::LanternLightState()
 	m_lanternEffectState = 0;
 
 	//1つ目の灯籠に火が灯ったら。
-	if (m_lantern1->m_isLight == true)
+	if (m_lantern1->m_isLight)
 	{
 		//かつ、1つ目の灯籠と距離が近かったら。
-		if (lanternDiff1.Length() <= 100.0f)
+		if (lanternDiff1.Length() <= LANTERN_EFFECT_TRIGGER_DISTANCE)
 		{
 			m_lanternEffectState = 1;
 		}
 	}
 	//2つ目の灯籠に火が灯ったら。
-	if (m_lantern2->m_isLight == true) 
+	if (m_lantern2->m_isLight) 
 	{
 		//かつ、2つ目の灯籠と距離が近かったら。
-		if (lanternDiff2.Length() <= 100.0f) 
+		if (lanternDiff2.Length() <= LANTERN_EFFECT_TRIGGER_DISTANCE)
 		{
 			m_lanternEffectState = 2;
 		}
 	}
 	//3つ目の灯籠に火が灯ったら。
-	if (m_lantern3->m_isLight == true) 
+	if (m_lantern3->m_isLight) 
 	{
 		//かつ、3つ目の灯籠と距離が近かったら。
-		if (lanternDiff3.Length() <= 100.0f)
+		if (lanternDiff3.Length() <= LANTERN_EFFECT_TRIGGER_DISTANCE)
 		{
 			m_lanternEffectState = 3;
 		}
 	}
 	//4つ目の灯籠に火が灯ったら。
-	if (m_lantern4->m_isLight == true) 
+	if (m_lantern4->m_isLight) 
 	{
 		//かつ、4つ目の灯籠と距離が近かったら。
-		if (lanternDiff4.Length() <= 100.0f) 
+		if (lanternDiff4.Length() <= LANTERN_EFFECT_TRIGGER_DISTANCE)
 		{
 			m_lanternEffectState = 4;
 		}
@@ -614,7 +525,7 @@ void Game::LanternLightState()
 //灯籠用ライトの作成。
 void Game::CreateLanternLight()
 {
-	if (m_player->m_lanternCount == 4) {
+	if (m_player->m_lanternCount == MAX_LANTERN_COUNT) {
 		if (!m_lanternLightFlag) {
 
 			//灯籠用矢印を削除する。
@@ -651,7 +562,7 @@ void Game::CreateLanternEffect()
 	switch (m_lanternEffectState)
 	{
 	case 1:
-		if (m_lanternEffectFlag1 == false) 
+		if (!m_lanternEffectFlag1) 
 		{
 			//1つ目の灯籠用エフェクトを作成する。
 			m_blueFlame1 = NewGO<BlueFlame>(0, "blueFlame1");
@@ -661,7 +572,7 @@ void Game::CreateLanternEffect()
 		}
 		break;
 	case 2:
-		if (m_lanternEffectFlag2 == false) 
+		if (!m_lanternEffectFlag2) 
 		{
 			//2つ目の灯籠用エフェクトを作成する。
 			m_blueFlame2 = NewGO<BlueFlame>(0, "blueFlame2");
@@ -671,7 +582,7 @@ void Game::CreateLanternEffect()
 		}
 		break;
 	case 3:
-		if (m_lanternEffectFlag3 == false)
+		if (!m_lanternEffectFlag3)
 		{
 			//3つ目の灯籠用エフェクトを作成する。
 			m_blueFlame3 = NewGO<BlueFlame>(0, "blueFlame3");
@@ -681,7 +592,7 @@ void Game::CreateLanternEffect()
 		}
 		break;
 	case 4:
-		if (m_lanternEffectFlag4 == false) 
+		if (!m_lanternEffectFlag4) 
 		{
 			//4つ目の灯籠用エフェクトを作成する。
 			m_blueFlame4 = NewGO<BlueFlame>(0, "blueFlame4");
@@ -742,10 +653,10 @@ void Game::LanternAttackLightState()
 	m_lanternAttackEffectState = 0;//攻撃灯籠用エフェクトステートを常に初期化。
 
 	//1つ目の攻撃灯籠に火が灯ったら。
-	if (m_lanternAttack1->m_isLight == true)
+	if (m_lanternAttack1->m_isLight)
 	{
 		//かつ、1つ目の攻撃灯籠と距離が近かったら。
-		if (lanternAttackDiff1.Length() <= 100.0f) 
+		if (lanternAttackDiff1.Length() <= LANTERN_EFFECT_TRIGGER_DISTANCE)
 		{
 			m_lanternAttackLightState = 1;
 			//攻撃灯籠用エフェクトステートを1にする。
@@ -753,10 +664,10 @@ void Game::LanternAttackLightState()
 		}
 	}
 	//2つ目の攻撃灯籠に火が灯ったら。
-	if (m_lanternAttack2->m_isLight == true)
+	if (m_lanternAttack2->m_isLight)
 	{
 		//かつ、2つ目の攻撃灯籠と距離が近かったら。
-		if (lanternAttackDiff2.Length() <= 100.0f) 
+		if (lanternAttackDiff2.Length() <= LANTERN_EFFECT_TRIGGER_DISTANCE)
 		{
 			m_lanternAttackLightState = 2;
 			//攻撃灯籠用エフェクトステートを2にする。
@@ -764,10 +675,10 @@ void Game::LanternAttackLightState()
 		}
 	}
 	//3つ目の攻撃灯籠に火が灯ったら。
-	if (m_lanternAttack3->m_isLight == true)
+	if (m_lanternAttack3->m_isLight)
 	{
 		//かつ、3つ目の攻撃灯籠と距離が近かったら。
-		if (lanternAttackDiff3.Length() <= 100.0f)
+		if (lanternAttackDiff3.Length() <= LANTERN_EFFECT_TRIGGER_DISTANCE)
 		{
 			m_lanternAttackLightState = 3;
 			//攻撃灯籠用エフェクトステートを3にする。
@@ -783,7 +694,7 @@ void Game::CreateLanternAttackLight()
 	{
 	case 1:
 		//1つ目の攻撃灯籠用ライトが灯っていなかったら。
-		if (m_lanternAttackLightFlag1 == false) {
+		if (!m_lanternAttackLightFlag1) {
 			//1つ目の攻撃灯籠用ライトを作成する。
 			m_lanternAttackLight1 = NewGO<LanternAttackLight>(0, "lanternAttackLight1");
 			m_lanternAttackLight1->m_position = { 1500.0f,80.0f,2300.0f };
@@ -794,7 +705,7 @@ void Game::CreateLanternAttackLight()
 		break;
 	case 2:
 		//2つ目の攻撃灯籠用ライトが灯っていなかったら。
-		if (m_lanternAttackLightFlag2 == false) {
+		if (!m_lanternAttackLightFlag2) {
 			//2つ目の攻撃灯籠用ライトを作成する。
 			m_lanternAttackLight2 = NewGO<LanternAttackLight>(0, "lanternAttackLight2");
 			m_lanternAttackLight2->m_position = { -800.0f,80.0f,2300.0f };
@@ -805,7 +716,7 @@ void Game::CreateLanternAttackLight()
 		break;
 	case 3:
 		//3つ目の攻撃灯籠用ライトが灯っていなかったら。
-		if (m_lanternAttackLightFlag3 == false) {
+		if (!m_lanternAttackLightFlag3) {
 			//3つ目の攻撃灯籠用ライトを作成する。
 			m_lanternAttackLight3 = NewGO<LanternAttackLight>(0, "lanternAttackLight3");
 			m_lanternAttackLight3->m_position = { -180.0f,80.0f,2500.0f };
@@ -824,7 +735,7 @@ void Game::CreateLanternAttackEffect()
 	{
 		//1つ目の攻撃灯籠に火が灯ったら。
 	case 1:
-		if (m_lanternAttackEffectFlag1 == false) 
+		if (!m_lanternAttackEffectFlag1) 
 		{
 			//1つ目の攻撃灯籠用エフェクトを作成する。
 			m_redFlame1 = NewGO<RedFlame>(0, "redFlame1");
@@ -835,7 +746,7 @@ void Game::CreateLanternAttackEffect()
 		break;
 		//2つ目の攻撃灯籠に火が。
 	case 2:
-		if (m_lanternAttackEffectFlag2 == false)
+		if (!m_lanternAttackEffectFlag2)
 		{
 			//2つ目の攻撃灯籠用エフェクトを作成する。
 			m_redFlame2 = NewGO<RedFlame>(0, "redFlame2");
@@ -846,7 +757,7 @@ void Game::CreateLanternAttackEffect()
 		break;
 		//3つ目の攻撃灯籠に火が灯ったら。
 	case 3:
-		if (m_lanternAttackEffectFlag3 == false) 
+		if (!m_lanternAttackEffectFlag3) 
 		{
 			//3つ目の攻撃灯籠用エフェクトを作成する。
 			m_redFlame3 = NewGO<RedFlame>(0, "redFlame3");
@@ -921,20 +832,6 @@ void Game::CreateEnemy()
 		//enemyUI->SetBossEnemy(boss);
 		m_isBoss = true;
 	}
-	
-	
-	//wchar_t wcsbuf2[256];
-	//swprintf_s(wcsbuf2, 256, L"敵:%d", int(m_totalCount));
-
-	////表示するテキストを設定。
-	//m_enemyCount.SetText(wcsbuf2);
-	////フォントの位置を設定。
-	//m_enemyCount.SetPosition(Vector3(500.0f, 300.0f, 0.0f));
-	////フォントの大きさを設定。
-	//m_enemyCount.SetScale(1.5f);
-	////フォントの色を設定。
-	//m_enemyCount.SetColor({ 1.0f,1.0f,1.0f,1.0f });
-
 }
 
 void Game::CreateDeletedEnemy()
@@ -1034,19 +931,19 @@ void Game::UITimer()
 {
 	m_timer += g_gameTime->GetFrameDeltaTime();
 	//タイマーの表示。
-	wchar_t wcsbuf[256];
+	wchar_t wcsbuf[WCS_BUFFER_SIZE];
 
-	int minute = (int)m_timer / 60;
+	int minute = (int)m_timer / SECONDS_IN_MINUTE;
 
-	int sec = (int)m_timer % 60;
-	swprintf_s(wcsbuf, 256, L"午前%01d時%02d分", minute, sec);
+	int sec = (int)m_timer % SECONDS_IN_MINUTE;
+	swprintf_s(wcsbuf, WCS_BUFFER_SIZE, L"午前%01d時%02d分", minute, sec);
 
 	//フォントを設定。
 	m_timerFontRender.SetText(wcsbuf);
 	//フォントの大きさを設定。
-	m_timerFontRender.SetScale(1.5f);
+	m_timerFontRender.SetScale(Set_FONT_SCALE);
 	//フォントの位置を設定。
-	m_timerFontRender.SetPosition(Vector3(-200.0f, 500.0f, 0.0f));
+	m_timerFontRender.SetPosition(FONT_RENDER_POSITION);
 	//フォントの色を設定。
 	m_timerFontRender.SetColor(g_vec4White);
 }
@@ -1059,22 +956,23 @@ void Game::HitCrossHair()
 void Game::NotifiyEnemy()
 {
 	//ゲーム開始から30秒経ったら。
-	if (m_timer >= 150.0f)
+	if (m_timer >=ENEMY_SPAWN_TIME)
 	{
 		////エネミーの作成。
 		//CreateEnemy();
 		//敵が来たことを通知する。
 		m_notifyEnemyFontRender.SetText(L"敵が来るぞ");
 		m_notifyEnemyFontRender.SetColor(g_vec4Red);
-		m_notifyEnemyFontRender.SetScale(2);
+		m_notifyEnemyFontRender.SetScale(Set_FONT_NOTIFY_SCALE);
 		m_isShowNotify = true;
 	}
+
 	if (m_isShowNotify)
 	{
-		m_notifyx -= 230 * g_gameTime->GetFrameDeltaTime();
-		m_notifyEnemyFontRender.SetPosition(m_notifyx, 400.0f, 0.0f);
+		m_notifyx -= NOTIFY_SCROLL_SPEED * g_gameTime->GetFrameDeltaTime();
+		m_notifyEnemyFontRender.SetPosition(m_notifyx, NOTIFY_POSITION_Y, 0.0f);
 
-		if (m_notifyx < -1400.0f)
+		if (m_notifyx < NOTIFY_POSITION_X)
 		{
 			m_isShowNotify = false;
 		}

@@ -5,13 +5,18 @@
 #include "Game.h"
 #include "GameOver.h"
 
+namespace
+{
+	const Vector3 CAMERA_POS = { 1.0f, 125.0f, -60.0f };
+	const Vector3 CAMERA_POS_MAIN = { 1.0f, 125.0f, -60.0f };
+}
 
 bool GameCamera::Start()
 {
 	//注視点から視点までのベクトルを設定。
-	m_toCameraPos.Set(1.0f, 125.0f, -60.0f);
-	//m_toCameraPos2はエネミーUI用に作成
-	m_PosMain.Set(1.0f, 125.0f, -60.0f);
+	m_toCameraPos.Set(CAMERA_POS);
+	//m_toCameraPosMainはエネミーUI用に作成
+	m_PosMain.Set(CAMERA_POS_MAIN);
 	//プレイヤーのインスタンスを探す。
 	m_player = FindGO<Player>("player");
 	m_ringBell = FindGO<RingBell>("ringbell");
