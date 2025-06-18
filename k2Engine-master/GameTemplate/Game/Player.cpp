@@ -393,6 +393,10 @@ void Player::Collision()
 	//--------------------------------------------------------------------------------------------------------------
 	AnnoyingEnemyAttackCollision();
 	//--------------------------------------------------------------------------------------------------------------
+	//ボスの攻撃用コリジョン判定。
+	//--------------------------------------------------------------------------------------------------------------
+	BossEnemyAttackCollision();
+	//--------------------------------------------------------------------------------------------------------------
 	//ボスの毒攻撃の攻撃用コリジョン判定。
 	//--------------------------------------------------------------------------------------------------------------
 	BossEnemyPoisonCollision();
@@ -723,6 +727,39 @@ void Player::AnnoyingEnemyAttackCollision()
 		{
 			m_invincibleTime_Annoying = 0.0f;
 			m_isDamage_Annoying = false;
+		}
+	}
+}
+
+void Player::BossEnemyAttackCollision()
+{
+	if (!m_isDamage_BossEnemy)
+	{
+		{
+			//ボスの攻撃用コリジョンを取得する。
+			const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Boss_enemy_attack");
+			//配列をfor文で回す。
+			for (auto collision : collisions)
+			{
+				if (collision->IsHit(m_characterController))
+				{
+					//HPを減らす。
+					m_playerHP -= 15;
+					m_isDamage_BossEnemy = true;
+					m_invincibleTime_BossEnemy = 0.0f;
+					return;
+				}
+			}
+		}
+	}
+	//無敵時間の設定。
+	if (m_isDamage_BossEnemy)
+	{
+		m_invincibleTime_BossEnemy += g_gameTime->GetFrameDeltaTime();
+		if (m_invincibleTime_BossEnemy >= m_invincibleTimeDuration)
+		{
+			m_invincibleTime_BossEnemy = 0.0f;
+			m_isDamage_BossEnemy = false;
 		}
 	}
 }
