@@ -68,6 +68,8 @@ public:
 	void EnemyAttackCollision();
 	//ウザイ敵の攻撃判定用コリジョン。
 	void AnnoyingEnemyAttackCollision();
+	//ボスの攻撃判定用コリジョン
+	void BossEnemyAttackCollision();
 	//ボスの毒攻撃判定用コリジョン。
 	void BossEnemyPoisonCollision();
 	//小さい敵の毒攻撃判定用コリジョン。
@@ -157,6 +159,7 @@ private:
 	float				m_poisonCoolDown = 0.0f;					//毒状態のクールダウン。
 	float				m_invincibleTime_Enemy = 0.0f;				//敵の攻撃の無敵時間。
 	float				m_invincibleTime_Annoying = 0.0f;			//ウザイ敵の攻撃の無敵時間。
+	float               m_invincibleTime_BossEnemy = 0.0f;			//ボス敵の攻撃の無敵時間。
 	float				m_invincibleTime_BossPoison = 0.0f;			//ボスの毒攻撃の無敵時間。
 	float				m_invincibleTime_LittlePoison = 0.0f;		//小さい敵の毒攻撃の無敵時間。
 	float				m_invincibleTime_Explosion = 0.0f;			//爆発攻撃の無敵時間。
@@ -164,6 +167,7 @@ private:
 	bool				m_isDeleted = false;						//消されるか。
 	bool				m_isRotating = false;						//回転中か。
 	bool				m_isDamage_Enemy = false;					//敵からダメージを受けているか。
+	bool                m_isDamage_BossEnemy = false;				//ボス敵からダメージを受けているか。
 	bool				m_isDamage_Annoying = false;				//ウザイ敵からダメージを受けているか。
 	bool				m_isDamage_BossPoison = false;				//ボスの毒ダメージを受けているか。
 	bool				m_isDamage_LittlePoison = false;			//小さい敵の毒ダメージを受けているか。
