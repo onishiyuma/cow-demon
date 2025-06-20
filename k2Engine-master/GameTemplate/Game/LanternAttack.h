@@ -34,14 +34,9 @@ private:
 	Stone*			m_stone;							//石。
 	SpriteLight*	m_spriteLight;						//ライトの画像。
 	SpriteNoStone*	m_spriteNoStone;					//石を持っていない画像。
-	TimingBarA*		m_timingBarA;						//タイミングバーA。
-	TimingBarB*		m_timingBarB;						//タイミングバーB。
-	TimingBarC*		m_timingBarC;						//タイミングバーC。
-	Line*			m_line;								//線。
 	SpritePush*		m_spritePush;						//プッシュ画像。
-
-	float            m_attack = 5.0f;
-	int				m_buttonAState = 0;
+	const int       m_attack = 5;						//攻撃力。
+	int				m_buttonAState = 0;					//「A:火を灯す」ボタンの状態。
 	int				m_lanternCount = 0;					//火を灯したカウント。
 	bool			m_isLightUI = false;				//灯籠の近くにいるか。
 	bool			m_isNoStoneUI = false;				//火打石がなかったら。

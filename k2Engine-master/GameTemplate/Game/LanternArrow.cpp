@@ -14,33 +14,27 @@ LanternArrow::~LanternArrow()
 
 bool LanternArrow::Start()
 {
+	//インスタンスアドレスを検索。
 	auto game = FindGO<Game>("Game");
+
 	//画像を読み込む
 	m_modelRender.Init("Assets/modelData/offeringBox/arrow.tkm");
-	
-	//矢印のモデルを読み込む。
-	/*m_initData.m_tkmFilePath = "Assets/modelData/offeringBox/arrow.tkm";
-	m_initData.m_expandConstantBuffer = &game->m_luminance;
-	m_initData.m_expandConstantBufferSize = sizeof(game->m_luminance);*/
-
-	//矢印用のシェーダーを読み込む。
-	//m_initData.m_fxFilePath = "Assets/shader/stone.fx";
-	//m_modelRender.InitForwardRendering(m_initData); 
-
-	m_movePosition = m_position;
-	m_modelRender.SetPosition(m_movePosition);
-	m_modelRender.SetScale(m_scale);
+	//回転を設定。
 	m_rotation.SetRotationDegY(90);
+
+	//座標を設定。
+	m_movePosition = m_position;
 
 	return true;
 }
 
 void LanternArrow::Update()
 {
+	//モデルを更新。
 	m_modelRender.Update();
+
 	m_modelRender.SetPosition(m_movePosition);
 	m_modelRender.SetScale(m_scale);
-	//m_rotation.SetRotationDegY(90);
 
 	Move();
 }
