@@ -2,14 +2,11 @@
 #include "LanternLight.h"
 #include "Lantern.h"
 
-LanternLight::LanternLight()
+namespace
 {
-
-}
-
-LanternLight::~LanternLight()
-{
-
+	const Vector3 POINTRIGHT_COLOR = {5.0f, 50.0f, 50.0f};
+	const float POINTRIGHT_RANGE = 150.0f;
+	const float POINTRIGHT_AFFECT_POW = 2.0f;
 }
 
 bool LanternLight::Start()
@@ -24,14 +21,23 @@ bool LanternLight::Start()
 	m_pointLight.Init();
 	m_volumePointLight.Init(m_pointLight);
 	//ポイントライトの色を設定。
-	m_pointLight.SetColor(Vector3(5.0f, 50.0f, 50.0f) * 0.0003f);
-
+	m_pointLight.SetColor(POINTRIGHT_COLOR * 0.0003f);
 	//ポイントライトの範囲を設定。
-	m_pointLight.SetRange(150.0f);
+	m_pointLight.SetRange(POINTRIGHT_RANGE);
 	//ポイントライトの影響力を設定。
-	m_pointLight.SetAffectPowParam(2.0f);
+	m_pointLight.SetAffectPowParam(POINTRIGHT_AFFECT_POW);
 
 	return true;
+}
+
+LanternLight::LanternLight()
+{
+
+}
+
+LanternLight::~LanternLight()
+{
+
 }
 
 void LanternLight::Update()
