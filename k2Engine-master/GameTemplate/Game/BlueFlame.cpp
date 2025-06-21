@@ -4,7 +4,7 @@
 
 namespace
 {
-	Vector3 EFECT_SCALE = { 30.0f,30.0f,30.0f };
+	const Vector3 EFECT_SCALE = { 30.0f,30.0f,30.0f };
 }
 
 bool BlueFlame::Start()

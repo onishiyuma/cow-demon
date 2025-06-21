@@ -4,8 +4,11 @@
 
 namespace
 {
+	//ポイントライトの色を設定。
 	Vector3 POINTRIGHT_COLOR = Vector3(0.25f, 0.15f, 0.15f);
+	//ポイントライトの範囲を設定。
 	float POINTRIGHT_RANGE = 400.0f;
+	//ポイントライトの影響力を設定。
 	float POINTRIGHT_POW_PARAM = 1.0f;
 }
 

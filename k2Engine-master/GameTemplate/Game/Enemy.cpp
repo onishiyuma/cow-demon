@@ -18,7 +18,7 @@
 namespace
 {
 	//チャージ増加量。
-	int CHARGE_INCREASE_AMOUNT = 10;
+	const int CHARGE_INCREASE_AMOUNT = 10;
 }
 
 bool Enemy::Start()
