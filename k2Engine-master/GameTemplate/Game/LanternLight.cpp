@@ -4,8 +4,11 @@
 
 namespace
 {
+	//ポイントライトの色を設定。
 	const Vector3 POINTRIGHT_COLOR = {5.0f, 50.0f, 50.0f};
+	//ポイントライトの範囲を設定。
 	const float POINTRIGHT_RANGE = 150.0f;
+	//ポイントライトの影響力を設定。
 	const float POINTRIGHT_AFFECT_POW = 2.0f;
 }
 

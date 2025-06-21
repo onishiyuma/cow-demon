@@ -20,11 +20,11 @@
 namespace
 {
 	//文字の座標。
-	Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };
+	const Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };	
 	//Lスティックの移動速度。
-	float L_STICK_MOVE_SPEED = 350.0f;
+	const float L_STICK_MOVE_SPEED = 350.0f;
 	//エフェクトの大きさ。
-	Vector3 EFFECT_SCALE = { 55.0f,55.0f,55.0f };
+	const Vector3 EFFECT_SCALE = { 55.0f,55.0f,55.0f };
 }
 
 

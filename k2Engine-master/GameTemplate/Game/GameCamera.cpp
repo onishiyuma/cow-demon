@@ -7,7 +7,9 @@
 
 namespace
 {
+	//カメラの座標。
 	const Vector3 CAMERA_POS = { 1.0f, 125.0f, -60.0f };
+	//本殿に
 	const Vector3 CAMERA_POS_MAIN = { 1.0f, 125.0f, -60.0f };
 }
 

@@ -13,7 +13,8 @@
 
 namespace
 {
-	Vector3 MODELRENDER_SCALE = Vector3(0.6f, 0.6f, 0.6f);
+	//モデルの大きさを設定。
+	const Vector3 MODELRENDER_SCALE = Vector3(0.6f, 0.6f, 0.6f);
 }
 
 bool Lantern::Start() 
