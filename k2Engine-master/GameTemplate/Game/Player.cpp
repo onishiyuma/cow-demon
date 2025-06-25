@@ -405,7 +405,7 @@ void Player::MakeShimenawa()
 }
 
 //-----------------------------------------------------------------------------------------------------------------
-//終わり
+//終わり。
 //-----------------------------------------------------------------------------------------------------------------
 
 //コリジョン判定。
@@ -448,14 +448,6 @@ void Player::Distance()
 		return;
 	}
 
-	//360度回した回復。
-	if (m_totalRotation >= 720.0f)
-	{
-		//HPを回復する。
-		HealHP(100);
-		m_totalRotation = 0.0f;
-	}
-			
 	//プレイヤーと鈴の位置を取得。
 	Vector3 bellPos = m_ringBell->GetPosition();
 	Vector3 playerPos = m_position;
@@ -500,7 +492,7 @@ void Player::RotationCamera()
 	m_prevStickAngle = angle;
 
 	//スティックを回すと回復。
-	if (m_totalRotation >= 720.0f)
+	if (m_totalRotation >= 360.0f)
 	{
 		if (m_healCoolDown <= 0)
 		{
