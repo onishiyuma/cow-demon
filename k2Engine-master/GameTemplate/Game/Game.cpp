@@ -188,11 +188,11 @@ void Game::Update()
 		StartCountDown();
 
 	}
-	else if (m_isCowntDownStart){
+	else if (m_isCowntDownStart) {
 
 		if (!m_isGameStart) {
 			//カウントダウンが終わったら、ゲーム開始。
-			m_uiZero = NewGO<UIZero>(0,"UIZero");
+			m_uiZero = NewGO<UIZero>(0, "UIZero");
 			//スタートの音を鳴らす。
 			g_soundEngine->ResistWaveFileBank(2, "Assets/sound/gameStart.wav");
 			m_gameStartSound = NewGO<SoundSource>(2);
@@ -206,46 +206,44 @@ void Game::Update()
 			//ゲームスタートのフラグを立てる。
 			m_isGameStart = true;
 		}
-
-		else {
-			
-			//エネミーの管理
-			EnemyManager();
-		else 
-		{
-			//タイマーを表示する用関数。
-			UITimer();
-			//ゲームーオーバーやゲームクリアーを呼び出す関数。
-			GameManager();
-			//灯籠用ライトのステート。
-			LanternLightState();
-			//灯籠用ライトの作成。
-			CreateLanternLight();
-			//灯籠用エフェクトの作成
-			CreateLanternEffect();
-			//空の明るさ調整。
-			SetSkyLight();
-			//敵のスポーン処理と敵が来たことを通知する。
-			NotifiyEnemy();
+		//エネミーの管理
+		EnemyManager();
+		//タイマーを表示する用関数。
+		UITimer();
+		//ゲームーオーバーやゲームクリアーを呼び出す関数。
+		GameManager();
+		//灯籠用ライトのステート。
+		LanternLightState();
+		//灯籠用ライトの作成。
+		CreateLanternLight();
+		//灯籠用エフェクトの作成
+		CreateLanternEffect();
+		//空の明るさ調整。
+		SetSkyLight();
+		//敵のスポーン処理と敵が来たことを通知する。
+		NotifiyEnemy();
 
 
 
-	if (m_timer >= ENEMY_SPAWN_TIME) {
-		//一定時間経過したら敵をスポーンさせる。
-		CreateEnemy();
-	}
+		if (m_timer >= ENEMY_SPAWN_TIME) {
+			//一定時間経過したら敵をスポーンさせる。
+			CreateEnemy();
+		}
 
 
-	if (m_timer >= 120.0f) {
-	if (m_timer >= TIME_LIMIT_NOTIFY) {
-		if (!m_isTimeLimit) {
-			//ゲームクリアが近いことを知らせる。
-			m_timeLimit1 = NewGO<TimeLimit>(0, "timeLimit");
-			m_isTimeLimit = true;
+		if (m_timer >= 120.0f) {
+			if (m_timer >= TIME_LIMIT_NOTIFY) {
+				if (!m_isTimeLimit) {
+					//ゲームクリアが近いことを知らせる。
+					m_timeLimit1 = NewGO<TimeLimit>(0, "timeLimit");
+					m_isTimeLimit = true;
+				}
+			}
 		}
 	}
-
 }
+
+	
 
 //ゲームクリア、ゲームオーバーの判定処理。
 void Game::GameManager()
