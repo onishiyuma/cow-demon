@@ -26,6 +26,7 @@
 #include "UIskill.h"
 #include "UISimenawa.h"
 #include "UIcurseBar.h"
+#include "UIMPBar.h"
 #include "UIheal.h"
 #include "GameClear.h"
 #include "GameOver.h"
@@ -186,6 +187,7 @@ Game::~Game()
 	DeleteGO(m_uiSkill);
 	DeleteGO(m_uiSimenawa);
 	DeleteGO(m_uiCurseBar);
+	DeleteGO(m_uiMPBar);
 	DeleteGO(m_uiHeal);
 	DeleteGO(m_uiStone);
 	DeleteGO(m_enemyUI);
@@ -533,6 +535,8 @@ void Game::CreateLanternLight()
 			DeleteGO(m_lanternArrow2);
 			DeleteGO(m_lanternArrow3);
 			DeleteGO(m_lanternArrow4);
+			//火打石の数の表示を削除する。
+			DeleteGO(m_uiStone);
 
 			//1つ目の灯籠用ライトを作成する。
 			m_lanternLight1 = NewGO<LanternLight>(0, "lanternLight1");
@@ -553,6 +557,9 @@ void Game::CreateLanternLight()
 			//灯籠用ライトが灯っている判定にする。
 			m_lanternLightFlag = true;
 		}
+
+		LanternMPState();//灯籠用MPステートを呼び出す。
+		LanternHealMP();//灯籠用MP回復を呼び出す。
 	}
 }
 
@@ -622,6 +629,116 @@ void Game::CreateLanternArrow()
 	m_lanternArrow4 = NewGO<LanternArrow>(0, "lanternArrow4");
 	m_lanternArrow4->m_position = { -500.0f,140.0f,-500.0f };
 	m_lanternArrow4->m_firstPosition = m_lanternArrow4->m_position;
+}
+
+void Game::LanternMPState()
+{
+	//プレイヤーと灯籠の距離をそれぞれ計算する。
+	Vector3 lanternMP1 = m_player->m_position - m_lantern1->m_position;//1つ目。
+	Vector3 lanternMP2 = m_player->m_position - m_lantern2->m_position;//2つ目。
+	Vector3 lanternMP3 = m_player->m_position - m_lantern3->m_position;//3つ目。
+	Vector3 lanternMP4 = m_player->m_position - m_lantern4->m_position;//4つ目。
+
+	m_lanternMPState = 0;//灯籠用MPステートを常に初期化。
+
+	//1つ目の灯籠に火が灯ったら。
+	if (m_lantern1->m_isLight)
+	{
+		//かつ、1つ目の灯籠と距離が近かったら。
+		if (lanternMP1.Length() <= 150.0f)
+		{
+			m_lanternMPState = 1;
+		}
+	}
+	//2つ目の灯籠に火が灯ったら。
+	if (m_lantern2->m_isLight)
+	{
+		//かつ、2つ目の灯籠と距離が近かったら。
+		if (lanternMP2.Length() <= 150.0f)
+		{
+			m_lanternMPState = 2;
+		}
+	}
+	//3つ目の灯籠に火が灯ったら。
+	if (m_lantern3->m_isLight)
+	{
+		//かつ、3つ目の灯籠と距離が近かったら。
+		if (lanternMP3.Length() <= 150.0f)
+		{
+			m_lanternMPState = 3;
+		}
+	}
+	//4つ目の灯籠に火が灯ったら。
+	if (m_lantern4->m_isLight)
+	{
+		//かつ、4つ目の灯籠と距離が近かったら。
+		if (lanternMP4.Length() <= 150.0f)
+		{
+			m_lanternMPState = 4;
+		}
+	}
+}
+
+void Game::LanternHealMP()
+{
+	m_healMPTimer += g_gameTime->GetFrameDeltaTime();//灯籠用MP回復タイマーを更新。
+
+	//灯籠用MPステートに応じて、プレイヤーのMPを回復する。
+	switch (m_lanternMPState)
+	{
+	case 1:
+		
+		if (m_healMPTimer >= 1.0f) {
+			//プレイヤーのMPを回復する。
+			m_player->m_playerMP += 20;
+			//MPが最大値を超えないようにする。
+			if (m_player->m_playerMP > m_player->m_playerMaxMP) {
+				m_player->m_playerMP = m_player->m_playerMaxMP;
+			}
+			//灯籠用MP回復タイマーをリセット。
+			m_healMPTimer = 0.0f;
+		}
+		break;
+	case 2:
+		
+		if (m_healMPTimer >= 1.0f) {
+			//プレイヤーのMPを回復する。
+			m_player->m_playerMP += 20;
+			//MPが最大値を超えないようにする。
+			if (m_player->m_playerMP > m_player->m_playerMaxMP) {
+				m_player->m_playerMP = m_player->m_playerMaxMP;
+			}
+			//灯籠用MP回復タイマーをリセット。
+			m_healMPTimer = 0.0f;
+		}
+		break;
+	case 3:
+		
+		if (m_healMPTimer >= 1.0f) {
+			//プレイヤーのMPを回復する。
+			m_player->m_playerMP += 20;
+			//MPが最大値を超えないようにする。
+			if (m_player->m_playerMP > m_player->m_playerMaxMP) {
+				m_player->m_playerMP = m_player->m_playerMaxMP;
+			}
+			//灯籠用MP回復タイマーをリセット。
+			m_healMPTimer = 0.0f;
+		}
+		break;
+	case 4:
+		
+		if (m_healMPTimer >= 1.0f) {
+			//プレイヤーのMPを回復する。
+			m_player->m_playerMP += 20;
+			//MPが最大値を超えないようにする。
+			if (m_player->m_playerMP > m_player->m_playerMaxMP) {
+				m_player->m_playerMP = m_player->m_playerMaxMP;
+			}
+			//灯籠用MP回復タイマーをリセット。
+			m_healMPTimer = 0.0f;
+		}
+		break;
+	}
 }
 
 //攻撃灯籠の作成用関数。
@@ -888,6 +1005,8 @@ void Game::CreateUI()
 	m_uiSimenawa = NewGO<UISimenawa>(0, "uisimenawa");
 	//呪ゲージ。
 	m_uiCurseBar = NewGO<UIcurseBar>(0, "uicursebar");
+	//MPゲージ。
+	m_uiMPBar = NewGO<UIMPBar>(0, "uimpbar");
 	//回復。
 	m_uiHeal = NewGO <UIheal>(0, "uiheal");
 	//火打石のカウントを表示。

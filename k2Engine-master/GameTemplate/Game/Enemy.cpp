@@ -70,7 +70,7 @@ bool Enemy::Start()
 		m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
 	}
 	//チュートリアルモードだったら。
-	if (m_gameManagement->m_isTutorial == true) {
+	if (m_gameManagement->m_isOperation == true) {
 		m_tutorial = FindGO<Tutorial>("tutorial");
 	}
 
@@ -125,7 +125,7 @@ void Enemy::Update()
 		}*/
 	}
 	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isTutorial == true) {
+	else if (m_gameManagement->m_isOperation == true) {
 
 		if (m_tutorial->m_clearCount == 3) {
 			//追跡処理。
@@ -640,7 +640,7 @@ void Enemy::ProcessDownStateTransition()
 			DeleteGO(this);
 		}
 	}
-	else if (m_gameManagement->m_isTutorial == true) {
+	else if (m_gameManagement->m_isOperation == true) {
 
 		m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
 
@@ -733,7 +733,7 @@ void Enemy::ProcessCommonStateTransition()
 		}
 	}
 	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isTutorial == true) {
+	else if (m_gameManagement->m_isOperation == true) {
 
 		//プレイヤーを見つけたら。
 		if (SearchPlayer() == true) {
