@@ -77,7 +77,7 @@ void Load::LoadingProgress()
             if (m_gameManagement->m_isGame) {
                 m_game = NewGO<Game>(0, "game");
             }
-            else if (m_gameManagement->m_isTutorial) {
+            else if (m_gameManagement->m_isOperation) {
                 m_tutorial = NewGO<Tutorial>(0, "tutorial");
             }
         }
@@ -104,7 +104,7 @@ void Load::LoadingProgress()
             if (m_gameManagement->m_isGame && m_game) {
                 m_game->m_isLoad = false;
             }
-            else if (m_gameManagement->m_isTutorial && m_tutorial) {
+            else if (m_gameManagement->m_isOperation && m_tutorial) {
                 m_tutorial->m_isLoad = false;
             }
 

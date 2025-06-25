@@ -236,6 +236,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyUI.cpp" />
+    <ClCompile Include="FontMP.cpp" />
     <ClCompile Include="GameManagement.cpp" />
     <ClCompile Include="LanternArrow.cpp" />
     <ClCompile Include="Load.cpp" />
@@ -253,6 +254,7 @@
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Mountain.cpp" />
     <ClCompile Include="NoHeal.cpp" />
+    <ClCompile Include="Operation.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerLight.cpp" />
     <ClCompile Include="Poison.cpp" />
@@ -285,6 +287,7 @@
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TukuyomiBlessing.cpp" />
     <ClCompile Include="Tutorial.cpp" />
+    <ClCompile Include="UIMPBar.cpp" />
     <ClCompile Include="UIOne.cpp" />
     <ClCompile Include="UIStone.cpp" />
     <ClCompile Include="UIcurseBar.cpp" />
@@ -309,6 +312,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyUI.h" />
+    <ClInclude Include="FontMP.h" />
     <ClInclude Include="GameManagement.h" />
     <ClInclude Include="LanternArrow.h" />
     <ClInclude Include="Load.h" />
@@ -325,6 +329,7 @@
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Mountain.h" />
     <ClInclude Include="NoHeal.h" />
+    <ClInclude Include="Operation.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerLight.h" />
     <ClInclude Include="Poison.h" />
@@ -354,6 +359,7 @@
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TukuyomiBlessing.h" />
     <ClInclude Include="Tutorial.h" />
+    <ClInclude Include="UIMPBar.h" />
     <ClInclude Include="UIOne.h" />
     <ClInclude Include="UIStone.h" />
     <ClInclude Include="UIcurseBar.h" />

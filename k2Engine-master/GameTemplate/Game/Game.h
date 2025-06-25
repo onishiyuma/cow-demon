@@ -31,6 +31,7 @@ class UIskill;
 class UISimenawa;
 class UIcurseBar;
 class UIheal;
+class UIMPBar;
 class MiniMap;
 class EnemyUI;
 class Load;
@@ -81,6 +82,10 @@ public:
 	void CreateLanternEffect();
 	//灯籠用矢印の作成。
 	void CreateLanternArrow();
+	//灯籠のMP回復用ステート。
+	void LanternMPState();
+	//灯籠のMP回復用処理。
+	void LanternHealMP();
 	//攻撃灯籠用ライトのステート。
 	void LanternAttackLightState();
 	//攻撃灯籠用ライトの作成。
@@ -199,6 +204,7 @@ private:
 	UIskill*				m_uiSkill;							//スキルのUI
 	UISimenawa*				m_uiSimenawa;						//しめ縄のUI
 	UIcurseBar*				m_uiCurseBar;						//呪いバーのUI
+	UIMPBar*				m_uiMPBar;							//MPバーのUI
 	UIheal*					m_uiHeal;							//回復のUI
 	EnemyUI*				m_enemyUI;							//敵UI。
 	UIStone*				m_uiStone;							//火打石UI。
@@ -250,6 +256,7 @@ private:
 	float					m_timer = 120.0f;					//タイマー。
 	float					m_timeLimit = 0;					//タイムリミット。
 	float					m_spawnTimer = 0.0f;				//敵出現タイマー。
+	float                   m_healMPTimer = 0.0f;				//MP回復タイマー。
 	float					m_skyLuminance = 0.0002f;			//空の明るさ。
 	float					m_skyAmbient = 0.0002f;				//空の明るさの影響を受ける環境光。
 	float					m_notifyx = 0.0f;					//敵出現通知のX座標。	
@@ -283,6 +290,12 @@ private:
 	bool					m_lanternEffectFlag2 = false;
 	bool					m_lanternEffectFlag3 = false;
 	bool					m_lanternEffectFlag4 = false;
+	//灯籠用MP回復のフラグ。
+	int				        m_lanternMPState = 0;		    //灯籠のMP回復状態。
+	bool					m_isLanternHealMP1 = false;		//灯籠のMP回復フラグ。
+	bool					m_isLanternHealMP2 = false;		//灯籠のMP回復フラグ。
+	bool					m_isLanternHealMP3 = false;		//灯籠のMP回復フラグ。
+	bool					m_isLanternHealMP4 = false;		//灯籠のMP回復フラグ。
 	//攻撃灯籠用ライトのフラグ。
 	bool					m_lanternAttackLightFlag1 = false;
 	bool					m_lanternAttackLightFlag2 = false;

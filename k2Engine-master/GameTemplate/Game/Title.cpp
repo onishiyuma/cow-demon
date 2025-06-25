@@ -2,6 +2,7 @@
 #include "Title.h"
 #include "Game.h"
 #include "Load.h"
+#include "Operation.h"
 #include "sound/SoundEngine.h"
 #include "GameManagement.h"
 
@@ -9,9 +10,9 @@
 bool Title::Start()
 {
 	//タイトルの背景画像を読み込む
-	m_sppriteBack.Init("Asset/sprite/Black.DDS", 1920.0f, 1080.0f);
+	m_spriteBack.Init("Assets/sprite/Black.DDS", 1920.0f, 1080.0f);
 
-	m_sppriteBack.SetPosition(m_backPos);
+	m_spriteBack.SetPosition(m_backPos);
 
 	//タイトルの画像を読み込む。
 	m_spriteRender.Init("Assets/sprite/cowDemonTitle.DDS", 1920.0f, 1080.0f);
@@ -22,8 +23,13 @@ bool Title::Start()
 	
 	//文字の表示。
 	m_fontRender.SetText(L"A ゲームスタート");
-	m_fontRender.SetPosition({ -200.0f,-300.0f,0.0f });
+	m_fontRender.SetPosition({ -200.0f,-250.0f,0.0f });
 	m_fontRender.SetColor(m_fontColor);
+
+	m_fontDescription.SetText(L"B 操作説明");
+	m_fontDescription.SetPosition({ -200.0f,-350.0f,0.0f });
+	m_fontDescription.SetColor(m_fontColor);
+
 
 	//タイトルのBGMを読み込む。
 
@@ -53,7 +59,7 @@ Title::~Title()
 void Title::Update()
 {
 
-	m_sppriteBack.Update();
+	m_spriteBack.Update();
 	m_spriteRender.SetPosition(m_backPos);
 
 	//タイマーを加算。
@@ -92,20 +98,20 @@ void Title::Update()
 
 					}
 				}
-				////タイトルからチュートリアルへ移行。
-				//else if(m_timer > 0.1f && g_pad[0]->IsPress(enButtonB)) 
-				//{
-				//	if (m_gameManagement->m_isTutorial == false) {
+				//タイトルからチュートリアルへ移行。
+				else if(m_timer > 0.1f && g_pad[0]->IsPress(enButtonB)) 
+				{
+					if (m_gameManagement->m_isOperation == false) {
 
-				//		m_gameManagement->m_isTutorial = true;
-				//		NewGO<Load>(1, "load");
-				//		m_spriteRender.Update();
-				//		DeleteGO(m_titleBGM);
-				//		//自身を削除する。
-				//		DeleteGO(this);
+						m_gameManagement->m_isOperation = true;
+						NewGO<Operation>(1, "operation");
+						m_spriteRender.Update();
+						DeleteGO(m_titleBGM);
+						//自身を削除する。
+						DeleteGO(this);
 
-				//	}
-				//}
+					}
+				}
 			}
 		}
 		
@@ -145,7 +151,14 @@ void Title::FontFade()
 		m_fontColor.g += 0.01f * m_timer / m_maxTitleTime;
 		m_fontColor.b += 0.01f * m_timer / m_maxTitleTime;
 		m_fontColor.a += 0.01f * m_timer / m_maxTitleTime;
+
+		m_fontDescriptionColor.r += 0.01f * m_timer / m_maxTitleTime;
+		m_fontDescriptionColor.g += 0.01f * m_timer / m_maxTitleTime;
+		m_fontDescriptionColor.b += 0.01f * m_timer / m_maxTitleTime;
+		m_fontDescriptionColor.a += 0.01f * m_timer / m_maxTitleTime;
+
 		m_fontRender.SetColor(m_fontColor);
+		m_fontDescription.SetColor(m_fontDescriptionColor);
 		if (m_fontColor.a >= 1.0f)
 		{
 			m_fontFadeCount++;
@@ -154,7 +167,12 @@ void Title::FontFade()
 			m_fontColor.g = 1.0f;
 			m_fontColor.b = 1.0f;
 			m_fontColor.a = 1.0f;
+			m_fontDescriptionColor.r = 1.0f;
+			m_fontDescriptionColor.g = 1.0f;
+			m_fontDescriptionColor.b = 1.0f;
+			m_fontDescriptionColor.a = 1.0f;
 			m_fontRender.SetColor(m_fontColor);
+			m_fontDescription.SetColor(m_fontDescriptionColor);
 		}
 	}
 	else
@@ -164,7 +182,14 @@ void Title::FontFade()
 		m_fontColor.g -= 0.01f * m_timer / m_maxTitleTime;
 		m_fontColor.b -= 0.01f * m_timer / m_maxTitleTime;
 		m_fontColor.a -= 0.01f * m_timer / m_maxTitleTime;
+
+		m_fontDescriptionColor.r -= 0.01f * m_timer / m_maxTitleTime;
+		m_fontDescriptionColor.g -= 0.01f * m_timer / m_maxTitleTime;
+		m_fontDescriptionColor.b -= 0.01f * m_timer / m_maxTitleTime;
+		m_fontDescriptionColor.a -= 0.01f * m_timer / m_maxTitleTime;
+
 		m_fontRender.SetColor(m_fontColor);
+		m_fontDescription.SetColor(m_fontDescriptionColor);
 		if (m_fontColor.a <= 0.0f)
 		{
 			m_isFontFade = false;
@@ -172,7 +197,12 @@ void Title::FontFade()
 			m_fontColor.g = 0.0f;
 			m_fontColor.b = 0.0f;
 			m_fontColor.a = 0.0f;
+			m_fontDescriptionColor.r = 0.0f;
+			m_fontDescriptionColor.g = 0.0f;
+			m_fontDescriptionColor.b = 0.0f;
+			m_fontDescriptionColor.a = 0.0f;
 			m_fontRender.SetColor(m_fontColor);
+			m_fontDescription.SetColor(m_fontDescriptionColor);
 		}
 	}
 }
@@ -219,8 +249,9 @@ void Title::SoulFade()
 
 void Title::Render(RenderContext& rc)
 {
+	m_spriteBack.Draw(rc);
 	m_spriteRender.Draw(rc);
-	m_sppriteBack.Draw(rc);
 	m_spriteSoul.Draw(rc);
 	m_fontRender.Draw(rc);
+	m_fontDescription.Draw(rc);
 }
