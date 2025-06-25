@@ -29,7 +29,6 @@ public:
 	//使用するアニメーションの種類。
 	enum EnAnimationClip {
 		enAnimationClip_Idle,
-		enAnimationClip_walk,
 		enAnimationClip_Run,
 		enAnimationClip_Attack,
 		enAnimationClip_Poison,
@@ -122,6 +121,7 @@ private:
 	GameCamera*			m_gameCamera = nullptr;                      //カメラ参照。
 	RingBell*           m_ringBell = nullptr;                        //本殿参照
 	LanternAttack*      m_lanternAttack;
+	
 	AnimationClip		m_animationClips[enAnimationClip_Num];		 //アニメーションクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;            //現在のステート。
 	EffectEmitter*      m_effectEmitter = nullptr;                   //エフェクト参照。
@@ -144,6 +144,10 @@ private:
 	int		m_isUnderAttack = false;        //攻撃を受けているか。
 	bool		m_isStopped = false;            //動きが止まっているか。
 	bool		m_isGameOverFlag = false;       //ゲームオーバーか。
+	public:
 	bool        m_isDeadFlag = false;               //死亡フラグ。     
+	bool m_isDead = false;
+	bool m_isDeleted = false; // メンバ追加
+	EnemyUI* m_enemyUI = nullptr;                         //UI参照。
 };
 

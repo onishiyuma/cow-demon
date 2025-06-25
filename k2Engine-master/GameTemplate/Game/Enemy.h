@@ -12,6 +12,7 @@ class Game;
 class GameCamera;
 class GameOver;
 class LanternAttack;
+class EnemyUI;
 
 class Enemy : public EnemyBase
 {
@@ -30,7 +31,6 @@ public:
 	//アニメーション。
 	enum EnAnimationClip {
 		enAnimationClip_Idle,
-		enAnimationClip_Walk,
 		enAnimationClip_Run,
 		enAnimationClip_Attack,
 		enAnimationClip_Damage,
@@ -120,6 +120,8 @@ public:
 
 	//コリジョン処理。
 	void Collision() override;
+	
+
 private:
 	//メンバ変数。
 	GameManagement*     m_gameManagement = nullptr;
@@ -127,6 +129,8 @@ private:
 	Player*				m_player = nullptr;							//プレイヤー。
 	RingBell*			m_ringBell = nullptr;						//鈴。
 	Tutorial*           m_tutorial;
+
+	
 	Game*				m_game = nullptr;							//ゲーム。
 	EffectEmitter* m_effectEmitter = nullptr;					//エフェクトエミッター。
 	GameOver*           m_gameOver = nullptr;						//ゲームオーバー。
@@ -163,5 +167,9 @@ private:
 
 	bool				m_isStopped = false;						//拘束状態。
 	bool				m_isGameOver = false;						//ゲームオーバーか。
+	public:
+	EnemyUI* m_enemyUI = nullptr;
 	bool                m_isDeadFlag = false;                       //死亡フラグ。
+	bool m_isDead = false;
+	bool m_isDeleted = false; // メンバ追加
 };

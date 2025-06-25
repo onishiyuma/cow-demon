@@ -2,6 +2,7 @@
 #include "graphics/effect/EffectEmitter.h"
 #include "EnemyBase.h"
 #include "Game.h"
+#include "EnemyUI.h"
 
 class Poison;
 class Collision;
@@ -9,6 +10,7 @@ class Player;
 class Game;
 class GameCamera;
 class RingBell;
+class EnemyUI;
 class AnnoyingEnemy : public EnemyBase
 {
 public:
@@ -21,17 +23,6 @@ public:
 		enEnemyState_Poison,			//毒攻撃。
 		enEnemyState_Damage,			//ダメージを受けている。
 		enEnemyState_Down			    //倒されている状態。
-	};
-
-	//使用するアニメーションクリップを定義。
-	enum EnAnimationClip {
-		enAnimationClip_Idle,
-		enAnimationClip_walk,
-		enAnimationClip_Run,
-		enAnimationClip_Poison,
-		enAnimationClip_Damage,
-		enAnimationClip_Down,
-		enAnimationClip_Num
 	};
 
 public:
@@ -113,15 +104,15 @@ public:
 		return m_enemyMaxHP;
 	}
 
-	
+	EnemyUI*        m_enemyUI = nullptr;						//敵のUIへの参照。
 private:
 	//メンバ変数。
 	Vector3			m_scale = { 0.7f,0.7f,0.7f };//大きさ。
 	GameCamera*		m_gameCamera = nullptr;                     //ゲームカメラへの参照。
 	Game*			m_game = nullptr;							//ゲームへの参照。
 	RingBell*		m_ringBell = nullptr;                       //本殿への参照。
+	
 	EffectEmitter*  m_effectEmitter = nullptr;					//effectへの参照。
-	AnimationClip	m_animationClips[enAnimationClip_Num];		//アニメーションクリップ配列。
 	EnEnemyState	m_enemyState = enEnemyState_Idle;			//現在の状態。
 	int				m_ExplosionBoneId = -2;						//攻撃判定を出すボーンID
 	int				m_enemyHP = 5;								//HP
@@ -142,6 +133,9 @@ private:
 	bool		m_isStopped = false;				//動きを止められているか。
 	bool		m_isGameOverFlag = false;			//ゲームオーバー呼び出し用フラグ。
     bool		m_hasExploded = false;				//爆発処理を一度だけ行うためのフラグ
+	public:
 	bool		m_isDeadFlag = false;				//死亡フラグ。
+	bool m_isDead = false;
+	bool m_isDeleted = false; // メンバ追加
 };
 

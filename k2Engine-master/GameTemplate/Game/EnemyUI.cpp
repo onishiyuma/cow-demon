@@ -35,7 +35,10 @@ EnemyUI::EnemyUI()
 
 EnemyUI::~EnemyUI()
 {
-
+	m_enemy = nullptr;
+	m_littleEnemy = nullptr;
+	m_annoyingEnemy = nullptr;
+	m_bossEnemy = nullptr;
 }
 
 bool EnemyUI::Start()
@@ -275,21 +278,28 @@ bool EnemyUI::Angle(T Enemy)
 void EnemyUI::SetEnemy(Enemy* enemy) {
 	m_enemy = enemy;
 	m_littleEnemy = nullptr;
+	m_annoyingEnemy = nullptr;
+	m_bossEnemy = nullptr;
 }
 
 void EnemyUI::SetLittleEnemy(LittleEnemy* littleEnemy) {
 	m_littleEnemy = littleEnemy;
 	m_enemy = nullptr;
+	m_annoyingEnemy = nullptr;
+	m_bossEnemy =nullptr;
 }
 
-void EnemyUI::SetAnnoyingEnemy(AnnoyingEnemy* annoyingEnemy)
-{
+void EnemyUI::SetAnnoyingEnemy(AnnoyingEnemy* annoyingEnemy){
 	m_annoyingEnemy = annoyingEnemy;
+	m_enemy = nullptr;
+	m_littleEnemy = nullptr;
 	m_bossEnemy = nullptr;
 }
 void EnemyUI::SetBossEnemy(BossEnemy* bossEnemy)
 {
 	m_bossEnemy = bossEnemy;
+	m_enemy = nullptr;
+	m_littleEnemy = nullptr;
 	m_annoyingEnemy = nullptr;
 }
 

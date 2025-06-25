@@ -90,6 +90,6 @@ void Poison::Update()
 	//タイマーが0.7f以上だったら。
 	if (m_timer >= 2.0f)
 	{
-		DeleteGO(this);
+		m_isDelete = true;
 	}
 }

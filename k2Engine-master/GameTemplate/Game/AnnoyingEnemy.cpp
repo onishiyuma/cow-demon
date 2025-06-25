@@ -7,7 +7,7 @@
 #include "Game.h"
 #include "GameCamera.h"
 #include "RingBell.h"
-
+#include "EnemyUI.h"
 #include <time.h>
 #include <stdlib.h>
 
@@ -25,35 +25,16 @@ AnnoyingEnemy::AnnoyingEnemy()
 
 AnnoyingEnemy::~AnnoyingEnemy()
 {
-	if (m_effectEmitter)
-	{
+	/*if (m_effectEmitter) {
 		m_effectEmitter->Stop();
 		DeleteGO(m_effectEmitter);
 		m_effectEmitter = nullptr;
-	}
+	}*/
 }
 
 
 bool AnnoyingEnemy::Start()
 {
-	//待機。
-	m_animationClips[enAnimationClip_Idle].Load("Assets/animData/AnnoyingEnemy/idle.tka");
-	m_animationClips[enAnimationClip_Idle].SetLoopFlag(true);
-	//歩き。
-	m_animationClips[enAnimationClip_walk].Load("Assets/animData/AnnoyingEnemy/walk.tka");
-	m_animationClips[enAnimationClip_walk].SetLoopFlag(true);
-	//走り。
-	m_animationClips[enAnimationClip_Run].Load("Assets/animData/AnnoyingEnemy/run.tka");
-	m_animationClips[enAnimationClip_Run].SetLoopFlag(true);
-	//毒ブレス。
-	m_animationClips[enAnimationClip_Poison].Load("Assets/animData/AnnoyingEnemy/poison.tka");
-	m_animationClips[enAnimationClip_Poison].SetLoopFlag(true);
-	//ダメージ。
-	m_animationClips[enAnimationClip_Damage].Load("Assets/animData/AnnoyingEnemy/receivedamage.tka");
-	m_animationClips[enAnimationClip_Damage].SetLoopFlag(false);
-	//ダウン
-	m_animationClips[enAnimationClip_Down].Load("Assets/animData/AnnoyingEnemy/down.tka");
-	m_animationClips[enAnimationClip_Down].SetLoopFlag(false);
 
 	m_modelRender.Init("Assets/modelData/fox/fox.tkm");
 
@@ -96,8 +77,15 @@ bool AnnoyingEnemy::Start()
 
 void AnnoyingEnemy::Update()
 {
-	//モデルの更新。
-	m_modelRender.Update();
+	//Game.cppで終了時のフラグがtrueになったら自分を削除するフラグをtrueにする
+	//m_isDeadFlagはEnemyUIを切断するためのフラグ
+	//m_isDeadはEnemyManagerに自身を削除してもらうためのフラグ 
+ if (m_game->m_isEndGame == true)
+	{
+		m_isDeadFlag = true;
+		m_isDead = true;
+	}
+ if (m_isDead == true)return;
 	////爆発処理
 	//Explode();
 	//本殿追跡処理
@@ -112,10 +100,8 @@ void AnnoyingEnemy::Update()
 	PlayAnimation();
 	//ステート管理。
 	ManageState();
-
-	/*if (m_game->m_timer >= 300.0f) {
-		DeleteGO(this);
-	}*/
+    //モデルの更新。
+	m_modelRender.Update();
 	
 }
 
@@ -421,10 +407,11 @@ void AnnoyingEnemy::Collision()
 		//コリジョンとキャラが衝突したら。
 		if (collision->IsHit(m_charaCon))
 		{
+			m_game->m_isEndGame = true;
 			m_gameCamera->m_isGameOver = true;
 			//消滅時EnemyUIのポインタを切断するためのフラグ
-			m_isDeadFlag = true;
-			DeleteGO(this);
+			/*m_isDeadFlag = true;
+			m_isDead = true;*/
 			break;
 		}
 	}
@@ -523,14 +510,21 @@ void AnnoyingEnemy::ProcessExplodeStateTransition()
 		MakeExplosion();
 		m_hasExploded = true;
 		m_isDeadFlag = true;
-		m_enemyHP = 0; 
+		//m_game->m_totalCount--;  // ここで減らす！（Gameの側で）
 	}
     
 	m_explodeTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_explodeTimer > 3.0f) //演出後に消える
 	{
-		m_game->m_totalCount--;
-		DeleteGO(this);
+		if (m_effectEmitter)
+		{
+			m_effectEmitter->Stop();
+			DeleteGO(m_effectEmitter);
+			m_effectEmitter = nullptr;
+		}
+
+		
+		m_isDead = true;
 	}
 }
 
@@ -551,24 +545,35 @@ void AnnoyingEnemy::ProcessDownStateTransition()
 		return;
 	}*/
 
-	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
-
 	if (!m_isDeadFlag)
 	{
 		DeathEffect();
 		m_isDeadFlag = true;
+		//m_game->m_totalCount--;  // ここで減らす！（Gameの側で）
 	}
-
+    m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_deathEffectTimer >= 1.0f)
 	{
+
+		if (m_effectEmitter)
+		{
+			m_effectEmitter->Stop();
+			DeleteGO(m_effectEmitter);
+			m_effectEmitter = nullptr;
+		}
+
 		//Gameのインスタンスアドレスを検索
-		m_game->m_totalCount--;
-		DeleteGO(this);
+		
+		m_isDead = true;
 	}
 }
 
 void AnnoyingEnemy::ProcessCommonStateTransition()
 {
+	if (m_game->m_isEndGame) {
+		return;
+	}
+
 	//各タイマーを初期化。
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;

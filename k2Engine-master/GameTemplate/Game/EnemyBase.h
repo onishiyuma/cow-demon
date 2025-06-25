@@ -34,27 +34,7 @@ public:
 		m_scale = scale;
 	}
 
-	/*void SetHP(const int hp)
-	{
-		m_enemyHP = hp;
-	}
-
-	float GetHP()const
-	{
-		return m_enemyHP;
-	}*/
-
-	/*float GetMaxHP()const
-	{
-		return m_enemyHPMax;
-	}
-
-	float GetSpeed()const
-	{
-		return m_enemySpeed;
-	}*/
-
-	/*virtual void GameSet() = 0;*/
+	
 	virtual void Update() = 0;
 	virtual void BaseAction();
 	virtual void Rotation() = 0;
@@ -77,9 +57,11 @@ public:
 	//virtual void ProcessGoalStateTransition() =0;
 	//virtual void InitEnemyModel() = 0;
 	virtual void PlayAnimation() = 0;
+	void Relase();
 protected:
 	Game* m_game = nullptr;
 	Player* m_player = nullptr;
+	EffectEmitter* m_effectEmitter = nullptr;					//エフェクトエミッター。
 	ModelRender m_modelRender;
 	ModelRender m_modelRender2;
 	Vector3 m_position;
