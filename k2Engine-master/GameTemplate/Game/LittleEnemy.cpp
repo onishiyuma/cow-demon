@@ -8,6 +8,7 @@
 #include "GameCamera.h"
 #include "RingBell.h"
 #include "LanternAttack.h"
+#include "EnemyUI.h"
 //#include"collision/CollisionObject.h"
 #include<time.h>
 #include<stdlib.h>
@@ -25,11 +26,11 @@ LittleEnemy::LittleEnemy()
 
 LittleEnemy::~LittleEnemy()
 {
-	if (m_effectEmitter) {
+	/*if (m_effectEmitter) {
 		m_effectEmitter->Stop();
 		DeleteGO(m_effectEmitter);
 		m_effectEmitter = nullptr;
-	}
+	}*/
 }
 
 bool LittleEnemy::Start()
@@ -77,7 +78,7 @@ bool LittleEnemy::Start()
 		});
 
 	//各種インスタンスアドレスを検索。
-	m_game = FindGO<Game>("Game");
+	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_ringBell = FindGO<RingBell>("ringbell");
@@ -88,12 +89,21 @@ bool LittleEnemy::Start()
 	m_rotation.Apply(m_forward);
 
 	m_enemyHP = 10;
-
 	return true;
 }
 
 void LittleEnemy::Update()
 {
+	//Game.cppで終了時のフラグがtrueになったら自分を削除するフラグをtrueにする
+	//m_isDeadFlagはEnemyUIを切断するためのフラグ
+	//m_isDeadはEnemyManagerに自身を削除してもらうためのフラグ 
+ if (m_game->m_isEndGame == true)
+	{
+		m_isDeadFlag = true;
+		m_isDead = true;
+	}
+
+ if (m_isDead == true)return;
 	//追跡処理。
 	Chase();
 	//本殿追跡処理
@@ -112,7 +122,10 @@ void LittleEnemy::Update()
 	/*if (m_game->m_timer >= 300.0f) {
 		DeleteGO(this);
 	}*/
+
+	
 }
+
 
 void LittleEnemy::Rotation()
 {
@@ -401,10 +414,8 @@ void LittleEnemy::Collision()
 		//コリジョンとキャラが衝突したら。
 		if (collision->IsHit(m_charaCon))
 		{
+			m_game->m_isEndGame = true;
 			m_gameCamera->m_isGameOver = true;
-			//消滅時EnemyUIのポインタを切断するためのフラグ
-			m_isDeadFlag = true;
-			DeleteGO(this);
 			break;
 		}
 	}
@@ -546,46 +557,43 @@ void LittleEnemy::ProcessDamageStateTransition()
 	//被ダメージアニメーションの再生が終わったら。
 	if (m_modelRender.IsPlayingAnimation() == false)
 	{
-		////攻撃されたら距離関係なしに退散させる。
-		//m_enemyState = enEnemyState_Chase;
-		//Vector3 diff = m_player->GetPosition() - m_position;
-		//diff.Normalize();
-		////移動速度を設定する。
-		//m_moveSpeed = diff * 10.0f;
 		ProcessCommonStateTransition();
 	}
 }
 
 void LittleEnemy::ProcessDownStateTransition()
 {
-	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+	
 
 	if (!m_isDeadFlag)
 	{
 		DeathEffect();
 		m_isDeadFlag = true;
-
-		if (m_game == nullptr) {
-			m_game = FindGO<Game>("game");
-		}
-
-		// null チェック
-		if (m_game != nullptr) {
-		//m_game->m_totalCount--;
-		}
+		//m_game->m_totalCount--;  // ここで減らす！（Gameの側で）
+		
 	}
-	
+	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_deathEffectTimer >= 1.0f)
 	{
+		if (m_effectEmitter)
+		{
+			m_effectEmitter->Stop();
+			DeleteGO(m_effectEmitter);
+			m_effectEmitter = nullptr;
+		}
 		//Gameのインスタンスアドレスを検索
-		m_game->m_totalCount--;
-		DeleteGO(this);
+	/*	m_game->m_totalCount--;*/
+		m_isDead = true;
 	}
 	
 }
 
 void LittleEnemy::ProcessCommonStateTransition()
 {
+	if (m_game->m_isEndGame) {
+		return;
+	}
+
 	//各種タイマーをリセット。
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
@@ -618,12 +626,6 @@ void LittleEnemy::ProcessCommonStateTransition()
 					return;
 				}
 			}
-			/*else
-			{
-				m_enemyState = enEnemyState_Idle;
-				return;
-			}*/
-
 		}
 		else
 		{
@@ -635,6 +637,7 @@ void LittleEnemy::ProcessCommonStateTransition()
 			return;
 		}
 	}
+
 }
 
 
@@ -673,12 +676,14 @@ void LittleEnemy::ManageState()
 
 void LittleEnemy::PlayAnimation()
 {
+	
 	//アニメーションの再生速度を設定。
-	m_modelRender.SetAnimationSpeed(1.0f);
+	m_modelRender.SetAnimationSpeed(1.5f);
 	switch (m_enemyState)
 	{
 	case enEnemyState_Idle:
 		//待機状態
+		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Idle, 0.5f);
 		break;
 	case enEnemyState_Chase:

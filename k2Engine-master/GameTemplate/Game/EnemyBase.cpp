@@ -11,7 +11,12 @@ EnemyBase::EnemyBase()
 
 EnemyBase::~EnemyBase()
 {
-	
+	// その後に他リソース
+	if (m_effectEmitter) {
+		m_effectEmitter->Stop();
+		DeleteGO(m_effectEmitter);
+		m_effectEmitter = nullptr;
+	}
 }
 
 bool EnemyBase::Start()

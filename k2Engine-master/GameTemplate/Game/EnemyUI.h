@@ -28,7 +28,17 @@ public:
 
 	bool Angle(T Enemy);
 
+	// Enemyポインタ取得
+	Enemy* GetEnemy() const { return m_enemy; }
+	LittleEnemy* GetLittleEnemy() const { return m_littleEnemy; }
+	AnnoyingEnemy* GetAnnoyingEnemy() const { return m_annoyingEnemy; }
+	BossEnemy* GetBossEnemy() const { return m_bossEnemy; }
 
+	// ペアを切断する関数
+	void UnlinkEnemy() { m_enemy = nullptr; }
+	void UnlinkLittleEnemy() { m_littleEnemy = nullptr; }
+	void UnlinkAnnoyingEnemy() { m_annoyingEnemy = nullptr; }
+	void UnlinkBossEnemy() { m_bossEnemy = nullptr; }
 
 private:
 	Enemy* m_enemy = nullptr;

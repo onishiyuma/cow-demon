@@ -25,6 +25,7 @@ class Tree;
 class GameClear;
 class GameOver;
 class LittleEnemy;
+class Poison;
 class AnnoyingEnemy;
 class UItukuyomi;
 class UIskill;
@@ -91,6 +92,19 @@ public:
 	void SetSkyLight();
 	//カウントダウンの開始。
 	void StartCountDown();
+	//エネミーの管理
+	void EnemyManager();
+	//全てのエネミーの削除念のため
+	void DeleteAllEnemy();
+	//EnemyUIの切断用関数
+	void UnlinkAllEnemyUI(Enemy* enemy);
+	//LittleEnemyUIの切断用関数
+	void UnlinkAllLittleEnemyUI(LittleEnemy* little);
+	//狐のUIの切断用関数
+	void UnlinkAllAnnoyingEnemyUI(AnnoyingEnemy* annoying);
+	//ボスのUI切断用関数
+	void UnlinkAllBossEnemyUI(BossEnemy* boss);
+
 public:
 	//敵のリスト。
 	std::vector<Enemy*>   m_enemyList;
@@ -100,6 +114,10 @@ public:
 	std::vector<BossEnemy*> m_bossEnemyList;
 	//ウザイ敵のリスト。
 	std::vector<AnnoyingEnemy*> m_annoyingEnemyList;
+    //敵のUIリスト。
+	std::vector<EnemyUI*>m_enemyUIList;	
+	//ポイズンのリスト。
+	std::vector<Poison*> m_poisonList;
 public:
 	//敵のリストを取得する関数。
 	const std::vector<Enemy*>& GetEnemies()const
@@ -124,6 +142,18 @@ public:
 	{
 		return m_annoyingEnemyList;
 	}
+	//エネミーのUIリストを取得する関数。
+	const std::vector<EnemyUI*>& GetEnemyUI() const
+	{
+		return m_enemyUIList;
+	}
+	const std::vector<Poison*>& GetPoisonUI() const
+	{
+		return m_poisonList;
+	}
+
+
+	
 private:
 	//メンバ変数。
 	GameClear*				m_gameClear;						//ゲームクリアー。
@@ -234,6 +264,7 @@ public:
 	bool					m_isBoss = false;					//ボスかどうか。
 	bool					m_isCowntDownStart = false;			//カウントダウン中かどうか
 	bool					m_isLoad = true;					//ゲーム開始前でロードが終わっているか
+	bool                    m_isEndGame = false;                    //ゲームが終了しているかどうか
 	float					m_luminance = 0.0f;					//空の明るさの変化量。
 	int						m_dieCount = 0;						//倒された敵の数。
 	int						m_maxCount = 0;						//敵の最大数。
@@ -250,6 +281,7 @@ private:
 	float					m_timer = 120.0f;					//タイマー。
 	float					m_timeLimit = 0;					//タイムリミット。
 	float					m_spawnTimer = 0.0f;				//敵出現タイマー。
+	float                   m_EndTimer = 0.0f;
 	float					m_skyLuminance = 0.0002f;			//空の明るさ。
 	float					m_skyAmbient = 0.0002f;				//空の明るさの影響を受ける環境光。
 	float					m_notifyx = 0.0f;					//敵出現通知のX座標。	
@@ -307,6 +339,10 @@ private:
 	bool					m_isThree = false;						//あと三秒かどうか。
 	bool					m_isGameStart = false;					//ゲームスタートフラグ。
 	bool					m_isTimeLimit = false;					//タイムリミットかどうか。
+	bool                    m_isDeathPlayer = false;				//プレイヤーが死んだかどうか。
+	bool                    m_isInovate = false;                    //
+	bool                    m_GameDelete = false;					//ゲーム終了フラグ。
+
 };
 
 

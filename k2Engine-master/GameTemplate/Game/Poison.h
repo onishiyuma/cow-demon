@@ -59,6 +59,8 @@
 		Vector3				m_scale = Vector3::One;			//大きさ。
 		EnEnemy				m_enEnemy = enPoison_None;		//敵の型。
 		float				m_timer = 0.0f;					//時間。
+	public:
+		bool m_isDelete = false;			//削除フラグ。
 	};
 
 

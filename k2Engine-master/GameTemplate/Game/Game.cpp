@@ -31,6 +31,7 @@
 #include "GameOver.h"
 #include "random"
 #include "EnemyUI.h"
+#include "Poison.h"
 #include "Load.h"
 #include "UIOne.h"
 #include "UITwo.h"	
@@ -79,7 +80,7 @@ bool Game::Start()
 	m_load = FindGO<Load>("load");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_enemy = FindGO<Enemy>("enemy");
-
+	m_isEndGame = false;
 	//灯籠用矢印の作成。
 	CreateLanternArrow();
 
@@ -93,33 +94,7 @@ Game::Game()
 
 Game::~Game()
 {
-	//牛鬼。
-	for (auto* enemy : m_enemyList)
-	{
-		DeleteGO(enemy);
-		enemy = nullptr;
-	}
-	m_enemyList.clear();
-	//ミニ牛鬼。
-	for (auto* littleEnemy : m_littleEnemyList) 
-	{
-		DeleteGO(littleEnemy);
-		littleEnemy = nullptr;
-	}
-	m_littleEnemyList.clear();
-	//ボス牛鬼。
-	for (auto* bossEnemy : m_bossEnemyList)
-	{
-		DeleteGO(bossEnemy);
-	}
-	m_bossEnemyList.clear();
-	//ウザイ敵。
-	for (auto* annoyingEnemy : m_annoyingEnemyList)
-	{
-		DeleteGO(annoyingEnemy);
-		annoyingEnemy = nullptr;
-	}
-	m_annoyingEnemyList.clear();
+
 
 	DeleteGO(m_player);			//プレイヤー。
 	DeleteGO(m_gameCamera);		//ゲームカメラ。
@@ -221,7 +196,8 @@ void Game::Update()
 		}
 		else {
 			
-			
+			//エネミーの管理
+			EnemyManager();
 			//タイマーを表示する用関数。
 			UITimer();
 			//m_timer += g_gameTime->GetFrameDeltaTime();
@@ -243,6 +219,7 @@ void Game::Update()
 			SetSkyLight();
 			//敵のスポーン処理と敵が来たことを通知する。
 			NotifiyEnemy();
+			
     }
   }
 
@@ -250,6 +227,7 @@ void Game::Update()
 	if (m_timer >= 150.0f) {
 		CreateEnemy();
 	}
+
 
 	if (m_timer >= 120.0f) {
 		if (!m_isTimeLimit) {
@@ -266,23 +244,34 @@ void Game::GameManager()
 	//敵から本殿を守り切ったらゲームクリア。
 	if (m_timer >= 300.0f)
 	{
+		m_isEndGame = true;
 		NewGO<GameClear>(0);
-		DeleteGO(this);
+		m_EndTimer += g_gameTime->GetFrameDeltaTime();
+		if (m_EndTimer >= 0.5f) {
+			DeleteGO(this);
+		}
 	}
-
+	
 	if (m_gameCamera->m_isCameraRotationFin && m_gameCamera->m_callGameOverTime >= m_gameCamera->m_waitTime)
 	{
+		m_isEndGame = true;
 		NewGO<GameOver>(0);
-		DeleteGO(this);
+		m_EndTimer += g_gameTime->GetFrameDeltaTime();
+		if (m_EndTimer >= 0.5f) {
+			DeleteGO(this);
+		}
 	}
-
-	//呪いの抵抗値がなくなったら。
+	
+	//呪いの抵抗値がなくなったら
 	if (m_player->m_playerHP <= 0)
 	{
-		NewGO<GameOver>(0);
-		DeleteGO(this);
+		m_isEndGame = true;
+	    NewGO<GameOver>(0);
+		m_EndTimer += g_gameTime->GetFrameDeltaTime();
+		if (m_EndTimer >= 0.5f) {
+			DeleteGO(this);
+		}
 	}
-
 
 }
 
@@ -885,26 +874,33 @@ void Game::CreateEnemy()
 
 		if (r >= 80) {
 			//ウザイ敵。
-			AnnoyingEnemy* annoyingEnemy = NewGO<AnnoyingEnemy>(1, "annoyingEnemy");
-			annoyingEnemy->SetPosition(Random());
+			AnnoyingEnemy* annoying = NewGO<AnnoyingEnemy>(1, "annoyingEnemy");
+			annoying->SetPosition(Random());
+			m_annoyingEnemyList.push_back(annoying);
 			EnemyUI* enemyUI = NewGO<EnemyUI>(1, "enemyui");
-			enemyUI->SetAnnoyingEnemy(annoyingEnemy);
+			enemyUI->SetAnnoyingEnemy(annoying);
+			m_enemyUIList.push_back(enemyUI);
 			m_totalCount++;
 		}
 		else if (r >= 40) {
 			//普通の敵。
 			Enemy* enemy = NewGO<Enemy>(1, "enemy");
 			enemy->SetPosition(Random());
+			m_enemyList.push_back(enemy);
 			EnemyUI* enemyUI = NewGO<EnemyUI>(1, "enemyui");
 			enemyUI->SetEnemy(enemy);
+			m_enemyUIList.push_back(enemyUI);
 			m_totalCount++;
 		}
 		else {
 			//雑魚敵。
 			LittleEnemy* littleEnemy = NewGO<LittleEnemy>(1, "littleEnemy");
 			littleEnemy->SetPosition(Random());
+			m_littleEnemyList.push_back(littleEnemy);
 			EnemyUI* enemyUI = NewGO<EnemyUI>(1, "enemyui");
 			enemyUI->SetLittleEnemy(littleEnemy);
+			littleEnemy->m_enemyUI = enemyUI;   // ここ！ペア化
+			m_enemyUIList.push_back(enemyUI);
 			m_totalCount++;
 		}
 
@@ -917,8 +913,11 @@ void Game::CreateEnemy()
 		//ボス。
 		BossEnemy* boss = NewGO<BossEnemy>(1, "bossEnemy");
 		boss->SetPosition(Random());
-		//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-		//enemyUI->SetBossEnemy(boss);
+		m_bossEnemyList.push_back(boss);
+		EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
+		enemyUI->SetBossEnemy(boss);
+		boss->m_enemyUI = enemyUI;   // ここ！ペア化
+		m_enemyUIList.push_back(enemyUI);
 		m_isBoss = true;
 	}
 	
@@ -936,9 +935,10 @@ void Game::CreateEnemy()
 	//m_enemyCount.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
 }
-
+//減った分の補充
 void Game::CreateDeletedEnemy()
 {
+	//m_dieCount　倒された敵のカウント
 	if (m_dieCount > 0) {
 		for (int i = 0; i < m_dieCount; i++) {
 			int r = rand() % 100;
@@ -949,8 +949,10 @@ void Game::CreateDeletedEnemy()
 				AnnoyingEnemy* annoying = NewGO<AnnoyingEnemy>(1, "annoyingEnemy");
 				annoying->SetPosition(Random());
 				m_annoyingEnemyList.push_back(annoying);
-				//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-				//enemyUI->SetAnnoyingEnemy(annoying);
+				EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
+				enemyUI->SetAnnoyingEnemy(annoying);
+				annoying->m_enemyUI = enemyUI;   // ここ！ペア化
+				m_enemyUIList.push_back(enemyUI);
 				//m_totalCount++;
 				//m_spawnTimer = 0.0f; //スポーンタイマーをリセット。
 			}
@@ -959,8 +961,10 @@ void Game::CreateDeletedEnemy()
 				Enemy* enemy = NewGO<Enemy>(1, "enemy");
 				enemy->SetPosition(Random());
 				m_enemyList.push_back(enemy);
-				//EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
-				//enemyUI->SetEnemy(enemy);
+				EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
+				enemyUI->SetEnemy(enemy);
+				enemy->m_enemyUI = enemyUI;   // ここ！ペア化
+				m_enemyUIList.push_back(enemyUI);
 				//m_totalCount++;
 				//m_spawnTimer = 0.0f; //スポーンタイマーをリセット。
 			}
@@ -971,13 +975,174 @@ void Game::CreateDeletedEnemy()
 				m_littleEnemyList.push_back(little);
 				EnemyUI* enemyUI = NewGO<EnemyUI>(1, "enemyui");
 				enemyUI->SetLittleEnemy(little);
+				little->m_enemyUI = enemyUI;   // ここ！ペア化
+				m_enemyUIList.push_back(enemyUI);
 				//m_totalCount++;
 				//m_spawnTimer = 0.0f; //スポーンタイマーをリセット。
 			}
 		}
 	}
 }
-	
+
+void Game::UnlinkAllEnemyUI(Enemy* enemy) {
+	for (auto* ui : m_enemyUIList) {
+		if (ui->GetEnemy() == enemy) {
+			ui->UnlinkEnemy();
+		}
+	}
+}
+void Game::UnlinkAllLittleEnemyUI(LittleEnemy* little) {
+	for (auto* ui : m_enemyUIList) {
+		if (ui->GetLittleEnemy() == little) {
+			ui->UnlinkLittleEnemy();
+		}
+	}
+}
+void Game::UnlinkAllAnnoyingEnemyUI(AnnoyingEnemy* annoying) {
+	for (auto* ui : m_enemyUIList) {
+		if (ui->GetAnnoyingEnemy() == annoying) {
+			ui->UnlinkAnnoyingEnemy();
+		}
+	}
+}
+void Game::UnlinkAllBossEnemyUI(BossEnemy* boss) {
+	for (auto* ui : m_enemyUIList) {
+		if (ui->GetBossEnemy() == boss) {
+			ui->UnlinkBossEnemy();
+		}
+	}
+}
+
+
+void Game::EnemyManager()
+{
+	auto Normal_it = m_enemyList.begin();
+	while (Normal_it != m_enemyList.end()) {
+		Enemy* enemy = *Normal_it;
+		if (enemy->m_isDead) {
+			UnlinkAllEnemyUI(enemy);
+			DeleteGO(enemy);
+			Normal_it = m_enemyList.erase(Normal_it);
+			if (m_isEndGame == false){
+				m_totalCount--;  // ここで減らす！（Gameの側で）
+			}
+		}
+		else {
+			++Normal_it;
+		}
+	}
+
+	auto Little_it = m_littleEnemyList.begin();
+	while (Little_it != m_littleEnemyList.end()) {
+		LittleEnemy* littleEnemy = *Little_it;
+		if (littleEnemy->m_isDead) {
+			UnlinkAllLittleEnemyUI(littleEnemy);
+			DeleteGO(littleEnemy);
+			Little_it = m_littleEnemyList.erase(Little_it);
+			if (m_isEndGame == false) {
+				m_totalCount--;  // ここで減らす！（Gameの側で）
+			}
+		}
+		else {
+			++Little_it;
+		}
+	}
+
+	auto Fox_it = m_annoyingEnemyList.begin();
+	while (Fox_it != m_annoyingEnemyList.end()) {
+		AnnoyingEnemy* annoyingEnemy = *Fox_it;
+		if (annoyingEnemy->m_isDead) {
+			UnlinkAllAnnoyingEnemyUI(annoyingEnemy);
+			DeleteGO(annoyingEnemy);
+			Fox_it = m_annoyingEnemyList.erase(Fox_it);
+			if(m_isEndGame==false){
+			m_totalCount--;  // ここで減らす！（Gameの側で）
+			}
+		}
+		else {
+			++Fox_it;
+		}
+	}
+
+	auto Boss_it = m_bossEnemyList.begin();
+	while (Boss_it != m_bossEnemyList.end()) {
+		BossEnemy* bossEnemy = *Boss_it;
+		if (bossEnemy->m_isDead) {
+			UnlinkAllBossEnemyUI(bossEnemy);
+			DeleteGO(bossEnemy);
+			Boss_it = m_bossEnemyList.erase(Boss_it);
+			if (m_isEndGame == false) {
+				m_isBoss = false;
+			}
+		}
+		else {
+			++Boss_it;
+		}
+	}
+
+	auto Poison_it = m_poisonList.begin();
+	while (Poison_it != m_poisonList.end()) {
+		Poison*poison = *Poison_it;
+		if (poison->m_isDelete) {
+			DeleteGO(poison);
+			Poison_it = m_poisonList.erase(Poison_it);
+		}
+		else {
+			++Poison_it;
+		}
+	}
+}
+
+//void Game::DeleteAllEnemy()
+//{
+//	// Poison削除
+//	for (auto* poison : m_poisonList)
+//	{
+//		DeleteGO(poison);
+//		poison = nullptr;
+//	}
+//	m_poisonList.clear();
+//
+//	// UIやエフェクトも必要に応じて消す
+//	for (auto* enemyUI : m_enemyUIList)
+//	{
+//		DeleteGO(enemyUI);
+//		enemyUI = nullptr;
+//	}
+//	m_enemyUIList.clear();
+//
+//	// エネミー削除
+//	for (auto* Normal : m_enemyList)
+//	{
+//		UnlinkAllEnemyUI(Normal);
+//		DeleteGO(Normal);
+//		Normal = nullptr;
+//
+//	}
+//    m_enemyList.clear();
+//	for (auto* Little : m_littleEnemyList)
+//	{
+//		UnlinkAllLittleEnemyUI(Little);
+//		DeleteGO(Little);
+//		Little = nullptr;
+//	}
+//    m_littleEnemyList.clear();
+//	for (auto* Boss : m_bossEnemyList)
+//	{
+//		UnlinkAllBossEnemyUI(Boss);
+//		DeleteGO(Boss);
+//		Boss = nullptr;
+//	}
+//    m_bossEnemyList.clear();
+//	for (auto* Annoying : m_annoyingEnemyList)
+//	{
+//		UnlinkAllAnnoyingEnemyUI(Annoying);
+//		DeleteGO(Annoying);
+//		Annoying = nullptr;
+//	}
+//	m_annoyingEnemyList.clear();
+//}
+
 //UI作成用関数。
 void Game::CreateUI()
 {

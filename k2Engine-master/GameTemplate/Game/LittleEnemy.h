@@ -9,6 +9,7 @@ class Collision;
 class EnemyBase;
 class Player;
 class Game;
+class EnemyUI;
 class GameCamera;
 class RingBell;
 class LanternAttack;
@@ -28,7 +29,6 @@ public:
 	///アニメーションの種類。
 	enum EnAnimationClip {
 		enAnimationClip_Idle,
-		enAnimationClip_Walk,
 		enAnimationClip_Run,
 		enAnimationClip_Poison,
 		enAnimationClip_Damage,
@@ -107,7 +107,6 @@ public:
 	}
 
 	
-
 private:
 	//メンバ変数
 	Vector3 m_position;
@@ -119,6 +118,7 @@ private:
 	GameCamera*			m_gameCamera=nullptr;								//カメラ。
 	RingBell*           m_ringBell = nullptr;						//鈴。
 	LanternAttack*      m_lanternAttack;
+	
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションのクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//敵の状態。
 	const Vector3		m_stopMove = Vector3::Zero;					//動きを完全停止。
@@ -135,7 +135,11 @@ private:
 	bool				m_isStopped = false;						//動いているか。
 	bool				m_gameoverFlag = false;						//ゲームオーバーか。
 	bool				m_isUnderAttack = false;					//攻撃を受けたか。
+	public:
 	bool m_isDeadFlag = false;					//死亡フラグ。
+	bool m_isDead = false;
+	bool m_isDeleted = false; // メンバ追加
+    EnemyUI*            m_enemyUI = nullptr;						//敵のUI。
 };
 
 

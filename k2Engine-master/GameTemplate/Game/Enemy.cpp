@@ -11,6 +11,7 @@
 #include "collision/CollisionObject.h"
 #include "GameCamera.h"
 #include "LanternAttack.h"
+#include "EnemyUI.h"
 #include <time.h>
 #include <stdlib.h>
 
@@ -62,17 +63,9 @@ bool Enemy::Start()
 	m_gameManagement = FindGO<GameManagement>("gameManagement");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_player = FindGO<Player>("player");
-
-	//ゲームモードだったら。
-	if (m_gameManagement->m_isGame == true) {
-		m_game = FindGO<Game>("game");
-		m_ringBell = FindGO<RingBell>("ringbell");
-		m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
-	}
-	//チュートリアルモードだったら。
-	if (m_gameManagement->m_isTutorial == true) {
-		m_tutorial = FindGO<Tutorial>("tutorial");
-	}
+	m_game = FindGO<Game>("game");
+	m_ringBell = FindGO<RingBell>("ringbell");
+	m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
 
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
@@ -91,18 +84,22 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
-	if (m_effectEmitter)
-	{
-		m_effectEmitter->Stop();
-		DeleteGO(m_effectEmitter);
-		m_effectEmitter = nullptr;
-	}
+	
 }
 
 void Enemy::Update()
 {
-	//ゲームモードだったら。
-	if (m_gameManagement->m_isGame == true) {
+	//Game.cppで終了時のフラグがtrueになったら自分を削除するフラグをtrueにする
+	//m_isDeadFlagはEnemyUIを切断するためのフラグ
+	//m_isDeadはEnemyManagerに自身を削除してもらうためのフラグ 
+	
+     if (m_game->m_isEndGame == true)
+		{
+			m_isDeadFlag = true;
+			m_isDead = true;
+		}
+	 if (m_isDead == true)return;
+
 		//追跡処理。
 		Chase();
 		//本殿追跡処理。
@@ -119,46 +116,7 @@ void Enemy::Update()
 		PlayAnimation();
 		//モデルの更新。
 		m_modelRender.Update();
-
-		/*if (m_game->m_timer >= 300.0f) {
-			DeleteGO(this);
-		}*/
-	}
-	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isTutorial == true) {
-
-		if (m_tutorial->m_clearCount == 3) {
-			//追跡処理。
-			Chase();
-			//当たり判定。
-			Collision();
-			//攻撃処理。
-			//Attack();
-			//ステートの遷移処理。
-			ManageState();
-			//アニメーションの再生。
-			PlayAnimation();
-			//モデルの更新。
-			m_modelRender.Update();
-		}
-		else {
-			//当たり判定。
-			Collision();
-			//攻撃処理。
-			Attack();
-			//ステートの遷移処理。
-			ManageState();
-			//アニメーションの再生。
-			PlayAnimation();
-			//エネミーの向きの設定。
-			m_rotation.SetRotationY(90.0f);
-			m_modelRender.SetRotation(m_rotation);
-			//モデルの更新。
-			m_modelRender.Update();
-		}
 		
-	}
-	
 }
 
 void Enemy::Rotation()
@@ -463,7 +421,6 @@ void Enemy::Collision()
 	//-----------------------------------------
 	//本殿に接触したらゲームオーバーする処理。
 	//-----------------------------------------
-	if (m_gameManagement->m_isGame == true) 
 	{
 		//本殿に触れたらゲームオーバー。
 		const auto& collisions = g_collisionObjectManager->FindMatchForwardNameCollisionObjects("gameover_collision");
@@ -473,11 +430,9 @@ void Enemy::Collision()
 			//コリジョンとキャラが衝突したら。
 			if (collision->IsHit(m_charaCon))
 			{
+				m_game->m_isEndGame = true;
 				m_gameCamera->m_isGameOver = true;
-				//消滅時EnemyUIのポインタを切断するためのフラグ
-				m_isDeadFlag = true;
-				DeleteGO(this);
-				return;
+				break;
 			}
 		}
 	}
@@ -623,38 +578,25 @@ void Enemy::ProcessDamageStateTransition()
 
 void Enemy::ProcessDownStateTransition()
 {
-	if (m_gameManagement->m_isGame == true) {
-
-		m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
-
-		if (!m_isDeadFlag)
-		{
-			DeathEffect();
-			m_isDeadFlag = true;
-		}
-
-		if (m_deathEffectTimer >= 1.0f)
-		{
-			//Gameのインスタンスアドレスを検索
-			m_game->m_totalCount--;
-			DeleteGO(this);
-		}
+	if (!m_isDeadFlag)
+	{
+	    DeathEffect();
+		m_isDeadFlag = true;
+        //Gameのインスタンスアドレスを検索
+		/*m_game->m_totalCount--;*/
 	}
-	else if (m_gameManagement->m_isTutorial == true) {
-
-		m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
-
-		if (!m_isDeadFlag)
+    m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+	if (m_deathEffectTimer >= 1.0f)
+	{
+		if (m_effectEmitter)
 		{
-			DeathEffect();
-			m_isDeadFlag = true;
+		    m_effectEmitter->Stop();
+			DeleteGO(m_effectEmitter);
+			m_effectEmitter = nullptr;
 		}
-
-		if (m_deathEffectTimer >= 1.0f)
-		{
-			DeleteGO(this);
-		}
-	}
+			
+		m_isDead = true;
+     }
 	
 }
 
@@ -678,13 +620,13 @@ void Enemy::ProcessMainStateTransition()
 
 void Enemy::ProcessCommonStateTransition()
 {
+	if (m_game->m_isEndGame) {
+		return;
+	}
 	//各タイマーを初期化。
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
 	m_hondenTimer = 0.0f;
-
-	//ゲームモードだったら。
-	if (m_gameManagement->m_isGame == true) {
 
 		if (SearchMain() == true)
 		{   
@@ -721,61 +663,14 @@ void Enemy::ProcessCommonStateTransition()
 					return;
 				}
 			}
-			else {
-				Vector3 diff = m_ringBell->GetPosition() - m_position;
-				diff.Normalize();
-				m_moveSpeed = diff * 150.0f;
-
-				m_enemyState = enEnemyState_Honden;
-				return;
-			}
-
-		}
-	}
-	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isTutorial == true) {
-
-		//プレイヤーを見つけたら。
-		if (SearchPlayer() == true) {
-			Vector3 diff = m_player->GetPosition() - m_position;
-			//ベクトルを正規化する。
-			diff.Normalize();
-			//移動速度を設定する。
-			m_moveSpeed = diff * 150.0f;
-			//攻撃できる距離なら。
-			int ram = rand() % 100;
-			if (IsCanAttack() == true)
-			{
-				if (ram > 70)
-				{
-
-
-					m_enemyState = enEnemyState_Attack;
-					m_isUnderAttack = false;
-					return;
-				}
-
-				else
-				{
-					m_enemyState = enEnemyState_Chase;
-				}
-
-			}
-			//攻撃できない距離なら。
-			else
-			{
-				m_enemyState = enEnemyState_Chase;
-				return;
-			}
-		}
 		else {
 			Vector3 diff = m_ringBell->GetPosition() - m_position;
 			diff.Normalize();
 			m_moveSpeed = diff * 150.0f;
-
 			m_enemyState = enEnemyState_Honden;
 			return;
 		}
+
 	}
 	
 }
@@ -785,26 +680,26 @@ void Enemy::ManageState()
 	switch (m_enemyState)
 	{
 		//待機ステート。
-	case Enemy::enEnemyState_Idle:
+	case enEnemyState_Idle:
 		ProcessIdleStateTransition();
 		break;
-	case Enemy::enEnemyState_Honden:
+	case enEnemyState_Honden:
 		ProcessMainStateTransition();
 		break;
 		//追跡ステート。
-	case  Enemy::enEnemyState_Chase:
+	case enEnemyState_Chase:
 		ProcessChaseStateTransition();
 		break;
 		//攻撃ステート。
-	case Enemy::enEnemyState_Attack:
+	case enEnemyState_Attack:
 		ProcessAttackStateTransition();
 		break;
 		//被ダメージステート。
-	case Enemy::enEnemyState_Damage:
+	case enEnemyState_Damage:
 		ProcessDamageStateTransition();
 		break;
 		//死亡ステート。
-	case Enemy::enEnemyState_Down:
+	case enEnemyState_Down:
 		ProcessDownStateTransition();
 		break;
 	default:
@@ -815,30 +710,31 @@ void Enemy::ManageState()
 void Enemy::PlayAnimation()
 {
 	//アニメーションの速度の初期値。
-	m_modelRender.SetAnimationSpeed(1.0f);
+	m_modelRender.SetAnimationSpeed(1.5f);
 	//再生するアニメーションクリップ。
 	switch (m_enemyState)
 	{
-	case Enemy::enEnemyState_Idle:
+	case enEnemyState_Idle:
+		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Idle, 0.1f);
 		break;
-	case Enemy::enEnemyState_Honden:
+	case enEnemyState_Honden:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
-	case Enemy::enEnemyState_Chase:
+	case enEnemyState_Chase:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
-	case Enemy::enEnemyState_Attack:
+	case enEnemyState_Attack:
 		m_modelRender.SetAnimationSpeed(1.6f);
 		m_modelRender.PlayAnimation(enAnimationClip_Attack, 0.1f);
 		break;
-	case Enemy::enEnemyState_Damage:
+	case enEnemyState_Damage:
 		m_modelRender.SetAnimationSpeed(1.3f);
 		m_modelRender.PlayAnimation(enAnimationClip_Damage, 0.1f);
 		break;
-	case Enemy::enEnemyState_Down:
+	case enEnemyState_Down:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Down, 0.1f);
 		break;

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "BossEnemy.h"
 #include "Player.h"
-
+#include "EnemyUI.h"
 #include "Poison.h"
 #include "RingBell.h"
 #include "EnemyBase.h"
@@ -24,11 +24,11 @@ BossEnemy::BossEnemy()
 
 BossEnemy::~BossEnemy()
 {
-	if (m_effectEmitter) {
+	/*if (m_effectEmitter) {
 		m_effectEmitter->Stop();
 		DeleteGO(m_effectEmitter);
 		m_effectEmitter = nullptr;
-	}
+	}*/
 }
 
 bool BossEnemy::Start()
@@ -51,7 +51,6 @@ bool BossEnemy::Start()
 	//ダウン。
 	m_animationClips[enAnimationClip_Down].Load("Assets/animData/Boss/Down.tka");
 	m_animationClips[enAnimationClip_Down].SetLoopFlag(false);
-
 	//モデルを初期化。
 	m_modelRender.Init("Assets/modelData/Boss/Boss.tkm", m_animationClips, enAnimationClip_Num);
 
@@ -80,7 +79,7 @@ bool BossEnemy::Start()
 		});
 
 	//エフェクトを読み込む
-	EffectEngine::GetInstance()->ResistEffect(100,u"Assets/effect/EnemyEffects/Usioni_Boss_Down/Boss_Down.efk");
+	EffectEngine::GetInstance()->ResistEffect(20,u"Assets/effect/EnemyEffects/Usioni_Boss_Down/Boss_Down.efk");
 
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
@@ -98,6 +97,17 @@ bool BossEnemy::Start()
 
 void BossEnemy::Update()
 {
+	//Game.cppで終了時のフラグがtrueになったら自分を削除するフラグをtrueにする
+	//m_isDeadFlagはEnemyUIを切断するためのフラグ
+	//m_isDeadはEnemyManagerに自身を削除してもらうためのフラグ 
+
+ if (m_game->m_isEndGame == true)
+	{
+		m_isDeadFlag = true;
+		m_isDead = true;
+	}
+   //m_isDeadがtrueの場合は何もさせないためのコード
+ if (m_isDead == true)return;
 	//本殿追跡処理
 	IsHonden();
 	//追跡処理。
@@ -115,6 +125,9 @@ void BossEnemy::Update()
 
 	//モデルの更新。
 	m_modelRender.Update();
+
+	
+
 }
 
 void BossEnemy::Rotation()
@@ -439,12 +452,13 @@ void BossEnemy::Collision()
 		//コリジョンとキャラが衝突したら。
 		if (collision->IsHit(m_charaCon))
 		{
+			m_game->m_isEndGame = true;
 			//ゲームオーバーのフラグを立てる。
 			m_gameCamera->m_isGameOver = true;
-			//消滅時EnemyUIのポインタを切断するためのフラグ
-			m_isDeadFlag = true;
-			//自身を削除。
-			DeleteGO(this);
+			////消滅時EnemyUIのポインタを切断するためのフラグ
+			//m_isDeadFlag = true;
+			////自身を削除。
+			//m_isDead = true;
 			break;
 		}
 	}
@@ -513,13 +527,19 @@ void BossEnemy::MakePoison()
 
 void BossEnemy::DeathEffect()
 {
+	if (m_effectEmitter) {
+		m_effectEmitter->Stop();
+		DeleteGO(m_effectEmitter);
+		m_effectEmitter = nullptr;
+	}
+
 	//エフェクトの発生位置
 	Vector3 m_effectPosition = m_position;
 	m_effectPosition.y += 50.0f;
 
 	//エフェクトの生成
     m_effectEmitter = NewGO<EffectEmitter>(0);
-	m_effectEmitter->Init(100);//番号はRegistの登録番号
+	m_effectEmitter->Init(20);//番号はRegistの登録番号
 	m_effectEmitter->SetPosition(m_effectPosition);
 	m_effectEmitter->SetScale(Vector3(30.0f, 30.0f, 30.0f));//大きさは調整
 	m_effectEmitter->Play();//エフェクトの再生
@@ -610,21 +630,30 @@ void BossEnemy::ProcessDamageStateTransition()
 
 void BossEnemy::ProcessDownStateTransition()
 {
+	
 	if (!m_isDeadFlag) {
 		DeathEffect();
 		m_isDeadFlag = true;
 	}
-	
-	if (m_modelRender.IsPlayingAnimation() == false)
+	m_deathTimer += g_gameTime->GetFrameDeltaTime();
+	if (m_deathTimer >= 1.0f)
 	{
-		
-		m_game->m_isBoss = false;
-		DeleteGO(this);
+		if (m_effectEmitter)
+		{
+			m_effectEmitter->Stop();
+			DeleteGO(m_effectEmitter);
+			m_effectEmitter = nullptr;
+		}
+		m_isDead = true;
 	}
 }
 
 void BossEnemy::ProcessCommonStateTransition()
 {
+	if (m_game->m_isEndGame) {
+		return;
+	}
+
 	//各タイマーを初期化。
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
@@ -697,31 +726,31 @@ void BossEnemy::ManageState()
 	switch (m_enemyState)
 	{
 		//待機中の処理。
-	case BossEnemy::enEnemyState_Idle:
+	case enEnemyState_Idle:
 		ProcessIdleStateTransition();
 		break;
 		//追跡処理。
-	case BossEnemy::enEnemyState_Chase:
+	case enEnemyState_Chase:
 		ProcessChaseStateTransition();
 		break;
 		//本殿追跡処理。
-	case BossEnemy::enEnemyState_Honden:
+	case enEnemyState_Honden:
 		ProcessHondenStateTransition();
 		break;
 		//攻撃処理。
-	case BossEnemy::enEnemyState_Attack:
+	case enEnemyState_Attack:
 		ProcessAttackStateTransition();
 		break;
 		//毒攻撃処理。
-	case BossEnemy::enEnemyState_Poison:
+	case enEnemyState_Poison:
 		ProcessPoisonAttackStateTransition();
 		break;
 		//ダメージを受けた時の処理。
-	case BossEnemy::enEnemyState_Damage:
+	case enEnemyState_Damage:
 		ProcessDamageStateTransition();
 		break;
 		//ダウン処理。
-	case BossEnemy::enEnemyState_Down:
+	case enEnemyState_Down:
 		ProcessDownStateTransition();
 		break;
 	default:
@@ -731,38 +760,39 @@ void BossEnemy::ManageState()
 
 void BossEnemy::PlayAnimation()
 {//アニメーションの再生速度の設定。
-	m_modelRender.SetAnimationSpeed(1.0f);
+	m_modelRender.SetAnimationSpeed(1.5f);
 	switch (m_enemyState)
 	{
 		//待機ステート
-	case BossEnemy::enEnemyState_Idle:
+	case enEnemyState_Idle:
+		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Idle, 0.5f);
 		break;
 		//追跡ステート
-	case BossEnemy::enEnemyState_Chase:
+	case enEnemyState_Chase:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
-	case BossEnemy::enEnemyState_Honden:
+	case enEnemyState_Honden:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Run, 0.1f);
 		break;
-	case BossEnemy::enEnemyState_Attack:
+	case enEnemyState_Attack:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Attack,0.1f);
 		break;
 		//遠距離攻撃ステート
-	case BossEnemy::enEnemyState_Poison:
+	case enEnemyState_Poison:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Poison, 0.1f);
 		break;
 		//被ダメージステート
-	case BossEnemy::enEnemyState_Damage:
+	case enEnemyState_Damage:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Damage, 0.1f);
 		break;
 		//ダウンステート
-	case BossEnemy::enEnemyState_Down:
+	case enEnemyState_Down:
 		m_modelRender.SetAnimationSpeed(1.2f);
 		m_modelRender.PlayAnimation(enAnimationClip_Down, 0.1f);
 		break;
