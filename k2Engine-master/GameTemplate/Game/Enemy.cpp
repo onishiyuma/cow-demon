@@ -100,18 +100,18 @@ void Enemy::Update()
 	//Game.cppで終了時のフラグがtrueになったら自分を削除するフラグをtrueにする
 	//m_isDeadFlagはEnemyUIを切断するためのフラグ
 	//m_isDeadはEnemyManagerに自身を削除してもらうためのフラグ 
-	
-     if (m_game->m_isEndGame == true)
-		{
-			m_isDeadFlag = true;
-			m_isDead = true;
-		}
-	 if (m_isDead == true)return;
 
-		/*if (m_game->m_timer >= 300.0f) {
-			DeleteGO(this);
-		}*/
+	if (m_game->m_isEndGame == true)
+	{
+		m_isDeadFlag = true;
+		m_isDead = true;
 	}
+	if (m_isDead == true)return;
+
+	/*if (m_game->m_timer >= 300.0f) {
+		DeleteGO(this);
+	}*/
+
 	//チュートリアルモードだったら。
 	else if (m_gameManagement->m_isOperation == true) {
 
@@ -144,6 +144,7 @@ void Enemy::Update()
 			//モデルの更新。
 			m_modelRender.Update();
 		}
+	}
 }
 
 void Enemy::Rotation()
@@ -607,36 +608,35 @@ void Enemy::ProcessDownStateTransition()
 {
 	if (!m_isDeadFlag)
 	{
-	    DeathEffect();
+		DeathEffect();
 		m_isDeadFlag = true;
-        //Gameのインスタンスアドレスを検索
+		//Gameのインスタンスアドレスを検索
 		/*m_game->m_totalCount--;*/
 	}
 
-    m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_deathEffectTimer >= 1.0f)
 	{
 		if (m_effectEmitter)
-	else if (m_gameManagement->m_isOperation == true) {
+		/*else if (m_gameManagement->m_isOperation == true) {
 
-		m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+			m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();*/
 
-		if (!m_isDeadFlag)
-		{
-			DeathEffect();
-			m_isDeadFlag = true;
+			if (!m_isDeadFlag)
+			{
+				DeathEffect();
+				m_isDeadFlag = true;
+			}
+
+			if (m_deathEffectTimer >= 1.0f)
+			{
+				m_effectEmitter->Stop();
+				DeleteGO(m_effectEmitter);
+				m_effectEmitter = nullptr;
+			}
+
+			m_isDead = true;
 		}
-
-		if (m_deathEffectTimer >= 1.0f)
-		{
-		    m_effectEmitter->Stop();
-			DeleteGO(m_effectEmitter);
-			m_effectEmitter = nullptr;
-		}
-			
-		m_isDead = true;
-     }
-	
 }
 
 void Enemy::ProcessMainStateTransition()
@@ -709,57 +709,54 @@ void Enemy::ProcessCommonStateTransition()
 
 				m_enemyState = enEnemyState_Honden;
 				return;
-			}
-
 		}
 	}
-	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isOperation == true) {
-
-		//プレイヤーを見つけたら。
-		if (SearchPlayer() == true) {
-			Vector3 diff = m_player->GetPosition() - m_position;
-			//ベクトルを正規化する。
-			diff.Normalize();
-			//移動速度を設定する。
-			m_moveSpeed = diff * 150.0f;
-			//攻撃できる距離なら。
-			int ram = rand() % 100;
-			if (IsCanAttack() == true)
-			{
-				if (ram > 70)
-				{
-
-
-					m_enemyState = enEnemyState_Attack;
-					m_isUnderAttack = false;
-					return;
-				}
-
-				else
-				{
-					m_enemyState = enEnemyState_Chase;
-				}
-
-			}
-			//攻撃できない距離なら。
-			else
-			{
-				m_enemyState = enEnemyState_Chase;
-				return;
-			}
-		}
-		else {
-			Vector3 diff = m_ringBell->GetPosition() - m_position;
-			diff.Normalize();
-			m_moveSpeed = diff * 150.0f;
-			m_enemyState = enEnemyState_Honden;
-			return;
-		}
-
-	}
-	
 }
+
+	////チュートリアルモードだったら。
+	//else if (m_gameManagement->m_isOperation == true) {
+
+	//	//プレイヤーを見つけたら。
+	//	if (SearchPlayer() == true) {
+	//		Vector3 diff = m_player->GetPosition() - m_position;
+	//		//ベクトルを正規化する。
+	//		diff.Normalize();
+	//		//移動速度を設定する。
+	//		m_moveSpeed = diff * 150.0f;
+	//		//攻撃できる距離なら。
+	//		int ram = rand() % 100;
+	//		if (IsCanAttack() == true)
+	//		{
+	//			if (ram > 70)
+	//			{
+
+
+	//				m_enemyState = enEnemyState_Attack;
+	//				m_isUnderAttack = false;
+	//				return;
+	//			}
+
+	//			else
+	//			{
+	//				m_enemyState = enEnemyState_Chase;
+	//			}
+
+	//		}
+	//		//攻撃できない距離なら。
+	//		else
+	//		{
+	//			m_enemyState = enEnemyState_Chase;
+	//			return;
+	//		}
+	//	}
+	//	else {
+	//		Vector3 diff = m_ringBell->GetPosition() - m_position;
+	//		diff.Normalize();
+	//		m_moveSpeed = diff * 150.0f;
+	//		m_enemyState = enEnemyState_Honden;
+	//		return;
+	//	}
+
 
 void Enemy::ManageState()
 {
