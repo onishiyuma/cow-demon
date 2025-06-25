@@ -38,21 +38,16 @@ private:
 	Stone*				m_stone;					//石。
 	SpriteLight*		m_spriteLight;				//灯籠の画像。
 	SpriteNoStone*		m_spriteNoStone;			//石がない画像。
-	TimingBarA*			m_timingBarA;				//タイミングバーA。
-	TimingBarB*			m_timingBarB;				//タイミングバーB。
-	TimingBarC*			m_timingBarC;				//タイミングバーC。
-	Line*				m_line;						//線。
 	SpritePush*			m_spritePush;				//プッシュ画像。
 	LanternLight*		m_lanternLight = nullptr;	//灯籠。
-	ModelInitData       m_initData;
-	SoundSource* m_light;
+	ModelInitData       m_initData;					// モデルの初期化データ。
+	SoundSource*		m_light;					//火を灯す音。
+	const float			m_lightUpDistance = 100.0f;	//灯籠を灯す距離。	
 	bool				m_isNoStoneUI = false;		//火打石があるか。
 	bool				m_isLanternAction = false;	//「A:火を灯す」灯籠を灯したか。
 	bool				m_isLightUI = false;		//灯籠の近くにいるか。
 	bool                m_isLightAction = false;	//灯籠に火を灯したか。
-	const float			m_lightUpDistance = 100.0f;	//灯籠を灯す距離。	
 	int					m_buttonAState = 0;			//Aボタンの入力ステート管理。
 	int					m_lanternCount = 0;			//火を灯したカウント。
-
 };
 

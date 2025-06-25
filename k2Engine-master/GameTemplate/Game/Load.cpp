@@ -6,7 +6,16 @@
  
 namespace
 {
-    Vector3 FONTRENDER_PSOITION = Vector3{ -600.0f, -300.0f, 0.0f };
+	//フォントの座標。
+    const Vector3 FONTRENDER_PSOITION = Vector3{ 850.0f, -430.0f, 0.0f };
+	//ロードゲージの進行速度。
+    const float LOAD_SPEED = 0.1f;
+	//ロードゲージの最大値。
+    const float MAX_LOAD = 1.0f;
+	//ロードゲージの最小値。
+    const float MIN_LOAD = 0.0f;
+	//ロードゲージの高さ。
+    const float GAUGE_HEIGHT = 150.0f;
 }
 
 bool Load::Start()  
@@ -27,7 +36,7 @@ bool Load::Start()
 
     //ゲージ画像。  
     m_spriteLoadGage.Init("Assets/sprite/gauge.dds", 150, 150);  
-    m_spriteLoadGage.SetPosition(Vector3(850.0f, -430.0f, 0.0f));  
+    m_spriteLoadGage.SetPosition(FONTRENDER_PSOITION);
 
     //初期化。  
     m_load = 1.0f;  
@@ -57,64 +66,57 @@ void Load::Update()
 
 void Load::LoadingProgress()
 {
-    //ロード制御。
-    if (m_isFadingOut) 
+    if (m_isLoading)
     {
-        m_load -= 0.1f;
-        if (m_load <= 0.0f) 
+        m_load -= LOAD_SPEED;
+        if (m_load <= MIN_LOAD)
         {
-            if (m_gameManagement->m_isGame == true) {
+            m_load = MIN_LOAD;
+            m_isLoading = false;
+
+            if (m_gameManagement->m_isGame) {
                 m_game = NewGO<Game>(0, "game");
-                m_load = 0.0f;
-                m_isFadingOut = false;
             }
-            else if (m_gameManagement->m_isTutorial == true) {
+            else if (m_gameManagement->m_isOperation) {
                 m_tutorial = NewGO<Tutorial>(0, "tutorial");
-                m_load = 0.0f;
-                m_isFadingOut = false;
             }
-            
         }
     }
     else
     {
-        m_load += 0.1f;
-        if (m_load >= 1.0f)
+        m_load += LOAD_SPEED;
+        if (m_load >= MAX_LOAD)
         {
-            m_load = 1.0f;
+            m_load = MAX_LOAD;
         }
     }
 
-    //ロードのゲージ処理。
-    if (m_loadingProgress < 1.0f)
+    // ロードゲージ処理
+    if (m_loadingProgress < MAX_LOAD)
     {
-        m_loadingProgress += 0.1f * g_gameTime->GetFrameDeltaTime();
-        if (m_loadingProgress > 1.0f)
+        m_loadingProgress += LOAD_SPEED * g_gameTime->GetFrameDeltaTime();
+
+        if (m_loadingProgress >= MAX_LOAD)
         {
-            //ゲームモードだったら。
-            if (m_gameManagement->m_isGame == true) {
-                m_loadingProgress = 1.0f;
-                m_isdrawUI = true;
+            m_loadingProgress = MAX_LOAD;
+            m_isdrawUI = true;
+
+            if (m_gameManagement->m_isGame && m_game) {
                 m_game->m_isLoad = false;
-                DeleteGO(this);
             }
-            //チュートリアルモードだったら。
-            else if (m_gameManagement->m_isTutorial == true) {
-                m_loadingProgress = 1.0f;
-                m_isdrawUI = true;
+            else if (m_gameManagement->m_isOperation && m_tutorial) {
                 m_tutorial->m_isLoad = false;
-                DeleteGO(this);
             }
-            
+
+            DeleteGO(this);
         }
     }
 
-    //マスク位置の更新。
-    float fullHeight = 150.0f;
-    float offsetY = m_loadingProgress * fullHeight;
+    // マスク位置の更新
+    float offsetY = m_loadingProgress * GAUGE_HEIGHT;
     m_spriteMask.SetPosition(Vector3(850.0f, -500.0f + offsetY, 0.0f));
 
-    //各種アップデート。
+    // 各種スプライトの更新
     m_spriteLoadGage.Update();
     m_spriteMask.Update();
 }

@@ -26,17 +26,14 @@ public:
 	float m_timer = 0.0f; //タイマー	
 	float m_moveTimer = 1.0f;
 	MoveState m_moveState = enMoveState_UP;
+	const Vector3 m_scale = { 0.7f,0.7f,0.7f }; //スケール
 	Vector3 m_firstPosition; //初期位置
 	Vector3 m_position; //現在位置
 	Vector3 m_movePosition; //移動位置
-	Vector3 m_scale = { 0.7f,0.7f,0.7f }; //スケール
 	Quaternion m_rotation; //回転
 	ModelRender m_modelRender; //モデルレンダラー
 	ModelInitData m_initData;
 
 	Game* m_game = nullptr; //ゲームオブジェクトへのポインタ
-
-
-
 };
 

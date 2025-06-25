@@ -7,26 +7,24 @@
 #include "TimingBarA.h"
 #include "TimingBarB.h"
 #include "TimingBarC.h"
-#include "Line.h"
 #include "SpritePush.h"
 #include "LanternLight.h"
 #include "Game.h"
+
+namespace
+{
+	//モデルの大きさを設定。
+	const Vector3 MODELRENDER_SCALE = Vector3(0.6f, 0.6f, 0.6f);
+}
 
 bool Lantern::Start() 
 {
 	//モデルを読み込む
 	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
-	
+	//インスタンスアドレスを検索。
 	auto game = FindGO<Game>("game");
-	//火打石のモデルを読み込む。
-	
-	//m_initData.m_tkmFilePath = "Assets/modelData/lanternJapan/lantern.tkm";
-	//m_initData.m_expandConstantBuffer = &game->m_luminance;
-	//m_initData.m_expandConstantBufferSize = sizeof(game->m_luminance);
-	////火打石用のシェーダーを読み込む。
-	/*m_initData.m_fxFilePath = "Assets/shader/stone.fx";
-	m_modelRender.InitForwardRendering(m_initData);*/
-	m_modelRender.SetScale(0.6f, 0.6f, 0.6f);
+	//モデルの位置を設定。
+	m_modelRender.SetScale(MODELRENDER_SCALE);
 	
 
 	//各種インスタンスアドレスを検索。
@@ -34,10 +32,6 @@ bool Lantern::Start()
 	m_stone = FindGO<Stone>("stone");
 	m_spriteLight = FindGO<SpriteLight>("spriteLight");
 	m_spriteNoStone = FindGO<SpriteNoStone>("spriteNoStone");
-	m_timingBarA = FindGO<TimingBarA>("timingBarA");
-	m_timingBarB = FindGO<TimingBarB>("timingBarB");
-	m_timingBarC = FindGO<TimingBarC>("timingBarC");
-	m_line = FindGO<Line>("line");
 	m_spritePush = FindGO<SpritePush>("spritePush");
 
 	return true;
@@ -50,128 +44,68 @@ Lantern::Lantern()
 
 Lantern::~Lantern() 
 {
-	/*DeleteGO(m_spriteLight);
-	DeleteGO(m_spriteNoStone);
-	DeleteGO(m_timingBarA);
-	DeleteGO(m_line);
-	DeleteGO(m_spritePush);*/
+
 }
-
-
 
 void Lantern::Update() 
 {
 	//モデルレンダーの更新。
 	m_modelRender.Update();
-	//座標の更新。
 	m_modelRender.SetPosition(m_position);
-	//プレイヤーから灯籠に向かうベクトルを計算。
+
+	//プレイヤーとの距離ベクトルを計算。
 	Vector3 diff = m_position - m_player->m_position;
 
-	//灯籠に火が灯っていなかったら。
-	if (!m_isLight)
+	//すでに灯っている場合は何もしない。
+	if (m_isLight)
 	{
-		//ベクトルの長さが条件よりも小さいか。
-		if (diff.Length() <=m_lightUpDistance)
+		//灯籠に4つ火が灯っていたなら攻撃できる。
+		if (m_player->m_lanternCount == 4)
 		{
-			if (!m_isLightUI)
-			{
-				m_isLightUI = true;
-	
-				//「Ａ：火を灯す」を読み込む。
-				m_spriteLight = NewGO<SpriteLight>(0, "spriteLight");
-			}
-
-			if (m_buttonAState == 0) 
-			{
-				//Aボタンを入力したら。
-				if (g_pad[0]->IsTrigger(enButtonA))
-				{
-					//火打石をひとつ以上持っていたら。
-					if (m_player->m_stoneCount > 0)
-					{
-
-						//ミニゲームをしていなかったら。
-						if (!m_isLanternAction)
-						{
-							//ミニゲーム中にする。
-							m_isLanternAction = true;
-
-							//「A:火を灯す」。
-							DeleteGO(m_spriteLight);
-
-							//タイミングバーを読み込む。
-							m_timingBarB = NewGO<TimingBarB>(0, "timingBarB");
-
-							//バーのラインを読み込む。
-							m_line = NewGO<Line>(0, "line");
-							//「A：タイミングよくボタンを押せ」を読み込む。
-							m_spritePush = NewGO<SpritePush>(0, "spritePush");
-
-							m_buttonAState = 1;
-						}
-					}
-					//火打石をひとつも持っていなかったら。
-					else
-					{
-						if (!m_isNoStoneUI)
-						{
-
-							m_isNoStoneUI = true;
-
-							//「A:火打石が足りない」を読み込む
-							m_spriteNoStone = NewGO<SpriteNoStone>(0, "spriteNoStone");
-						}
-					}
-				}
-			}
-			if (m_buttonAState == 1)
-			{
-				//Aボタンをおしたら。
-				if (g_pad[0]->IsTrigger(enButtonA))
-				{
-					m_buttonAState = 0;
-					m_isLanternAction = false;
-
-					//バーのラインが、-10.0ｆ以上10.0ｆ以下（成功の場所）だったら。
-					if (m_line->m_position.x <= 10.0f && m_line->m_position.x >= -10.0f)
-					{
-						//陽が灯っている灯籠のカウントを増やす。
-						m_player->m_lanternCount++;
-
-						//火打石の数を減らす。
-						m_player->m_stoneCount--;
-
-						//各種画像を削除する。
-						DeleteGO(m_timingBarB);
-						DeleteGO(m_line);
-						DeleteGO(m_spritePush);
-
-						g_soundEngine->ResistWaveFileBank(63, "Assets/sound/lighting.wav");
-						m_light = NewGO<SoundSource>(63);
-						m_light->Init(63);
-						m_light->Play(false);
-						//灯籠に火が灯っている判定にする。
-						m_isLight = true;
-
-						/*if (!m_isLightAction) {
-							m_initData.m_fxFilePath = "Assets/shader/lantern.fx";
-							m_isLanternAction = true;
-						}*/
-					}
-				}
-			}
+			m_player->m_enemyIsCanAttack = true;
 		}
-		//灯籠から離れたら。
-		else
-		{
-			ResetLanternState();
-		}
+		return;
 	}
-	//灯籠4つに火がともっていたら攻撃できる。
-	if (m_player->m_lanternCount == 4)
+
+	//一定以上離れている場合は何もしない。
+	if (diff.Length() > m_lightUpDistance)
 	{
-		m_player->m_enemyIsCanAttack = true;
+		ResetLanternState();
+		return;
+	}
+
+	//「A:火を灯す」表示が出ていなければ出す。
+	if (!m_isLightUI)
+	{
+		m_isLightUI = true;
+		m_spriteLight = NewGO<SpriteLight>(0, "spriteLight");
+	}
+
+	//点灯処理。
+	if (g_pad[0]->IsTrigger(enButtonA))
+	{
+		if (m_player->m_stoneCount > 0)
+		{
+			//火を灯す処理。
+			m_player->m_lanternCount++;
+			m_player->m_stoneCount--;
+
+			//UIを削除する。
+			DeleteGO(m_spriteLight);
+			//音を設定して再生する。
+			g_soundEngine->ResistWaveFileBank(63, "Assets/sound/lighting.wav");
+			m_light = NewGO<SoundSource>(63);
+			m_light->Init(63);
+			m_light->Play(false);
+			//フラグを立てる
+			m_isLight = true;
+		}
+		else if (!m_isNoStoneUI)
+		{
+			// 火打石がない場合のUI
+			m_isNoStoneUI = true;
+			m_spriteNoStone = NewGO<SpriteNoStone>(0, "spriteNoStone");
+		}
 	}
 }
 
@@ -195,16 +129,6 @@ void Lantern::ResetLanternState()
 	{
 		DeleteGO(m_spriteNoStone);
 		m_spriteNoStone = nullptr;
-	}
-	if (m_timingBarB != nullptr)
-	{
-		DeleteGO(m_timingBarB);
-		m_timingBarB = nullptr;
-	}
-	if (m_line != nullptr)
-	{
-		DeleteGO(m_line);
-		m_line = nullptr;
 	}
 	if (m_spritePush != nullptr)
 	{

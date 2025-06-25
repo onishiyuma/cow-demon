@@ -20,11 +20,11 @@
 namespace
 {
 	//文字の座標。
-	Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };
+	const Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };	
 	//Lスティックの移動速度。
-	float L_STICK_MOVE_SPEED = 350.0f;
+	const float L_STICK_MOVE_SPEED = 350.0f;
 	//エフェクトの大きさ。
-	Vector3 EFFECT_SCALE = { 55.0f,55.0f,55.0f };
+	const Vector3 EFFECT_SCALE = { 55.0f,55.0f,55.0f };
 }
 
 
@@ -69,9 +69,12 @@ bool Player::Start()
 		m_ringBell = FindGO<RingBell>("ringbell");
 	}
 	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isTutorial == true) {
+	else if (m_gameManagement->m_isOperation == true) {
 		m_tutorial = FindGO<Tutorial>("tutorial");
 	}
+
+	//プレイヤーのMPをセットする。
+	m_playerMP = m_playerMaxMP;
 	
 	return true;
 }
@@ -105,7 +108,7 @@ void Player::Update()
 		PoisonState();
 	}
 	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isTutorial == true) {
+	else if (m_gameManagement->m_isOperation == true) {
 		if (m_tutorial->m_isSprite == true) {
 			//移動処理。
 			Move();
@@ -155,7 +158,7 @@ void Player::PlayerAttack()
 	}
 
 	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isTutorial == true) {
+	else if (m_gameManagement->m_isOperation == true) {
 
 		if (m_tutorial->m_clearCount < 2) {
 			//通常攻撃。
@@ -237,15 +240,24 @@ void Player::NormalAttack()
 
 	if (g_pad[0]->IsTrigger(enButtonRB2) && m_attackCoolDown <= 0.0f)
 	{
-		//クリティカルダメージ。
-		m_criticalATK = m_playerATK *m_cliticalDamage;
-		//通常ダメージ。
-		m_normalATK = m_playerATK;
+		if (m_playerMP >= 2) {
+			//クリティカルダメージ。
+			m_criticalATK = m_playerATK * m_cliticalDamage;
+			//通常ダメージ。
+			m_normalATK = m_playerATK;
 
-		//クールタイムの設定。
-		m_attackCoolDown = 0.389f;
-		//通常攻撃の作成用関数。
-		MakeNormalAttack();
+			//クールタイムの設定。
+			m_attackCoolDown = 0.389f;
+			//通常攻撃の作成用関数。
+			MakeNormalAttack();
+
+			m_playerMP -= 2;
+			//MPが0以下になったら0にする。
+			if (m_playerMP < 0){
+				m_playerMP = 0;
+			}
+		}
+		
 	}
 }
 
@@ -257,10 +269,19 @@ void Player::Skill()
 	//スキル発動。
 	if (g_pad[0]->IsTrigger(enButtonLB2) && m_skillCharge >= m_skillMax)
 	{
-		//スキルの作成用関数を呼び出す。
-		MakeSkill();
-		//チャージ量をリセット。
-		m_skillCharge = 0;
+		if (m_playerMP >= 10) {
+			//スキルの作成用関数を呼び出す。
+			MakeSkill();
+			//チャージ量をリセット。
+			m_skillCharge = 0;
+
+			m_playerMP -= 10;
+			//MPが0以下になったら0にする。
+			if (m_playerMP < 0) {
+				m_playerMP = 0;
+			}
+		}
+		
 	}
 }
 
@@ -274,10 +295,20 @@ void Player::SkillTukuyomiBlessing()
 
 	if (g_pad[0]->IsTrigger(enButtonX) && m_tukuyomiBlessingCoolDown <= m_tukuyomiMax)
 	{
-		//月読の加護作成用関数を呼び出す。
-		MakeTukuyomiBlessing();
-		//クールタイムの設定。 
-		m_tukuyomiBlessingCoolDown = 40.0f;
+		if (m_playerMP >= 25) {
+			//月読の加護作成用関数を呼び出す。
+			MakeTukuyomiBlessing();
+			//クールタイムの設定。 
+			m_tukuyomiBlessingCoolDown = 40.0f;
+
+			//MPを減らす。
+			m_playerMP -= 25;
+			//MPが0以下になったら0にする。
+			if (m_playerMP < 0) {
+				m_playerMP = 0;
+			}
+		}
+		
 	}
 }
 

@@ -67,6 +67,9 @@
     <ClCompile Include="SpriteSimenawa.cpp" />
     <ClCompile Include="SpriteTukuyomi.cpp" />
     <ClCompile Include="SpriteClear.cpp" />
+    <ClCompile Include="UIMPBar.cpp" />
+    <ClCompile Include="FontMP.cpp" />
+    <ClCompile Include="Operation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Amulet.h" />
@@ -137,6 +140,9 @@
     <ClInclude Include="SpriteSimenawa.h" />
     <ClInclude Include="SpriteTukuyomi.h" />
     <ClInclude Include="SpriteClear.h" />
+    <ClInclude Include="UIMPBar.h" />
+    <ClInclude Include="FontMP.h" />
+    <ClInclude Include="Operation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dxcompiler.dll" />

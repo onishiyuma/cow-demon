@@ -31,7 +31,7 @@ bool BackGround::Start()
 
 	}
 	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isTutorial == true) {
+	else if (m_gameManagement->m_isOperation == true) {
 
 		//モデルの初期化を行う。
 		m_modelRender.Init("Assets/modelData/ground.tkm");

@@ -18,7 +18,7 @@ public:
 
 	//メンバ変数
 	bool m_isGame = false;
-	bool m_isTutorial = false;
+	bool m_isOperation = false;
 
 
 

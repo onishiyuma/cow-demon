@@ -19,7 +19,7 @@
 namespace
 {
 	//チャージ増加量。
-	int CHARGE_INCREASE_AMOUNT = 10;
+	const int CHARGE_INCREASE_AMOUNT = 10;
 }
 
 bool Enemy::Start()
@@ -63,9 +63,17 @@ bool Enemy::Start()
 	m_gameManagement = FindGO<GameManagement>("gameManagement");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_player = FindGO<Player>("player");
-	m_game = FindGO<Game>("game");
-	m_ringBell = FindGO<RingBell>("ringbell");
-	m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
+
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
+		m_game = FindGO<Game>("game");
+		m_ringBell = FindGO<RingBell>("ringbell");
+		m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
+	}
+	//チュートリアルモードだったら。
+	if (m_gameManagement->m_isOperation == true) {
+		m_tutorial = FindGO<Tutorial>("tutorial");
+	}
 
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
@@ -100,23 +108,42 @@ void Enemy::Update()
 		}
 	 if (m_isDead == true)return;
 
-		//追跡処理。
-		Chase();
-		//本殿追跡処理。
-		IsHonden();
-		//回転処理。
-		Rotation();
-		//当たり判定。
-		Collision();
-		//攻撃処理。
-		Attack();
-		//ステートの遷移処理。
-		ManageState();
-		//アニメーションの再生。
-		PlayAnimation();
-		//モデルの更新。
-		m_modelRender.Update();
-		
+		/*if (m_game->m_timer >= 300.0f) {
+			DeleteGO(this);
+		}*/
+	}
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isOperation == true) {
+
+		if (m_tutorial->m_clearCount == 3) {
+			//追跡処理。
+			Chase();
+			//当たり判定。
+			Collision();
+			//攻撃処理。
+			//Attack();
+			//ステートの遷移処理。
+			ManageState();
+			//アニメーションの再生。
+			PlayAnimation();
+			//モデルの更新。
+			m_modelRender.Update();
+		}
+		else {
+			//当たり判定。
+			Collision();
+			//攻撃処理。
+			Attack();
+			//ステートの遷移処理。
+			ManageState();
+			//アニメーションの再生。
+			PlayAnimation();
+			//エネミーの向きの設定。
+			m_rotation.SetRotationY(90.0f);
+			m_modelRender.SetRotation(m_rotation);
+			//モデルの更新。
+			m_modelRender.Update();
+		}
 }
 
 void Enemy::Rotation()
@@ -585,10 +612,22 @@ void Enemy::ProcessDownStateTransition()
         //Gameのインスタンスアドレスを検索
 		/*m_game->m_totalCount--;*/
 	}
+
     m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_deathEffectTimer >= 1.0f)
 	{
 		if (m_effectEmitter)
+	else if (m_gameManagement->m_isOperation == true) {
+
+		m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
+
+		if (!m_isDeadFlag)
+		{
+			DeathEffect();
+			m_isDeadFlag = true;
+		}
+
+		if (m_deathEffectTimer >= 1.0f)
 		{
 		    m_effectEmitter->Stop();
 			DeleteGO(m_effectEmitter);
@@ -663,6 +702,53 @@ void Enemy::ProcessCommonStateTransition()
 					return;
 				}
 			}
+			else {
+				Vector3 diff = m_ringBell->GetPosition() - m_position;
+				diff.Normalize();
+				m_moveSpeed = diff * 150.0f;
+
+				m_enemyState = enEnemyState_Honden;
+				return;
+			}
+
+		}
+	}
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isOperation == true) {
+
+		//プレイヤーを見つけたら。
+		if (SearchPlayer() == true) {
+			Vector3 diff = m_player->GetPosition() - m_position;
+			//ベクトルを正規化する。
+			diff.Normalize();
+			//移動速度を設定する。
+			m_moveSpeed = diff * 150.0f;
+			//攻撃できる距離なら。
+			int ram = rand() % 100;
+			if (IsCanAttack() == true)
+			{
+				if (ram > 70)
+				{
+
+
+					m_enemyState = enEnemyState_Attack;
+					m_isUnderAttack = false;
+					return;
+				}
+
+				else
+				{
+					m_enemyState = enEnemyState_Chase;
+				}
+
+			}
+			//攻撃できない距離なら。
+			else
+			{
+				m_enemyState = enEnemyState_Chase;
+				return;
+			}
+		}
 		else {
 			Vector3 diff = m_ringBell->GetPosition() - m_position;
 			diff.Normalize();
