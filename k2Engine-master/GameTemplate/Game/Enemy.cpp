@@ -107,44 +107,24 @@ void Enemy::Update()
 		m_isDead = true;
 	}
 	if (m_isDead == true)return;
+	
+	//本殿追跡処理
+	IsHonden();
+	//追跡処理。
+	Chase();
+	//回転処理。
+	Rotation();
+	//当たり判定。
+	Collision();
+	//攻撃
+	Attack();
+	//アニメーションの再生。
+	PlayAnimation();
+	//ステート管理。
+	ManageState();
 
-	/*if (m_game->m_timer >= 300.0f) {
-		DeleteGO(this);
-	}*/
-
-	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isOperation == true) {
-
-		if (m_tutorial->m_clearCount == 3) {
-			//追跡処理。
-			Chase();
-			//当たり判定。
-			Collision();
-			//攻撃処理。
-			//Attack();
-			//ステートの遷移処理。
-			ManageState();
-			//アニメーションの再生。
-			PlayAnimation();
-			//モデルの更新。
-			m_modelRender.Update();
-		}
-		else {
-			//当たり判定。
-			Collision();
-			//攻撃処理。
-			Attack();
-			//ステートの遷移処理。
-			ManageState();
-			//アニメーションの再生。
-			PlayAnimation();
-			//エネミーの向きの設定。
-			m_rotation.SetRotationY(90.0f);
-			m_modelRender.SetRotation(m_rotation);
-			//モデルの更新。
-			m_modelRender.Update();
-		}
-	}
+	//モデルの更新。
+	m_modelRender.Update();
 }
 
 void Enemy::Rotation()
