@@ -4,6 +4,8 @@
 #include "Load.h"
 #include "Operation.h"
 #include "sound/SoundEngine.h"
+#include "GameManagement.h"
+
 
 bool Title::Start()
 {
@@ -30,12 +32,16 @@ bool Title::Start()
 
 
 	//タイトルのBGMを読み込む。
+
 	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/title.wav");
 
 	//タイトルのBGMを再生する。
 	m_titleBGM = NewGO<SoundSource>(1);
 	m_titleBGM->Init(1);
 	m_titleBGM->Play(true);
+
+	m_gameManagement = FindGO<GameManagement>("gameManagement");
+	
 
 	return true;
 }
@@ -52,83 +58,67 @@ Title::~Title()
 
 void Title::Update()
 {
+
 	m_spriteBack.Update();
 	m_spriteRender.SetPosition(m_backPos);
 
 	//タイマーを加算。
 	m_timer+= g_gameTime->GetFrameDeltaTime();
 	
-	//フェードイン処理。
+	//タイトルのフェードインの処理。
 	FadeIn();
-	//フェードイン中か。
-	if (!m_isFadeIn) 
-	{
-		return;
+
+	
+
+	if (m_isFadeIn == true) {
+
+		//フェードインが終わったらフォントのフェードインを行う。
+		FontFade();
+
+		if (m_fontFadeCount > 0) {
+
+			//魂のフェードインを行う。
+			SoulFade();
+
+			if (m_timer >= m_maxTitleTime)
+			{
+				m_timer = m_maxTitleTime;
+
+				//タイトルからインゲームへ移行。
+				if (m_timer > 0.1f && g_pad[0]->IsPress(enButtonA))
+				{
+					if (m_gameManagement->m_isGame == false) {
+
+						m_gameManagement->m_isGame = true;
+						NewGO<Load>(1, "load");
+						m_spriteRender.Update();
+						DeleteGO(m_titleBGM);
+						//自身を削除する。
+						DeleteGO(this);
+
+					}
+				}
+				//タイトルからチュートリアルへ移行。
+				else if(m_timer > 0.1f && g_pad[0]->IsPress(enButtonB)) 
+				{
+					if (m_gameManagement->m_isOperation == false) {
+
+						m_gameManagement->m_isOperation = true;
+						NewGO<Operation>(1, "operation");
+						m_spriteRender.Update();
+						DeleteGO(m_titleBGM);
+						//自身を削除する。
+						DeleteGO(this);
+
+					}
+				}
+			}
+		}
+		
+
 	}
-
-	//フォントのフェードイン処理。
-	FontFade();
-
-	//フェードのカウント。
-	if (m_fontFadeCount <= 0)
-	{
-		return;
-	}
-
-	//魂のフェードイン処理。
-	SoulFade();
-
-	//タイトルに戻るまでの時間。
-	if (m_timer < m_maxTitleTime)
-	{
-		return;
-	}
-	m_timer = m_maxTitleTime;
-
-	//Aボタンでインゲーム。
-	if (g_pad[0]->IsPress(enButtonA) && m_timer > 0.1f)
-	{
-		StartGame();
-		return;
-	}
-
-	//Bボタンで操作説明。
-	if (g_pad[0]->IsPress(enButtonB) && m_timer > 0.1f)
-	{
-		ShowOperation();
-		return;
-	}
-}
-
-void Title::StartGame()
-{
-	/*if (m_gameManagement->m_isGame)
-	{
-		return;
-	}*/
-
-	//ゲームスタートの処理。
-	NewGO<Load>(1, "load");
-	CleanupTitle();
-}
-
-void Title::ShowOperation()
-{
-	/*if (m_gameManagement->m_isOperation)
-	{
-		return;
-	}*/
-
-	//操作説明の処理。
-	NewGO<Operation>(1, "operation");
-	CleanupTitle();
-}
-
-void Title::CleanupTitle()
-{
-	m_spriteRender.Update();
-	DeleteGO(m_titleBGM);
-	DeleteGO(this);
+	
+	
 }
 
 void Title::FadeIn()
@@ -152,6 +142,8 @@ void Title::FadeIn()
 
 void Title::FontFade()
 {
+	
+
 	//フォントのフェードインの処理。
 	if (!m_isFontFade)
 	{

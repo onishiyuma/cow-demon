@@ -13,6 +13,8 @@
 #include "BellSpriteRender.h"
 #include "NoHeal.h"
 #include "SpinStick.h"
+#include "GameManagement.h"
+#include "Tutorial.h"
 #include <time.h>
 
 namespace
@@ -51,15 +53,25 @@ bool Player::Start()
 	//プレイヤーライトのインスタンスを生成。
 	m_playerLight = NewGO<PlayerLight>(0, "playerLight");
 
+	//各種インスタンスアドレスの検索。
+	m_gameManagement = FindGO<GameManagement>("gameManagement");
+
 	//常時参照するアドレス。
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 	m_playerLight = FindGO<PlayerLight>("playerLight");
 	m_uiHeal = FindGO<UIheal>("uiheal");
 
-	m_game = FindGO<Game>("game");
-	m_lantern = FindGO<Lantern>("lantern");
-	m_ringBell = FindGO<RingBell>("ringbell");
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
+		m_game = FindGO<Game>("game");
+		m_lantern = FindGO<Lantern>("lantern");
+		m_ringBell = FindGO<RingBell>("ringbell");
+	}
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isOperation == true) {
+		m_tutorial = FindGO<Tutorial>("tutorial");
+	}
 
 	//プレイヤーのMPをセットする。
 	m_playerMP = m_playerMaxMP;
@@ -80,37 +92,91 @@ Player::~Player()
 
 void Player::Update()
 {
-	//カウントダウンしているときは判定を行わない。
-	if ( !m_game->m_isCowntDownStart)
-	{
-		return;
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
+		if (m_game->m_isCowntDownStart == true) {
+			//移動処理。
+			Move();
+		}
+		//判定を呼び出す。
+		Collision();
+		//回復できるように知らせる。
+		UpdateHealHint();
+		//攻撃。
+		PlayerAttack();
+		//毒状態の時はHPを減らす。
+		PoisonState();
 	}
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isOperation == true) {
+		if (m_tutorial->m_isSprite == true) {
+			//移動処理。
+			Move();
+			//判定を呼び出す。
+			Collision();
+			//回復できるように知らせる。
+			UpdateHealHint();
+			//攻撃。
+			PlayerAttack();
+			//毒状態の時はHPを減らす。
+			PoisonState();
+		}
+		else {
 
-	Move();
-	//判定を呼び出す。
-	Collision();
-	//回復できるように知らせる。
-	UpdateHealHint();
-	//攻撃。
-	PlayerAttack();
-	//毒状態の時はHPを減らす。
-	PoisonState();
+		}
+		
+	}
+	
+	
 }
 
 void Player::PlayerAttack()
 {
-	//灯籠に火が灯っていれば攻撃できる。
-	if (m_enemyIsCanAttack)
-	{
-		//通常攻撃。
-		NormalAttack();
-		//スキル
-		Skill();
-		//月読の加護。
-		SkillTukuyomiBlessing();
-		//しめ縄。
-		ItemShimenawa();
+	//ゲームモードだったら。
+	if (m_gameManagement->m_isGame == true) {
+		//灯籠に火が灯っていれば攻撃できる。
+		if (m_enemyIsCanAttack)
+		{
+			//通常攻撃。
+			NormalAttack();
+			//スキル
+			Skill();
+			//月読の加護。
+			SkillTukuyomiBlessing();
+			//しめ縄。
+			ItemShimenawa();
+		}
+		else
+		{
+			//文字の表示。
+			wchar_t text[256] = { 0 };
+			swprintf_s(text, 256, L"灯籠を全て灯すと攻撃できるぞ");
+			m_fontRender1.SetText(text);
+			m_fontRender1.SetPosition(FONT_POSITION);
+			m_fontRender1.SetColor({ g_vec4lightBlue });
+		}
 	}
+
+	//チュートリアルモードだったら。
+	else if (m_gameManagement->m_isOperation == true) {
+
+		if (m_tutorial->m_clearCount < 2) {
+			//通常攻撃。
+			NormalAttack();
+			//スキル
+			Skill();
+		}
+		else if (m_tutorial->m_clearCount == 2) {
+			//しめ縄。
+			ItemShimenawa();
+		}
+		else if (m_tutorial->m_clearCount == 3) {
+			//月読の加護。
+			SkillTukuyomiBlessing();
+		}
+		
+	}
+	
 }
 
 void Player::Move()
@@ -203,8 +269,7 @@ void Player::Skill()
 	//スキル発動。
 	if (g_pad[0]->IsTrigger(enButtonLB2) && m_skillCharge >= m_skillMax)
 	{
-		if (m_playerMP >= 10) 
-		{
+		if (m_playerMP >= 10) {
 			//スキルの作成用関数を呼び出す。
 			MakeSkill();
 			//チャージ量をリセット。
@@ -263,8 +328,6 @@ void Player::ItemShimenawa()
 		m_shimenawaGetTime = 0.0f;
 	}
 }
-
-
 
 //--------------------------------------------------------------------------------------------------------------
 //ここから作成用関数
@@ -345,8 +408,6 @@ void Player::MakeShimenawa()
 //終わり。
 //-----------------------------------------------------------------------------------------------------------------
 
-
-
 //コリジョン判定。
 void Player::Collision()
 {
@@ -397,13 +458,6 @@ void Player::Distance()
 
 void Player::RotationCamera()
 {
-	//クールダウン中ならカウントを減らすだけ。
-	if (m_healCoolDown > 0.0f)
-	{
-		m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
-		return;
-	}
-
 	//右スティックのx,y値。
 	float x = g_pad[0]->GetRStickXF();
 	float y = g_pad[0]->GetRStickYF();
@@ -417,12 +471,10 @@ void Player::RotationCamera()
 
 	//スティックの現在の角度。
 	float angle = atan2f(y, x) * (180.0f / 3.14159265f);
+
 	//角度差分。
 	float delta = angle - m_prevStickAngle;
-	//累積回転量に加算。
-	m_totalRotation += fabsf(delta);
-	//現在の角度を保存。
-	m_prevStickAngle = angle;
+
 	//-180〜180度の範囲に収める。
 	if (delta > 180.0f)
 	{
@@ -433,35 +485,39 @@ void Player::RotationCamera()
 		delta += 360.0f;
 	}
 
-	//一周回っていないのであれば何もしない。
-	if (m_totalRotation < 360.0f)
-	{
-		return;
-	}
+	//累積回転量に加算。
+	m_totalRotation += fabsf(delta);
 
-	//回復回数がない場合はリセット。
-	if (m_totalRotation < 360.0f || m_uiHeal->m_useHeal <= 0)
-	{
-		return;
-	}
+	//現在の角度を保存。
+	m_prevStickAngle = angle;
 
-	//SEを再生。
-	g_soundEngine->ResistWaveFileBank(50, "Assets/sound/hell.wav");
-	m_hell = NewGO<SoundSource>(50);
-	m_hell->Init(50);
-	m_hell->Play(false);
-	//回復するHPをセット。
-	HealHP(100);
-	//回復のエフェクトを再生。
-	CreateEffect();
-	//回復の回数を減らす。
-	m_uiHeal->m_useHeal--;
-	//回復モードを戻す。
-	m_isHealMode = false;
-	//回復にクールタイムを設ける。
-	m_healCoolDown = 3.0f;
-	//回復のスティック回転をリセット。
-	m_totalRotation = 0.0f;
+	//スティックを回すと回復。
+	if (m_totalRotation >= 360.0f)
+	{
+		if (m_healCoolDown <= 0)
+		{
+			//接触していない場合は回転角をリセット。
+			m_totalRotation = 0.0f;
+			m_healCoolDown -= g_gameTime->GetFrameDeltaTime();
+			if (m_uiHeal->m_useHeal >0)
+			{
+				g_soundEngine->ResistWaveFileBank(50, "Assets/sound/hell.wav");
+				m_hell = NewGO<SoundSource>(50);
+				m_hell->Init(50);
+				m_hell->Play(false);
+				//回復するHPをセット。
+				HealHP(100);
+				//回復のエフェクトを再生。
+				CreateEffect();
+				//回復の回数を減らす。
+				m_uiHeal->m_useHeal--;
+				//回復モードを戻す。
+				m_isHealMode = false;
+				//回復にクールタイムを設ける。
+				m_healCoolDown = 3.0f;
+			}
+		}
+	}
 }
 
 void Player::HealHP(int amount)
@@ -553,7 +609,6 @@ void Player::RingBellCollision()
 				m_bellSpriteRender = NewGO<BellSpriteRender>(0);
 			}
 
-			//鈴の位置を取得。
 			Distance();
 
 			//Aボタン単押しで回復モードに入る。
@@ -630,241 +685,209 @@ void Player::RingBellCollision()
 
 void Player::EnemyAttackCollision()
 {
-	if (m_isDamage_Enemy)
+	if (!m_isDamage_Enemy)
 	{
-		return;
-	}
-
-	//敵の攻撃用コリジョンチェック。
-	{
-		//敵の攻撃用のコリジョンを取得する。
-		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("enemy_attack");
-		//配列をfor文で回す。
-		for (auto collision : collisions)
 		{
-			//コリジョンとキャラコンが衝突したら。
-			if (collision->IsHit(m_characterController))
+			//敵の攻撃用のコリジョンを取得する。
+			const auto& collisions = g_collisionObjectManager->FindCollisionObjects("enemy_attack");
+			//配列をfor文で回す。
+			for (auto collision : collisions)
 			{
-				//HPを減らす。
-				m_playerHP -= 5;
-				m_isDamage_Enemy = true;
-				//タイマーリセット。
-				m_invincibleTime_Enemy = 0.0f;
-				return;
+				//コリジョンとキャラコンが衝突したら。
+				if (collision->IsHit(m_characterController))
+				{
+					//HPを減らす。
+					m_playerHP -= 5;
+					m_isDamage_Enemy = true;
+					//タイマーリセット。
+					m_invincibleTime_Enemy = 0.0f;
+					return;
+				}
 			}
 		}
 	}
-
 	//無敵時間の設定。
-	if (!m_isDamage_Enemy)
+	if (m_isDamage_Enemy)
 	{
-		return;
-	}
-	
-	m_invincibleTime_Enemy += g_gameTime->GetFrameDeltaTime();
-
-	//敵の攻撃を受けたら無敵にする。
-	if (m_invincibleTime_Enemy >= m_invincibleTimeDuration)
-	{
-		m_invincibleTime_Enemy = 0.0f;
-		m_isDamage_Enemy = false;
+		m_invincibleTime_Enemy += g_gameTime->GetFrameDeltaTime();
+		if (m_invincibleTime_Enemy >= m_invincibleTimeDuration)
+		{
+			m_invincibleTime_Enemy = 0.0f;
+			m_isDamage_Enemy = false;
+		}
 	}
 }
 
 void Player::AnnoyingEnemyAttackCollision()
 {
-	if (m_isDamage_Annoying)
+	if (!m_isDamage_Annoying)
 	{
-		return;
-	}
-
-	{
-		//うざい敵の攻撃用コリジョンを取得する。
-		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("annoyingenemy_attack");
-		//配列をfor文で回す。
-		for (auto collision : collisions)
 		{
-			if (collision->IsHit(m_characterController))
+			//敵の攻撃用コリジョンを取得する。
+			const auto& collisions = g_collisionObjectManager->FindCollisionObjects("annoyingenemy_attack");
+			//配列をfor文で回す。
+			for (auto collision : collisions)
 			{
-				//HPを減らす。
-				m_playerHP -= 1;
-				m_isDamage_Annoying = true;
-				//タイマーリセット。
-				m_invincibleTime_Enemy = 0.0f;
-				m_playerState = enPlayerState_Poison;
+				if (collision->IsHit(m_characterController))
+				{
+					//HPを減らす。
+					m_playerHP -= 1;
+					m_isDamage_Annoying = true;
+					//タイマーリセット。
+					m_invincibleTime_Enemy = 0.0f;
+					m_playerState = enPlayerState_Poison;
 
-				return;
+					return;
+				}
 			}
 		}
 	}
-
 	//無敵時間の設定。
 	if (m_isDamage_Annoying)
 	{
-		return;
-	}
-
-	m_invincibleTime_Annoying += g_gameTime->GetFrameDeltaTime();
-
-	if (m_invincibleTime_Annoying >= m_invincibleTimeDuration)
-	{
-		m_invincibleTime_Annoying = 0.0f;
-		m_isDamage_Annoying = false;
+		m_invincibleTime_Annoying += g_gameTime->GetFrameDeltaTime();
+		if (m_invincibleTime_Annoying >= m_invincibleTimeDuration)
+		{
+			m_invincibleTime_Annoying = 0.0f;
+			m_isDamage_Annoying = false;
+		}
 	}
 }
 
 void Player::BossEnemyAttackCollision()
 {
-	if (m_isDamage_BossEnemy)
+	if (!m_isDamage_BossEnemy)
 	{
-		return;
-	}
-
-	{
-		//ボスの攻撃用コリジョンを取得する。
-		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Boss_enemy_attack");
-		//配列をfor文で回す。
-		for (auto collision : collisions)
 		{
-			if (collision->IsHit(m_characterController))
+			//ボスの攻撃用コリジョンを取得する。
+			const auto& collisions = g_collisionObjectManager->FindCollisionObjects("Boss_enemy_attack");
+			//配列をfor文で回す。
+			for (auto collision : collisions)
 			{
-				//HPを減らす。
-				m_playerHP -= 15;
-				m_isDamage_BossEnemy = true;
-				m_invincibleTime_BossEnemy = 0.0f;
-				return;
+				if (collision->IsHit(m_characterController))
+				{
+					//HPを減らす。
+					m_playerHP -= 15;
+					m_isDamage_BossEnemy = true;
+					m_invincibleTime_BossEnemy = 0.0f;
+					return;
+				}
 			}
 		}
 	}
-
 	//無敵時間の設定。
 	if (m_isDamage_BossEnemy)
 	{
-		return;
-	}
-
-	m_invincibleTime_BossEnemy += g_gameTime->GetFrameDeltaTime();
-
-	if (m_invincibleTime_BossEnemy >= m_invincibleTimeDuration)
-	{
-		m_invincibleTime_BossEnemy = 0.0f;
-		m_isDamage_BossEnemy = false;
+		m_invincibleTime_BossEnemy += g_gameTime->GetFrameDeltaTime();
+		if (m_invincibleTime_BossEnemy >= m_invincibleTimeDuration)
+		{
+			m_invincibleTime_BossEnemy = 0.0f;
+			m_isDamage_BossEnemy = false;
+		}
 	}
 }
 
 void Player::BossEnemyPoisonCollision()
 {
-	if (m_isDamage_BossPoison)
+	if (!m_isDamage_BossPoison)
 	{
-		return;
-	}
-
-	{
-		//ボスの毒攻撃用コリジョンを取得する。
-		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("BossEnemy_Poison");
-		//配列をfor文で回す。
-		for (auto collision : collisions)
 		{
-			if (collision->IsHit(m_characterController))
+			//ボスの毒攻撃用コリジョンを取得する。
+			const auto& collisions = g_collisionObjectManager->FindCollisionObjects("BossEnemy_Poison");
+			//配列をfor文で回す。
+			for (auto collision : collisions)
 			{
-				//HPを減らす。
-				m_playerHP -= 10;
-				m_isDamage_BossPoison = true;
-				//タイマーリセット。
-				m_invincibleTime_BossPoison = 0.0f;
-				m_playerState = enPlayerState_Poison;
-				return;
+				if (collision->IsHit(m_characterController))
+				{
+					//HPを減らす。
+					m_playerHP -= 10;
+					m_isDamage_BossPoison = true;
+					//タイマーリセット。
+					m_invincibleTime_BossPoison = 0.0f;
+					m_playerState = enPlayerState_Poison;
+					return;
+				}
 			}
 		}
 	}
-
 	//無敵時間の設定。
-	if (!m_isDamage_BossPoison)
+	if (m_isDamage_BossPoison)
 	{
-		return;
-	}
-	m_invincibleTime_BossPoison += g_gameTime->GetFrameDeltaTime();
-	if (m_invincibleTime_BossPoison >= m_invincibleTimeDuration)
-	{
-		m_invincibleTime_BossPoison = 0.0f;
-		m_isDamage_BossPoison = false;
+		m_invincibleTime_BossPoison += g_gameTime->GetFrameDeltaTime();
+		if (m_invincibleTime_BossPoison >= m_invincibleTimeDuration)
+		{
+			m_invincibleTime_BossPoison = 0.0f;
+			m_isDamage_BossPoison = false;
+		}
 	}
 }
 
 void Player::LittleEnemyPoisonCollision()
 {
-	if (m_isDamage_LittlePoison)
+	if (!m_isDamage_LittlePoison)
 	{
-		return;
-	}
-
-	{
-		//小さい敵の攻撃用コリジョンを取得する。
-		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("LittleEnemy_Poison");
-		//配列をfor文で回す。
-		for (auto collision : collisions)
 		{
-			if (collision->IsHit(m_characterController))
+			//小さい敵の攻撃用コリジョンを取得する。
+			const auto& collisions = g_collisionObjectManager->FindCollisionObjects("LittleEnemy_Poison");
+			//配列をfor文で回す。
+			for (auto collision : collisions)
 			{
-				//HPを減らす。
-				m_playerHP -= 1;
-				m_isDamage_LittlePoison = true;
-				//タイマーリセット。
-				m_invincibleTime_LittlePoison = 0.0f;
-				m_playerState = enPlayerState_Poison;
-				return;
+				if (collision->IsHit(m_characterController))
+				{
+					//HPを減らす。
+					m_playerHP -= 1;
+					m_isDamage_LittlePoison = true;
+					//タイマーリセット。
+					m_invincibleTime_LittlePoison = 0.0f;
+					m_playerState = enPlayerState_Poison;
+					return;
+				}
 			}
 		}
 	}
-
 	//無敵時間の設定。
 	if (m_isDamage_LittlePoison)
 	{
-		return;
-	}
-	m_invincibleTime_LittlePoison += g_gameTime->GetFrameDeltaTime();
-	if (m_invincibleTime_LittlePoison >= m_invincibleTimeDuration)
-	{
-		m_invincibleTime_LittlePoison = 0.0f;
-		m_isDamage_LittlePoison = false;
+		m_invincibleTime_LittlePoison += g_gameTime->GetFrameDeltaTime();
+		if (m_invincibleTime_LittlePoison >= m_invincibleTimeDuration)
+		{
+			m_invincibleTime_LittlePoison = 0.0f;
+			m_isDamage_LittlePoison = false;
+		}
 	}
 }
 
 void Player::ExplosionCollision()
 {
-	if (m_isDamage_Explosion)
+	if (!m_isDamage_Explosion)
 	{
-		return;
-	}
-
-	{
-		//爆発のコリジョン判定。
-		const auto& collisions = g_collisionObjectManager->FindCollisionObjects("explosion");
-		//配列をfor文で回す。
-		for (auto collision : collisions)
 		{
-			if (collision->IsHit(m_characterController))
+			//爆発のコリジョン判定。
+			const auto& collisions = g_collisionObjectManager->FindCollisionObjects("explosion");
+			//配列をfor文で回す。
+			for (auto collision : collisions)
 			{
-				//HPを減らす。
-				m_playerHP -= 20;
-				m_isDamage_Explosion = true;
-				//タイマーをリセット。
-				m_invincibleTime_Explosion = 0.0f;
-				return;
+				if (collision->IsHit(m_characterController))
+				{
+					//HPを減らす。
+					m_playerHP -= 20;
+					m_isDamage_Explosion = true;
+					//タイマーをリセット。
+					m_invincibleTime_Explosion = 0.0f;
+					return;
+				}
 			}
 		}
 	}
-
 	//無敵時間の設定。
 	if (m_isDamage_Explosion)
 	{
-		return;
-	}
-	m_invincibleTime_Explosion += g_gameTime->GetFrameDeltaTime();
-	if (m_invincibleTime_Explosion >= m_invincibleTimeDuration)
-	{
-		m_invincibleTime_Explosion = 0.0f;
-		m_isDamage_Explosion = false;
+		m_invincibleTime_Explosion += g_gameTime->GetFrameDeltaTime();
+		if (m_invincibleTime_Explosion >= m_invincibleTimeDuration)
+		{
+			m_invincibleTime_Explosion = 0.0f;
+			m_isDamage_Explosion = false;
+		}
 	}
 }
 
@@ -876,12 +899,8 @@ void Player::CreateEffect()
 	//エフェクトのサイズを設定する。
 	m_effectEmitter->SetScale(EFFECT_SCALE);
 
-	//回復のエフェクトをプレイヤーの位置より少し下にする。
-	m_healEffectPosition = m_position;
-	m_healEffectPosition.y -= 20.0f;
-
 	//エフェクトの座標を設定する。
-	m_effectEmitter->SetPosition(m_healEffectPosition);
+	m_effectEmitter->SetPosition(m_position);
 	//エフェクトを再生。
 	m_effectEmitter->Play();
 }
@@ -889,7 +908,7 @@ void Player::CreateEffect()
 void Player::Render(RenderContext& rc)
 {
 	//HPが100以上あれば描画しない。
-	if (m_playerHP <= 90)
+	if (m_playerHP<=90)
 	{
 		m_isDisplay = false;
 	}

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SpriteAttack.h"
+#include "Tutorial.h"
 
 SpriteAttack::SpriteAttack()
 {
@@ -13,6 +14,8 @@ SpriteAttack::~SpriteAttack()
 
 bool SpriteAttack::Start()
 {
+	m_tutorial = FindGO<Tutorial>("tutorial");
+
 	m_spriteRender.Init("Assets/sprite/TutorialNomalAttack.DDS",1920,1080);
 
 	m_spriteRender.SetPosition(m_position);

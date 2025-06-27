@@ -24,5 +24,7 @@ public:
 	Vector3 m_scale;
 	Vector4 m_color = { 1.0f,1.0f,1.0f,1.0f };
 	SpriteRender m_spriteRender;
+
+	Tutorial* m_tutorial;
 };
 

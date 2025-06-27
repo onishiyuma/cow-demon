@@ -128,6 +128,7 @@ private:
 	GameCamera*			m_gameCamera = nullptr;						//ゲームカメラ。
 	Player*				m_player = nullptr;							//プレイヤー。
 	RingBell*			m_ringBell = nullptr;						//鈴。
+	Tutorial*           m_tutorial;
 
 	
 	Game*				m_game = nullptr;							//ゲーム。

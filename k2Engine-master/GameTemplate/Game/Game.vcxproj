@@ -237,6 +237,7 @@
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyUI.cpp" />
     <ClCompile Include="FontMP.cpp" />
+    <ClCompile Include="GameManagement.cpp" />
     <ClCompile Include="LanternArrow.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -285,6 +286,7 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TukuyomiBlessing.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="UIMPBar.cpp" />
     <ClCompile Include="UIOne.cpp" />
     <ClCompile Include="UIStone.cpp" />
@@ -311,6 +313,7 @@
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyUI.h" />
     <ClInclude Include="FontMP.h" />
+    <ClInclude Include="GameManagement.h" />
     <ClInclude Include="LanternArrow.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Game.h" />
@@ -355,6 +358,7 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TukuyomiBlessing.h" />
+    <ClInclude Include="Tutorial.h" />
     <ClInclude Include="UIMPBar.h" />
     <ClInclude Include="UIOne.h" />
     <ClInclude Include="UIStone.h" />

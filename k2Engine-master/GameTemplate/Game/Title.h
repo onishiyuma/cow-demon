@@ -4,6 +4,7 @@
 class Game;
 class Load;
 class Operation;
+class GameManagement;
 
 //タイトルクラス。
 class Title:public IGameObject
@@ -17,10 +18,10 @@ public:
 	void FontFade();
 	void SoulFade();
 	void Update();
-	void StartGame();
-	void ShowOperation();
-	void CleanupTitle();
 	void Render(RenderContext& rc);
+
+	GameManagement* m_gameManagement = nullptr;
+
 private:
 	//メンバ変数。
 	FontRender		m_fontRender;				//フォントレンダー。

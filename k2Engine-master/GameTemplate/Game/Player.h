@@ -1,5 +1,6 @@
 #pragma once
 
+class GameManagement;
 class Tutorial;
 class Game;
 class Shimenawa;
@@ -101,7 +102,6 @@ public:
 	SoundSource*		m_hell;										//回復の音。
 	enPlayerState		m_playerState = enPlayerState_None;			//プレイヤーの状態。
 	Vector3				m_position = Vector3::Zero;					//座標。
-	Vector3				m_healEffectPosition = Vector3::Zero;		//回復エフェクトの座標。
 	EffectEmitter*		m_effectEmitter = nullptr;                  //エフェクト参照。
 	const float			m_collectTime = 15.0f;						//しめ縄を取る時間。
 	const float			m_tukuyomiMax = 0.0f;						//月読の加護の最大値。
@@ -136,8 +136,12 @@ private:
 	Shimenawa*			m_shimenawa;								//しめ縄。
 	ModelRender			m_modelRender;								//モデルレンダー。
 	CharacterController m_characterController;						//キャラコン。
+	FontRender			m_fontRender1;								//フォントレンダー。
+	FontRender			m_fontRender2;								//フォントレンダー。
 	PlayerLight*		m_playerLight;								//プレイヤーのライト。
+	Tutorial*			m_tutorial;									//チュートリアルモード。
 	Game*               m_game;										//ゲーム。
+	GameManagement*     m_gameManagement;                           //ゲームの流れ管理。
 	Vector3				m_forward = Vector3::AxisZ;					//方向。
 	Vector3				m_moveSpeed;								//移動速度。
 	const float			m_gravity = 10.5f;							//重力。
