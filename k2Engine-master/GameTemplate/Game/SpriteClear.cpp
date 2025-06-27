@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "SpriteClear.h"
-#include "Tutorial.h"
 
 SpriteClear::SpriteClear()
 {
@@ -14,8 +13,6 @@ SpriteClear::~SpriteClear()
 
 bool SpriteClear::Start()
 {
-	m_tutorial = FindGO<Tutorial>("tutorial");
-
 	m_spriteRender.Init("Assets/sprite/TutorialClear.DDS", 1920, 1080);
 
 	m_spriteRender.SetPosition(m_position);

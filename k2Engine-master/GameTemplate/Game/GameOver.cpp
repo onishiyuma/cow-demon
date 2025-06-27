@@ -15,6 +15,8 @@ bool GameOver::Start()
 	m_gameOverBGM->Init(3);
 	m_gameOverBGM->Play(false);
 
+	m_game = FindGO<Game>("Game");
+
 	return true;
 }
 
@@ -38,7 +40,7 @@ void GameOver::Update()
 		if (g_pad[0]->IsTrigger(enButtonA))
 		{
 			NewGO<Title>(0);
-
+			DeleteGO(m_game);
 			DeleteGO(this);
 		}
 	}
