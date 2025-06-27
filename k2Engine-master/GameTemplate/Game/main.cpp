@@ -6,7 +6,6 @@
 
 #include "Game.h"
 #include "Title.h"
-#include "GameManagement.h"
 
 
 void ReportLiveObjects()
@@ -35,7 +34,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//////////////////////////////////////
 
 	//タイトルクラスのオブジェクトを作成。
-	NewGO<GameManagement>(0,"gameManagement");
 	NewGO<Title>(0);
 
 	//////////////////////////////////////
