@@ -1,56 +1,26 @@
 #include "stdafx.h"
 #include "BackGround.h"
-#include "GameManagement.h"
 #include "collision/CollisionObject.h"
 
 bool BackGround::Start()
 {
-	//ゲームマネージャーのアドレス
-	m_gameManagement = FindGO<GameManagement>("gameManagement");
+	//モデルの初期化を行う。
+	m_modelRender.Init("Assets/modelData/stage/stage.tkm");
 
-	//ゲームモードだったら。
-	if (m_gameManagement->m_isGame == true) {
+	//モデルのワールド行列を更新する。
+	m_modelRender.Update();
+	//静的物理オブジェクトの作成。
+	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 
-		//モデルの初期化を行う。
-		m_modelRender.Init("Assets/modelData/stage/stage.tkm");
+	//当たり判定を有効化する。
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
-		//モデルのワールド行列を更新する。
-		m_modelRender.Update();
-		//静的物理オブジェクトの作成。
-		m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
+	//コリジョン作成用関数を呼び出す。
+	CreateCollision();
 
-		//当たり判定を有効化する。
-		//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
-
-		//コリジョン作成用関数を呼び出す。
-		CreateCollision();
-
-		//コリジョンに座標をセット。
-		m_collisionObject->SetPosition(m_position);
-		m_collisionObject->Update();
-
-	}
-	//チュートリアルモードだったら。
-	else if (m_gameManagement->m_isOperation == true) {
-
-		//モデルの初期化を行う。
-		m_modelRender.Init("Assets/modelData/ground.tkm");
-
-		//モデルのワールド行列を更新する。
-		m_modelRender.Update();
-		//静的物理オブジェクトの作成。
-		m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
-
-		//当たり判定を有効化する。
-		//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
-
-		//コリジョン作成用関数を呼び出す。
-		CreateCollision();
-
-		//コリジョンに座標をセット。
-		m_collisionObject->SetPosition(m_position);
-		m_collisionObject->Update();
-	}
+	//コリジョンに座標をセット。
+	m_collisionObject->SetPosition(m_position);
+	m_collisionObject->Update();
 
 	return true;
 }
@@ -90,5 +60,4 @@ void BackGround::CreateCollision()
 void BackGround::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
-	
 }
