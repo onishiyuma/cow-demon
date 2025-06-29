@@ -8,6 +8,7 @@
 #include "GameCamera.h"
 #include "RingBell.h"
 #include "EnemyUI.h"
+#include "sound/SoundEngine.h"
 #include <time.h>
 #include <stdlib.h>
 
@@ -508,6 +509,11 @@ void AnnoyingEnemy::ProcessExplodeStateTransition()
 	if (!m_hasExploded)
 	{
 		MakeExplosion();
+		//爆発のSEを鳴らす。
+		g_soundEngine->ResistWaveFileBank(95, "Assets/sound/FoxExplosion.wav");
+		m_explosion = NewGO<SoundSource>(95);
+		m_explosion->Init(95);
+		m_explosion->Play(false);
 		m_hasExploded = true;
 		m_isDeadFlag = true;
 		//m_game->m_totalCount--;  // ここで減らす！（Gameの側で）
@@ -548,6 +554,10 @@ void AnnoyingEnemy::ProcessDownStateTransition()
 	if (!m_isDeadFlag)
 	{
 		DeathEffect();
+		g_soundEngine->ResistWaveFileBank(94, "Assets/sound/dai.wav");
+		m_die = NewGO<SoundSource>(94);
+		m_die->Init(94);
+		m_die->Play(false);
 		m_isDeadFlag = true;
 		//m_game->m_totalCount--;  // ここで減らす！（Gameの側で）
 	}

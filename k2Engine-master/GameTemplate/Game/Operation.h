@@ -17,7 +17,7 @@ public:
 	SpriteRender		m_operationController;			//コントローラーの説明。
 	SpriteRender		m_operationPlayer;				//プレイヤーのスキル説明。
 	Title*				m_title = nullptr;				//タイトルクラスへのポインタ。
-	int					m_count = 0;					//ボタン押した回数。
+	int					m_count = 1;					//ボタン押した回数。
 	bool				m_isController = false;			//コントローラーの説明を表示しているか。
 	bool				m_isPlayer = false;				//プレイヤーのスキル説明を表示しているか。
 

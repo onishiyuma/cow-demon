@@ -1,5 +1,6 @@
 #pragma once
 #include "graphics/effect/EffectEmitter.h"
+#include "sound/SoundSource.h"
 #include "EnemyBase.h"
 #include "Game.h"
 
@@ -114,6 +115,7 @@ private:
 	Quaternion m_rotation;
 	/*Player* m_player=nullptr;*/
 	EffectEmitter* m_effectEmitter = nullptr;	//エフェクトの参照
+	SoundSource* m_die;					//死亡時のSE
 	Game* m_game = nullptr;
 	GameCamera*			m_gameCamera=nullptr;								//カメラ。
 	RingBell*           m_ringBell = nullptr;						//鈴。

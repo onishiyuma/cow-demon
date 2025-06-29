@@ -76,6 +76,7 @@ Player::~Player()
 {
 	DeleteGO(m_playerLight);
 	DeleteGO(m_effectEmitter);
+	DeleteGO(m_bellSpriteRender);
 }
 
 void Player::Update()
@@ -273,7 +274,7 @@ void Player::ItemShimenawa()
 //通常攻撃作成。
 void Player::MakeNormalAttack()
 {
-	g_soundEngine->ResistWaveFileBank(72, "Assets/sound/nnomalAttack.wav");
+	g_soundEngine->ResistWaveFileBank(72, "Assets/sound/Attack.wav");
 	m_nomalAttack = NewGO<SoundSource>(72);
 	m_nomalAttack->Init(72);
 	m_nomalAttack->Play(false);

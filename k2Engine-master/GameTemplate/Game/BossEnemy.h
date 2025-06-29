@@ -1,5 +1,6 @@
 #pragma once
 #include "graphics/effect/EffectEmitter.h"
+#include "sound/SoundSource.h"
 #include "EnemyBase.h"
 #include "Game.h"
 
@@ -125,6 +126,7 @@ private:
 	AnimationClip		m_animationClips[enAnimationClip_Num];		 //アニメーションクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;            //現在のステート。
 	EffectEmitter*      m_effectEmitter = nullptr;                   //エフェクト参照。
+	SoundSource*        m_die = nullptr;                             //サウンド参照。
 
 	const Vector3		m_stopMove = Vector3::Zero;                  //移動できないようにする。
 	int m_BossFangBoneID = -3;
