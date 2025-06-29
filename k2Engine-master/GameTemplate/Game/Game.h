@@ -187,10 +187,10 @@ private:
 	Stone*					m_stone1;							//火打石。
 	Stone*					m_stone2;							//火打石。
 	Stone*					m_stone3;							//火打石。
-	Stone*					m_stone4;							//火打石。
-	Stone*					m_stone5;							//火打石。
-	Stone*					m_stone6;							//火打石。
-	Stone*					m_stone7;							//火打石。
+	Stone*					m_stone4=nullptr;					//火打石。
+	Stone*					m_stone5=nullptr;					//火打石。
+	Stone*					m_stone6=nullptr;					//火打石。
+	Stone*					m_stone7=nullptr;					//火打石。
 
 	//灯籠。
 	Lantern*				m_lantern;							//灯籠。

@@ -135,22 +135,22 @@ Game::~Game()
 
 	//火打石。
 	//オブジェクトがある場合削除
-	if (m_stone4 != nullptr && !m_stone4->IsDead()) {
+	if (m_stone4 != nullptr) {
 		DeleteGO(m_stone4);
 		m_stone4 = nullptr;
 	}
 
-	if (m_stone5 != nullptr && !m_stone5->IsDead()) {
+	if (m_stone5 != nullptr) {
 		DeleteGO(m_stone5);
 		m_stone5 = nullptr;
 	}
 
-	if (m_stone6 != nullptr && !m_stone6->IsDead()) {
+	if (m_stone6 != nullptr) {
 		DeleteGO(m_stone6);
 		m_stone6 = nullptr;
 	}
 
-	if (m_stone7 != nullptr && !m_stone7->IsDead()) {
+	if (m_stone7 != nullptr) {
 		DeleteGO(m_stone7);
 		m_stone7 = nullptr;
 	}
