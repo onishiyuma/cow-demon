@@ -1,5 +1,6 @@
 #pragma once
 #include "graphics/effect/EffectEmitter.h"
+#include "sound/SoundSource.h"
 #include "EnemyBase.h"
 #include "Game.h"
 #include "EnemyUI.h"
@@ -113,6 +114,8 @@ private:
 	RingBell*		m_ringBell = nullptr;                       //本殿への参照。
 	
 	EffectEmitter*  m_effectEmitter = nullptr;					//effectへの参照。
+	SoundSource*    m_die;					                    //死亡時のSEへの参照。
+	SoundSource* m_explosion;			                        //爆発時のSEへの参照。
 	EnEnemyState	m_enemyState = enEnemyState_Idle;			//現在の状態。
 	int				m_ExplosionBoneId = -2;						//攻撃判定を出すボーンID
 	int				m_enemyHP = 5;								//HP

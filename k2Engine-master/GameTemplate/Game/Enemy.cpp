@@ -10,6 +10,7 @@
 #include "GameCamera.h"
 #include "LanternAttack.h"
 #include "EnemyUI.h"
+#include "sound/SoundEngine.h"
 #include <time.h>
 #include <stdlib.h>
 
@@ -38,7 +39,7 @@ bool Enemy::Start()
 	m_modelRender.Init("Assets/modelData/Normal/test.tkm", m_animationClips, enAnimationClip_Num);
 	EffectEngine::GetInstance()->ResistEffect(6,u"Assets/effect/EnemyEffects/Usioni_Down/Usioni_Down.efk");
 	////座標を更新する。
-	m_modelRender.SetPosition(m_farstPosition);
+	m_modelRender.SetPosition(m_position);
 	//回転を設定する。
 	m_modelRender.SetRotation(m_rotation);
 	
@@ -56,10 +57,12 @@ bool Enemy::Start()
 	//アニメーションイベント用の関数を設定する。
 	m_modelRender.AddAnimationEvent([&](const wchar_t* clipName, const wchar_t* eventName) {
 		OneAnimationEvent(clipName, eventName);
-		});
+	});
 	//インスタンスアドレスを検索する。
+	m_game = FindGO<Game>("game");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_player = FindGO<Player>("player");
+	m_ringBell = FindGO<RingBell>("ringbell");
 
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
@@ -94,10 +97,10 @@ void Enemy::Update()
 	}
 	if (m_isDead == true)return;
 	
-	//本殿追跡処理
-	IsHonden();
 	//追跡処理。
 	Chase();
+	//本殿追跡処理
+	IsHonden();
 	//回転処理。
 	Rotation();
 	//当たり判定。
@@ -586,6 +589,10 @@ void Enemy::ProcessDownStateTransition()
 			if (!m_isDeadFlag)
 			{
 				DeathEffect();
+				g_soundEngine->ResistWaveFileBank(98, "Assets/sound/dai.wav");
+				m_die = NewGO<SoundSource>(98);
+				m_die->Init(98);
+				m_die->Play(false);
 				m_isDeadFlag = true;
 			}
 

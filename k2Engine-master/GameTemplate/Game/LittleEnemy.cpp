@@ -10,6 +10,7 @@
 #include "LanternAttack.h"
 #include "EnemyUI.h"
 //#include"collision/CollisionObject.h"
+#include "sound/SoundEngine.h"
 #include<time.h>
 #include<stdlib.h>
 
@@ -568,6 +569,10 @@ void LittleEnemy::ProcessDownStateTransition()
 	if (!m_isDeadFlag)
 	{
 		DeathEffect();
+		g_soundEngine->ResistWaveFileBank(93, "Assets/sound/dai.wav");
+		m_die = NewGO<SoundSource>(93);
+		m_die->Init(93);
+		m_die->Play(false);
 		m_isDeadFlag = true;
 		//m_game->m_totalCount--;  // ここで減らす！（Gameの側で）
 		

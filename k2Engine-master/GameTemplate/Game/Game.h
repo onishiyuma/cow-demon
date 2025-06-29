@@ -181,6 +181,7 @@ private:
 	SkyCube*				m_skyCube;							//スカイキューブ。
 	SoundSource*			m_gameStartSound;					//ゲームスタート音。
 	SoundSource*			m_stage; 							//ゲームスタート音。
+	SoundSource*            m_clearBGM;							//ゲームBGM。	
 	
 	//火打石。
 	Stone*					m_stone1;							//火打石。
@@ -368,7 +369,9 @@ private:
 	bool                    m_isDeathPlayer = false;				//プレイヤーが死んだかどうか。
 	bool                    m_isInovate = false;                    //
 	bool                    m_GameDelete = false;					//ゲーム終了フラグ。
-	bool                    m_isSpriteFade = false;				//スプライトフェードフラグ。
+	bool                    m_isSpriteFade = false;				    //スプライトフェードフラグ。
+	bool                    m_isGameBGM = false;					//ゲームBGM。
+	bool                    m_isGameClear = false;					//ゲームクリアフラグ。
 
 };
 

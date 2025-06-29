@@ -137,18 +137,22 @@ Game::~Game()
 	//オブジェクトがある場合削除
 	if (m_stone4 != nullptr) {
 		DeleteGO(m_stone4);
+		m_stone4 = nullptr;
 	}
 
 	if (m_stone5 != nullptr) {
 		DeleteGO(m_stone5);
+		m_stone5 = nullptr;
 	}
 
 	if (m_stone6 != nullptr) {
 		DeleteGO(m_stone6);
+		m_stone6 = nullptr;
 	}
 
 	if (m_stone7 != nullptr) {
 		DeleteGO(m_stone7);
+		m_stone7 = nullptr;
 	}
 
 	//灯籠。
@@ -185,6 +189,11 @@ Game::~Game()
 	DeleteGO(m_uiStone);
 	DeleteGO(m_enemyUI);
 	DeleteGO(m_skyCube);
+
+	if(m_stage != nullptr)
+	{
+		DeleteGO(m_stage);
+	}
 }
 
 void Game::Update()
@@ -212,11 +221,6 @@ void Game::Update()
 			m_gameStartSound = NewGO<SoundSource>(2);
 			m_gameStartSound->Init(2);
 			m_gameStartSound->Play(false);
-			//ステージ用のBGMを鳴らす。
-			g_soundEngine->ResistWaveFileBank(62, "Assets/sound/stage.wav");
-			m_stage = NewGO<SoundSource>(62);
-			m_stage->Init(62);
-			m_stage->Play(false);
 
 			//火打石のカウントを表示。
 			m_uiStone = NewGO<UIStone>(0, "uiStone");
@@ -270,6 +274,15 @@ void Game::GameManager()
 	if (m_timer >= GAMELEAR_TIME)
 	{
 		m_isEndGame = true;
+		DeleteGO(m_stage);//ステージのBGMを止める。
+		//ゲームクリアの音を鳴らす。
+		if (!m_isGameClear) {
+			g_soundEngine->ResistWaveFileBank(92, "Assets/sound/stage.wav");
+			m_clearBGM = NewGO<SoundSource>(92);
+			m_clearBGM->Init(92);
+			m_clearBGM->Play(false);
+			m_isGameClear = true;
+		}
 		m_gameClearFont.SetText(L"あなたは本殿を守り抜いた");
 		m_gameClearFont.SetPosition(Vector3(-400.0f, 350.0f, 0.0f));
 		m_gameClearFont.SetScale(1.5f);
@@ -280,11 +293,13 @@ void Game::GameManager()
 
 	if (m_timer >= 305.0f) 
 	{
+		DeleteGO(m_clearBGM);
 		NewGO<GameClear>(0);
-		m_EndTimer += g_gameTime->GetFrameDeltaTime();
+		DeleteGO(this);
+		/*m_EndTimer += g_gameTime->GetFrameDeltaTime();
 		if (m_EndTimer >= 0.5f) {
-			DeleteGO(this);
-		}
+			
+		}*/
 	}
 	
 
@@ -293,10 +308,11 @@ void Game::GameManager()
 	{
 		m_isEndGame = true;
 		NewGO<GameOver>(0);
-		m_EndTimer += g_gameTime->GetFrameDeltaTime();
+		DeleteGO(this);
+		/*m_EndTimer += g_gameTime->GetFrameDeltaTime();
 		if (m_EndTimer >= 0.5f) {
 			DeleteGO(this);
-		}
+		}*/
 	}
 	
 	//呪いの抵抗値がなくなったら。
@@ -304,10 +320,11 @@ void Game::GameManager()
 	{
 		m_isEndGame = true;
 	    NewGO<GameOver>(0);
-		m_EndTimer += g_gameTime->GetFrameDeltaTime();
+		DeleteGO(this);
+		/*m_EndTimer += g_gameTime->GetFrameDeltaTime();
 		if (m_EndTimer >= 0.5f) {
 			DeleteGO(this);
-		}
+		}*/
 	}
 
 }
@@ -967,7 +984,7 @@ void Game::CreateEnemy()
 		m_maxCount = 14;
 	}
 
-	while (m_spawnTimer >= 1.0f && m_totalCount < m_maxCount) {
+	if (m_spawnTimer >= 1.0f && m_totalCount < m_maxCount) {
 
 		int r = rand() % 100;
 
@@ -980,16 +997,18 @@ void Game::CreateEnemy()
 			enemyUI->SetAnnoyingEnemy(annoying);
 			m_enemyUIList.push_back(enemyUI);
 			m_totalCount++;
+			//m_spawnTimer = 0.0f;
 		}
 		else if (r >= 40) {
 			//普通の敵。
-			Enemy* enemy = NewGO<Enemy>(1, "enemy");
+			Enemy* enemy = NewGO<Enemy>(1,"enemy");
 			enemy->SetPosition(Random());
 			m_enemyList.push_back(enemy);
 			EnemyUI* enemyUI = NewGO<EnemyUI>(1, "enemyui");
 			enemyUI->SetEnemy(enemy);
 			m_enemyUIList.push_back(enemyUI);
 			m_totalCount++;
+			//m_spawnTimer = 0.0f;
 		}
 		else {
 			//雑魚敵。
@@ -1001,8 +1020,10 @@ void Game::CreateEnemy()
 			littleEnemy->m_enemyUI = enemyUI;   // ここ！ペア化
 			m_enemyUIList.push_back(enemyUI);
 			m_totalCount++;
+			//m_spawnTimer = 0.0f;
 		}
 
+		///*m_totalCount++;
 		m_spawnTimer = 0.0f;
 
 
@@ -1355,6 +1376,14 @@ void Game::NotifiyEnemy()
 		m_notifyEnemyFontRender.SetText(L"敵が来るぞ");
 		m_notifyEnemyFontRender.SetColor(g_vec4Red);
 		m_notifyEnemyFontRender.SetScale(Set_FONT_NOTIFY_SCALE);
+		if (!m_isGameBGM) {
+			//ステージ用のBGMを鳴らす。
+			g_soundEngine->ResistWaveFileBank(62, "Assets/sound/game.wav");
+			m_stage = NewGO<SoundSource>(62);
+			m_stage->Init(62);
+			m_stage->Play(false);
+			m_isGameBGM = true;
+		}
 		m_isShowNotify = true;
 	}
 
@@ -1410,8 +1439,10 @@ void Game::Render(RenderContext& rc)
 		m_missionLantern.Draw(rc);
 		m_lanternCountFont.Draw(rc);
 	}
-	m_missionTask.Draw(rc);
-	m_adviceMP.Draw(rc);
+	if (m_timer < 300.0f) {
+		m_missionTask.Draw(rc);
+		m_adviceMP.Draw(rc);
+	}
 	m_gameClearFont.Draw(rc);
 	m_spriteRender.Draw(rc);	
 	
