@@ -20,7 +20,7 @@ public:
 	bool m_isflash = false;
 
 	Vector3 m_firstPosition;
-	Vector3 m_position = { -100.0f,300.0f,0.0f };
+	Vector3 m_position = { -400.0f,350.0f,0.0f };
 	Vector4 m_color = { 0.0f,0.0f,0.0f,0.0f };
 	Vector3 m_scale = { 1.0f,1.0f,1.0f };
 

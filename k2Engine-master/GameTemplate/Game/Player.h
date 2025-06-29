@@ -123,6 +123,7 @@ public:
 	int					m_stoneCount = 0;							//火打石の所持数。
 	int					m_tukuyomiATK = 5;							//月読の加護の攻撃力。
 	int					m_lanternCount = 0;							//灯籠の灯っている数。
+	int					m_lanternMaxCount = 4;						//灯籠の最大数。
 	int                 m_playerMaxMP = 100;						//プレイヤーの最大MP。
 	int                 m_playerMP;								    //プレイヤーのMP。
 private:
