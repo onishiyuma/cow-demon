@@ -88,6 +88,7 @@ void Lantern::Update()
 		{
 			//火を灯す処理。
 			m_player->m_lanternCount++;
+			m_player->m_lanternMaxCount--;
 			m_player->m_stoneCount--;
 
 			//UIを削除する。

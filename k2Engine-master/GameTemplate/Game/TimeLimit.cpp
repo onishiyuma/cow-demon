@@ -20,7 +20,7 @@ bool TimeLimit::Start()
 
 	m_fontRender.SetColor(m_color);
 
-	m_fontRender.SetScale(1.0f);
+	m_fontRender.SetScale(1.5f);
 
 	return true;
 }
@@ -29,13 +29,13 @@ void TimeLimit::Update()
 {
 	m_fontRender.SetPosition(m_position);
 
-	m_fontRender.SetScale(1.0f);
+	m_fontRender.SetScale(1.5f);
 
 	Flash();
 
 	m_timerCount += g_gameTime->GetFrameDeltaTime();
 
-	if (m_timerCount >= 5.0f) {
+	if (m_timerCount >= 6.0f) {
 		DeleteGO(this);
 	}
 }

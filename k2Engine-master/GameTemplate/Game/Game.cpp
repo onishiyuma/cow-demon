@@ -54,7 +54,7 @@ namespace
 	const Vector3	FONT_RENDER_POSITION = { - 200.0f, 500.0f, 0.0f};			//フォントの表示位置。
 	const float		SET_SKY_LUMINANCE = 1000.0f;								//空の光の強さ。
 	const float		ENEMY_SPAWN_TIME = 150.0f;									//敵のスポーン時間。
-	const float		TIME_LIMIT_NOTIFY = 120.0f;									//時間制限の通知時間。
+	const float		TIME_LIMIT_NOTIFY = 240.0f;									//時間制限の通知時間。
 	const float		GAMELEAR_TIME = 300.0f;										//ゲームクリアの時間。
 	const float		NONE_PLAYER_HP=0;											//プレイヤーのHPがなくなった。
 	const float		TIMELIIT_TIME = 180.0f;										//制限時間。
@@ -107,9 +107,11 @@ bool Game::Start()
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_enemy = FindGO<Enemy>("enemy");
 
+	m_spriteRender.Init("Assets/sprite/white.DDS", 1920.0f, 1080.0f);
+	m_spriteRender.SetScale({ 2.0f,2.0f,1.0f });
+	m_spriteRender.SetMulColor(m_spriteColor);
+
 	m_isEndGame = false;
-	//灯籠用矢印の作成。
-	CreateLanternArrow();
 
 	return true;
 }
@@ -132,10 +134,22 @@ Game::~Game()
 	DeleteGO(m_ringBell);		//ベル。
 
 	//火打石。
-	DeleteGO(m_stone4);
-	DeleteGO(m_stone5);
-	DeleteGO(m_stone6);
-	DeleteGO(m_stone7);
+	//オブジェクトがある場合削除
+	if (m_stone4 != nullptr) {
+		DeleteGO(m_stone4);
+	}
+
+	if (m_stone5 != nullptr) {
+		DeleteGO(m_stone5);
+	}
+
+	if (m_stone6 != nullptr) {
+		DeleteGO(m_stone6);
+	}
+
+	if (m_stone7 != nullptr) {
+		DeleteGO(m_stone7);
+	}
 
 	//灯籠。
 	DeleteGO(m_lantern1);
@@ -203,6 +217,10 @@ void Game::Update()
 			m_stage = NewGO<SoundSource>(62);
 			m_stage->Init(62);
 			m_stage->Play(false);
+
+			//火打石のカウントを表示。
+			m_uiStone = NewGO<UIStone>(0, "uiStone");
+
 			//ゲームスタートのフラグを立てる。
 			m_isGameStart = true;
 		}
@@ -231,7 +249,7 @@ void Game::Update()
 		}
 
 
-		if (m_timer >= 120.0f) {
+		if (m_timer >= 240.0f) {
 			if (m_timer >= TIME_LIMIT_NOTIFY) {
 				if (!m_isTimeLimit) {
 					//ゲームクリアが近いことを知らせる。
@@ -252,6 +270,16 @@ void Game::GameManager()
 	if (m_timer >= GAMELEAR_TIME)
 	{
 		m_isEndGame = true;
+		m_gameClearFont.SetText(L"あなたは本殿を守り抜いた");
+		m_gameClearFont.SetPosition(Vector3(-400.0f, 350.0f, 0.0f));
+		m_gameClearFont.SetScale(1.5f);
+		m_gameClearFont.SetColor({ 1.0f,1.0f,0.0f,1.0f });
+		SpriteFade();
+		m_spriteRender.Update();
+	}
+
+	if (m_timer >= 305.0f) 
+	{
 		NewGO<GameClear>(0);
 		m_EndTimer += g_gameTime->GetFrameDeltaTime();
 		if (m_EndTimer >= 0.5f) {
@@ -287,11 +315,42 @@ void Game::GameManager()
 //空の設定。
 void Game::SetSkyLight()
 {
+	//m_skyTimer += g_gameTime->GetFrameDeltaTime();
+	////4時になるまでの明るさ設定。
+	//if (m_timer < 240.0f) {
+	//	if (m_skyTimer >= 1.0f) {
+	//		//夜の明るさに設定。
+	//		m_luminance += m_luminanceNight;
+	//		//それぞれ夜の明るさに変更する。
+	//		m_skyLuminance = m_luminance;
+	//		m_skyAmbient = m_luminance;
+	//		//適用。
+	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
+	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+	//		m_skyCube->SetLuminance(m_skyLuminance);
+	//		m_skyTimer = 0.0f;//夜の明るさに設定したら、タイマーをリセット。
+	//	}
+	//}
+	////４時以降の明るさ設定。
+	//else if (m_timer >= 240.0f) {
+	//	if (m_skyTimer >= 1.0f) {
+	//		//真夜中の明るさに設定。
+	//		m_luminance += m_luminanceNight;
+	//		//それぞれ真夜中の明るさに変更する。
+	//		m_skyLuminance = m_luminance;
+	//		m_skyAmbient = m_luminance;
+	//		//適用。
+	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
+	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+	//		m_skyCube->SetLuminance(m_skyLuminance);
+	//		m_skyTimer = 0.0f;//真夜中の明るさに設定したら、タイマーをリセット。
+	//	}
+	//}
 	//完全な夜。
 	if (m_timer > m_phase1Start && m_timer < m_phase2Start) {
 		if (!m_isNight) {
 			//夜の明るさに設定。
-			m_luminance = m_luminanceNight;
+			m_luminance += m_luminanceNight;
 			//それぞれ夜の明るさに変更する。
 			m_skyLuminance = m_luminance;
 			m_skyAmbient = m_luminance;
@@ -525,13 +584,19 @@ void Game::CreateLanternLight()
 	if (m_player->m_lanternCount == MAX_LANTERN_COUNT) {
 		if (!m_lanternLightFlag) {
 
-			//灯籠用矢印を削除する。
-			DeleteGO(m_lanternArrow1);
-			DeleteGO(m_lanternArrow2);
-			DeleteGO(m_lanternArrow3);
-			DeleteGO(m_lanternArrow4);
 			//火打石の数の表示を削除する。
 			DeleteGO(m_uiStone);
+
+			//MP回復のアドバイスを表示する。
+			m_adviceMP.SetText(L"灯籠に近づくとMPを回復できるぞ");
+			m_adviceMP.SetPosition(Vector3(-350.0f, -350.0f, 0.0f));
+			m_adviceMP.SetScale(1.0f);
+			m_adviceMP.SetColor({ 0.0f,1.0f,1.0f,1.0f });
+
+			m_missionTask.SetText(L"5時まで本殿を守ろう");
+			m_missionTask.SetPosition(Vector3(200.0f, 500.0f, 0.0f));
+			m_missionTask.SetScale(1.5f);
+			m_missionTask.SetColor({ 1.0f,0.5f,0.0f,1.0f });
 
 			//1つ目の灯籠用ライトを作成する。
 			m_lanternLight1 = NewGO<LanternLight>(0, "lanternLight1");
@@ -1180,17 +1245,36 @@ void Game::CreateUI()
 	m_uiMPBar = NewGO<UIMPBar>(0, "uimpbar");
 	//回復。
 	m_uiHeal = NewGO <UIheal>(0, "uiheal");
-	//火打石のカウントを表示。
-	m_uiStone = NewGO<UIStone>(0, "uiStone");
+	
 }
 
 void Game::ButtonUI()
 {
+
+
 	//通常攻撃
 	m_fontNormalAttackButton.SetText(L":通常攻撃");
 	m_fontNormalAttackButton.SetPosition(Vector3(-750.0f, -250.0f, 0.0f));
 	m_fontNormalAttackButton.SetScale(1.0f);
 	m_fontNormalAttackButton.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+
+	//HP
+	m_hp.SetText(L"HP:");
+	m_hp.SetPosition(Vector3(-330.0f, -420.0f, 0.0f));
+	m_hp.SetScale(1.0f);
+	m_hp.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+
+	//MP
+	m_mp.SetText(L"MP:");
+	m_mp.SetPosition(Vector3(-330.0f, -470.0f, 0.0f));
+	m_mp.SetScale(1.0f);
+	m_mp.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+
+	//回復カウント
+	m_healCount.SetText(L"回復回数");
+	m_healCount.SetPosition(Vector3(-850.0f, -320.0f, 0.0f));
+	m_healCount.SetScale(1.0f);
+	m_healCount.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
 	//Xボタン
 	m_buttonX.Init("Assets/sprite/X.DDS", 1920, 1080);
@@ -1236,6 +1320,23 @@ void Game::UITimer()
 	m_timerFontRender.SetPosition(FONT_RENDER_POSITION);
 	//フォントの色を設定。
 	m_timerFontRender.SetColor(g_vec4White);
+
+	m_missionLantern.SetText(L"すべての灯籠に火を灯そう");
+	m_missionLantern.SetPosition(Vector3(180.0f, 500.0f, 0.0f));
+	m_missionLantern.SetScale(1.5f);
+	m_missionLantern.SetColor({ 1.0f,0.5f,0.0f,1.0f });
+
+	wchar_t wcsbuf2[256];
+	swprintf_s(wcsbuf2, 256, L"残りの灯籠:%dコ", int(m_player->m_lanternMaxCount));
+
+	//表示するテキストを設定。
+	m_lanternCountFont.SetText(wcsbuf2);
+	//フォントの位置を設定。
+	m_lanternCountFont.SetPosition(Vector3(200.0f, 430.0f, 0.0f));
+	//フォントの大きさを設定。
+	m_lanternCountFont.SetScale(1.0f);
+	//フォントの色を設定。
+	m_lanternCountFont.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 }
 
 void Game::HitCrossHair()
@@ -1269,14 +1370,49 @@ void Game::NotifiyEnemy()
 	}
 }
 
+void Game::SpriteFade()
+{
+	
+	//スプライトのフェードインの処理。
+	if (!m_isSpriteFade)
+	{
+		m_spriteColor.r += 0.01f * m_fadeTime / m_fadeMaxTime;
+		m_spriteColor.g += 0.01f * m_fadeTime / m_fadeMaxTime;
+		m_spriteColor.b += 0.01f * m_fadeTime / m_fadeMaxTime;
+		m_spriteColor.a += 0.01f * m_fadeTime / m_fadeMaxTime;
+		m_spriteRender.SetMulColor(m_spriteColor);
+		if (m_spriteColor.a >= 1.0f)
+		{
+			m_isSpriteFade = true;
+			m_spriteColor.r = 1.0f;
+			m_spriteColor.g = 1.0f;
+			m_spriteColor.b = 1.0f;
+			m_spriteColor.a = 1.0f;
+			m_spriteRender.SetMulColor(m_spriteColor);
+		}
+	}
+
+}
+
 void Game::Render(RenderContext& rc)
 {
 	m_timerFontRender.Draw(rc);
 	m_notifyEnemyFontRender.Draw(rc);
-	m_enemyCount.Draw(rc);
 	m_fontNormalAttackButton.Draw(rc);
 	m_buttonX.Draw(rc);
 	m_buttonY.Draw(rc);
 	m_buttonLT.Draw(rc);
 	m_buttonRT.Draw(rc);
+	m_healCount.Draw(rc);
+	m_hp.Draw(rc);
+	m_mp.Draw(rc);
+	if (!m_player->m_enemyIsCanAttack) {
+		m_missionLantern.Draw(rc);
+		m_lanternCountFont.Draw(rc);
+	}
+	m_missionTask.Draw(rc);
+	m_adviceMP.Draw(rc);
+	m_gameClearFont.Draw(rc);
+	m_spriteRender.Draw(rc);	
+	
 }
