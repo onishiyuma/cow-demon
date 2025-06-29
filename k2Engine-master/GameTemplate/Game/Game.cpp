@@ -135,22 +135,22 @@ Game::~Game()
 
 	//火打石。
 	//オブジェクトがある場合削除
-	if (m_stone4 != nullptr) {
+	if (m_stone4 != nullptr && !m_stone4->IsDead()) {
 		DeleteGO(m_stone4);
 		m_stone4 = nullptr;
 	}
 
-	if (m_stone5 != nullptr) {
+	if (m_stone5 != nullptr && !m_stone5->IsDead()) {
 		DeleteGO(m_stone5);
 		m_stone5 = nullptr;
 	}
 
-	if (m_stone6 != nullptr) {
+	if (m_stone6 != nullptr && !m_stone6->IsDead()) {
 		DeleteGO(m_stone6);
 		m_stone6 = nullptr;
 	}
 
-	if (m_stone7 != nullptr) {
+	if (m_stone7 != nullptr && !m_stone7->IsDead()) {
 		DeleteGO(m_stone7);
 		m_stone7 = nullptr;
 	}
@@ -393,21 +393,21 @@ void Game::SetSkyLight()
 			m_isMidNight1 = true;
 		}
 	}
-	//真夜中。
-	else if (m_timer > m_phase3Start && m_timer < m_phase4Start) {
-		if (!m_isMidNight2) {
-			//真夜中の明るさに設定。
-			m_luminance = m_luminanceMidNight2;
-			//それぞれ真夜中の明るさに変更する。
-			m_skyLuminance = m_luminance;
-			m_skyAmbient = m_luminance;
-			//適用。
-			m_skyCube->SetLuminance(m_skyLuminance);
-			g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
-			g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
-			m_isMidNight2 = true;
-		}
-	}
+	////真夜中。
+	//else if (m_timer > m_phase3Start && m_timer < m_phase4Start) {
+	//	if (!m_isMidNight2) {
+	//		//真夜中の明るさに設定。
+	//		m_luminance = m_luminanceMidNight2;
+	//		//それぞれ真夜中の明るさに変更する。
+	//		m_skyLuminance = m_luminance;
+	//		m_skyAmbient = m_luminance;
+	//		//適用。
+	//		m_skyCube->SetLuminance(m_skyLuminance);
+	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
+	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
+	//		m_isMidNight2 = true;
+	//	}
+	//}
 	//日の出開始。
 	else if (m_timer > m_phase4Start && m_timer < m_phase5Start) {
 		if (!m_isSunrise) {
