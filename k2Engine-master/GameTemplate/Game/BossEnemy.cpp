@@ -60,8 +60,8 @@ bool BossEnemy::Start()
 	m_modelRender.SetRotation(m_rotation);
 	//キャラコンの初期化。
 	m_charaCon.Init(
-		120.0f,
-		120.0f,
+		80.0f,
+		80.0f,
 		m_position,
 		enCollisionAttr_Enemy
 	);

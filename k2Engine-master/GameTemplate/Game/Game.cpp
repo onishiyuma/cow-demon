@@ -51,6 +51,9 @@ namespace
 	const Vector3	ENEMY_SPAWN_POSITION_Mid = { 0.0f, 0.0f, 3000.0f };			//敵のスポーン位置。
 	const Vector3	ENEMY_SPAWN_POSITION_Left = { -1000.0f, 0.0f, 3000.0f };	//敵のスポーン位置。
 	const Vector3	ENEMY_SPAWN_POSITION_Right = { 1000.0f, 0.0f, 3000.0f };	//敵のスポーン位置。
+	const Vector3   BOSS_SPAWN_POSITION_Mid = { 0.0f, 0.0f, 3400.0f };			//ボスのスポーン位置。
+	const Vector3	BOSS_SPAWN_POSITION_Left = { -1200.0f, 0.0f, 3200.0f };	//敵のスポーン位置。
+	const Vector3	BOSS_SPAWN_POSITION_Right = { 1200.0f, 0.0f, 3200.0f };	//敵のスポーン位置。
 	const Vector3	FONT_RENDER_POSITION = { - 200.0f, 500.0f, 0.0f};			//フォントの表示位置。
 	const float		SET_SKY_LUMINANCE = 1000.0f;								//空の光の強さ。
 	const float		ENEMY_SPAWN_TIME = 150.0f;									//敵のスポーン時間。
@@ -420,6 +423,27 @@ Vector3 Game::Random()
 		break;
 	case 2:
 		position = ENEMY_SPAWN_POSITION_Left;
+		break;
+	}
+
+	return position;
+}
+
+Vector3 Game::BossRandom()
+{
+	Vector3 position;
+	int spawnRandom = rand() % 3;
+
+	switch (spawnRandom)
+	{
+	case 0:
+		position = BOSS_SPAWN_POSITION_Mid;
+		break;
+	case 1:
+		position = BOSS_SPAWN_POSITION_Right;
+		break;
+	case 2:
+		position = BOSS_SPAWN_POSITION_Left;
 		break;
 	}
 
@@ -946,7 +970,7 @@ void Game::CreateEnemy()
 	if (!m_isBoss) {
 		//ボス。
 		BossEnemy* boss = NewGO<BossEnemy>(1, "bossEnemy");
-		boss->SetPosition(Random());
+		boss->SetPosition(BossRandom());
 		m_bossEnemyList.push_back(boss);
 		EnemyUI* enemyUI = NewGO<EnemyUI>(1,"enemyui");
 		enemyUI->SetBossEnemy(boss);

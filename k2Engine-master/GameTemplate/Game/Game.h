@@ -266,6 +266,7 @@ private:
 
 	Vector3					m_EnemyRandompos;					//敵の座標。
 	Vector3					Random();							//ランダムに敵を出現させる。
+	Vector3                 BossRandom();						//ボスのランダム座標。
 public:
 	bool					m_isBoss = false;					//ボスかどうか。
 	bool					m_isCowntDownStart = false;			//カウントダウン中かどうか
