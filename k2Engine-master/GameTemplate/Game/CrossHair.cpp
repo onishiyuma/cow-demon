@@ -7,10 +7,12 @@ namespace
 	{
 		btScalar	addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace) override
 		{	
+			//最も近いヒット位置を記録。
 			if (rayResult.m_hitFraction < hitFraction) {
 				// こちらの方が近い。
 				hitPos.Lerp(rayResult.m_hitFraction, rayStart, rayEnd);
 			}
+			//敵とヒットしたか確認。
 			if (rayResult.m_collisionObject->getUserIndex() == EnCollisionAttr::enCollisionAttr_Enemy)
 			{
 				isHit = true;
@@ -48,6 +50,7 @@ void CrossHair::Update()
 
 void CrossHair::HitRayCast()
 {
+	//カメラの位置と向きを取得。
 	const Vector3 cameraPos = g_camera3D->GetPosition();
 	Vector3 cameraForward = g_camera3D->GetTarget() - cameraPos;
 	cameraForward.Normalize();
@@ -60,10 +63,12 @@ void CrossHair::HitRayCast()
 		bool isHIt = PhysicsWorld::GetInstance()->RayTest(cameraPos, rayTestEnd, hitPoint, cb);
 		if (isHIt)
 		{
+			//赤色に。
 			m_spriteRender.SetMulColor(g_vec4Red);
 		}
 		else
 		{
+			//白色に。
 			m_spriteRender.SetMulColor(g_vec4White);
 		}
 	}

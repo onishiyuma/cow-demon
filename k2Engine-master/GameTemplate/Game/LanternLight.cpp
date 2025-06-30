@@ -22,6 +22,7 @@ bool LanternLight::Start()
 
 	//ポイントライトの初期化。
 	m_pointLight.Init();
+	//ブルームポイントライトの初期化。
 	m_volumePointLight.Init(m_pointLight);
 	//ポイントライトの色を設定。
 	m_pointLight.SetColor(POINTRIGHT_COLOR * 0.0003f);

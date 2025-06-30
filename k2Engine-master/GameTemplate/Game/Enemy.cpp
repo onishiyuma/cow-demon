@@ -1,9 +1,7 @@
 
 #include "stdafx.h"
-#include "GameManagement.h"
 #include "Enemy.h"
 #include "Player.h"
-#include "Tutorial.h"
 #include "Game.h"
 #include "GameOver.h"
 #include "RingBell.h"
@@ -12,6 +10,7 @@
 #include "GameCamera.h"
 #include "LanternAttack.h"
 #include "EnemyUI.h"
+#include "sound/SoundEngine.h"
 #include <time.h>
 #include <stdlib.h>
 
@@ -40,7 +39,7 @@ bool Enemy::Start()
 	m_modelRender.Init("Assets/modelData/Normal/test.tkm", m_animationClips, enAnimationClip_Num);
 	EffectEngine::GetInstance()->ResistEffect(6,u"Assets/effect/EnemyEffects/Usioni_Down/Usioni_Down.efk");
 	////座標を更新する。
-	m_modelRender.SetPosition(m_farstPosition);
+	m_modelRender.SetPosition(m_position);
 	//回転を設定する。
 	m_modelRender.SetRotation(m_rotation);
 	
@@ -58,22 +57,12 @@ bool Enemy::Start()
 	//アニメーションイベント用の関数を設定する。
 	m_modelRender.AddAnimationEvent([&](const wchar_t* clipName, const wchar_t* eventName) {
 		OneAnimationEvent(clipName, eventName);
-		});
+	});
 	//インスタンスアドレスを検索する。
-	m_gameManagement = FindGO<GameManagement>("gameManagement");
+	m_game = FindGO<Game>("game");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_player = FindGO<Player>("player");
-
-	//ゲームモードだったら。
-	if (m_gameManagement->m_isGame == true) {
-		m_game = FindGO<Game>("game");
-		m_ringBell = FindGO<RingBell>("ringbell");
-		m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
-	}
-	//チュートリアルモードだったら。
-	if (m_gameManagement->m_isOperation == true) {
-		m_tutorial = FindGO<Tutorial>("tutorial");
-	}
+	m_ringBell = FindGO<RingBell>("ringbell");
 
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));
@@ -101,17 +90,17 @@ void Enemy::Update()
 	//m_isDeadFlagはEnemyUIを切断するためのフラグ
 	//m_isDeadはEnemyManagerに自身を削除してもらうためのフラグ 
 
-	if (m_game->m_isEndGame == true)
+	if (m_game&&m_game->m_isEndGame)
 	{
 		m_isDeadFlag = true;
 		m_isDead = true;
 	}
 	if (m_isDead == true)return;
 	
-	//本殿追跡処理
-	IsHonden();
 	//追跡処理。
 	Chase();
+	//本殿追跡処理
+	IsHonden();
 	//回転処理。
 	Rotation();
 	//当たり判定。
@@ -590,21 +579,20 @@ void Enemy::ProcessDownStateTransition()
 	{
 		DeathEffect();
 		m_isDeadFlag = true;
-		//Gameのインスタンスアドレスを検索
-		/*m_game->m_totalCount--;*/
 	}
 
 	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_deathEffectTimer >= 1.0f)
 	{
 		if (m_effectEmitter)
-		/*else if (m_gameManagement->m_isOperation == true) {
-
-			m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();*/
-
+		{
 			if (!m_isDeadFlag)
 			{
 				DeathEffect();
+				g_soundEngine->ResistWaveFileBank(98, "Assets/sound/dai.wav");
+				m_die = NewGO<SoundSource>(98);
+				m_die->Init(98);
+				m_die->Play(false);
 				m_isDeadFlag = true;
 			}
 
@@ -617,6 +605,7 @@ void Enemy::ProcessDownStateTransition()
 
 			m_isDead = true;
 		}
+	}
 }
 
 void Enemy::ProcessMainStateTransition()
@@ -639,6 +628,10 @@ void Enemy::ProcessMainStateTransition()
 
 void Enemy::ProcessCommonStateTransition()
 {
+	if(!m_game)
+	{
+		return;
+	}
 	if (m_game->m_isEndGame) {
 		return;
 	}
@@ -692,50 +685,6 @@ void Enemy::ProcessCommonStateTransition()
 		}
 	}
 }
-
-	////チュートリアルモードだったら。
-	//else if (m_gameManagement->m_isOperation == true) {
-
-	//	//プレイヤーを見つけたら。
-	//	if (SearchPlayer() == true) {
-	//		Vector3 diff = m_player->GetPosition() - m_position;
-	//		//ベクトルを正規化する。
-	//		diff.Normalize();
-	//		//移動速度を設定する。
-	//		m_moveSpeed = diff * 150.0f;
-	//		//攻撃できる距離なら。
-	//		int ram = rand() % 100;
-	//		if (IsCanAttack() == true)
-	//		{
-	//			if (ram > 70)
-	//			{
-
-
-	//				m_enemyState = enEnemyState_Attack;
-	//				m_isUnderAttack = false;
-	//				return;
-	//			}
-
-	//			else
-	//			{
-	//				m_enemyState = enEnemyState_Chase;
-	//			}
-
-	//		}
-	//		//攻撃できない距離なら。
-	//		else
-	//		{
-	//			m_enemyState = enEnemyState_Chase;
-	//			return;
-	//		}
-	//	}
-	//	else {
-	//		Vector3 diff = m_ringBell->GetPosition() - m_position;
-	//		diff.Normalize();
-	//		m_moveSpeed = diff * 150.0f;
-	//		m_enemyState = enEnemyState_Honden;
-	//		return;
-	//	}
 
 
 void Enemy::ManageState()

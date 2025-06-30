@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "SpriteTukuyomi.h"
-#include "Tutorial.h"
 
 SpriteTukuyomi::SpriteTukuyomi()
 {
@@ -14,8 +13,6 @@ SpriteTukuyomi::~SpriteTukuyomi()
 
 bool SpriteTukuyomi::Start()
 {
-	m_tutorial = FindGO<Tutorial>("tutorial");
-
 	m_spriteRender.Init("Assets/sprite/TutorialTukuyomi.DDS", 1920, 1080);
 
 	m_spriteRender.SetPosition(m_position);

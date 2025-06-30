@@ -100,7 +100,9 @@ public:
 	//エネミーの管理
 	void EnemyManager();
 	//全てのエネミーの削除念のため
-	void DeleteAllEnemy();
+	//void DeleteAllEnemy();
+	//クリア後のスプライトフェード処理。
+	void SpriteFade();
 	//EnemyUIの切断用関数
 	void UnlinkAllEnemyUI(Enemy* enemy);
 	//LittleEnemyUIの切断用関数
@@ -179,15 +181,16 @@ private:
 	SkyCube*				m_skyCube;							//スカイキューブ。
 	SoundSource*			m_gameStartSound;					//ゲームスタート音。
 	SoundSource*			m_stage; 							//ゲームスタート音。
+	SoundSource*            m_clearBGM;							//ゲームBGM。	
 	
 	//火打石。
 	Stone*					m_stone1;							//火打石。
 	Stone*					m_stone2;							//火打石。
 	Stone*					m_stone3;							//火打石。
-	Stone*					m_stone4;							//火打石。
-	Stone*					m_stone5;							//火打石。
-	Stone*					m_stone6;							//火打石。
-	Stone*					m_stone7;							//火打石。
+	Stone*					m_stone4=nullptr;					//火打石。
+	Stone*					m_stone5=nullptr;					//火打石。
+	Stone*					m_stone6=nullptr;					//火打石。
+	Stone*					m_stone7=nullptr;					//火打石。
 
 	//灯籠。
 	Lantern*				m_lantern;							//灯籠。
@@ -253,10 +256,17 @@ private:
 	FontRender				m_timerFontRender;					//フォントレンダー。
 	FontRender				m_notifyEnemyFontRender;			//敵出現通知用フォントレンダー。
 	FontRender				m_fontNormalAttack;					//通常攻撃用フォントレンダー。
-	FontRender				m_enemyCount;						//敵のカウントを表示するフォントレンダー。
-
+	FontRender              m_missionLantern;					//灯籠ミッション用フォントレンダー。
+	FontRender              m_lanternCountFont;
+	FontRender              m_lanternClear;					    //灯籠クリア用フォントレンダー。
+	FontRender              m_missionTask;					    //「5時まで本殿を守ろう」用フォントレンダー。
+	FontRender              m_gameClearFont;                    //「あなたは本殿を守り抜いた」
+	FontRender              m_adviceMP;					        //MP回復のアドバイス用フォントレンダー。
+	FontRender              m_hp;					            //HPのフォントレンダー。
+	FontRender			    m_mp;					            //MPのフォントレンダー。
+	FontRender              m_healCount;                        //回復のフォントレンダー。
+	
 	//ボタンUIの表示。
-	FontRender				m_skip;								//スキップ用フォントレンダー。
 	SpriteRender			m_buttonB;							//Bボタン。
 	FontRender				m_fontNormalAttackButton;			//通常攻撃用フォントレンダー。
 	SpriteRender			m_buttonX;							//Xボタン。
@@ -267,6 +277,7 @@ private:
 	Vector3					m_EnemyRandompos;					//敵の座標。
 	Vector3					Random();							//ランダムに敵を出現させる。
 	Vector3                 BossRandom();						//ボスのランダム座標。
+	Vector4                 m_spriteColor = { 0.0f,0.0f,0.0f,0.0f };//スプライトの色。
 public:
 	bool					m_isBoss = false;					//ボスかどうか。
 	bool					m_isCowntDownStart = false;			//カウントダウン中かどうか
@@ -293,6 +304,9 @@ private:
 	float					m_skyLuminance = 0.0002f;			//空の明るさ。
 	float					m_skyAmbient = 0.0002f;				//空の明るさの影響を受ける環境光。
 	float					m_notifyx = 0.0f;					//敵出現通知のX座標。	
+	float                   m_skyTimer = 0.0f;					//空の明るさの変化タイマー。
+	const float             m_fadeTime = 1.0f;				//フェード時間。	
+	const float				m_fadeMaxTime = 5.0f;				//カウントダウン時間。
 	const float				m_nightStart = 0.0f;
 	const float				m_phase1Start = 120.0f;				//夜明けの始まり。
 	const float				m_phase2Start = 180.0f;				//少し明るくなる。
@@ -356,6 +370,9 @@ private:
 	bool                    m_isDeathPlayer = false;				//プレイヤーが死んだかどうか。
 	bool                    m_isInovate = false;                    //
 	bool                    m_GameDelete = false;					//ゲーム終了フラグ。
+	bool                    m_isSpriteFade = false;				    //スプライトフェードフラグ。
+	bool                    m_isGameBGM = false;					//ゲームBGM。
+	bool                    m_isGameClear = false;					//ゲームクリアフラグ。
 
 };
 

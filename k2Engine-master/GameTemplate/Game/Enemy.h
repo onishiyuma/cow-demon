@@ -1,6 +1,7 @@
 #pragma once
 #include "EnemyBase.h"
 #include "graphics/effect/EffectEmitter.h"
+#include "sound/SoundSource.h"
 class GameManagement;
 class Player;
 class BackGround;
@@ -128,7 +129,6 @@ private:
 	GameCamera*			m_gameCamera = nullptr;						//ゲームカメラ。
 	Player*				m_player = nullptr;							//プレイヤー。
 	RingBell*			m_ringBell = nullptr;						//鈴。
-	Tutorial*           m_tutorial;
 
 	
 	Game*				m_game = nullptr;							//ゲーム。
@@ -138,6 +138,8 @@ private:
 
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションデータ。
 	ModelRender			m_modelRender;								//モデルレンダー。
+
+	SoundSource*        m_die;								        //死亡時のSE。
 
 	Vector3				m_position;									//現在位置。
 	Vector3				m_farstPosition = Vector3::Zero;			//初期位置。
