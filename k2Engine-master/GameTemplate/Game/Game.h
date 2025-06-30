@@ -276,6 +276,7 @@ private:
 
 	Vector3					m_EnemyRandompos;					//敵の座標。
 	Vector3					Random();							//ランダムに敵を出現させる。
+	Vector3                 BossRandom();						//ボスのランダム座標。
 	Vector4                 m_spriteColor = { 0.0f,0.0f,0.0f,0.0f };//スプライトの色。
 public:
 	bool					m_isBoss = false;					//ボスかどうか。
