@@ -3,9 +3,15 @@
 
 namespace
 {
+	//rayの大きさを設定。
+	const float RAY_LENGTH = 2600.0f;
+}
+
+namespace
+{
 	struct EnemyRayResultCallback : public MyRayResultCallback
 	{
-		btScalar	addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace) override
+		btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace) override
 		{	
 			//最も近いヒット位置を記録。
 			if (rayResult.m_hitFraction < hitFraction) {
@@ -16,7 +22,6 @@ namespace
 			if (rayResult.m_collisionObject->getUserIndex() == EnCollisionAttr::enCollisionAttr_Enemy)
 			{
 				isHit = true;
-
 			}
 			return rayResult.m_hitFraction;
 		}
@@ -53,8 +58,9 @@ void CrossHair::HitRayCast()
 	//カメラの位置と向きを取得。
 	const Vector3 cameraPos = g_camera3D->GetPosition();
 	Vector3 cameraForward = g_camera3D->GetTarget() - cameraPos;
+	//正規化。
 	cameraForward.Normalize();
-	cameraForward.Scale(2600.0f);
+	cameraForward.Scale(RAY_LENGTH);
 	Vector3 rayTestEnd = cameraPos + cameraForward;
 	Vector3 hitPoint;
 	if (rayTestEnd.Length() >= 0.01)

@@ -4,9 +4,9 @@ class BellSpriteRender :public IGameObject
 {
 public:
 	//メンバ関数。
+	bool Start();
 	BellSpriteRender();
 	~BellSpriteRender();
-	bool Start();
 	//更新処理。
 	void Update();
 	//描画処理。

@@ -4,13 +4,13 @@
 class CrossHair:public IGameObject
 {
 public:
+	bool Start();
 	CrossHair();
 	~CrossHair();
 	void Update();
-	void Render(RenderContext& rc);
-	bool Start();
 	//レイが当たる処理。
 	void HitRayCast();
+	void Render(RenderContext& rc);
 
 	//座標を取得。
 	const Vector3& GetPosition()const

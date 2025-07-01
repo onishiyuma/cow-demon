@@ -46,20 +46,19 @@ public:
 	void Render(RenderContext& rc);
 
 	//ボス専用の処理。
-	void Attack();                              //攻撃
-	void MakeAttackCollision();                 //攻撃衝突処理
-	void PoisonAttack();                        //毒攻撃。
-	void ManageState() override;                //状態管理。
-	void Chase() override;                      //追跡行動。
-	void Collision() override;                  //衝突処理。
-	void Rotation() override;                   //当たり判定処理。
-	const bool SearchPlayer() const override;   //プレイヤー探索。
-	const bool SearchHonden() const;            //本殿を探す。
-	void IsHonden();                            //本殿へ行く処理。
-	const bool IsCanAttack() const;             //攻撃可能判定。
-	void PlayAnimation() override;              //アニメーション再生。
-	void MakePoison();                          //毒の生成。
-	void DeathEffect();                         //死亡エフェクト生成。                  
+	void Attack();										//攻撃
+	void MakeAttackCollision();							//攻撃衝突処理
+	void ManageState() override;						//状態管理。
+	void Chase() override;								//追跡行動。
+	void Collision() override;						    //衝突処理。
+	void Rotation() override;							//当たり判定処理。
+	const bool SearchPlayer() const override;			//プレイヤー探索。
+	const bool SearchHonden() const;					//本殿を探す。
+	void IsHonden();									//本殿へ行く処理。
+	const bool IsCanAttack() const;						//攻撃可能判定。
+	void PlayAnimation() override;						//アニメーション再生。
+	void MakePoison();									//毒の生成。
+	void DeathEffect();									//死亡エフェクト生成。                  
 
 	//各ステートの遷移処理。
 	void ProcessIdleStateTransition() override;         //待機。
@@ -72,7 +71,7 @@ public:
 	void ProcessCommonStateTransition() override;       //共通処理（状態遷移）。
 	void ProcessDownStateTransition() override;         //ダウン。
 
-
+public:
 	//座標をセットする関数。
 	void SetPosition(const Vector3& position)
 	{
@@ -94,7 +93,7 @@ public:
 	//HPをセットする関数。
 	void SetHP(const int& hp)
 	{
-		m_enemyHP = hp;
+		m_BossEnemyHP = hp;
 	}
 
     bool IsDead() const
@@ -104,50 +103,41 @@ public:
 
 	float GetHP()const
 	{
-		return	m_enemyHP;
+		return	m_BossEnemyHP;
 	}
 
 	float GetMaxHP()const
 	{
-		return m_enemyMaxHP;
+		return m_bossEnemyMaxHP;
 	}
 
-	
-
-
-private:
 	//メンバ変数。
-	Game*				m_game;
-	GameCamera*			m_gameCamera = nullptr;                      //カメラ参照。
-	RingBell*           m_ringBell = nullptr;                        //本殿参照
-	LanternAttack*      m_lanternAttack;
-	
-	AnimationClip		m_animationClips[enAnimationClip_Num];		 //アニメーションクリップ。
-	EnEnemyState		m_enemyState = enEnemyState_Idle;            //現在のステート。
-	EffectEmitter*      m_effectEmitter = nullptr;                   //エフェクト参照。
-
-	const Vector3		m_stopMove = Vector3::Zero;                  //移動できないようにする。
-	int m_BossFangBoneID = -3;
-    int m_enemyHP = 80;
-	int m_enemyMaxHP = m_enemyHP;                               
-
+	bool        m_isDeadFlag = false;								//死亡フラグ。     
+	bool m_isDead = false;											//死んでいるかどうか。
+	bool m_isDeleted = false;										// メンバ追加
+	EnemyUI* m_enemyUI = nullptr;									//UI参照。
+private:
+	Game*				m_game;										//ゲーム参照。
+	GameCamera*			m_gameCamera = nullptr;                     //カメラ参照。
+	RingBell*           m_ringBell = nullptr;                       //本殿参照
+	LanternAttack*		m_lanternAttack;							//ランタン攻撃参照。
+	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションクリップ。
+	EnEnemyState		m_enemyState = enEnemyState_Idle;           //現在のステート。
+	EffectEmitter*      m_effectEmitter = nullptr;                  //エフェクト参照。
+	const Vector3		m_stopMove = Vector3::Zero;                 //移動できないようにする。
+	int					m_BossFangBoneID = -3;						//牙のボーンID。
+	int					m_BossEnemyHP = 80;                         //ボスのHP。
+	int					m_bossEnemyMaxHP = m_BossEnemyHP;           //ボスの最大HP。
 	//各種タイマー。
-	float		m_leaveTimer = 0.0f;           //退散用タイマー。
-	float		m_idleTImer = 0.0f;            //待機用タイマー。
-	float		m_chaseTimmer = 0.0f;          //追跡用タイマー。
-	float		m_poisonAttackCoolDown = 0.0f; //毒攻撃クールタイム。
-	float		m_stopTimer = 0.0f;            //拘束時間。
-	float       m_hondenTimer = 0.0f;          //本殿追跡用タイマー
-	float       m_deathTimer = 0.0f;            //死亡エフェクト用タイマー。
-
+	float				m_leaveTimer = 0.0f;						//退散用タイマー。
+	float				m_idleTimer = 0.0f;							//待機用タイマー。
+	float				m_chaseTimer = 0.0f;						//追跡用タイマー。
+	float				m_poisonAttackCoolDown = 0.0f;				//毒攻撃クールタイム。
+	float				m_stopTimer = 0.0f;							//拘束時間。
+	float				m_hondenTimer = 0.0f;						//本殿追跡用タイマー。	
+	float				m_deathTimer = 0.0f;						//死亡エフェクト用タイマー。
 	//各種フラグ。
-	int		m_isUnderAttack = false;        //攻撃を受けているか。
-	bool		m_isStopped = false;            //動きが止まっているか。
-	bool		m_isGameOverFlag = false;       //ゲームオーバーか。
-	public:
-	bool        m_isDeadFlag = false;               //死亡フラグ。     
-	bool m_isDead = false;
-	bool m_isDeleted = false; // メンバ追加
-	EnemyUI* m_enemyUI = nullptr;                         //UI参照。
+	int					m_isUnderAttack = false;					//攻撃を受けているか。
+	bool				m_isStopped = false;						//動きが止まっているか。
+	bool				m_isGameOverFlag = false;					//ゲームオーバーか。
 };
-

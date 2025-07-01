@@ -4,6 +4,11 @@
 #include "collision/CollisionObject.h"
 #include "GameCamera.h"
 
+namespace
+{
+	//自動削除時間。
+	const float DELETE_TIME = 0.28f;
+}
 
 bool Amulet::Start()
 {
@@ -59,7 +64,7 @@ void Amulet::Update()
 	//自動削除タイマー。
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
 	//時間経過で削除する。
-	if (m_deleteTimer >= 0.28f)
+	if (m_deleteTimer >= DELETE_TIME)
 	{
 		//エフェクトの停止。
 		m_effectEmitter->Stop();

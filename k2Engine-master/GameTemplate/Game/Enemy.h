@@ -170,5 +170,5 @@ private:
 	EnemyUI* m_enemyUI = nullptr;
 	bool                m_isDeadFlag = false;                       //死亡フラグ。
 	bool m_isDead = false;
-	bool m_isDeleted = false; // メンバ追加
+	bool m_isDeleted = false; // 削除フラグ
 };

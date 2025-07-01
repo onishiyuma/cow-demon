@@ -19,10 +19,10 @@ public:
 	void Render(RenderContext& rc);
 
 	//メンバ変数
-	Vector3 m_firstPosition;//初期座標
-	Vector3 m_position;//座標
-	EffectEmitter* m_effectEmitter = nullptr;//エフェクト
-	Lantern* m_lantern;//灯籠
-
+	Vector3			m_position;						//座標
+	Vector3			m_firstPosition;				//初期座標
+private:
+	EffectEmitter*	m_effectEmitter = nullptr;		//エフェクト
+	Lantern*		m_lantern;//灯籠
 };
 

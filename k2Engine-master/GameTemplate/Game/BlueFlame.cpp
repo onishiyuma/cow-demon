@@ -9,17 +9,15 @@ namespace
 
 bool BlueFlame::Start()
 {
+	//インスタンスアドレスを検索。
 	m_lantern = FindGO<Lantern>("lantern1");
 	m_lantern = FindGO<Lantern>("lantern2");
 	m_lantern = FindGO<Lantern>("lantern3");
 	m_lantern = FindGO<Lantern>("lantern4");
-
 	//エフェクトを読み込む。
 	EffectEngine::GetInstance()->ResistEffect(2, u"Assets/effect/blueFlame/Tourou_Brue.efk");
-
+	//エフェクトの作成。
 	CreateEffect();
-	
-	//m_effectEmitter->Update();
 
 	return true;
 }
@@ -31,6 +29,7 @@ BlueFlame::BlueFlame()
 
 BlueFlame::~BlueFlame()
 {
+	//エフェクトを止めてから削除。
 	m_effectEmitter->Stop();
 	DeleteGO(m_effectEmitter);
 }
@@ -39,7 +38,9 @@ BlueFlame::~BlueFlame()
 
 void BlueFlame::Update()
 {
+	//エフェクトの位置を灯籠の位置にする。
 	m_effectEmitter->SetPosition(m_firstPosition);
+	//エフェクトを再生。
 	m_effectEmitter->Play();
 }
 
