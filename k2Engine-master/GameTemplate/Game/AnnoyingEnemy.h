@@ -28,12 +28,11 @@ public:
 
 public:
 	//メンバ関数。
+	bool Start() override;
 	AnnoyingEnemy();
 	~AnnoyingEnemy();
 	// 基本処理。
-	bool Start() override;
 	void Update() override;
-	void Render(RenderContext& rc);
 
 	void MakeExplosion();						//爆発コリジョンとエフェクトを作成。
 	void DeathEffect();                         //死亡エフェクト生成。        
@@ -60,8 +59,8 @@ public:
 
 	//アニメーションイベントを処理。
 	void OneAnimationEvent(const wchar_t* clipName, const wchar_t* eventName) override;
-
-
+	//描画処理。
+	void Render(RenderContext& rc);
 public:
 	//座標をセットする関数。
 	void SetPosition(const Vector3& position)
