@@ -9,6 +9,7 @@
 #include "GameOver.h"
 #include "GameCamera.h"
 #include "LanternAttack.h"
+#include "sound/SoundEngine.h"
 #include <time.h>
 #include<stdlib.h>
 
@@ -58,8 +59,8 @@ bool BossEnemy::Start()
 
 	//キャラコンの初期化。
 	m_charaCon.Init(
-		120.0f,
-		120.0f,
+		80.0f,
+		80.0f,
 		m_position,
 		enCollisionAttr_Enemy
 	);
@@ -597,6 +598,10 @@ void BossEnemy::ProcessDownStateTransition()
 {
 	if (!m_isDeadFlag) {
 		DeathEffect();
+		g_soundEngine->ResistWaveFileBank(94, "Assets/sound/dai.wav");
+		m_die = NewGO<SoundSource>(94);
+		m_die->Init(94);
+		m_die->Play(false);
 		m_isDeadFlag = true;
 	}
 	m_deathTimer += g_gameTime->GetFrameDeltaTime();

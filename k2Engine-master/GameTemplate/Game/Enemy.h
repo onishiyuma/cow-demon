@@ -1,6 +1,7 @@
 #pragma once
 #include "EnemyBase.h"
 #include "graphics/effect/EffectEmitter.h"
+#include "sound/SoundSource.h"
 class GameManagement;
 class Player;
 class BackGround;
@@ -137,6 +138,8 @@ private:
 
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションデータ。
 	ModelRender			m_modelRender;								//モデルレンダー。
+
+	SoundSource*        m_die;								        //死亡時のSE。
 
 	Vector3				m_position;									//現在位置。
 	Vector3				m_farstPosition = Vector3::Zero;			//初期位置。

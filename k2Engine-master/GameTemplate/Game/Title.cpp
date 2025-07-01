@@ -54,6 +54,7 @@ void Title::Update()
 {
 	m_spriteBack.Update();
 	m_spriteRender.SetPosition(m_backPos);
+	m_spriteRender.Update();
 
 	//タイマーを加算。
 	m_timer+= g_gameTime->GetFrameDeltaTime();
@@ -89,14 +90,12 @@ void Title::Update()
 	if (g_pad[0]->IsPress(enButtonA) && m_timer > 0.1f)
 	{
 		StartGame();
-		return;
 	}
 
 	//Bボタンで操作説明。
 	if (g_pad[0]->IsPress(enButtonB) && m_timer > 0.1f)
 	{
 		ShowOperation();
-		return;
 	}
 }
 
@@ -109,7 +108,8 @@ void Title::StartGame()
 
 	//ゲームスタートの処理。
 	NewGO<Load>(1, "load");
-	CleanupTitle();
+	DeleteGO(m_titleBGM);
+	DeleteGO(this);
 }
 
 void Title::ShowOperation()
@@ -121,12 +121,13 @@ void Title::ShowOperation()
 
 	//操作説明の処理。
 	NewGO<Operation>(1, "operation");
-	CleanupTitle();
+	DeleteGO(m_titleBGM);
+	DeleteGO(this);
 }
 
 void Title::CleanupTitle()
 {
-	m_spriteRender.Update();
+	
 	DeleteGO(m_titleBGM);
 	DeleteGO(this);
 }
