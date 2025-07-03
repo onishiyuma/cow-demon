@@ -44,18 +44,18 @@ public:
 	
 private:
 	//メンバ変数。
-	Player*				m_player;						//プレイヤー。
-	GameCamera*			m_gameCamera;					//カメラ。
-	CollisionObject*	m_collisionObj;					//コリジョンオブジェクト。
-	EffectEmitter*		m_effectEmitter;				//エフェクト。
-	Vector3				m_toCameraPos;					//注視点から視点に向かうベクトル。
-	Vector3				m_velocity;						//移動。
-	Vector3				m_position;						//座標。
-	Vector3				m_direction;					//移動方向。
-	Vector3				m_moveSpeed;					//移動速度。
-	Vector3				m_scale = Vector3::One;			//大きさ。
-	Vector3				m_moveVec;						//移動するベクトル。
-	Quaternion			m_rotation;						//回転。
-	const float			m_purificationSpeed = 1000.0f;	//お祓いの移動速度。
-	float				m_deleteTimer = 0.0f;			//削除を管理するタイマー。
+	Player*				m_player;							//プレイヤー。
+	GameCamera*			m_gameCamera;						//カメラ。
+	CollisionObject*	m_collisionObj;						//コリジョンオブジェクト。
+	EffectEmitter*		m_effectEmitter;					//エフェクト。
+	Vector3				m_toCameraPos;						//注視点から視点に向かうベクトル。
+	Vector3				m_velocity;							//移動。
+	Vector3				m_position;							//座標。
+	Vector3				m_direction;						//移動方向。
+	Vector3				m_moveSpeed;						//移動速度。
+	Vector3				m_scale = Vector3::One;				//大きさ。
+	Vector3				m_moveVec;							//移動するベクトル。
+	Quaternion			m_rotation;							//回転。
+	const float			m_purificationSpeed = 1000.0f;		//お祓いの移動速度。
+	float				m_deleteTimer = 0.0f;				//削除を管理するタイマー。
 };

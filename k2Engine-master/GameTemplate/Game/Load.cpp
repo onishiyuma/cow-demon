@@ -19,7 +19,6 @@ namespace
 bool Load::Start()  
 {  
     //ロード画像。  
-    //m_spriteLoad.Init("Assets/sprite/Load.dds", 1920, 1080);
     m_spriteLoad_1.Init("Assets/sprite/Load_1.dds", 1920, 1080);
     m_spriteLoad_2.Init("Assets/sprite/Load_2.dds", 1920, 1080);
     m_spriteLoad_3.Init("Assets/sprite/Load_3.dds", 1920, 1080);
@@ -63,6 +62,7 @@ void Load::Update()
 
 void Load::LoadingProgress()
 {
+	//ロード中かどうかの判定。
     if (m_isLoading)
     {
         m_load -= LOAD_SPEED;
@@ -82,7 +82,7 @@ void Load::LoadingProgress()
         }
     }
 
-    // ロードゲージ処理
+    //ゲージ処理。
     if (m_loadingProgress < MAX_LOAD)
     {
         m_loadingProgress += LOAD_SPEED * g_gameTime->GetFrameDeltaTime();
@@ -96,11 +96,11 @@ void Load::LoadingProgress()
         }
     }
 
-    // マスク位置の更新
+    //マスク座標の更新。
     float offsetY = m_loadingProgress * GAUGE_HEIGHT;
     m_spriteMask.SetPosition(Vector3(850.0f, -500.0f + offsetY, 0.0f));
 
-    // 各種スプライトの更新
+    //各種画像の更新。
     m_spriteLoadGage.Update();
     m_spriteMask.Update();
 }

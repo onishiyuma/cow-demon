@@ -28,7 +28,6 @@ bool Title::Start()
 	m_fontDescription.SetPosition({ -200.0f,-350.0f,0.0f });
 	m_fontDescription.SetColor(m_fontColor);
 
-
 	//タイトルのBGMを読み込む。
 	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/title.wav");
 
@@ -36,6 +35,9 @@ bool Title::Start()
 	m_titleBGM = NewGO<SoundSource>(1);
 	m_titleBGM->Init(1);
 	m_titleBGM->Play(true);
+
+	//初期化。
+	m_soulTime = 5.0f;
 
 	return true;
 }
@@ -101,11 +103,6 @@ void Title::Update()
 
 void Title::StartGame()
 {
-	/*if (m_gameManagement->m_isGame)
-	{
-		return;
-	}*/
-
 	//ゲームスタートの処理。
 	NewGO<Load>(1, "load");
 	DeleteGO(m_titleBGM);
@@ -114,11 +111,6 @@ void Title::StartGame()
 
 void Title::ShowOperation()
 {
-	/*if (m_gameManagement->m_isOperation)
-	{
-		return;
-	}*/
-
 	//操作説明の処理。
 	NewGO<Operation>(1, "operation");
 	DeleteGO(m_titleBGM);
@@ -127,7 +119,6 @@ void Title::ShowOperation()
 
 void Title::CleanupTitle()
 {
-	
 	DeleteGO(m_titleBGM);
 	DeleteGO(this);
 }
@@ -148,7 +139,6 @@ void Title::FadeIn()
 			m_spriteRender.SetMulColor(m_titleColor);
 		}
 	}
-	
 }
 
 void Title::FontFade()

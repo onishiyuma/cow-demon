@@ -42,12 +42,12 @@ public:
 
 private:
 	//メンバ変数。
-	CollisionObject*		m_collisionObject;			//コリジョンオブジェクト。
-	Shimenawa*				m_shimenawa;				//しめ縄。
-	Player*					m_player;					//プレイヤー。
-	ModelRender				m_modelRender;				//モデルレンダー。
-	Vector3					m_position;					//座標。
-	Vector3					m_placePosition;			//設置座標。
-	const float				m_duration = 5.0f;			//継続時間。
-	float					m_durationTimer = 0.0f;		//削除までの時間。
+	CollisionObject*		m_collisionObject;				//コリジョンオブジェクト。
+	Shimenawa*				m_shimenawa;					//しめ縄。
+	Player*					m_player;						//プレイヤー。
+	ModelRender				m_modelRender;					//モデルレンダー。
+	Vector3					m_position;						//座標。
+	Vector3					m_placePosition;				//設置座標。
+	const float				m_duration = 5.0f;				//継続時間。
+	float					m_durationTimer = 0.0f;			//削除までの時間。
 };

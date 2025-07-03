@@ -71,6 +71,7 @@ void RingBell::CreateCollision()
 
 void RingBell::MoveArrow()
 {
+	//矢印を動かす処理。
 	switch (m_moveState)
 	{
 	case enMoveState_UP:
@@ -92,7 +93,6 @@ void RingBell::MoveArrow()
 	default:
 		break;
 	}
-
 
 	m_arrowModel.SetPosition(m_currentPosition);
 }

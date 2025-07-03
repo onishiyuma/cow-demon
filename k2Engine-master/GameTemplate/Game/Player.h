@@ -8,16 +8,17 @@ class PlayerLight;
 class Lantern;
 class UIheal;
 class RingBell;
-class GameCamera;
 class BellSpriteRender;
 class NoHeal;
 class SpinStick;
+
 #include "graphics/effect/EffectEmitter.h"
 #include "sound/SoundSource.h"
 
 class Player :public IGameObject
 {	
 public:
+	//プレイヤーのステータス。
 	enum enPlayerState
 	{
 		enPlayerState_None,			//何もない状態。
@@ -78,9 +79,6 @@ public:
 	//エフェクトの作成。
 	void CreateEffect();
 
-
-
-
 	//座標を取得。
 	const Vector3& GetPosition()const
 	{
@@ -93,84 +91,106 @@ public:
 		m_position = position;
 	}
 
+	//MP消費処理。
+	void ConsumeMP(int cost)
+	{
+		m_playerMP -= cost;
+		if (m_playerMP < 0)
+		{
+			m_playerMP = 0;
+		}
+	}
+
+	//MPがあるか判定。
+	bool HasEnoughMP(int cost)const
+	{
+		return m_playerMP >= cost;
+	}
+
+	//クールダウンが終了しているか判定。
+	bool IsCoolDownReady(float currentCoolDown, float threshold = 0.0f)const
+	{
+		return currentCoolDown <= threshold;
+	}
+
 public:
 	//メンバ変数。
-	SoundSource*		m_nomalAttack;								//通常攻撃の音。
-	SoundSource*		m_skill;									//スキルの音。
-	SoundSource*		m_simenawa;									//しめ縄の音。
-	SoundSource*		m_hell;										//回復の音。
-	enPlayerState		m_playerState = enPlayerState_None;			//プレイヤーの状態。
-	Vector3				m_position = Vector3::Zero;					//座標。
-	Vector3				m_healEffectPosition = Vector3::Zero;		//回復エフェクトの座標。
-	EffectEmitter*		m_effectEmitter = nullptr;                  //エフェクト参照。
-	const float			m_collectTime = 15.0f;						//しめ縄を取る時間。
-	const float			m_tukuyomiMax = 0.0f;						//月読の加護の最大値。
-	const int			m_playerATK = 3;							//プレイヤーの攻撃力。
-	const int			m_skillMax = 100;							//スキルの最大値。
-	const int			m_skillMagnification = 1000;				//スキルの倍率。
-	const float			m_TukuyomiMagnification = 0.5;				//月読の加護の倍率。
-	const int			m_criticalRate = 20;						//クリティカル率。
-	const int			m_cliticalDamage = 2;						//クリティカルダメージ。
-	float				m_tukuyomiBlessingCoolDown = 0.0f;			//月読の加護のクールダウン。
-	float				m_shimenawaGetTime = 0.0f;					//しめ縄を取る時間。
-	bool				m_enemyIsCanAttack = false;					//敵に攻撃できるか。
-	bool				m_isDisplay = false;						//表示するか。
-	int					m_playerHP = 0;								//プレイヤーのHP。
-	int					m_skillCharge = 0;							//スキルチャージ。
-	int					m_normalATK = 0;							//通常攻撃。
-	int					m_criticalATK = 0;							//クリティカル攻撃。
-	int					m_skillATK = 100;							//スキル攻撃力。
-	int					m_stoneCount = 0;							//火打石の所持数。
-	int					m_tukuyomiATK = 5;							//月読の加護の攻撃力。
-	int					m_lanternCount = 0;							//灯籠の灯っている数。
-	int					m_lanternMaxCount = 4;						//灯籠の最大数。
-	int                 m_playerMaxMP = 100;						//プレイヤーの最大MP。
-	int                 m_playerMP;								    //プレイヤーのMP。
+	SoundSource*			m_nomalAttack;								//通常攻撃の音。
+	SoundSource*			m_skill;									//スキルの音。
+	SoundSource*			m_simenawa;									//しめ縄の音。
+	SoundSource*			m_hell;										//回復の音。
+	enPlayerState			m_playerState = enPlayerState_None;			//プレイヤーの状態。
+	Vector3					m_position = Vector3::Zero;					//座標。
+	Vector3					m_healEffectPosition = Vector3::Zero;		//回復エフェクトの座標。
+	EffectEmitter*			m_effectEmitter = nullptr;                  //エフェクト参照。
+	const float				m_collectTime = 15.0f;						//しめ縄を取る時間。
+	const float				m_tukuyomiMax = 0.0f;						//月読の加護の最大値。
+	const int				m_playerATK = 3;							//プレイヤーの攻撃力。
+	const int				m_skillMax = 100;							//スキルの最大値。
+	const int				m_skillMagnification = 1000;				//スキルの倍率。
+	const float				m_TukuyomiMagnification = 0.5;				//月読の加護の倍率。
+	const int				m_criticalRate = 20;						//クリティカル率。
+	const int				m_cliticalDamage = 2;						//クリティカルダメージ。
+	float					m_tukuyomiBlessingCoolDown = 0.0f;			//月読の加護のクールダウン。
+	float					m_shimenawaGetTime = 0.0f;					//しめ縄を取る時間。
+	bool					m_enemyIsCanAttack = false;					//敵に攻撃できるか。
+	bool					m_isDisplay = false;						//表示するか。
+	int						m_playerHP = 0;								//プレイヤーのHP。
+	int						m_skillCharge = 0;							//スキルチャージ。
+	int						m_normalATK = 0;							//通常攻撃。
+	int						m_criticalATK = 0;							//クリティカル攻撃。
+	int						m_skillATK = 100;							//スキル攻撃力。
+	int						m_stoneCount = 0;							//火打石の所持数。
+	int						m_tukuyomiATK = 5;							//月読の加護の攻撃力。
+	int						m_lanternCount = 0;							//灯籠の灯っている数。
+	int						m_lanternMaxCount = 4;						//灯籠の最大数。
+	int						m_playerMP = 0;								//プレイヤーのMP。
+	const int				m_playerMaxMP = m_playerMP;					//プレイヤーの最大MP。
 private:
-	NoHeal*				m_noHeal;									//回復できない。
-	BellSpriteRender*	m_bellSpriteRender;							//鈴を使う画像。
-	RingBell*			m_ringBell;									//鈴。
-	UIheal*				m_uiHeal;									//回復のUI。
-	SpinStick*			m_spinStick;								//「スティックを回せ」の画像。
-	Lantern*			m_lantern;									//灯籠。
-	GameCamera*			m_gameCamera;								//ゲームカメラ。
-	Shimenawa*			m_shimenawa;								//しめ縄。
-	ModelRender			m_modelRender;								//モデルレンダー。
-	CharacterController m_characterController;						//キャラコン。
-	PlayerLight*		m_playerLight;								//プレイヤーのライト。
-	Game*               m_game;										//ゲーム。
-	Vector3				m_forward = Vector3::AxisZ;					//方向。
-	Vector3				m_moveSpeed;								//移動速度。
-	const float			m_gravity = 10.5f;							//重力。
-	const float			m_contactThresholdSq = 100.0f * 100.0f;		//接触の閾値。
-	const float			m_poisonDuration = 4.0f;					//毒状態の時間。
-	const float			m_invincibleTimeDuration=1.0f;				//無敵の継続時間。
-	const int			m_poisonDamage = 1;							//毒ダメージ。
-	const int			m_charaConRadius = 25;						//キャラコンの半径。
-	const int			m_charaConHeight = 75;						//キャラコンの高さ。
-	float				m_attackCoolDown = 0.0f;					//通常攻撃のクールダウン。
-	float				m_healCoolDown = 0.0f;						//回復のクールダウン。
-	float				m_deleteTimer = 0.0f;						//削除のタイマー。
-	float				m_totalRotation = 0.0f;						//カメラの回転量。
-	float				m_prevStickAngle = 0.0f;					//スティックの前の角度。
-	float				m_distSq = 0.0f;							//距離の二乗。
-	float				m_poisonTimer = 0.0f;						//毒状態のタイマー。
-	float				m_poisonCoolDown = 0.0f;					//毒状態のクールダウン。
-	float				m_invincibleTime_Enemy = 0.0f;				//敵の攻撃の無敵時間。
-	float				m_invincibleTime_Annoying = 0.0f;			//ウザイ敵の攻撃の無敵時間。
-	float               m_invincibleTime_BossEnemy = 0.0f;			//ボス敵の攻撃の無敵時間。
-	float				m_invincibleTime_BossPoison = 0.0f;			//ボスの毒攻撃の無敵時間。
-	float				m_invincibleTime_LittlePoison = 0.0f;		//小さい敵の毒攻撃の無敵時間。
-	float				m_invincibleTime_Explosion = 0.0f;			//爆発攻撃の無敵時間。
-	int					m_playerMaxHP = 100;						//プレイヤーの最大体力。
-	bool				m_isDeleted = false;						//消されるか。
-	bool				m_isRotating = false;						//回転中か。
-	bool				m_isDamage_Enemy = false;					//敵からダメージを受けているか。
-	bool                m_isDamage_BossEnemy = false;				//ボス敵からダメージを受けているか。
-	bool				m_isDamage_Annoying = false;				//ウザイ敵からダメージを受けているか。
-	bool				m_isDamage_BossPoison = false;				//ボスの毒ダメージを受けているか。
-	bool				m_isDamage_LittlePoison = false;			//小さい敵の毒ダメージを受けているか。
-	bool				m_isDamage_Explosion = false;				//爆発ダメージを受けているか。
-	bool				m_isBellHit = false;						//回復用コリジョンに当たっているか。
-	bool				m_isHealMode = false;						//回復モード。
+	NoHeal*					m_noHeal;									//回復できない。
+	BellSpriteRender*		m_bellSpriteRender;							//鈴を使う画像。
+	RingBell*				m_ringBell;									//鈴。
+	UIheal*					m_uiHeal;									//回復のUI。
+	SpinStick*				m_spinStick;								//「スティックを回せ」の画像。
+	Lantern*				m_lantern;									//灯籠。
+	GameCamera*				m_gameCamera;								//ゲームカメラ。
+	Shimenawa*				m_shimenawa;								//しめ縄。
+	ModelRender				m_modelRender;								//モデルレンダー。
+	CharacterController		m_characterController;						//キャラコン。
+	PlayerLight*			m_playerLight;								//プレイヤーのライト。
+	Game*					m_game;										//ゲーム。
+	Vector3					m_forward = Vector3::AxisZ;					//方向。
+	Vector3					m_moveSpeed;								//移動速度。
+	static constexpr float	m_gravity = 10.5f;							//重力。
+	const float				m_contactThresholdSq = 100.0f * 100.0f;		//接触の閾値。
+	const float				m_poisonDuration = 4.0f;					//毒状態の時間。
+	const float				m_invincibleTimeDuration=1.0f;				//無敵の継続時間。
+	const int				m_poisonDamage = 1;							//毒ダメージ。
+	const int				m_charaConRadius = 25;						//キャラコンの半径。
+	const int				m_charaConHeight = 75;						//キャラコンの高さ。
+	const int				m_playerMaxHP = 100;						//プレイヤーの最大体力。
+	float					m_attackCoolDown = 0.0f;					//通常攻撃のクールダウン。
+	float					m_healCoolDown = 0.0f;						//回復のクールダウン。
+	float					m_deleteTimer = 0.0f;						//削除のタイマー。
+	float					m_totalRotation = 0.0f;						//カメラの回転量。
+	float					m_prevStickAngle = 0.0f;					//スティックの前の角度。
+	float					m_distSq = 0.0f;							//距離の二乗。
+	float					m_poisonTimer = 0.0f;						//毒状態のタイマー。
+	float					m_poisonCoolDown = 0.0f;					//毒状態のクールダウン。
+	float					m_invincibleTime_Enemy = 0.0f;				//敵の攻撃の無敵時間。
+	float					m_invincibleTime_Annoying = 0.0f;			//ウザイ敵の攻撃の無敵時間。
+	float					m_invincibleTime_BossEnemy = 0.0f;			//ボス敵の攻撃の無敵時間。
+	float					m_invincibleTime_BossPoison = 0.0f;			//ボスの毒攻撃の無敵時間。
+	float					m_invincibleTime_LittlePoison = 0.0f;		//小さい敵の毒攻撃の無敵時間。
+	float					m_invincibleTime_Explosion = 0.0f;			//爆発攻撃の無敵時間。
+	bool					m_isDeleted = false;						//消されるか。
+	bool					m_isRotating = false;						//回転中か。
+	bool					m_isDamage_Enemy = false;					//敵からダメージを受けているか。
+	bool					m_isDamage_BossEnemy = false;				//ボス敵からダメージを受けているか。
+	bool					m_isDamage_Annoying = false;				//ウザイ敵からダメージを受けているか。
+	bool					m_isDamage_BossPoison = false;				//ボスの毒ダメージを受けているか。
+	bool					m_isDamage_LittlePoison = false;			//小さい敵の毒ダメージを受けているか。
+	bool					m_isDamage_Explosion = false;				//爆発ダメージを受けているか。
+	bool					m_isBellHit = false;						//回復用コリジョンに当たっているか。
+	bool					m_isHealMode = false;						//回復モード。
 };

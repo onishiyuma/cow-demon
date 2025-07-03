@@ -4,6 +4,13 @@
 #include "GameCamera.h"
 #include "collision/CollisionObject.h"
 
+namespace
+{
+	//箱状コリジョンの大きさ。
+	const Vector3 BOX_SIZE{ 100.0f, 100.0f, 100.0f };
+	//エフェクトの大きさ。
+	const Vector3 EFFECT_SCALE{ 55.0f, 55.0f, 55.0f };
+}
 
 bool Purification::Start()
 {
@@ -57,7 +64,8 @@ void Purification::Update()
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
 	//タイマーが一定の秒数経過していたら。
 	if (m_deleteTimer >= 0.28f)
-	{        // エフェクトを停止する。
+	{
+		// エフェクトを停止する。
 		if (m_effectEmitter != nullptr)
 		{
 			m_effectEmitter->Stop();
@@ -76,7 +84,7 @@ void Purification::CreateCollision()
 	//コリジョンオブジェクトの作成。
 	m_collisionObj = NewGO<CollisionObject>(0);
 	//箱状のコリジョンを作成。
-	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 100.0f,100.0f,100.0f});
+	m_collisionObj->CreateBox(m_position, Quaternion::Identity, BOX_SIZE);
 	//コリジョンの名前。
 	m_collisionObj->SetName("purification");
 	//オブジェクトが勝手に削除されないように。
@@ -90,7 +98,7 @@ void Purification::CreateEffect()
 	//読み込み。
 	m_effectEmitter->Init(1);
 	//大きさをセットする。
-	m_effectEmitter->SetScale({ 55.0f,55.0f,55.0f });
+	m_effectEmitter->SetScale(EFFECT_SCALE);
 	//m_rotation.SetRotationDegY(90.0f);
 	//m_effectEmitter->SetRotation(m_rotation);
 	//エフェクトの座標をセットする。

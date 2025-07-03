@@ -17,6 +17,8 @@
 
 namespace
 {
+	//モデルの座標
+	const Vector3 MODEL_POSITION = { 70.0f,0.0f,-1000.0f };
 	//文字の座標。
 	const Vector3 FONT_POSITION = { -330.0f,-350.0f,0.0f };	
 	//Lスティックの移動速度。
@@ -32,8 +34,8 @@ bool Player::Start()
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	EffectEngine::GetInstance()->ResistEffect(11, u"Assets/effect/RingBellEffect/Heal.efk");
 
-	//モデルの座標をセットする。
-	m_position.Set(70.0f, 0.0f, -1000.0f);
+	//モデルの座標を設定する。
+	m_position.Set(MODEL_POSITION);
 
 	//キャラコンを初期化。
 	m_characterController.Init(m_charaConRadius, m_charaConHeight, m_position);
@@ -42,27 +44,26 @@ bool Player::Start()
 	m_prevStickAngle = 0.0f;
 	m_totalRotation = 0.0f;
 
-	//プレイヤーのHPをセットする。
+	//プレイヤーのHPを設定する。
 	m_playerHP = 100;
 
 	//ヒールのクールタイム
 	m_healCoolDown = 10.0f;
 
+	//プレイヤーのMPを設定する。
+	m_playerMP = m_playerMaxMP;
+
 	//プレイヤーライトのインスタンスを生成。
 	m_playerLight = NewGO<PlayerLight>(0, "playerLight");
 
-	//常時参照するアドレス。
+	//インスタンスアドレスを検索。
 	m_shimenawa = FindGO<Shimenawa>("shimenawa");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
 	m_playerLight = FindGO<PlayerLight>("playerLight");
 	m_uiHeal = FindGO<UIheal>("uiheal");
-
 	m_game = FindGO<Game>("game");
 	m_lantern = FindGO<Lantern>("lantern");
 	m_ringBell = FindGO<RingBell>("ringbell");
-
-	//プレイヤーのMPをセットする。
-	m_playerMP = m_playerMaxMP;
 	
 	return true;
 }
@@ -87,12 +88,13 @@ void Player::Update()
 		return;
 	}
 
+	//移動処理。
 	Move();
 	//判定を呼び出す。
 	Collision();
 	//回復できるように知らせる。
 	UpdateHealHint();
-	//攻撃。
+	//攻撃処理。
 	PlayerAttack();
 	//毒状態の時はHPを減らす。
 	PoisonState();
@@ -101,17 +103,19 @@ void Player::Update()
 void Player::PlayerAttack()
 {
 	//灯籠に火が灯っていれば攻撃できる。
-	if (m_enemyIsCanAttack)
+	if (!m_enemyIsCanAttack)
 	{
-		//通常攻撃。
-		NormalAttack();
-		//スキル
-		Skill();
-		//月読の加護。
-		SkillTukuyomiBlessing();
-		//しめ縄。
-		ItemShimenawa();
+		return;
 	}
+
+	//通常攻撃。
+	NormalAttack();
+	//スキル
+	Skill();
+	//月読の加護。
+	SkillTukuyomiBlessing();
+	//しめ縄。
+	ItemShimenawa();
 }
 
 void Player::Move()
@@ -134,7 +138,7 @@ void Player::Move()
 	right.y = 0.0f;
 
 	//左スティックの入力量を乗算する。
-	right *= stikL.x *L_STICK_MOVE_SPEED;
+	right *= stikL.x * L_STICK_MOVE_SPEED;
 	forward *= stikL.y * L_STICK_MOVE_SPEED;
 
 	//移動速度にスティックの入力量を加算する。
@@ -173,26 +177,22 @@ void Player::NormalAttack()
 	//クールタイムを減らす。
 	m_attackCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonRB2) && m_attackCoolDown <= 0.0f)
+	if (g_pad[0]->IsTrigger(enButtonRB2) && IsCoolDownReady(m_attackCoolDown) && HasEnoughMP(2))
 	{
-		if (m_playerMP >= 2) {
-			//クリティカルダメージ。
-			m_criticalATK = m_playerATK * m_cliticalDamage;
-			//通常ダメージ。
-			m_normalATK = m_playerATK;
+		//クリティカルダメージ。
+		m_criticalATK = m_playerATK * m_cliticalDamage;
 
-			//クールタイムの設定。
-			m_attackCoolDown = 0.389f;
-			//通常攻撃の作成用関数。
-			MakeNormalAttack();
+		//通常ダメージ。
+		m_normalATK = m_playerATK;
 
-			m_playerMP -= 2;
-			//MPが0以下になったら0にする。
-			if (m_playerMP < 0){
-				m_playerMP = 0;
-			}
-		}
-		
+		//クールタイムの設定。
+		m_attackCoolDown = 0.389f;
+
+		//通常攻撃の作成用関数。
+		MakeNormalAttack();
+
+		//プレイヤーのMPを減らす。
+		HasEnoughMP(2);
 	}
 }
 
@@ -202,22 +202,15 @@ void Player::NormalAttack()
 void Player::Skill()
 {
 	//スキル発動。
-	if (g_pad[0]->IsTrigger(enButtonLB2) && m_skillCharge >= m_skillMax)
+	if (g_pad[0]->IsTrigger(enButtonLB2) && m_skillCharge >= m_skillMax && HasEnoughMP(10))
 	{
-		if (m_playerMP >= 10) 
-		{
-			//スキルの作成用関数を呼び出す。
-			MakeSkill();
-			//チャージ量をリセット。
-			m_skillCharge = 0;
+		//スキルの作成用関数を呼び出す。
+		MakeSkill();
 
-			m_playerMP -= 10;
-			//MPが0以下になったら0にする。
-			if (m_playerMP < 0) {
-				m_playerMP = 0;
-			}
-		}
-		
+		//チャージ量をリセット。
+		m_skillCharge = 0;
+
+		ConsumeMP(10);
 	}
 }
 
@@ -229,22 +222,13 @@ void Player::SkillTukuyomiBlessing()
 	//クールタイムを減らす。
 	m_tukuyomiBlessingCoolDown -= g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonX) && m_tukuyomiBlessingCoolDown <= m_tukuyomiMax)
+	if (g_pad[0]->IsTrigger(enButtonX) && IsCoolDownReady(m_tukuyomiBlessingCoolDown, m_tukuyomiMax) && HasEnoughMP(25))
 	{
-		if (m_playerMP >= 25) {
-			//月読の加護作成用関数を呼び出す。
-			MakeTukuyomiBlessing();
-			//クールタイムの設定。 
-			m_tukuyomiBlessingCoolDown = 40.0f;
-
-			//MPを減らす。
-			m_playerMP -= 25;
-			//MPが0以下になったら0にする。
-			if (m_playerMP < 0) {
-				m_playerMP = 0;
-			}
-		}
-		
+		//月読の加護作成用関数を呼び出す。
+		MakeTukuyomiBlessing();
+		//クールタイムの設定。 
+		m_tukuyomiBlessingCoolDown = 40.0f;
+		ConsumeMP(25);
 	}
 }
 
@@ -256,7 +240,7 @@ void Player::ItemShimenawa()
 	//取得までの時間を増加。
 	m_shimenawaGetTime += g_gameTime->GetFrameDeltaTime();
 
-	if (g_pad[0]->IsTrigger(enButtonY)&&m_shimenawaGetTime>=m_collectTime)
+	if (g_pad[0]->IsTrigger(enButtonY) && m_shimenawaGetTime >= m_collectTime)
 	{
 		//しめ縄作成用関数を呼び出す。
 		MakeShimenawa();
@@ -309,8 +293,6 @@ void Player::MakeSkill()
 	amulet->SetName("amulet");
 }	
 
-
-
 //月読の加護の作成関数。
 void Player::MakeTukuyomiBlessing()
 {
@@ -323,7 +305,6 @@ void Player::MakeTukuyomiBlessing()
 	//名前をつける。
 	tukuyomiBlessing->SetName("tukuyomiBlessing");
 }
-
 
 //しめ縄の作成。
 void Player::MakeShimenawa()
@@ -341,7 +322,6 @@ void Player::MakeShimenawa()
 	//名前をつける。
 	shimenawa->SetName("shimenawa");
 }
-
 //-----------------------------------------------------------------------------------------------------------------
 //終わり。
 //-----------------------------------------------------------------------------------------------------------------
@@ -351,40 +331,20 @@ void Player::MakeShimenawa()
 //コリジョン判定。
 void Player::Collision()
 {
-	//--------------------------------------------------------------------------------------------------------------
-	// 回復（鈴）のコリジョン判定。
-	//---------------------------------------------------------------------------------------------------------------
-	RingBellCollision();
-	//--------------------------------------------------------------------------------------------------------------
-	//敵の攻撃用コリジョン判定。
-	//--------------------------------------------------------------------------------------------------------------
-	EnemyAttackCollision();
-	//--------------------------------------------------------------------------------------------------------------
-	//ウザイ敵の攻撃用コリジョン判定。
-	//--------------------------------------------------------------------------------------------------------------
-	AnnoyingEnemyAttackCollision();
-	//--------------------------------------------------------------------------------------------------------------
-	//ボスの攻撃用コリジョン判定。
-	//--------------------------------------------------------------------------------------------------------------
-	BossEnemyAttackCollision();
-	//--------------------------------------------------------------------------------------------------------------
-	//ボスの毒攻撃の攻撃用コリジョン判定。
-	//--------------------------------------------------------------------------------------------------------------
-	BossEnemyPoisonCollision();
-	//--------------------------------------------------------------------------------------------------------------
-	//小さい敵の毒攻撃用コリジョン判定。
-	//--------------------------------------------------------------------------------------------------------------
-	LittleEnemyPoisonCollision();
-	//--------------------------------------------------------------------------------------------------------------
-	//爆発攻撃用コリジョン判定。
-	//--------------------------------------------------------------------------------------------------------------
-	ExplosionCollision();
+	RingBellCollision();                // 回復。
+	EnemyAttackCollision();				// 通常の敵。
+	AnnoyingEnemyAttackCollision();		// ウザイ敵。
+	BossEnemyAttackCollision();			// ボス。
+	BossEnemyPoisonCollision();			// ボスの毒。
+	LittleEnemyPoisonCollision();		// 小さい敵の毒。
+	ExplosionCollision();				// 爆発。
 }
 
 //鈴との距離を測る。
 void Player::Distance()
 {
-	if (m_ringBell == nullptr) {
+	if (m_ringBell == nullptr) 
+	{
 		return;
 	}
 
