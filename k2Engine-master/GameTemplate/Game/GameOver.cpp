@@ -94,7 +94,6 @@ void GameOver::FontFade()
 	//フォントのフェードインの処理。
 	if (!m_isFontFade)
 	{
-		
 		m_fontColor.r += 0.01f * m_fontTime / m_fontMaxTime;
 		m_fontColor.g += 0.01f * m_fontTime / m_fontMaxTime;
 		m_fontColor.b += 0.01f * m_fontTime / m_fontMaxTime;

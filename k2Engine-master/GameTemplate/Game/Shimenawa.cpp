@@ -3,6 +3,12 @@
 #include "Player.h"
 #include "collision/collisionObject.h"
 
+namespace
+{
+	//箱状コリジョンの大きさを設定。
+	Vector3 BOX_SIZE = { 700.0f, 1.0f, 700.0f }; 
+}
+
 bool Shimenawa::Start()
 {
 	//モデルを読み込む。
@@ -16,6 +22,7 @@ bool Shimenawa::Start()
 
 	//コリジョンを作成。
 	CreateCollision();
+
 	//設置。
 	Put();
 
@@ -52,7 +59,7 @@ void Shimenawa::CreateCollision()
 {
 	m_collisionObject = NewGO<CollisionObject>(0);
 	//箱状のコリジョンを作成。
-	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { 700.0f,1.0f,700.0f });
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, BOX_SIZE);
 	//名前を付ける。
 	m_collisionObject->SetName("Shimenawa");;
 	//オブジェクトが削除されないようにする。

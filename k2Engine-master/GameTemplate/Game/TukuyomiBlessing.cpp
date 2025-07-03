@@ -7,6 +7,12 @@
 #include "sound/SoundEngine.h"
 #include "sound/soundSource.h"
 
+namespace
+{
+	//箱状コリジョンの大きさ。
+	Vector3 BOX_SIZE{ 550.0f,1.0f,550.0f };
+	Vector3 EFFECT_SIZE{ 100.0f,50.0f,100.0f };
+}
 
 bool TukuyomiBlessing::Start()
 {
@@ -83,7 +89,7 @@ void TukuyomiBlessing::CreateCollision()
 	//コリジョンを作成
 	m_collisionObject = NewGO <CollisionObject>(0);
 	//球状のコリジョンを作成する。
-	m_collisionObject->CreateBox(m_position, Quaternion::Identity, { 550.0f,1.0f,550.0f });
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, BOX_SIZE);
 	//名前を付ける。
 	m_collisionObject->SetName("Tukuyomi");
 	//オブジェクトが自動で削除されないようにする。
@@ -98,13 +104,9 @@ void TukuyomiBlessing::CreateEffect()
 	//エフェクトを初期化。
 	m_effectEmitter->Init(12);
 	//大きさを設定。
-
-	m_effectEmitter->SetScale({ 100.0f,50.0f,100.0f });
-
+	m_effectEmitter->SetScale(EFFECT_SIZE);
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
-	//エフェクトを再生。
-	//m_effectEmitter->Play();
 }
 
 

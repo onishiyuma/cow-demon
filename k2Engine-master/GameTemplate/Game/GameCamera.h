@@ -57,9 +57,9 @@ private:
 	const float		m_cameraYMin=-0.99;					//カメラのY方向の最小値。
 	const float		m_nearClip = 1.0f;					//ニアークリップ
 	const float		m_furClip = 20000.0f;				//ファークリップ。
-	float			m_rotateTimer = 0.0f;				//回転する時間。
 	const float		m_rottatieDuration = 2.0f;			//2秒で回転。
 	const int		m_half=2;							//半分。
+	float			m_rotateTimer = 0.0f;				//回転する時間。
 	int				m_notifyx = 0;						//通知のX座標。
 	bool			m_isLocked = false;					//カメラが本殿を向いているか。
 	bool 			m_isShowNotify = false;				//通知を表示するか。

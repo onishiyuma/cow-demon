@@ -38,11 +38,12 @@ void GameClear::Update()
 
 	SpriteFade();
 
-	if (m_isSpriteFade) {
+	if (m_isSpriteFade) 
+	{
 		FontFade();
 	}
 	
-	if (m_titleTime >= m_maxTitleTIme)
+	if (m_titleTime >= m_maxTitleTime)
 	{
 		//タイトルに戻る処理。
 		if (g_pad[0]->IsTrigger(enButtonA))
@@ -105,7 +106,6 @@ void GameClear::SpriteFade()
 			m_spriteRender.SetMulColor(m_spriteColor);
 		}
 	}
-
 }
 
 void GameClear::Render(RenderContext& rc)
