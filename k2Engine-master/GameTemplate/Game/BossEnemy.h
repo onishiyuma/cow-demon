@@ -125,25 +125,11 @@ private:
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;           //現在のステート。
 	EffectEmitter*      m_effectEmitter = nullptr;                  //エフェクト参照。
+	SoundSource* m_die = nullptr;                             //サウンド参照。
 	const Vector3		m_stopMove = Vector3::Zero;                 //移動できないようにする。
+	const int			m_bossEnemyMaxHP = m_BossEnemyHP;           //ボスの最大HP。
 	int					m_BossFangBoneID = -3;						//牙のボーンID。
 	int					m_BossEnemyHP = 80;                         //ボスのHP。
-	int					m_bossEnemyMaxHP = m_BossEnemyHP;           //ボスの最大HP。
-//
-	Game*				m_game;
-	GameCamera*			m_gameCamera = nullptr;                      //カメラ参照。
-	RingBell*           m_ringBell = nullptr;                        //本殿参照
-	LanternAttack*      m_lanternAttack;
-	
-	AnimationClip		m_animationClips[enAnimationClip_Num];		 //アニメーションクリップ。
-	EnEnemyState		m_enemyState = enEnemyState_Idle;            //現在のステート。
-	EffectEmitter*      m_effectEmitter = nullptr;                   //エフェクト参照。
-	SoundSource*        m_die = nullptr;                             //サウンド参照。
-
-	const Vector3		m_stopMove = Vector3::Zero;                  //移動できないようにする。
-	int m_BossFangBoneID = -3;
-    int m_enemyHP = 80;
-	int m_enemyMaxHP = m_enemyHP;                               
 	//各種タイマー。
 	float				m_leaveTimer = 0.0f;						//退散用タイマー。
 	float				m_idleTimer = 0.0f;							//待機用タイマー。

@@ -11,7 +11,7 @@ public:
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
-public:
+
 	//メンバ変数。
 	bool			m_isDelete = false;		//削除できるか。
 	int				m_useHeal = 0;			//回復回数。

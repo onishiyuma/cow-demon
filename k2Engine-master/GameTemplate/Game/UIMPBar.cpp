@@ -5,21 +5,18 @@
 
 namespace 
 {
-	//MPバーの座標
-	Vector3 MP_POSITION = Vector3(-240.0f, -500.0f, 0.0f);
-	//MPバーのスケール
-	Vector3 MP_SCALE = Vector3(0.47f, 0.2f, 0.5f);
+	//MPバーの座標。
+	const Vector3 MP_POSITION(-240.0f, -500.0f, 0.0f);
+	//MPバーのスケール。
+	const Vector3 MP_SCALE(0.47f, 0.2f, 0.5f);
 	//MPゲージピボット。
-	Vector2 MP_PIVOT = Vector2(0.0f, 0.5f);
-	//MPフレームの座標
-	Vector3 MP_FRAME_POSITION = Vector3(0.0f, -500.0f, 0.0f);
-	//MPフレームのスケール
-	Vector3 MP_FRAME_SCALE = Vector3(0.5f, 0.3f, 0.5f);
-	//MPバーの色
-	Vector3 LIGHT_BLUE = Vector3(0.0f, 1.0f, 1.0f); // 水色
-	//MPフレームの色
-	Vector3 BLACK = Vector3(0.0f, 0.0f, 0.0f); // 黒色
-	
+	const Vector2 MP_PIVOT(0.0f, 0.5f);
+	//MPフレームの座標。
+	const Vector3 MP_FRAME_POSITION(0.0f, -500.0f, 0.0f);
+	//MPフレームのスケール。
+	const Vector3 MP_FRAME_SCALE(0.5f, 0.3f, 0.5f);
+	//MPバーの色。
+	const Vector4 LIGHT_BLUE(0.0f, 1.0f, 1.0f,1.0f);//水色	
 }
 
 UIMPBar::UIMPBar()
@@ -47,7 +44,7 @@ bool UIMPBar::Start()
 	m_mpFrame.Init("Assets/UI/white.DDS", 1024, 128);
 	m_mpFrame.SetPosition(MP_FRAME_POSITION);
 	m_mpFrame.SetScale(MP_FRAME_SCALE);
-	m_mpFrame.SetMulColor(BLACK);
+	m_mpFrame.SetMulColor(g_vec4Black);
 
 	return true;
 }
@@ -57,10 +54,10 @@ void UIMPBar::Update()
 	int mpBar = m_player->m_playerMP;
 	int mpMax = m_player->m_playerMaxMP;
 	float wari = (float)mpBar / (float)mpMax;
-	Vector3 scal = { 0.47f,0.2f,0.5f };
+	Vector3 scal = MP_SCALE;
 	scal.x *= wari;
 
-	if (m_player->m_playerMP <= 100)
+	if (mpBar<= mpMax)
 	{
 		m_mpBar.SetScale(scal);
 	}

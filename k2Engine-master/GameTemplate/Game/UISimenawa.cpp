@@ -5,22 +5,27 @@
 
 namespace
 {
+	//ゲージのピボット。
+	const Vector2 GAGE_PIVOT(0.5f, 0.0f);
+	float FONT_SCALE = 1.0f;
+	//大きさ。
+	Vector3 SCALE(1.0f, 1.51f, 1.0f);
 	//しめ縄。
-	Vector3 ROPE_FREME_POSITION = Vector3(435.0f, -425.0f, 0.0f);
+	Vector3 ROPE_FREME_POSITION(435.0f, -425.0f, 0.0f);
 	//しめ縄ゲージ。
-	Vector3 ROPE_GAUGE_POSITION = Vector3(435.0f, -486.0f, 0.0f);
+	Vector3 ROPE_GAUGE_POSITION(435.0f, -486.0f, 0.0f);
 	//しめ縄フォント位置。
-	Vector3 ROPE_FONT_POSITION = Vector3(409.0f, -405.0f, 0.0f);
+	Vector3 ROPE_FONT_POSITION(409.0f, -405.0f, 0.0f);
 	//緑。
-	Vector4 GREEN = Vector4(0.0f,1.0f,0.0f,1.0f);
+	Vector4 GREEN(0.0f,1.0f,0.0f,1.0f);
 	//薄い緑。
-	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
+	Vector4 LIGHT_GREEN(0.0f, 1.0f, 0.0f, 0.2f);
 	//白。
-	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
 	//黒。
-	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	Vector4 BLACK(0.0f, 0.0f, 0.0f, 1.0f);
 	//透明。
-	Vector4 TOUMEI = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	Vector4 TOUMEI(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 UISimenawa::UISimenawa()
@@ -41,14 +46,14 @@ bool UISimenawa::Start()
 	//ロープゲージの画像。
 	m_ropeGage.Init("Assets/UI/White.DDS", 120, 14);
 	m_ropeGage.SetPosition(ROPE_GAUGE_POSITION);
-	m_ropeGage.SetPivot(Vector2{ 0.5f, 0.0f });
+	m_ropeGage.SetPivot(GAGE_PIVOT);
 
 	//ロープの画像。
 	m_ropeSprite.Init("Assets/UI/aitemskil1.DDS", 130, 130);
 	m_ropeSprite.SetPosition(ROPE_FREME_POSITION);
 	
 	//文字の大きさ、座標、色を設定。
-	m_fontRender.SetScale(1.0);
+	m_fontRender.SetScale(FONT_SCALE);
 	m_fontRender.SetPosition(ROPE_FONT_POSITION);
 	m_fontRender.SetColor(TOUMEI);
 
@@ -67,7 +72,7 @@ void UISimenawa::UpdateShimenawaGaugeVisibility()
 	//しめ縄の時間が0になったら、しめ縄のゲージを非表示にする。
 	m_ropeTimer = m_player->m_shimenawaGetTime;
 	float wari = (float)m_ropeTimer / 2.6;
-	Vector3 scal = { 1.0f,1.51f,1.0f };
+	Vector3 scal = SCALE;
 	scal.y *= wari;
 
 	if (m_ropeTimer <= m_player->m_collectTime)
@@ -101,7 +106,6 @@ void UISimenawa::UpdateShimenawaGaugeVisibility()
 	}
 	else 
 	{
-
 		//リセット処理。
 		m_displayTime = 15;
 		m_ShimenawaUseTimer = 1.0f;

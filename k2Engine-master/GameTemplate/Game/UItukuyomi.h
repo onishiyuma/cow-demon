@@ -23,8 +23,8 @@ private:
 	float				m_alpha = 0.0f;				//α値。
 	float				m_runaMax;					//月読の加護のマックス。
 	float				m_timer = 0.0f;				//タイマー。
-	float				m_countDownTimer = 40.0;	//カウントダウンタイマー。
-	float				m_countDownTime = 1.0f;		//カウントダウンの時間。
+	float				m_countDownTimer = 0.0f;	//カウントダウンタイマーの初期値。
+	float				m_countDownTime = 0.0f;		//カウントダウンの時間。
 	int					m_displayTime = 0;			//表示する時間。
 	bool				m_isVisible = false;		//表示するかどうか。
 	bool				m_isReset = false;			//リセットできるか。

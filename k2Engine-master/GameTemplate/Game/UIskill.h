@@ -19,7 +19,7 @@ private:
 	SpriteRender	m_skillSprite;			//スキルの画像。
 	SpriteRender	m_skillGageSprite;		//スキルゲージの画像。
 	FontRender		m_fontRender;			//フォントレンダー。
-	int				m_skillGage = 0.0f;		//スキルゲージ。
-	int				m_skillMax=0.0f;		//スキルがマックスになったら。
+	int				m_skillGage = 0;		//スキルゲージ。
+	int				m_skillMax=0;		//スキルがマックスになったら。
 };
 

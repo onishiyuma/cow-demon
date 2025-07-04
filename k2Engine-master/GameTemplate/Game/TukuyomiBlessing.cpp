@@ -10,8 +10,8 @@
 namespace
 {
 	//箱状コリジョンの大きさ。
-	Vector3 BOX_SIZE{ 550.0f,1.0f,550.0f };
-	Vector3 EFFECT_SIZE{ 100.0f,50.0f,100.0f };
+	const Vector3 BOX_SIZE(550.0f, 1.0f, 550.0f);
+	const Vector3 EFFECT_SIZE(100.0f, 50.0f, 100.0f);
 }
 
 bool TukuyomiBlessing::Start()

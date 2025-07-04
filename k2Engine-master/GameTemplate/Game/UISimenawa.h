@@ -3,6 +3,7 @@
 class UISimenawa :public IGameObject
 {
 public:
+	//メンバ関数。
 	UISimenawa();
 	~UISimenawa();
 	bool Start();
@@ -12,6 +13,7 @@ public:
 	void UpdateShimenawaGaugeVisibility();
 
 private:
+	//メンバ変数。
 	Player*			m_player;						//プレイヤー。
 	SpriteRender	m_ropeSprite;					//しめ縄の画像。
 	SpriteRender	m_ropeGage;						//しめ縄のゲージ。

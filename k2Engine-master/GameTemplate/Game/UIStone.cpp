@@ -3,6 +3,11 @@
 #include "Stone.h"
 #include "Player.h"
 
+namespace
+{
+	const Vector3 FONT_POS(500.0f, 430.0f, 0.0f);
+	const float FONT_SCALE = 1.0f;
+}
 
 bool UIStone::Start() 
 {
@@ -31,11 +36,11 @@ void UIStone::Update()
 	//表示するテキストを設定。
 	m_fontRender.SetText(wcsbuf2);
 	//フォントの位置を設定。
-	m_fontRender.SetPosition(Vector3(500.0f, 430.0f, 0.0f));
+	m_fontRender.SetPosition(FONT_POS);
 	//フォントの大きさを設定。
-	m_fontRender.SetScale(1.0f);
+	m_fontRender.SetScale(FONT_SCALE);
 	//フォントの色を設定。
-	m_fontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	m_fontRender.SetColor(g_vec4White);
 }
 
 void UIStone::Render(RenderContext& rc) 

@@ -5,22 +5,30 @@
 
 namespace 
 {
+	//ゲージのピボット。
+	const Vector2 GAGE_PIVOT(0.5f, 0.0f);
 	//スキル。
-	Vector3 SKILL_FREME_POSITION = Vector3(600.0f, -425.0f, 0.0f);
+	const Vector3 SKILL_FREME_POSITION(600.0f, -425.0f, 0.0f);
 	//スキルゲージ。
-	Vector3 SKILL_GAUGE_POSITION = Vector3(600.0f, -485.0f, 0.0f);
+	const Vector3 SKILL_GAUGE_POSITION(600.0f, -485.0f, 0.0f);
 	//スキルフォント。
-	Vector3 SKILL_FONT_POSITION = Vector3(620.0f, -450.0f, 0.0f);
+	const Vector3 SKILL_FONT_POSITION(620.0f, -450.0f, 0.0f);
+	//フォントの大きさ。
+	const float FONT_SCALE = 0.6f;
+	//ゲージの最大値。
+	const Vector3 GAGE_SCALE(1.0f, 1.0f, 1.0f);
 	//緑。
-	Vector4 GREEN = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+	const Vector4 GREEN(0.0f, 1.0f, 0.0f, 1.0f);
 	//薄い緑。
-	Vector4 LIGHT_GREEN = Vector4(0.0f, 1.0f, 0.0f, 0.2f);
+	const Vector4 LIGHT_GREEN(0.0f, 1.0f, 0.0f, 0.2f);
 	//白。
-	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	const Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
 	//黒。
-	Vector4 BLACK = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	const Vector4 BLACK(0.0f, 0.0f, 0.0f, 1.0f);
 	//透明。
-	Vector4 TOUMEI = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+	const Vector4 TOUMEI(1.0f, 1.0f, 1.0f, 0.0f);
+	//スキルゲージの最大値。
+	const int SKILL_GAUGE_MAX = 100; 
 }
 
 UIskill::UIskill()
@@ -41,7 +49,7 @@ bool UIskill::Start()
 	//スキルゲージ。
 	m_skillGageSprite.Init("Assets/UI/White.DDS", 124, 124);
 	m_skillGageSprite.SetPosition(SKILL_GAUGE_POSITION);
-	m_skillGageSprite.SetPivot(Vector2{ 0.5f,0.0f });
+	m_skillGageSprite.SetPivot(GAGE_PIVOT);
 
 	//スキルスプライト。
 	m_skillSprite.Init("Assets/UI/skilmax.DDS", 130, 130);
@@ -49,7 +57,7 @@ bool UIskill::Start()
 
 	//文字の座標と大きさを設定。
 	m_fontRender.SetPosition(SKILL_FONT_POSITION);
-	m_fontRender.SetScale(0.6f);
+	m_fontRender.SetScale(FONT_SCALE);
 
 	return true;
 }
@@ -67,7 +75,7 @@ void UIskill::Update()
 	//スキルが使える状態だと濃い緑になる。
 	if (m_skillGage>=m_skillMax) 
 	{
-		m_skillGageSprite.SetScale(Vector3(1.0f,1.0f,1.0f));
+		m_skillGageSprite.SetScale(GAGE_SCALE);
 		m_skillGageSprite.SetMulColor(GREEN);
 		
 	}
@@ -86,9 +94,9 @@ void UIskill::Update()
 	//表示する文字を設定。
 	wchar_t wcsbuf[256];
 	int m_skillFont =m_skillGage;
-	if (m_skillFont > 100)
+	if (m_skillFont > SKILL_GAUGE_MAX)
 	{
-		m_skillFont = 100;
+		m_skillFont = SKILL_GAUGE_MAX;
 	}
 	swprintf_s(wcsbuf, 256, L"%01d",m_skillFont);
     m_fontRender.SetText(wcsbuf);
@@ -107,7 +115,7 @@ void UIskill::Render(RenderContext& rc)
 
 	m_skillSprite.Draw(rc);
 
-	if (m_player->m_enemyIsCanAttack == true)
+	if (m_player->m_enemyIsCanAttack)
 	{
       m_fontRender.Draw(rc);
 	}

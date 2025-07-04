@@ -6,17 +6,17 @@
 namespace 
 {
 	//ツクヨミ。
-	Vector3 RUNA_FREME_POSITION = Vector3(815.0f, -425.0f, 0.0f);
+	const Vector3 RUNA_FREME_POSITION(815.0f, -425.0f, 0.0f);
 	//ツクヨミの加護のフォント位置。
-	Vector3 RUNA_FONT_POSITION = Vector3(780.0f, -405.0f, 0.0f);
+	const Vector3 RUNA_FONT_POSITION(780.0f, -405.0f, 0.0f);
 	//白。
-	Vector4 WHITE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	const Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
 	//透明。
-	Vector4 TOUMEI = Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-	//チャージ中。
-	Vector4 RUNA_COLOR = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
-	//チャージ完了。
-	Vector4 RUNA_MAX_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	const Vector4 TOUMEI(1.0f, 1.0f, 1.0f, 0.0f);
+	//チャージ中の色。
+	const Vector4 RUNA_COLOR(1.0f, 1.0f, 1.0f, 0.5f);
+	//チャージ完了の色。
+	const Vector4 RUNA_MAX_COLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 UItukuyomi::UItukuyomi()
@@ -49,6 +49,10 @@ bool UItukuyomi::Start()
 	m_fontRender.SetColor(WHITE);
 	m_fontRender.SetScale(1.0f);
 
+	//初期化。
+	m_countDownTimer = 40.0f;
+	m_countDownTime = 1.0f;
+
 	return true;
 }
 
@@ -61,9 +65,10 @@ void UItukuyomi::Update()
 
 	m_runaSpriteMax.SetScale(scale);
 
-	// ツクヨミの加護のクールタイムが0以上の時、ツクヨミゲージを表示。
-	if (!m_isReset) {
-		// 通常カウントダウン処理。
+	//ツクヨミの加護のクールタイムが0以上の時、ツクヨミゲージを表示。
+	if (!m_isReset) 
+	{
+		//通常カウントダウン処理。
 		m_countDownTimer -= g_gameTime->GetFrameDeltaTime();
 
 		if (m_countDownTimer <= 0.0f)
@@ -72,22 +77,22 @@ void UItukuyomi::Update()
 			m_countDownTimer = 1.0f;
 		}
 
-		// 0になったら待機状態へ。
-		if (m_drawTime <= 0) 
+		//待機状態へ。
+		if (m_drawTime <= 0.0f) 
 		{
 			m_isReset = true;
 		}
 	}
 	else 
 	{
-		// リセット処理。
+		//リセット処理。
 		m_displayTime = 40;
 		m_countDownTimer = 1.0f;
 		m_isReset = false;
 	}
 	
 
-	// 表示更新。
+	//表示更新。
 	wchar_t timerText[16];
 	swprintf(timerText, 16, L"%ds", m_displayTime);
 	m_fontRender.SetText(timerText);
@@ -101,7 +106,7 @@ void UItukuyomi::Render(RenderContext& rc)
 	if (m_drawTime>=m_runaMax)
 	{
 		m_runaSprite.Draw(rc);
-		if (m_player->m_enemyIsCanAttack == true)
+		if (m_player->m_enemyIsCanAttack)
 		{
 			m_fontRender.Draw(rc);
 		}
