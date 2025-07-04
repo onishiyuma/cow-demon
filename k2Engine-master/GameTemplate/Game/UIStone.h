@@ -10,7 +10,6 @@ public:
 	//メンバ関数。
 	UIStone();
 	~UIStone();
-
 	bool Start();
 	//更新処理。
 	void Update();
@@ -19,9 +18,8 @@ public:
 
 private:
 	//メンバ変数。
-	FontRender		m_fontRender;	//フォントレンダー。
-	Stone*			m_stone ;		//石。
-	Player*			m_player;		//プレイヤー。
-
+	FontRender		m_fontRender;		//フォントレンダー。
+	Stone*			m_stone ;			//石。
+	Player*			m_player;			//プレイヤー。
 };
 

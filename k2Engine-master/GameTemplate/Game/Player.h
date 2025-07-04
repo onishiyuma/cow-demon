@@ -136,6 +136,7 @@ public:
 	bool					m_enemyIsCanAttack = false;					//敵に攻撃できるか。
 	bool					m_isDisplay = false;						//表示するか。
 	int						m_playerHP = 0;								//プレイヤーのHP。
+	const int				m_playerMaxHP = 100;						//プレイヤーの最大HP。
 	int						m_skillCharge = 0;							//スキルチャージ。
 	int						m_normalATK = 0;							//通常攻撃。
 	int						m_criticalATK = 0;							//クリティカル攻撃。
@@ -145,7 +146,7 @@ public:
 	int						m_lanternCount = 0;							//灯籠の灯っている数。
 	int						m_lanternMaxCount = 4;						//灯籠の最大数。
 	int						m_playerMP = 0;								//プレイヤーのMP。
-	const int				m_playerMaxMP = m_playerMP;					//プレイヤーの最大MP。
+	const int				m_playerMaxMP = 100;					//プレイヤーの最大MP。
 private:
 	NoHeal*					m_noHeal;									//回復できない。
 	BellSpriteRender*		m_bellSpriteRender;							//鈴を使う画像。
@@ -168,7 +169,6 @@ private:
 	const int				m_poisonDamage = 1;							//毒ダメージ。
 	const int				m_charaConRadius = 25;						//キャラコンの半径。
 	const int				m_charaConHeight = 75;						//キャラコンの高さ。
-	const int				m_playerMaxHP = 100;						//プレイヤーの最大体力。
 	float					m_attackCoolDown = 0.0f;					//通常攻撃のクールダウン。
 	float					m_healCoolDown = 0.0f;						//回復のクールダウン。
 	float					m_deleteTimer = 0.0f;						//削除のタイマー。

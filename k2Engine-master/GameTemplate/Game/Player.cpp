@@ -44,14 +44,12 @@ bool Player::Start()
 	m_prevStickAngle = 0.0f;
 	m_totalRotation = 0.0f;
 
-	//プレイヤーのHPを設定する。
+	//プレイヤーのHPとMPを設定する。
 	m_playerHP = 100;
+	m_playerMP = 100;
 
 	//ヒールのクールタイム
 	m_healCoolDown = 10.0f;
-
-	//プレイヤーのMPを設定する。
-	m_playerMP = m_playerMaxMP;
 
 	//プレイヤーライトのインスタンスを生成。
 	m_playerLight = NewGO<PlayerLight>(0, "playerLight");
@@ -192,7 +190,7 @@ void Player::NormalAttack()
 		MakeNormalAttack();
 
 		//プレイヤーのMPを減らす。
-		HasEnoughMP(2);
+		ConsumeMP(2);
 	}
 }
 

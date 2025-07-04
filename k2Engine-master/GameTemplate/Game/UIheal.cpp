@@ -6,11 +6,11 @@
 namespace
 {
 	//回復回数1。
-	Vector3 SOUL_POSITION = Vector3(-600.0f, -450.0f, 0.0f);
+	Vector3 SOUL_POSITION1(-600.0f, -450.0f, 0.0f);
 	//回復回数2。
-	Vector3 SOUL_POSITION2 = Vector3(-725.0f, -450.0f, 0.0f);
+	Vector3 SOUL_POSITION2(-725.0f, -450.0f, 0.0f);
 	//回復回数3。
-	Vector3 SOUL_POSITION3 = Vector3(-850.0f, -450.0f, 0.0f);
+	Vector3 SOUL_POSITION3(-850.0f, -450.0f, 0.0f);
 }
 
 
@@ -31,7 +31,7 @@ bool UIheal::Start()
 
 	//回復回数1
 	m_soulSprite1.Init("Assets/UI/gage.DDS", 150, 150);
-	m_soulSprite1.SetPosition(SOUL_POSITION);
+	m_soulSprite1.SetPosition(SOUL_POSITION1);
 	//回復回数2
 	m_soulSprite2.Init("Assets/UI/gage.DDS", 150, 150);
 	m_soulSprite2.SetPosition(SOUL_POSITION2);
