@@ -12,7 +12,6 @@ class Tutorial;
 class Game;
 class GameCamera;
 class GameOver;
-class LanternAttack;
 class EnemyUI;
 
 class Enemy : public EnemyBase
@@ -123,55 +122,40 @@ public:
 	void Collision() override;
 	
 
-private:
 	//メンバ変数。
-	GameManagement*     m_gameManagement = nullptr;
+	EnemyUI*			m_enemyUI = nullptr;						//敵のUI。
+	bool                m_isDeadFlag = false;                       //死亡フラグ。
+	bool				m_isDead = false;							//死んでいるか。
+	bool				m_isDeleted = false;						//削除フラグ。
+private:
+	GameManagement*     m_gameManagement = nullptr;					//ゲーム管理。
 	GameCamera*			m_gameCamera = nullptr;						//ゲームカメラ。
 	Player*				m_player = nullptr;							//プレイヤー。
 	RingBell*			m_ringBell = nullptr;						//鈴。
-
-	
 	Game*				m_game = nullptr;							//ゲーム。
-	EffectEmitter* m_effectEmitter = nullptr;					//エフェクトエミッター。
+	EffectEmitter*		m_effectEmitter = nullptr;					//エフェクトエミッター。
 	GameOver*           m_gameOver = nullptr;						//ゲームオーバー。
-	LanternAttack*      m_lanternAttack;
-
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションデータ。
 	ModelRender			m_modelRender;								//モデルレンダー。
-
 	SoundSource*        m_die;								        //死亡時のSE。
-
 	Vector3				m_position;									//現在位置。
 	Vector3				m_farstPosition = Vector3::Zero;			//初期位置。
 	Vector3				m_forward = Vector3::AxisZ;					//向きベクトル。
 	Vector3				m_moveSpeed;								//移動速度。
-	const Vector3		m_stopMove = Vector3::Zero;					//動いていない。
 	Vector3				m_scale;									//モデルのスケール。
+	const Vector3		m_stopMove = Vector3::Zero;					//動いていない。
 	Quaternion			m_rotation;									//回転。
-
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//ステータス。
-
-
 	int					m_enemyHP = 10;								//体力。
 	int                 m_enemyMaxHP = m_enemyHP;					//最大体力。
 	const int			m_enemyATK = 5;								//敵の攻撃力。									
-	
-
 	int					m_isUnderAttack = false;					//攻撃を受けているか
 	int					m_FangBoneId = -1;							//攻撃判定を出すボーンID
-	
-
 	float				m_idleTimer = 0.0f;							//待機状態の経過時間。
 	float				m_chaseTimer = 0.0f;						//追跡状態の経過時間。
 	float				m_hondenTimer = 0.0f;						//本殿移動状態の経過時間。
 	float				m_stopTimer = 0.0f;							//拘束状態の経過時間。
 	float               m_deathEffectTimer = 0.0f;                  // 死亡エフェクトの表示時間
-
 	bool				m_isStopped = false;						//拘束状態。
 	bool				m_isGameOver = false;						//ゲームオーバーか。
-	public:
-	EnemyUI* m_enemyUI = nullptr;
-	bool                m_isDeadFlag = false;                       //死亡フラグ。
-	bool m_isDead = false;
-	bool m_isDeleted = false; // 削除フラグ
 };

@@ -2,6 +2,14 @@
 #include "TimeLimit.h"
 #include "Game.h"
 
+namespace
+{
+	//フォントの大きさ。
+	const float FONT_SCALE = 1.5f;
+	//タイマーの最大時間。
+	const float MAX_TIMER = 6.0f;
+}
+
 TimeLimit::TimeLimit()
 {
 
@@ -14,13 +22,14 @@ TimeLimit::~TimeLimit()
 
 bool TimeLimit::Start() 
 {
+	//文字を設定する。
 	m_fontRender.SetText(L"夜明けまであと1時間だ");
-
+	//座標を設定する。
 	m_fontRender.SetPosition(m_position);
-
+	//色を設定する。
 	m_fontRender.SetColor(m_color);
-
-	m_fontRender.SetScale(1.5f);
+	//大きさを設定する。
+	m_fontRender.SetScale(FONT_SCALE);
 
 	return true;
 }
@@ -29,13 +38,14 @@ void TimeLimit::Update()
 {
 	m_fontRender.SetPosition(m_position);
 
-	m_fontRender.SetScale(1.5f);
+	m_fontRender.SetScale(FONT_SCALE);
 
 	Flash();
 
 	m_timerCount += g_gameTime->GetFrameDeltaTime();
 
-	if (m_timerCount >= 6.0f) {
+	if (m_timerCount >= MAX_TIMER)
+	{
 		DeleteGO(this);
 	}
 }

@@ -13,7 +13,6 @@ class Game;
 class EnemyUI;
 class GameCamera;
 class RingBell;
-class LanternAttack;
 
 class LittleEnemy :public EnemyBase
 {
@@ -119,7 +118,6 @@ private:
 	Game* m_game = nullptr;
 	GameCamera*			m_gameCamera=nullptr;								//カメラ。
 	RingBell*           m_ringBell = nullptr;						//鈴。
-	LanternAttack*      m_lanternAttack;
 	
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションのクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//敵の状態。

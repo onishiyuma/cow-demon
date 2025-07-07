@@ -5,7 +5,6 @@ public:
 	//メンバ関数。
 	SpriteNoStone();
 	~SpriteNoStone();
-
 	bool Start();
 	//更新処理。
 	void Update();

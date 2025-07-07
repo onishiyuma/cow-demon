@@ -8,7 +8,6 @@
 #include "BackGround.h"
 #include "collision/CollisionObject.h"
 #include "GameCamera.h"
-#include "LanternAttack.h"
 #include "EnemyUI.h"
 #include "sound/SoundEngine.h"
 #include <time.h>
@@ -376,44 +375,6 @@ void Enemy::Collision()
 			}
 		}
 	}
-
-	//----------------------------------------
-	//攻撃用灯籠の判定管理。
-	//----------------------------------------
-	//{
-	//	float attackTimer = 0.0f;
-	//	attackTimer += g_gameTime->GetFrameDeltaTime();
-
-	//	Vector3 diff1 = m_game->m_lanternAttack1->m_position - m_position;
-	//	Vector3 diff2 = m_game->m_lanternAttack2->m_position - m_position;
-	//	Vector3 diff3 = m_game->m_lanternAttack3->m_position - m_position;
-
-	//	//灯籠に火がともっている
-	//	if (diff1.Length() <= 400.0f or diff2.Length() <= 400.0f or diff3.Length() <= 400.0f) {
-	//		if (attackTimer >= 1.0f) {
-	//			if (m_lanternAttack->m_isLight == true) {
-
-	//				m_enemyHP -= 5.0f;
-
-	//				//HPが0になったら。
-	//				if (m_enemyHP < 0.0f)
-	//				{
-	//					//ダウンステートに遷移する。
-	//					m_enemyState = enEnemyState_Down;
-	//				}
-
-	//				else
-	//				{
-	//					//被ダメージステートに遷移する。
-	//					m_enemyState = enEnemyState_Damage;
-	//				}
-	//				attackTimer = 0.0f;
-	//			}
-	//		}
-	//	}
-	//	
-
-	//}
 
 	//-----------------------------------------
 	//本殿に接触したらゲームオーバーする処理。
