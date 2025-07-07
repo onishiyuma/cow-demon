@@ -19,10 +19,8 @@
     <ClCompile Include="Shimenawa.cpp" />
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="Lantern.cpp" />
-    <ClCompile Include="LanternAttack.cpp" />
     <ClCompile Include="UIStone.cpp" />
     <ClCompile Include="SpriteCollection.cpp" />
-    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="UIcurseBar.cpp" />
     <ClCompile Include="UIheal.cpp" />
     <ClCompile Include="UISimenawa.cpp" />
@@ -30,10 +28,6 @@
     <ClCompile Include="UItukuyomi.cpp" />
     <ClCompile Include="SpriteLight.cpp" />
     <ClCompile Include="SpriteNoStone.cpp" />
-    <ClCompile Include="TimingBarA.cpp" />
-    <ClCompile Include="Line.cpp" />
-    <ClCompile Include="TimingBarB.cpp" />
-    <ClCompile Include="TimingBarC.cpp" />
     <ClCompile Include="SpritePush.cpp" />
     <ClCompile Include="RingBell.cpp" />
     <ClCompile Include="PlayerLight.cpp" />
@@ -44,9 +38,7 @@
     <ClCompile Include="AnnoyingEnemy.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="LanternLight.cpp" />
-    <ClCompile Include="RedFlame.cpp" />
     <ClCompile Include="BlueFlame.cpp" />
-    <ClCompile Include="LanternAttackLight.cpp" />
     <ClCompile Include="BellSpriteRender.cpp" />
     <ClCompile Include="NoHeal.cpp" />
     <ClCompile Include="EnemyUI.cpp" />
@@ -86,10 +78,8 @@
     <ClInclude Include="Shimenawa.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="Lantern.h" />
-    <ClInclude Include="LanternAttack.h" />
     <ClInclude Include="UIStone.h" />
     <ClInclude Include="SpriteCollection.h" />
-    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="UIcurseBar.h" />
     <ClInclude Include="UIheal.h" />
     <ClInclude Include="UISimenawa.h" />
@@ -97,10 +87,6 @@
     <ClInclude Include="UItukuyomi.h" />
     <ClInclude Include="SpriteLight.h" />
     <ClInclude Include="SpriteNoStone.h" />
-    <ClInclude Include="TimingBarA.h" />
-    <ClInclude Include="Line.h" />
-    <ClInclude Include="TimingBarB.h" />
-    <ClInclude Include="TimingBarC.h" />
     <ClInclude Include="SpritePush.h" />
     <ClInclude Include="RingBell.h" />
     <ClInclude Include="Assets\shader\util\ColorSpace.h" />
@@ -112,9 +98,7 @@
     <ClInclude Include="AnnoyingEnemy.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="LanternLight.h" />
-    <ClInclude Include="RedFlame.h" />
     <ClInclude Include="BlueFlame.h" />
-    <ClInclude Include="LanternAttackLight.h" />
     <ClInclude Include="BellSpriteRender.h" />
     <ClInclude Include="NoHeal.h" />
     <ClInclude Include="EnemyUI.h" />

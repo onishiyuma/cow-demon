@@ -13,22 +13,20 @@ SpriteSimenawa::~SpriteSimenawa()
 
 bool SpriteSimenawa::Start()
 {
+	//画像を読み込む。
 	m_spriteRender.Init("Assets/sprite/TutorialSimenawa.DDS", 1920, 1080);
-
+	//座標を設定する。
 	m_spriteRender.SetPosition(m_position);
-
-	m_spriteRender.SetScale({ 1.0f,1.0f,1.0f });
+	//大きさを設定する。
+	m_spriteRender.SetScale(m_scale);
 
 	return true;
 }
 
 void SpriteSimenawa::Update()
 {
-	m_spriteRender.Update();
-	m_spriteRender.SetPosition(m_position);
-	m_spriteRender.SetScale({ 1.0f,1.0f,1.0f });
-
-	if (g_pad[0]->IsTrigger(enButtonA)) {
+	if (g_pad[0]->IsTrigger(enButtonA)) 
+	{
 		DeleteGO(this);
 	}
 }

@@ -5,6 +5,13 @@
 #include "sound/SoundEngine.h"
 #include "Game.h"
 
+namespace
+{
+	//モデルの大きさ。
+	const Vector3 MODEL_SCALE(0.5f, 0.5f, 0.5f);
+	//火打石を拾える距離。
+	const float COLLECTION_DISTANCE = 120.0f;
+}
 
 bool Stone::Start() 
 {
@@ -18,10 +25,11 @@ bool Stone::Start()
 	initData.m_tkmFilePath = "Assets/modelData/stone/stone.tkm";
 	initData.m_expandConstantBuffer = &game->m_luminance;
 	initData.m_expandConstantBufferSize = sizeof(game->m_luminance);
+
 	//火打石用のシェーダーを読み込む。
 	initData.m_fxFilePath = "Assets/shader/stone.fx";
 	m_modelRender.InitForwardRendering(initData);
-	m_modelRender.SetScale(0.5f, 0.5f, 0.5f);
+	m_modelRender.SetScale(MODEL_SCALE);
 
 	return true;
 }
@@ -43,13 +51,11 @@ void Stone::Update()
 
 	//プレイヤーから火打石に向かうベクトルを計算。
 	Vector3 diff = m_player->m_position - m_position;
-	//ベクトルの長さが120.0fより小さかったら。
-	if (diff.Length() <= 120.0f)
+	//ベクトルの長さが一定距離近ければ。
+	if (diff.Length() <= COLLECTION_DISTANCE)
 	{
-
 		if (!m_isNearCollection )
 		{
-
 			m_spriteCollection = NewGO<SpriteCollection>(0, "spriteCollection");
 
 			m_isNearCollection = true;
@@ -57,7 +63,6 @@ void Stone::Update()
 		//Aボタンを押したら
 		if (g_pad[0]->IsTrigger(enButtonA))
 		{
-
 			//火打石のアイテムカウントを1増やす。
 			m_player->m_stoneCount += 1;
 

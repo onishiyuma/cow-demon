@@ -13,22 +13,21 @@ SpriteAttack::~SpriteAttack()
 
 bool SpriteAttack::Start()
 {
+	//画像を読み込む。
 	m_spriteRender.Init("Assets/sprite/TutorialNomalAttack.DDS",1920,1080);
-
+	//座標を設定。
 	m_spriteRender.SetPosition(m_position);
-
-	m_spriteRender.SetScale({0.7f,0.7f,0.7f});
+	//大きさを設定。
+	m_spriteRender.SetScale(m_scale);
+	m_spriteRender.Update();
 
 	return true;
 }
 
 void SpriteAttack::Update()
 {
-	m_spriteRender.Update();
-	m_spriteRender.SetPosition(m_position);
-	m_spriteRender.SetScale({ 0.7f,0.7f,0.7f });
-
-	if (g_pad[0]->IsTrigger(enButtonA)) {
+	if (g_pad[0]->IsTrigger(enButtonA)) 
+	{
 		DeleteGO(this);
 	}
 }

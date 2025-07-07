@@ -8,7 +8,6 @@
 #include "Game.h"
 #include "GameOver.h"
 #include "GameCamera.h"
-#include "LanternAttack.h"
 #include "sound/SoundEngine.h"
 #include <time.h>
 #include<stdlib.h>
@@ -81,7 +80,6 @@ bool BossEnemy::Start()
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_ringBell = FindGO<RingBell>("ringbell");
-	m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
 
 	//乱数を初期化する。
 	srand((unsigned)time(NULL));

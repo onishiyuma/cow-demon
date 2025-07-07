@@ -7,7 +7,6 @@
 #include "GameOver.h"
 #include "GameCamera.h"
 #include "RingBell.h"
-#include "LanternAttack.h"
 #include "EnemyUI.h"
 //#include"collision/CollisionObject.h"
 #include "sound/SoundEngine.h"
@@ -27,11 +26,7 @@ LittleEnemy::LittleEnemy()
 
 LittleEnemy::~LittleEnemy()
 {
-	/*if (m_effectEmitter) {
-		m_effectEmitter->Stop();
-		DeleteGO(m_effectEmitter);
-		m_effectEmitter = nullptr;
-	}*/
+
 }
 
 bool LittleEnemy::Start()
@@ -83,7 +78,6 @@ bool LittleEnemy::Start()
 	m_player = FindGO<Player>("player");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_ringBell = FindGO<RingBell>("ringbell");
-	m_lanternAttack = FindGO<LanternAttack>("lanternAttack");
 	//乱数を初期化。
 	srand((unsigned)time(NULL));
 	m_forward = Vector3::AxisZ;

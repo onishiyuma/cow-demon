@@ -1,11 +1,11 @@
 #pragma once
+
 class SpriteCollection:public IGameObject
 {
 public:
 	//メンバ関数。
 	SpriteCollection();
 	~SpriteCollection();
-
 	bool Start();
 	//更新処理。
 	void Update();

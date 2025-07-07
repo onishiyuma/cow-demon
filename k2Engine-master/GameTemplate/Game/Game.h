@@ -13,9 +13,7 @@ class Shimenawa;
 class Stone;
 class UIStone;
 class Lantern;
-class LanternAttack;
 class LanternLight;
-class LanternAttackLight;
 class BlueFlame;
 class RedFlame;
 class LanternArrow;
@@ -57,8 +55,6 @@ public:
 	void CreateStone();
 	//灯籠の生成。
 	void CreateLantern();
-	//攻撃灯籠用の生成。
-	void CreateAttackLantern();
 	//UIの作成。
 	void CreateUI();
 	//ボタンを押すUIの作成。
@@ -87,20 +83,12 @@ public:
 	void LanternMPState();
 	//灯籠のMP回復用処理。
 	void LanternHealMP();
-	//攻撃灯籠用ライトのステート。
-	void LanternAttackLightState();
-	//攻撃灯籠用ライトの作成。
-	void CreateLanternAttackLight();
-	//攻撃灯籠用エフェクトの作成。
-	void CreateLanternAttackEffect();
 	//空の明るさ調整用関数。
 	void SetSkyLight();
 	//カウントダウンの開始。
 	void StartCountDown();
 	//エネミーの管理
 	void EnemyManager();
-	//全てのエネミーの削除念のため
-	//void DeleteAllEnemy();
 	//クリア後のスプライトフェード処理。
 	void SpriteFade();
 	//EnemyUIの切断用関数
@@ -222,16 +210,6 @@ private:
 	RedFlame*				m_redFlame2;						//赤い炎。
 	RedFlame*				m_redFlame3;						//赤い炎。
 	
-	//攻撃灯籠。
-	LanternAttack*			m_lanternAttack1;					//攻撃用灯籠。
-	LanternAttack*			m_lanternAttack2;					//攻撃用灯籠。
-	LanternAttack*			m_lanternAttack3;					//攻撃用灯籠。
-
-	//攻撃灯籠用ライト。
-	LanternAttackLight*		m_lanternAttackLight1;				//攻撃灯籠用ライト。
-	LanternAttackLight*		m_lanternAttackLight2;				//攻撃灯籠用ライト。
-	LanternAttackLight*		m_lanternAttackLight3;				//攻撃灯籠用ライト。
-
 	//UI。
 	UItukuyomi*				m_uiTukuyomi;						//月読の加護のUI
 	UIskill*				m_uiSkill;							//スキルのUI
@@ -291,8 +269,6 @@ private:
 	int						m_lanternLightState = 0;			//灯籠の光状態。
 	int						m_spawnCount=0;						//出現した敵の数。
 	int						m_lanternEffectState = 0;			//灯籠のエフェクト状態。
-	int						m_lanternAttackLightState = 0;		//攻撃灯籠の光状態。
-	int						m_lanternAttackEffectState = 0;		//攻撃灯籠のエフェクト状態。
 	int						m_endTimer = 0;						//ゲーム終了までの時間。
 	int						m_timerCount = 0;					//タイマーのカウント。
 	float					m_countDownTimer = 3.0f;			//カウントダウン時間。
@@ -343,14 +319,6 @@ private:
 	bool					m_isLanternHealMP2 = false;		//灯籠のMP回復フラグ。
 	bool					m_isLanternHealMP3 = false;		//灯籠のMP回復フラグ。
 	bool					m_isLanternHealMP4 = false;		//灯籠のMP回復フラグ。
-	//攻撃灯籠用ライトのフラグ。
-	bool					m_lanternAttackLightFlag1 = false;
-	bool					m_lanternAttackLightFlag2 = false;
-	bool					m_lanternAttackLightFlag3 = false;
-	//攻撃灯籠用エフェクトのフラグ。
-	bool					m_lanternAttackEffectFlag1 = false;
-	bool					m_lanternAttackEffectFlag2 = false;
-	bool					m_lanternAttackEffectFlag3 = false;
 	//空の明るさのフラグ。
 	bool					m_isNight = false;
 	bool					m_isMidNight1 = false;

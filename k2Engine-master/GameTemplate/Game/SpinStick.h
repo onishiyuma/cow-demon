@@ -1,6 +1,5 @@
 #pragma once
 
-
 class SpinStick :public IGameObject
 {
 public:
@@ -16,8 +15,7 @@ public:
 
 private:
 	//メンバ変数。
-	SpriteRender		m_spriteRender;			//スプライト。
-	Vector3				m_firstPosition;		//初期座標。
-	Vector3				m_position;				//座標。
-
+	SpriteRender		m_spriteRender;								//スプライト。
+	const Vector3		m_position{ 300.0f, -150.0f, 0.0f };		//座標。
+	const Vector3		m_scale = Vector3::One;						//大きさ。
 };
