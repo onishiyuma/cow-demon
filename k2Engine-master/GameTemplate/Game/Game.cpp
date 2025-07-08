@@ -244,13 +244,10 @@ void Game::Update()
 		//敵のスポーン処理と敵が来たことを通知する。
 		NotifiyEnemy();
 
-
-
 		if (m_timer >= ENEMY_SPAWN_TIME) {
 			//一定時間経過したら敵をスポーンさせる。
 			CreateEnemy();
 		}
-
 
 		if (m_timer >= 240.0f) {
 			if (m_timer >= TIME_LIMIT_NOTIFY) {

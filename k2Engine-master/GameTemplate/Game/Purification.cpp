@@ -99,8 +99,6 @@ void Purification::CreateEffect()
 	m_effectEmitter->Init(1);
 	//大きさをセットする。
 	m_effectEmitter->SetScale(EFFECT_SCALE);
-	//m_rotation.SetRotationDegY(90.0f);
-	//m_effectEmitter->SetRotation(m_rotation);
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
 	//エフェクトを再生。

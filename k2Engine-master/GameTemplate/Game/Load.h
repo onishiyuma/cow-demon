@@ -29,6 +29,7 @@ private:
 	/// 次のシーンをロードする関数。
 	/// </summary>
 	void LoadingProgress();
+
 	//ヒントを表示する
 	void Tips();
 

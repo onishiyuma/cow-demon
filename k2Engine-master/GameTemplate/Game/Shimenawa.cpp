@@ -45,12 +45,12 @@ void Shimenawa::Update()
 	DurationTime();
 }
 
-//設置する関数
+//設置する関数。
 void Shimenawa::Put()
 {
-	m_collisionObject->SetPosition(m_position);
-	m_collisionObject->Update();
+	//モデルの座標を設定。
 	m_modelRender.SetPosition(m_position);
+	//更新処理。
 	m_modelRender.Update();
 }
 
@@ -60,6 +60,10 @@ void Shimenawa::CreateCollision()
 	m_collisionObject = NewGO<CollisionObject>(0);
 	//箱状のコリジョンを作成。
 	m_collisionObject->CreateBox(m_position, Quaternion::Identity, BOX_SIZE);
+	//コリジョンの座標を設定。
+	m_collisionObject->SetPosition(m_position);
+	//更新処理。
+	m_collisionObject->Update();
 	//名前を付ける。
 	m_collisionObject->SetName("Shimenawa");;
 	//オブジェクトが削除されないようにする。

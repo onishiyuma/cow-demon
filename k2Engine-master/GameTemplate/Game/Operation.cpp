@@ -14,9 +14,10 @@ Operation::~Operation()
 
 bool Operation::Start()
 {
+	//画像を読み込む。
 	m_operationController.Init("Assets/sprite/S.DDS", 1920.0f, 1080.0f);
 	m_operationController.SetPosition(m_position);
-
+	//画像を読み込む。
 	m_operationPlayer.Init("Assets/sprite/sousa.DDS", 1920.0f, 1080.0f);
 	m_operationPlayer.SetPosition(m_position);
 

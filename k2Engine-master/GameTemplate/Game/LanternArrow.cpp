@@ -19,10 +19,11 @@ bool LanternArrow::Start()
 
 	//画像を読み込む
 	m_modelRender.Init("Assets/modelData/offeringBox/arrow.tkm");
+
 	//回転を設定。
 	m_rotation.SetRotationDegY(90);
 
-	//座標を設定。
+	//座標を代入。
 	m_movePosition = m_position;
 
 	return true;

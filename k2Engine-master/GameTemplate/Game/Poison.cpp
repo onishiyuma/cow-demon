@@ -6,6 +6,10 @@
 #include "collision/CollisionObject.h"
 #include "graphics/effect/EffectEmitter.h"
 
+namespace
+{
+	const Vector3 EFFECT_SCALE(30.0f, 30.0f, 30.0f);
+}
 
 Poison::Poison()
 {
@@ -14,12 +18,14 @@ Poison::Poison()
 
 Poison::~Poison()
 {
-	if (m_effectEmitter) {
+	if (m_effectEmitter)
+	{
 		m_effectEmitter->Stop();
 		DeleteGO(m_effectEmitter);
 		m_effectEmitter = nullptr;
 	}
-	if (m_collisionObj) {
+	if (m_collisionObj) 
+	{
 		DeleteGO(m_collisionObj);
 		m_collisionObj = nullptr;
 	}
@@ -66,13 +72,13 @@ void Poison::CreateEffect()
 	//エフェクトのインスタンスを生成する。
 	m_effectEmitter = NewGO<EffectEmitter>(0);
 	m_effectEmitter->Init(4);
-	//エフェクトの大きさ。
-	Vector3 scale(30.0f, 30.0f, 30.0f);
-	m_effectEmitter->SetScale(scale);
+	//エフェクトの大きさを設定。
+	m_effectEmitter->SetScale(EFFECT_SCALE);
+	//回転を設定。
 	m_effectEmitter->SetRotation(m_rotation);
 	//エフェクトの座標をセットする。
 	m_effectEmitter->SetPosition(m_position);
-
+	//再生。
 	m_effectEmitter->Play();
 }
 
