@@ -8,7 +8,7 @@
 	class Poison :public IGameObject
 	{
 	public:
-		//敵の型の列挙型
+		//敵の型の列挙型。
 		enum EnEnemy
 		{
 			enPoison_None,
@@ -46,8 +46,9 @@
 			return m_position;
 		}
 
-	private:
 		//メンバ変数。
+		bool				m_isDelete = false;				//削除フラグ。
+	private:
 		Player*				m_player;						//プレイヤー。
 		LittleEnemy*		m_littleEnemy;					//小さい敵。
 		BossEnemy*          m_bossEnemy;					//ボス敵。
@@ -59,8 +60,6 @@
 		Vector3				m_scale = Vector3::One;			//大きさ。
 		EnEnemy				m_enEnemy = enPoison_None;		//敵の型。
 		float				m_timer = 0.0f;					//時間。
-	public:
-		bool m_isDelete = false;			//削除フラグ。
 	};
 
 

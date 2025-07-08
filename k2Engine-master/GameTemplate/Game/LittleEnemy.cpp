@@ -113,12 +113,6 @@ void LittleEnemy::Update()
 	ManageState();
 	//モデルレンダーの更新。
 	m_modelRender.Update();
-
-	/*if (m_game->m_timer >= 300.0f) {
-		DeleteGO(this);
-	}*/
-
-	
 }
 
 
@@ -358,45 +352,6 @@ void LittleEnemy::Collision()
 		}
 	}
 
-	//----------------------------------------
-	//攻撃用灯籠の判定管理。
-	//----------------------------------------
-	//{
-	//	float attackTimer = 0.0f;
-	//	attackTimer += g_gameTime->GetFrameDeltaTime();
-
-	//	Vector3 diff1 = m_game->m_lanternAttack1->m_position - m_position;
-	//	Vector3 diff2 = m_game->m_lanternAttack2->m_position - m_position;
-	//	Vector3 diff3 = m_game->m_lanternAttack3->m_position - m_position;
-
-	//	//灯籠に火がともっている
-	//	if (diff1.Length() >= 400.0f or diff2.Length() >= 400.0f or diff3.Length() >= 400.0f) {
-	//		if (m_lanternAttack->m_isLight == true) {
-	//			if (attackTimer >= 1.0f) {
-
-	//				m_enemyHP -= 5.0f;
-
-	//				//HPが0になったら。
-	//				if (m_enemyHP < 0)
-	//				{
-	//					//ダウンステートに遷移する。
-	//					m_enemyState = enEnemyState_Down;
-	//				}
-
-	//				else
-	//				{
-	//					//被ダメージステートに遷移する。
-	//					m_enemyState = enEnemyState_Damage;
-	//				}
-	//				attackTimer = 0.0f;
-	//				return;
-	//			}
-	//		}
-	//	}
-
-
-	//}
-
 	//-----------------------------------------
 	//本殿に接触したらゲームオーバーする処理。
 	//-----------------------------------------
@@ -568,8 +523,6 @@ void LittleEnemy::ProcessDownStateTransition()
 		m_die->Init(93);
 		m_die->Play(false);
 		m_isDeadFlag = true;
-		//m_game->m_totalCount--;  // ここで減らす！（Gameの側で）
-		
 	}
 	m_deathEffectTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_deathEffectTimer >= 1.0f)
@@ -580,8 +533,6 @@ void LittleEnemy::ProcessDownStateTransition()
 			DeleteGO(m_effectEmitter);
 			m_effectEmitter = nullptr;
 		}
-		//Gameのインスタンスアドレスを検索
-	/*	m_game->m_totalCount--;*/
 		m_isDead = true;
 	}
 	
@@ -589,7 +540,8 @@ void LittleEnemy::ProcessDownStateTransition()
 
 void LittleEnemy::ProcessCommonStateTransition()
 {
-	if (m_game->m_isEndGame) {
+	if (m_game->m_isEndGame)
+	{
 		return;
 	}
 
@@ -599,9 +551,10 @@ void LittleEnemy::ProcessCommonStateTransition()
 	m_poisonAttackCoolDown = 0.0f;
 	m_hondenTimer = 0.0f;
 
-	if (SearchMain() == true) {
+	if (SearchMain())
+	{
 		//プレイヤーとの距離を求める。
-		if (SearchPlayer() == true)
+		if (SearchPlayer())
 		{
 			Vector3 diff = m_player->GetPosition() - m_position;
 			//正規化。
@@ -609,16 +562,14 @@ void LittleEnemy::ProcessCommonStateTransition()
 			//移動速度を計算する。
 			m_moveSpeed = diff * 80.0f;
 			//攻撃できる距離なら。
-			if (IsCanAttack() == true)
+			if (IsCanAttack())
 			{
 				int ram = rand() % 100;
 				if (ram > 80)
 				{
 					m_enemyState = enEnemyState_Poison;
-					/*MakePoison();*/
 					return;
 				}
-
 				else
 				{
 					m_enemyState = enEnemyState_Chase;

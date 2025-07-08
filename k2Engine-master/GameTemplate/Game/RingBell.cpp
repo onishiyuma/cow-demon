@@ -33,6 +33,7 @@ bool RingBell::Start()
 	m_collisionObject->SetPosition(m_position);
 	//更新。
 	m_collisionObject->Update();
+
 	return true;
 }
 
@@ -65,6 +66,7 @@ void RingBell::CreateCollision()
 
 	//コリジョンに名前をつける。
 	m_collisionObject->SetName("ringbell");
+
 	//オブジェクトが自動で削除されないようにする。
 	m_collisionObject->SetIsEnableAutoDelete(false);
 }

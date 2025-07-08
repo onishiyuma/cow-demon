@@ -52,10 +52,10 @@ public:
 	void Rotation() override;                   //当たり判定処理。
 	const bool SearchPlayer() const override;   //プレイヤー探索。
 	const bool IsCanAttack() const;             //攻撃可能判定。
-	void PlayAnimation() ;              //アニメーション再生。
+	void PlayAnimation() ;						//アニメーション再生。
 	void MakePoison();                          //毒の生成。
-	void DeathEffect();                        //死亡エフェクト。
-	const bool SearchMain() const;            //本殿を探す。
+	void DeathEffect();							//死亡エフェクト。
+	const bool SearchMain() const;				//本殿を探す。
 	void IsHonden();                            //本殿へ行く処理。
 
 	//各ステートの遷移処理。
@@ -74,6 +74,7 @@ public:
 		m_position = position;
 	}	
 
+	//座標を取得する関数。
 	const Vector3& GetPosition()const
 	{
 		return m_position;
@@ -91,16 +92,19 @@ public:
 		m_scale = scale;
 	}
 
+	//死んでいるか調べる関数。
 	bool IsDead() const
 	{
 		return m_isDeadFlag;
 	}
 
+	//HPを取得する関数。
 	float GetHP()const
 	{
 		return	m_enemyHP;
 	}
 
+	//MaxHPを取得。
 	float GetMaxHP()const
 	{
 		return m_enemyMaxHP;
@@ -109,18 +113,16 @@ public:
 	
 private:
 	//メンバ変数
-	Vector3 m_position;
-	Vector3 m_scale;
-	Quaternion m_rotation;
-	/*Player* m_player=nullptr;*/
-	EffectEmitter* m_effectEmitter = nullptr;	//エフェクトの参照
-	SoundSource* m_die;					//死亡時のSE
-	Game* m_game = nullptr;
-	GameCamera*			m_gameCamera=nullptr;								//カメラ。
+	EffectEmitter*		m_effectEmitter = nullptr;					//エフェクトの参照
+	SoundSource*		m_die;										//死亡時のSE
+	Game*				m_game = nullptr;							//ゲーム。
+	GameCamera*			m_gameCamera=nullptr;						//カメラ。
 	RingBell*           m_ringBell = nullptr;						//鈴。
-	
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションのクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;			//敵の状態。
+	Quaternion			m_rotation;									//回転。
+	Vector3				m_position;									//座標。
+	Vector3				m_scale;									//大きさを設定。
 	const Vector3		m_stopMove = Vector3::Zero;					//動きを完全停止。
 	int                 m_enemyHP = 10;                             //体力
 	int                 m_enemyMaxHP = m_enemyHP;                   //最大体力
@@ -130,15 +132,15 @@ private:
 	float				m_poisonAttackCoolDown = 0.0f;				//毒攻撃のクールダウン。
 	float				m_stopTimer = 0.0f;							//拘束時間。
 	float				m_mainTimer = 0.0f;							//本殿の時間。
-	float               m_hondenTimer = 0.0f;
-	float               m_deathEffectTimer = 0.0f;                  // 死亡エフェクトの表示時間
+	float               m_hondenTimer = 0.0f;						//本殿のタイマー
+	float               m_deathEffectTimer = 0.0f;                  //死亡エフェクトの表示時間
 	bool				m_isStopped = false;						//動いているか。
 	bool				m_gameoverFlag = false;						//ゲームオーバーか。
 	bool				m_isUnderAttack = false;					//攻撃を受けたか。
-	public:
-	bool m_isDeadFlag = false;					//死亡フラグ。
-	bool m_isDead = false;
-	bool m_isDeleted = false; // メンバ追加
+public:
+	bool				m_isDeadFlag = false;						//死亡フラグ。
+	bool				m_isDead = false;							//死んでいるか。
+	bool				m_isDeleted = false;						//メンバ追加。
     EnemyUI*            m_enemyUI = nullptr;						//敵のUI。
 };
 
