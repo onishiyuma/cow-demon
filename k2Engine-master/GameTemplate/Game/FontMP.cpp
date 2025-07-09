@@ -1,9 +1,14 @@
 #include "stdafx.h"
 #include "FontMP.h"
 
+namespace
+{
+	const float MAX_TIMER = 5.0f;
+}
+
 FontMP::FontMP()
 {
-
+	
 }
 
 FontMP::~FontMP()
@@ -29,7 +34,7 @@ void FontMP::Update()
 {
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
-	if (m_timer >= 5.0f) {
+	if (m_timer >= MAX_TIMER) {
 		DeleteGO(this);
 	}
 	m_fontRenderer.SetPosition(m_position);

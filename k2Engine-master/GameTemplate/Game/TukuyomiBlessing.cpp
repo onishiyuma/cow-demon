@@ -10,8 +10,11 @@
 namespace
 {
 	//箱状コリジョンの大きさ。
-	const Vector3 BOX_SIZE(550.0f, 1.0f, 550.0f);
-	const Vector3 EFFECT_SIZE(100.0f, 50.0f, 100.0f);
+	const Vector3 BOX_SIZE = { 550.0f, 1.0f, 550.0f };
+	//エフェクトの大きさ。
+	const Vector3 EFFECT_SIZE = { 100.0f, 50.0f, 100.0f };
+	//音量の設定。
+	const float SE_VOLUME = 0.7f;
 }
 
 bool TukuyomiBlessing::Start()
@@ -29,7 +32,7 @@ bool TukuyomiBlessing::Start()
 	SoundSource* se = NewGO<SoundSource>(0);
 	se->Init(0);
 	se->Play(false);
-	se->SetVolume(0.7);
+	se->SetVolume(SE_VOLUME);
 
 	//エフェクトの作成。
 	CreateEffect();

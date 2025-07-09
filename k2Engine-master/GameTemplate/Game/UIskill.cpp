@@ -6,27 +6,27 @@
 namespace 
 {
 	//ゲージのピボット。
-	const Vector2 GAGE_PIVOT(0.5f, 0.0f);
+	const Vector2 GAGE_PIVOT = { 0.5f, 0.0f };
 	//スキル。
-	const Vector3 SKILL_FREME_POSITION(600.0f, -425.0f, 0.0f);
+	const Vector3 SKILL_FREME_POSITION = { 600.0f, -425.0f, 0.0f };
 	//スキルゲージ。
-	const Vector3 SKILL_GAUGE_POSITION(600.0f, -485.0f, 0.0f);
+	const Vector3 SKILL_GAUGE_POSITION = { 600.0f, -485.0f, 0.0f };
 	//スキルフォント。
-	const Vector3 SKILL_FONT_POSITION(620.0f, -450.0f, 0.0f);
+	const Vector3 SKILL_FONT_POSITION = { 620.0f, -450.0f, 0.0f };
 	//フォントの大きさ。
 	const float FONT_SCALE = 0.6f;
 	//ゲージの最大値。
-	const Vector3 GAGE_SCALE(1.0f, 1.0f, 1.0f);
+	const Vector3 GAGE_SCALE = { 1.0f, 1.0f, 1.0f };
 	//緑。
-	const Vector4 GREEN(0.0f, 1.0f, 0.0f, 1.0f);
+	const Vector4 GREEN = { 0.0f, 1.0f, 0.0f, 1.0f };
 	//薄い緑。
-	const Vector4 LIGHT_GREEN(0.0f, 1.0f, 0.0f, 0.2f);
+	const Vector4 LIGHT_GREEN = { 0.0f, 1.0f, 0.0f, 0.2f };
 	//白。
-	const Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
+	const Vector4 WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
 	//黒。
-	const Vector4 BLACK(0.0f, 0.0f, 0.0f, 1.0f);
+	const Vector4 BLACK = { 0.0f, 0.0f, 0.0f, 1.0f };
 	//透明。
-	const Vector4 TOUMEI(1.0f, 1.0f, 1.0f, 0.0f);
+	const Vector4 TOUMEI = { 1.0f, 1.0f, 1.0f, 0.0f };
 	//スキルゲージの最大値。
 	const int SKILL_GAUGE_MAX = 100; 
 }

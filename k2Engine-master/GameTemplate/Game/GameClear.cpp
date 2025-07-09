@@ -3,6 +3,13 @@
 #include "Title.h"
 #include "Game.h"
 
+namespace
+{
+	//大きさを設定。
+	const Vector3 BACK_GROUND_SCALE = { 2.0f, 2.0f, 1.0f };
+	//座標。
+	const Vector3 FONT_POSITION = { -200.0f,-250.0f,0.0f };
+}
 
 bool GameClear::Start()
 {
@@ -10,10 +17,10 @@ bool GameClear::Start()
 	m_spriteRender.Init("Assets/sprite/Clear.DDS", 1920.0f, 1080.0f);
 	
 	m_background.Init("Assets/sprite/white.DDS", 1920.0f, 1080.0f);
-	m_background.SetScale({ 2.0f, 2.0f, 1.0f });
+	m_background.SetScale(BACK_GROUND_SCALE);
 
 	m_fontRender.SetText(L"A タイトルに戻る");
-	m_fontRender.SetPosition({ -200.0f,-250.0f,0.0f });
+	m_fontRender.SetPosition(FONT_POSITION);
 	m_fontRender.SetColor(m_fontColor);
 	
 	return true;

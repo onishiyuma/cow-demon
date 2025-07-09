@@ -8,6 +8,8 @@ namespace
 {
 	//自動削除時間。
 	const float DELETE_TIME = 0.28f;
+	const Vector3 BOX_SCALE = { 100.0f,100.0f,100.0f };
+	const Vector3 EFFECT_SCALE = { 55.0f,55.0f,55.0f };
 }
 
 bool Amulet::Start()
@@ -79,7 +81,7 @@ void Amulet::CreateCollision()
 	//コリジョンオブジェクトの作成。
 	m_collisionObj = NewGO<CollisionObject>(0);
 	//ボックス上のコリジョンを作成。
-	m_collisionObj->CreateBox(m_position, Quaternion::Identity, { 100.0f,100.0f,100.0f });
+	m_collisionObj->CreateBox(m_position, Quaternion::Identity,BOX_SCALE);
 	//名前をつける。
 	m_collisionObj->SetName("amulet");
 	//自動削除されないようにする。
@@ -92,7 +94,7 @@ void Amulet::CreateEffect()
 	m_effectEmitter = NewGO<EffectEmitter>(0);
 	m_effectEmitter->Init(0);
 	//エフェクトのサイズを設定する。
-	m_effectEmitter->SetScale({ 55.0f,55.0f,55.0f });
+	m_effectEmitter->SetScale(EFFECT_SCALE);
 	//初期座標を設定する。
 	m_effectEmitter->SetPosition(m_position);
 	//エフェクトを再生。

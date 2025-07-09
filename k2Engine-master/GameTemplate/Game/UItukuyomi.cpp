@@ -6,17 +6,21 @@
 namespace 
 {
 	//ツクヨミ。
-	const Vector3 RUNA_FREME_POSITION(815.0f, -425.0f, 0.0f);
+	const Vector3 RUNA_FREME_POSITION = { 815.0f, -425.0f, 0.0f };
 	//ツクヨミの加護のフォント位置。
-	const Vector3 RUNA_FONT_POSITION(780.0f, -405.0f, 0.0f);
+	const Vector3 RUNA_FONT_POSITION = { 780.0f, -405.0f, 0.0f };
+	//画像の大きさ。
+	const float FONT_SCALE = 1.0f;
+	//大きさ。
+	const Vector3 SCALE = { 1.0f,1.0f,1.0f };
 	//白。
-	const Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
+	const Vector4 WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
 	//透明。
-	const Vector4 TOUMEI(1.0f, 1.0f, 1.0f, 0.0f);
+	const Vector4 TOUMEI = { 1.0f, 1.0f, 1.0f, 0.0f };
 	//チャージ中の色。
-	const Vector4 RUNA_COLOR(1.0f, 1.0f, 1.0f, 0.5f);
+	const Vector4 RUNA_COLOR = { 1.0f, 1.0f, 1.0f, 0.5f };
 	//チャージ完了の色。
-	const Vector4 RUNA_MAX_COLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	const Vector4 RUNA_MAX_COLOR = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
 UItukuyomi::UItukuyomi()
@@ -47,7 +51,7 @@ bool UItukuyomi::Start()
 	//ツクヨミの加護のクールタイムの表記位置。
 	m_fontRender.SetPosition(RUNA_FONT_POSITION);
 	m_fontRender.SetColor(WHITE);
-	m_fontRender.SetScale(1.0f);
+	m_fontRender.SetScale(FONT_SCALE);
 
 	//初期化。
 	m_countDownTimer = 40.0f;
@@ -61,9 +65,7 @@ void UItukuyomi::Update()
 	m_drawTime = m_player->m_tukuyomiBlessingCoolDown;
 	m_runaMax = m_player->m_tukuyomiMax;
 
-	Vector3 scale = { 1.0f,1.0f,1.0f };
-
-	m_runaSpriteMax.SetScale(scale);
+	m_runaSpriteMax.SetScale(SCALE);
 
 	//ツクヨミの加護のクールタイムが0以上の時、ツクヨミゲージを表示。
 	if (!m_isReset) 

@@ -4,6 +4,10 @@
 #include "Title.h"
 #include "sound/SoundEngine.h"
 
+namespace
+{
+	const Vector3 FONT_POSITION = { -200.0f,-250.0f,0.0f };
+}
 
 bool GameOver::Start()
 {
@@ -16,7 +20,7 @@ bool GameOver::Start()
 	m_soul.SetPosition(m_soulPos);
 
 	m_fontRender.SetText(L"A タイトルに戻る");
-	m_fontRender.SetPosition({ -200.0f,-250.0f,0.0f });
+	m_fontRender.SetPosition(FONT_POSITION);
 	m_fontRender.SetColor(m_fontColor);
 
 	g_soundEngine->ResistWaveFileBank(3,"Assets/sound/gameOver.wav");

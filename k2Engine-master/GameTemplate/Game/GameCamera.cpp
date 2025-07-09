@@ -17,7 +17,7 @@ bool GameCamera::Start()
 {
 	//注視点から視点までのベクトルを設定。
 	m_toCameraPos.Set(CAMERA_POS);
-	//m_toCameraPosMainはエネミーUI用に作成
+	//m_toCameraPosMainはエネミーUI用に作成。
 	m_PosMain.Set(CAMERA_POS_MAIN);
 	//プレイヤーのインスタンスを探す。
 	m_player = FindGO<Player>("player");

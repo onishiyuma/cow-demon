@@ -6,17 +6,17 @@
 namespace
 {
 	//HPバーの座標。
-	const Vector3 HP_POSITION(-245.0f, -450.0f, 0.0f);
+	const Vector3 HP_POSITION = { -245.0f, -450.0f, 0.0f };
 	//フレームの座標。
-	const Vector3 HP_FRAME_POSITION(0.0f, -450.0f, 0.0f);
+	const Vector3 HP_FRAME_POSITION = { 0.0f, -450.0f, 0.0f };
 	//フレームの大きさ。
-	const Vector3 HP_FRAME_SCALE(0.5f, 0.5f, 0.5f);
+	const Vector3 HP_FRAME_SCALE = { 0.5f, 0.5f, 0.5f };
 	//HPバーの大きさ。
-	const Vector3 HP_SCAL(0.2f, 0.5f, 0.5f);
+	const Vector3 HP_SCAL = { 0.2f, 0.5f, 0.5f };
 	//HPバーのベースとなる大きさ。
-	const Vector3 CURSE_BAR_SCALE_BASE(1.0f,1.0f,1.0f);
+	const Vector3 CURSE_BAR_SCALE_BASE = { 1.0f,1.0f,1.0f };
 	//HPバーのピボット。
-	const Vector2 HP_PIVOT(0.0f, 0.5f);
+	const Vector2 HP_PIVOT{ 0.0f, 0.5f };
 	//プレイヤーの体力が危ない。
 	const int PLAYER_HP_DENGER = 30;
 }

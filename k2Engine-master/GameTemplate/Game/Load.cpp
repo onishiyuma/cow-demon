@@ -4,8 +4,9 @@
  
 namespace
 {
+    const Vector2 MASK_PIVOT = { 0.5f, 0.0f };
 	//フォントの座標。
-    const Vector3 FONTRENDER_PSOITION = Vector3{ 850.0f, -430.0f, 0.0f };
+    const Vector3 FONTRENDER_PSOITION = { 850.0f, -430.0f, 0.0f };
 	//ロードゲージの進行速度。
     const float LOAD_SPEED = 0.1f;
 	//ロードゲージの最大値。
@@ -29,7 +30,7 @@ bool Load::Start()
 
     //マスク画像。  
     m_spriteMask.Init("Assets/sprite/Black.dds", 100, 150);  
-    m_spriteMask.SetPivot(Vector2(0.5f, 0.0f));  
+    m_spriteMask.SetPivot(MASK_PIVOT);
 
     //ゲージ画像。  
     m_spriteLoadGage.Init("Assets/sprite/gauge.dds", 150, 150);  
@@ -56,7 +57,7 @@ void Load::Update()
 {
     //ゲージ進行。
     LoadingProgress();
-
+    //ヒントを表示。
     Tips();
 }
 

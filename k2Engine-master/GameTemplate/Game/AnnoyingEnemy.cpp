@@ -16,6 +16,7 @@ namespace
 {
 	//スキルのチャージの増加量。
 	const int CHARGE_INCREASE_AMOUNT = 10;
+	const Vector3 SCALE = { 100.0f, 100.0f, 1.00f };
 }
 
 AnnoyingEnemy::AnnoyingEnemy()
@@ -26,11 +27,7 @@ AnnoyingEnemy::AnnoyingEnemy()
 
 AnnoyingEnemy::~AnnoyingEnemy()
 {
-	/*if (m_effectEmitter) {
-		m_effectEmitter->Stop();
-		DeleteGO(m_effectEmitter);
-		m_effectEmitter = nullptr;
-	}*/
+
 }
 
 
@@ -54,8 +51,7 @@ bool AnnoyingEnemy::Start()
 
 	//ボーンのIDを取得する。
 	m_ExplosionBoneId = m_modelRender.FindBoneID(L"Explosion");
-	Vector3 scale(100.0f, 100.0f, 1.00f);
-	SetScale(scale);
+	SetScale(SCALE);
 
 	//エフェクトを読み込む。
 	EffectEngine::GetInstance()->ResistEffect(7, u"Assets/effect/EnemyEffects/Fox_Down/Fox_Down.efk");

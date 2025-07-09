@@ -28,7 +28,7 @@ public:
 
 	bool Angle(T Enemy);
 
-	// Enemyポインタ取得。
+	// Enemy各種のポインタ取得。
 	Enemy* GetEnemy() const 
 	{
 		return m_enemy; 
@@ -71,16 +71,16 @@ public:
 	}
 
 private:
-	Enemy*				m_enemy = nullptr;
-	LittleEnemy*		m_littleEnemy = nullptr;
-	AnnoyingEnemy*		m_annoyingEnemy = nullptr;
-	BossEnemy*			m_bossEnemy = nullptr;
-	Player*				m_player = nullptr;
-	Game*				m_game = nullptr;
-	GameCamera*			m_gameCamera;
-	SpriteRender		m_HPSprite;
-	SpriteRender		m_HPFreamSprite;
-	Vector2				m_position = Vector2::Zero;
-	Vector3				m_scale = Vector3::One;
+	Enemy*				m_enemy = nullptr;				//敵。
+	LittleEnemy*		m_littleEnemy = nullptr;		//小さい敵。
+	AnnoyingEnemy*		m_annoyingEnemy = nullptr;		//ウザイ敵。
+	BossEnemy*			m_bossEnemy = nullptr;			//ボス。
+	Player*				m_player = nullptr;				//プレイヤー。
+	Game*				m_game = nullptr;				//ゲーム。
+	GameCamera*			m_gameCamera;					//ゲームカメラ。
+	SpriteRender		m_HPSprite;						//HPの画像。
+	SpriteRender		m_HPFreamSprite;				//HPのフレーム。
+	Vector2				m_position = Vector2::Zero;		//ポジション。
+	Vector3				m_scale = Vector3::One;			//大きさ。
 };
 

@@ -5,6 +5,14 @@
 #include "Operation.h"
 #include "sound/SoundEngine.h"
 
+namespace
+{
+	//文字の表示。
+	const Vector3 GAME_FONT_POSITION = { -200.0f,-250.0f,0.0f };
+	//チュートリアルの文字表字
+	const Vector3 TUTOEIAL_FONT_POSITION = { -200.0f,-350.0f,0.0f };
+}
+
 bool Title::Start()
 {
 	//タイトルの背景画像を読み込む
@@ -21,11 +29,11 @@ bool Title::Start()
 	
 	//文字の表示。
 	m_fontRender.SetText(L"A ゲームスタート");
-	m_fontRender.SetPosition({ -200.0f,-250.0f,0.0f });
+	m_fontRender.SetPosition(GAME_FONT_POSITION);
 	m_fontRender.SetColor(m_fontColor);
 
 	m_fontDescription.SetText(L"B 操作説明");
-	m_fontDescription.SetPosition({ -200.0f,-350.0f,0.0f });
+	m_fontDescription.SetPosition(TUTOEIAL_FONT_POSITION);
 	m_fontDescription.SetColor(m_fontColor);
 
 	//タイトルのBGMを読み込む。

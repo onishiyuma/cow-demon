@@ -12,7 +12,6 @@ public:
 
 	bool Start();
 	void EnemySpeed();
-	/*Vector3 RandPos();*/
 
 	void SetPosition(const Vector3& position)
 	{

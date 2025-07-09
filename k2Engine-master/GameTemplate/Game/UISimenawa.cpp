@@ -6,26 +6,27 @@
 namespace
 {
 	//ゲージのピボット。
-	const Vector2 GAGE_PIVOT(0.5f, 0.0f);
+	const Vector2 GAGE_PIVOT = { 0.5f, 0.0f };
+	//文字の大きさ。
 	float FONT_SCALE = 1.0f;
 	//大きさ。
-	Vector3 SCALE(1.0f, 1.51f, 1.0f);
+	Vector3 SCALE = { 1.0f, 1.51f, 1.0f };
 	//しめ縄。
-	Vector3 ROPE_FREME_POSITION(435.0f, -425.0f, 0.0f);
+	Vector3 ROPE_FREME_POSITION = { 435.0f, -425.0f, 0.0f };
 	//しめ縄ゲージ。
-	Vector3 ROPE_GAUGE_POSITION(435.0f, -486.0f, 0.0f);
+	Vector3 ROPE_GAUGE_POSITION = { 435.0f, -486.0f, 0.0f };
 	//しめ縄フォント位置。
-	Vector3 ROPE_FONT_POSITION(409.0f, -405.0f, 0.0f);
+	Vector3 ROPE_FONT_POSITION = { 409.0f, -405.0f, 0.0f };
 	//緑。
-	Vector4 GREEN(0.0f,1.0f,0.0f,1.0f);
+	Vector4 GREEN = { 0.0f,1.0f,0.0f,1.0f };
 	//薄い緑。
-	Vector4 LIGHT_GREEN(0.0f, 1.0f, 0.0f, 0.2f);
+	Vector4 LIGHT_GREEN = { 0.0f, 1.0f, 0.0f, 0.2f };
 	//白。
-	Vector4 WHITE(1.0f, 1.0f, 1.0f, 1.0f);
+	Vector4 WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
 	//黒。
-	Vector4 BLACK(0.0f, 0.0f, 0.0f, 1.0f);
+	Vector4 BLACK = { 0.0f, 0.0f, 0.0f, 1.0f };
 	//透明。
-	Vector4 TOUMEI(0.0f, 0.0f, 0.0f, 0.0f);
+	Vector4 TOUMEI = { 0.0f, 0.0f, 0.0f, 0.0f };
 }
 
 UISimenawa::UISimenawa()

@@ -29,7 +29,7 @@ public:
 
 	//メンバ変数。
 public:
-	Vector3				m_firstPosition;			//最初の座標
+	Vector3				m_firstPosition;			//最初の座標。
 	Vector3				m_position;					//座標。
 	bool				m_isLight = false;			//火が灯っているか。
 private:

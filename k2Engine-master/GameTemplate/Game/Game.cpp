@@ -48,8 +48,8 @@ namespace
 	const Vector3	ENEMY_SPAWN_POSITION_Left = { -1000.0f, 0.0f, 3000.0f };	//敵のスポーン位置。
 	const Vector3	ENEMY_SPAWN_POSITION_Right = { 1000.0f, 0.0f, 3000.0f };	//敵のスポーン位置。
 	const Vector3   BOSS_SPAWN_POSITION_Mid = { 0.0f, 0.0f, 3400.0f };			//ボスのスポーン位置。
-	const Vector3	BOSS_SPAWN_POSITION_Left = { -1200.0f, 0.0f, 3200.0f };	//敵のスポーン位置。
-	const Vector3	BOSS_SPAWN_POSITION_Right = { 1200.0f, 0.0f, 3200.0f };	//敵のスポーン位置。
+	const Vector3	BOSS_SPAWN_POSITION_Left = { -1200.0f, 0.0f, 3200.0f };		//敵のスポーン位置。
+	const Vector3	BOSS_SPAWN_POSITION_Right = { 1200.0f, 0.0f, 3200.0f };		//敵のスポーン位置。
 	const Vector3	FONT_RENDER_POSITION = { - 200.0f, 500.0f, 0.0f};			//フォントの表示位置。
 	const float		SET_SKY_LUMINANCE = 1000.0f;								//空の光の強さ。
 	const float		ENEMY_SPAWN_TIME = 150.0f;									//敵のスポーン時間。
@@ -869,7 +869,6 @@ void Game::CreateEnemy()
 			enemyUI->SetAnnoyingEnemy(annoying);
 			m_enemyUIList.push_back(enemyUI);
 			m_totalCount++;
-			//m_spawnTimer = 0.0f;
 		}
 		else if (r >= 40) {
 			//普通の敵。
@@ -880,7 +879,6 @@ void Game::CreateEnemy()
 			enemyUI->SetEnemy(enemy);
 			m_enemyUIList.push_back(enemyUI);
 			m_totalCount++;
-			//m_spawnTimer = 0.0f;
 		}
 		else {
 			//雑魚敵。
@@ -892,7 +890,6 @@ void Game::CreateEnemy()
 			littleEnemy->m_enemyUI = enemyUI;   // ここ！ペア化
 			m_enemyUIList.push_back(enemyUI);
 			m_totalCount++;
-			//m_spawnTimer = 0.0f;
 		}
 
 		///*m_totalCount++;
@@ -1065,56 +1062,6 @@ void Game::EnemyManager()
 	}
 }
 
-//void Game::DeleteAllEnemy()
-//{
-//	// Poison削除
-//	for (auto* poison : m_poisonList)
-//	{
-//		DeleteGO(poison);
-//		poison = nullptr;
-//	}
-//	m_poisonList.clear();
-//
-//	// UIやエフェクトも必要に応じて消す
-//	for (auto* enemyUI : m_enemyUIList)
-//	{
-//		DeleteGO(enemyUI);
-//		enemyUI = nullptr;
-//	}
-//	m_enemyUIList.clear();
-//
-//	// エネミー削除
-//	for (auto* Normal : m_enemyList)
-//	{
-//		UnlinkAllEnemyUI(Normal);
-//		DeleteGO(Normal);
-//		Normal = nullptr;
-//
-//	}
-//    m_enemyList.clear();
-//	for (auto* Little : m_littleEnemyList)
-//	{
-//		UnlinkAllLittleEnemyUI(Little);
-//		DeleteGO(Little);
-//		Little = nullptr;
-//	}
-//    m_littleEnemyList.clear();
-//	for (auto* Boss : m_bossEnemyList)
-//	{
-//		UnlinkAllBossEnemyUI(Boss);
-//		DeleteGO(Boss);
-//		Boss = nullptr;
-//	}
-//    m_bossEnemyList.clear();
-//	for (auto* Annoying : m_annoyingEnemyList)
-//	{
-//		UnlinkAllAnnoyingEnemyUI(Annoying);
-//		DeleteGO(Annoying);
-//		Annoying = nullptr;
-//	}
-//	m_annoyingEnemyList.clear();
-//}
-
 //UI作成用関数。
 void Game::CreateUI()
 {
@@ -1139,49 +1086,49 @@ void Game::ButtonUI()
 {
 
 
-	//通常攻撃
+	//通常攻撃。
 	m_fontNormalAttackButton.SetText(L":通常攻撃");
 	m_fontNormalAttackButton.SetPosition(Vector3(-750.0f, -250.0f, 0.0f));
 	m_fontNormalAttackButton.SetScale(1.0f);
 	m_fontNormalAttackButton.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
-	//HP
+	//HP。
 	m_hp.SetText(L"HP:");
 	m_hp.SetPosition(Vector3(-330.0f, -420.0f, 0.0f));
 	m_hp.SetScale(1.0f);
 	m_hp.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
-	//MP
+	//MP。
 	m_mp.SetText(L"MP:");
 	m_mp.SetPosition(Vector3(-330.0f, -470.0f, 0.0f));
 	m_mp.SetScale(1.0f);
 	m_mp.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
-	//回復カウント
+	//回復カウント。
 	m_healCount.SetText(L"回復回数");
 	m_healCount.SetPosition(Vector3(-850.0f, -320.0f, 0.0f));
 	m_healCount.SetScale(1.0f);
 	m_healCount.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
-	//Xボタン
+	//Xボタン。
 	m_buttonX.Init("Assets/sprite/X.DDS", 1920, 1080);
 	m_buttonX.SetPosition({ 710.0f,-520.0f,0.0f });
 	m_buttonX.SetScale({ 0.3f,0.3f,0.3f });
 	m_buttonX.Update();
 
-	//Yボタン
+	//Yボタン。
 	m_buttonY.Init("Assets/sprite/Y.DDS", 1920, 1080);
 	m_buttonY.SetPosition({ 420.0f,-520.0f,0.0f });
 	m_buttonY.SetScale({ 0.3f,0.3f,0.3f });
 	m_buttonY.Update();
 
-	//LTボタン
+	//LTボタン。
 	m_buttonLT.Init("Assets/sprite/LT.DDS", 1920, 1080);
 	m_buttonLT.SetPosition({ 570.0f,-520.0f,0.0f });
 	m_buttonLT.SetScale({ 0.3f,0.3f,0.3f });
 	m_buttonLT.Update();
 
-	//RTボタン
+	//RTボタン。
 	m_buttonRT.Init("Assets/sprite/RT.DDS", 1920, 1080);
 	m_buttonRT.SetPosition({ -830.0f,-280.0f,0.0f });
 	m_buttonRT.SetScale({ 0.5f,0.5f,0.5f });
@@ -1236,8 +1183,6 @@ void Game::NotifiyEnemy()
 	//ゲーム開始から30秒経ったら。
 	if (m_timer >=ENEMY_SPAWN_TIME)
 	{
-		////エネミーの作成。
-		//CreateEnemy();
 		//敵が来たことを通知する。
 		m_notifyEnemyFontRender.SetText(L"敵が来るぞ");
 		m_notifyEnemyFontRender.SetColor(g_vec4Red);

@@ -11,12 +11,12 @@
 namespace
 {
 	//モデルの大きさを設定。
-	const Vector3 MODELRENDER_SCALE = Vector3(0.6f, 0.6f, 0.6f);
+	const Vector3 MODELRENDER_SCALE = { 0.6f, 0.6f, 0.6f };
 }
 
 bool Lantern::Start() 
 {
-	//モデルを読み込む
+	//モデルを読み込む。
 	m_modelRender.Init("Assets/modelData/lanternJapan/lantern.tkm");
 	//インスタンスアドレスを検索。
 	auto game = FindGO<Game>("game");
@@ -95,12 +95,12 @@ void Lantern::Update()
 			m_light = NewGO<SoundSource>(63);
 			m_light->Init(63);
 			m_light->Play(false);
-			//フラグを立てる
+			//フラグを立てる。
 			m_isLight = true;
 		}
 		else if (!m_isNoStoneUI)
 		{
-			// 火打石がない場合のUI
+			//火打石がない場合のUI。
 			m_isNoStoneUI = true;
 			m_spriteNoStone = NewGO<SpriteNoStone>(0, "spriteNoStone");
 		}

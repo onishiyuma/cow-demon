@@ -8,7 +8,8 @@
 
 namespace
 {
-	const Vector3 EFFECT_SCALE(30.0f, 30.0f, 30.0f);
+	const Vector3 EFFECT_SCAL = { 30.0f, 30.0f, 30.0f };
+	const float MAT_TIMER = 2.0f;
 }
 
 Poison::Poison()
@@ -40,12 +41,7 @@ bool Poison::Start()
 	m_rotation.Apply(m_moveSpeed);
     m_position += m_moveSpeed * 50.0f;
 	m_moveSpeed *= 1200.0f;
-	
-
-	//回転を設定する
-	m_rotation.AddRotationDegY(0.0f);
-
-   
+	   
 	//コリジョンオブジェクトを生成する。
 	m_collisionObj = NewGO<CollisionObject>(0);
 	//球状のコリジョンを作成する。
@@ -93,8 +89,8 @@ void Poison::Update()
 	
 	//タイマーを加算。
 	m_timer += g_gameTime->GetFrameDeltaTime();
-	//タイマーが0.7f以上だったら。
-	if (m_timer >= 2.0f)
+	//タイマーが一定以上だったら。
+	if (m_timer >= MAT_TIMER)
 	{
 		m_isDelete = true;
 	}

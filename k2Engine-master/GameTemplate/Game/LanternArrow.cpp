@@ -2,6 +2,11 @@
 #include "LanternArrow.h"
 #include "Game.h"
 
+namespace
+{
+	const float ROTATION_DEG_Y = 90.0f;
+}
+
 LanternArrow::LanternArrow()
 {
 
@@ -21,7 +26,7 @@ bool LanternArrow::Start()
 	m_modelRender.Init("Assets/modelData/offeringBox/arrow.tkm");
 
 	//回転を設定。
-	m_rotation.SetRotationDegY(90);
+	m_rotation.SetRotationDegY(ROTATION_DEG_Y);
 
 	//座標を代入。
 	m_movePosition = m_position;

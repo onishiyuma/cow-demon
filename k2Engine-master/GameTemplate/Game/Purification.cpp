@@ -7,9 +7,11 @@
 namespace
 {
 	//箱状コリジョンの大きさ。
-	const Vector3 BOX_SIZE{ 100.0f, 100.0f, 100.0f };
+	const Vector3 BOX_SIZE = { 100.0f, 100.0f, 100.0f };
 	//エフェクトの大きさ。
-	const Vector3 EFFECT_SCALE{ 55.0f, 55.0f, 55.0f };
+	const Vector3 EFFECT_SCALE = { 55.0f, 55.0f, 55.0f };
+	//削除までの時間。
+	const float Delete_MAXTIME= 0.28f
 }
 
 bool Purification::Start()
@@ -63,7 +65,7 @@ void Purification::Update()
 	//タイマーを加算する。
 	m_deleteTimer += g_gameTime->GetFrameDeltaTime();
 	//タイマーが一定の秒数経過していたら。
-	if (m_deleteTimer >= 0.28f)
+	if (m_deleteTimer >= Delete_MAXTIME)
 	{
 		// エフェクトを停止する。
 		if (m_effectEmitter != nullptr)
