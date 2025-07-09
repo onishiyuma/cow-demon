@@ -15,21 +15,23 @@ namespace
 	//HPフレームのサイズ。
 	const Vector3 HP_FREAM_SCALE = { 195.0f,22.0f,1.0f };
 	//画像の大きさを設定。
-	const Vector3 SPRITE_SCALE = { 0.0f, 1.0f, 1.0f };
+	const Vector3 SPRITE_POSITION = { 0.0f, 1.0f, 1.0f };
 	//ピボット。
 	const Vector2 PIVOT = { 0.0f, 1.0f };
 	//HPフレームのポジション。
 	const float ENEMY_HP = 160.0f;
 	//HPスプライトのポジション。
 	const float ENEMY_HP_GAUGE = 170.0f;
+	//角度変換。
+	const float RAD = 40.0f;
 	//赤。
-	Vector4 RED(1.0f, 0.0f, 0.0f, 1.0f);
+	Vector4 RED{ 1.0f, 0.0f, 0.0f, 1.0f };
 	//黒。
-	Vector4 BLACK (0.0f, 0.0f, 0.0f, 1.0f);
+	Vector4 BLACK{ 0.0f, 0.0f, 0.0f, 1.0f };
 	//透明。
-	Vector4 TOUMEI(0.0f, 0.0f, 0.0f, 0.0f);
+	Vector4 TOUMEI{ 0.0f, 0.0f, 0.0f, 0.0f };
 	//ボス紫。
-	Vector4 BOSS(1.0f, 0.0f, 1.0f, 1.0f);
+	Vector4 BOSS{ 1.0f, 0.0f, 1.0f, 1.0f };
 }
 
 EnemyUI::EnemyUI()
@@ -68,7 +70,7 @@ void EnemyUI::Update()
 {
 	//どの敵も指していない場合はバーを非表示。
 	if (!m_enemy && !m_littleEnemy && !m_annoyingEnemy && !m_bossEnemy) {
-		m_HPSprite.SetScale(SPRITE_SCALE);		//幅0で非表示。
+		m_HPSprite.SetScale(SPRITE_POSITION);		//幅0で非表示。
 		m_HPFreamSprite.SetMulColor(TOUMEI);	//透明。
 		return; //このフレームは何もしない。
 	}
@@ -146,7 +148,7 @@ void EnemyUI::Scale()
 		if (m_enemy->IsDead())
 		{
 			//必ずバーを非表示にしてからポインタ切断。
-			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPSprite.SetScale(SPRITE_POSITION);
 			m_HPFreamSprite.SetMulColor(TOUMEI);
 			m_enemy = nullptr; // ポインタ切断
 			return;
@@ -158,7 +160,7 @@ void EnemyUI::Scale()
 		Vector3 scale = { wari,1.0f,1.0f };
 
 		if (m_enemyHp <= 0.0f) {
-			m_HPSprite.SetScale(Vector3(0.0f,1.0f,1.0f));
+			m_HPSprite.SetScale(SPRITE_POSITION);
 			m_HPFreamSprite.SetMulColor(TOUMEI);
 		}
 		else if (m_enemyHp <= m_maxHP) {
@@ -171,7 +173,7 @@ void EnemyUI::Scale()
 		if (m_littleEnemy->IsDead())
 		{
 			//必ずバーを非表示にしてからポインタ切断。
-			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPSprite.SetScale(SPRITE_POSITION);
 			m_HPFreamSprite.SetMulColor(TOUMEI);
 			m_littleEnemy = nullptr; //ポインタ切断。
 			return;
@@ -183,7 +185,7 @@ void EnemyUI::Scale()
 		Vector3 scale = { wari,1.0f,1.0f };
 
 		if (m_enemyHp <= 0.0f) {
-			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPSprite.SetScale(SPRITE_POSITION);
 			m_HPFreamSprite.SetMulColor(TOUMEI);
 		}
 		else if (m_enemyHp <= m_maxHP) {
@@ -196,7 +198,7 @@ void EnemyUI::Scale()
 		if (m_bossEnemy->IsDead())
 		{
 			//必ずバーを非表示にしてからポインタ切断。
-			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPSprite.SetScale(SPRITE_POSITION);
 			m_HPFreamSprite.SetMulColor(TOUMEI);
 			m_bossEnemy = nullptr; //ポインタ切断。
 			return;
@@ -208,7 +210,7 @@ void EnemyUI::Scale()
 		Vector3 scale = { wari,1.0f,1.0f };
 
 		if (m_enemyHp <= 0.0f) {
-			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPSprite.SetScale(SPRITE_POSITION);
 			m_HPFreamSprite.SetMulColor(TOUMEI);
 		}
 		else if (m_enemyHp <= m_maxHP) {
@@ -222,7 +224,7 @@ void EnemyUI::Scale()
 		if (m_annoyingEnemy->IsDead())
 		{
 			//必ずバーを非表示にしてからポインタ切断。
-			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPSprite.SetScale(SPRITE_POSITION);
 			m_HPFreamSprite.SetMulColor(TOUMEI);
 			m_annoyingEnemy = nullptr; //ポインタ切断。
 			return;
@@ -233,7 +235,7 @@ void EnemyUI::Scale()
 		Vector3 scale = { wari,1.0f,1.0f };
 		
 		if (m_enemyHp <= 0.0f) {
-			m_HPSprite.SetScale(Vector3(0.0f, 1.0f, 1.0f));
+			m_HPSprite.SetScale(SPRITE_POSITION);
 			m_HPFreamSprite.SetMulColor(TOUMEI);
 		}
 		else if (m_enemyHp <= m_maxHP) {
@@ -269,7 +271,7 @@ bool EnemyUI::Angle(T Enemy)
 	//内積の結果から角度を求める。
 	float angleRad = acos(dot);
 	//カメラから見てエネミーが一定角度の時。
-	if (fabsf(angleRad) <= Math::DegToRad(40.0f))
+	if (fabsf(angleRad) <= Math::DegToRad(RAD))
 	{
 		return true;
 		
@@ -309,6 +311,11 @@ void EnemyUI::SetBossEnemy(BossEnemy* bossEnemy)
 
 void EnemyUI::Render(RenderContext& rc)
 {
+	auto isInvisible = [this](auto* enemy)
+	{
+			return enemy && !Angle(enemy);
+	};
+
 	if ((m_enemy && !Angle(m_enemy)) ||
 		(m_littleEnemy && !Angle(m_littleEnemy)) ||
 		(m_annoyingEnemy && !Angle(m_annoyingEnemy)) ||

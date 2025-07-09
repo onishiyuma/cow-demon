@@ -8,7 +8,7 @@
 namespace
 {
 	//モデルの大きさ。
-	const Vector3 MODEL_SCALE(0.5f, 0.5f, 0.5f);
+	const Vector3 MODEL_SCALE = { 0.5f, 0.5f, 0.5f };
 	//火打石を拾える距離。
 	const float COLLECTION_DISTANCE = 120.0f;
 }

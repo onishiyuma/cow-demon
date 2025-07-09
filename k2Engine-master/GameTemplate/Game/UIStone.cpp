@@ -5,7 +5,7 @@
 
 namespace
 {
-	const Vector3 FONT_POS(500.0f, 430.0f, 0.0f);
+	const Vector3 FONT_POS = { 500.0f, 430.0f, 0.0f };
 	const float FONT_SCALE = 1.0f;
 }
 

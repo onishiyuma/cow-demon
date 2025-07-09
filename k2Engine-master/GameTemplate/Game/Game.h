@@ -100,7 +100,7 @@ public:
 	//ボスのUI切断用関数
 	void UnlinkAllBossEnemyUI(BossEnemy* boss);
 
-public:
+
 	//敵のリスト。
 	std::vector<Enemy*>   m_enemyList;
 	//小さい敵のリスト。
@@ -113,7 +113,8 @@ public:
 	std::vector<EnemyUI*>m_enemyUIList;	
 	//ポイズンのリスト。
 	std::vector<Poison*> m_poisonList;
-public:
+
+
 	//敵のリストを取得する関数。
 	const std::vector<Enemy*>& GetEnemies()const
 	{
@@ -147,10 +148,16 @@ public:
 		return m_poisonList;
 	}
 
-
-	
-private:
 	//メンバ変数。
+	bool					m_isBoss = false;					//ボスかどうか。
+	bool					m_isCowntDownStart = false;			//カウントダウン中かどうか
+	bool					m_isLoad = true;					//ゲーム開始前でロードが終わっているか
+	bool                    m_isEndGame = false;                //ゲームが終了しているかどうか
+	float					m_luminance = 0.0f;					//空の明るさの変化量。
+	int						m_dieCount = 0;						//倒された敵の数。
+	int						m_maxCount = 0;						//敵の最大数。
+	int						m_totalCount = 0;					//敵の合計。
+private:
 	GameClear*				m_gameClear;						//ゲームクリアー。
 	RingBell*				m_ringBell;							//鈴。
 	BackGround*				m_backGround;						//背景。
@@ -170,7 +177,6 @@ private:
 	SoundSource*			m_gameStartSound;					//ゲームスタート音。
 	SoundSource*			m_stage; 							//ゲームスタート音。
 	SoundSource*            m_clearBGM;							//ゲームBGM。	
-	
 	//火打石。
 	Stone*					m_stone1;							//火打石。
 	Stone*					m_stone2;							//火打石。
@@ -179,37 +185,27 @@ private:
 	Stone*					m_stone5=nullptr;					//火打石。
 	Stone*					m_stone6=nullptr;					//火打石。
 	Stone*					m_stone7=nullptr;					//火打石。
-
 	//灯籠。
 	Lantern*				m_lantern;							//灯籠。
 	Lantern*				m_lantern1;							//灯籠。
 	Lantern*				m_lantern2;							//灯籠。
 	Lantern*				m_lantern3;							//灯籠。
 	Lantern*				m_lantern4;							//灯籠。
-
 	//灯籠の位置を示す矢印。
 	LanternArrow*			m_lanternArrow1;					//灯籠矢印。
 	LanternArrow*			m_lanternArrow2;					//灯籠矢印。
 	LanternArrow*			m_lanternArrow3;					//灯籠矢印。
 	LanternArrow*			m_lanternArrow4;					//灯籠矢印。
-
 	//灯籠用ライト。
 	LanternLight*			m_lanternLight1;					//灯籠用ライト。
 	LanternLight*			m_lanternLight2;					//灯籠用ライト。
 	LanternLight*			m_lanternLight3;					//灯籠用ライト。
 	LanternLight*			m_lanternLight4;					//灯籠用ライト。
-
 	//青い炎。
 	BlueFlame*				m_blueFlame1;						//青い炎。
 	BlueFlame*				m_blueFlame2;						//青い炎。
 	BlueFlame*				m_blueFlame3;						//青い炎。
 	BlueFlame*				m_blueFlame4;						//青い炎。
-
-	//赤い炎。
-	RedFlame*				m_redFlame1;						//赤い炎。
-	RedFlame*				m_redFlame2;						//赤い炎。
-	RedFlame*				m_redFlame3;						//赤い炎。
-	
 	//UI。
 	UItukuyomi*				m_uiTukuyomi;						//月読の加護のUI
 	UIskill*				m_uiSkill;							//スキルのUI
@@ -219,16 +215,13 @@ private:
 	UIheal*					m_uiHeal;							//回復のUI
 	EnemyUI*				m_enemyUI;							//敵UI。
 	UIStone*				m_uiStone;							//火打石UI。
-
 	//カウントダウン用。
 	UIThree*				m_uiThree = nullptr;				//カウントダウン3。
 	UITwo*					m_uiTwo = nullptr;					//カウントダウン2。
 	UIOne*					m_uiOne = nullptr;					//カウントダウン1。
 	UIZero*					m_uiZero = nullptr;					//カウントダウン0。
-
 	//タイムリミットを知らせるUI。
 	TimeLimit*				m_timeLimit1;						//タイムリミット用UI。
-	
 	//スプライトレンダー・フォントレンダー。
 	SpriteRender			m_spriteRender;						//スプライトレンダー。
 	FontRender				m_timerFontRender;					//フォントレンダー。
@@ -243,7 +236,6 @@ private:
 	FontRender              m_hp;					            //HPのフォントレンダー。
 	FontRender			    m_mp;					            //MPのフォントレンダー。
 	FontRender              m_healCount;                        //回復のフォントレンダー。
-	
 	//ボタンUIの表示。
 	SpriteRender			m_buttonB;							//Bボタン。
 	FontRender				m_fontNormalAttackButton;			//通常攻撃用フォントレンダー。
@@ -251,20 +243,10 @@ private:
 	SpriteRender			m_buttonY;							//Yボタン。
 	SpriteRender			m_buttonLT;							//LTボタン。
 	SpriteRender			m_buttonRT;							//RTボタン。
-
 	Vector3					m_EnemyRandompos;					//敵の座標。
 	Vector3					Random();							//ランダムに敵を出現させる。
 	Vector3                 BossRandom();						//ボスのランダム座標。
 	Vector4                 m_spriteColor = { 0.0f,0.0f,0.0f,0.0f };//スプライトの色。
-public:
-	bool					m_isBoss = false;					//ボスかどうか。
-	bool					m_isCowntDownStart = false;			//カウントダウン中かどうか
-	bool					m_isLoad = true;					//ゲーム開始前でロードが終わっているか
-	bool                    m_isEndGame = false;                    //ゲームが終了しているかどうか
-	float					m_luminance = 0.0f;					//空の明るさの変化量。
-	int						m_dieCount = 0;						//倒された敵の数。
-	int						m_maxCount = 0;						//敵の最大数。
-	int						m_totalCount = 0;					//敵の合計。
 private:
 	int						m_lanternLightState = 0;			//灯籠の光状態。
 	int						m_spawnCount=0;						//出現した敵の数。
@@ -281,9 +263,9 @@ private:
 	float					m_skyAmbient = 0.0002f;				//空の明るさの影響を受ける環境光。
 	float					m_notifyx = 0.0f;					//敵出現通知のX座標。	
 	float                   m_skyTimer = 0.0f;					//空の明るさの変化タイマー。
-	const float             m_fadeTime = 1.0f;				//フェード時間。	
+	const float             m_fadeTime = 1.0f;					//フェード時間。	
 	const float				m_fadeMaxTime = 5.0f;				//カウントダウン時間。
-	const float				m_nightStart = 0.0f;
+	const float				m_nightStart = 0.0f;				//始まり
 	const float				m_phase1Start = 120.0f;				//夜明けの始まり。
 	const float				m_phase2Start = 180.0f;				//少し明るくなる。
 	const float				m_phase3Start = 210.0f;				//少し明るくなる。
@@ -314,11 +296,11 @@ private:
 	bool					m_lanternEffectFlag3 = false;
 	bool					m_lanternEffectFlag4 = false;
 	//灯籠用MP回復のフラグ。
-	int				        m_lanternMPState = 0;		    //灯籠のMP回復状態。
-	bool					m_isLanternHealMP1 = false;		//灯籠のMP回復フラグ。
-	bool					m_isLanternHealMP2 = false;		//灯籠のMP回復フラグ。
-	bool					m_isLanternHealMP3 = false;		//灯籠のMP回復フラグ。
-	bool					m_isLanternHealMP4 = false;		//灯籠のMP回復フラグ。
+	int				        m_lanternMPState = 0;				//灯籠のMP回復状態。
+	bool					m_isLanternHealMP1 = false;			//灯籠のMP回復フラグ。
+	bool					m_isLanternHealMP2 = false;			//灯籠のMP回復フラグ。
+	bool					m_isLanternHealMP3 = false;			//灯籠のMP回復フラグ。
+	bool					m_isLanternHealMP4 = false;			//灯籠のMP回復フラグ。
 	//空の明るさのフラグ。
 	bool					m_isNight = false;
 	bool					m_isMidNight1 = false;
@@ -328,20 +310,19 @@ private:
 	bool					m_isDawn2 = false; 
 	bool					m_isDawn3 = false;
 	bool					m_isDay = false;
-
-	bool					m_isCountDownEnd = false;				//カウントダウン終了かどうか。
-	bool					m_isOne = false;						//あと一秒かどうか。
-	bool					m_isTwo = false;						//あと二秒かどうか。
-	bool					m_isThree = false;						//あと三秒かどうか。
-	bool					m_isGameStart = false;					//ゲームスタートフラグ。
-	bool					m_isTimeLimit = false;					//タイムリミットかどうか。
-	bool                    m_isDeathPlayer = false;				//プレイヤーが死んだかどうか。
-	bool                    m_isInovate = false;                    //
-	bool                    m_GameDelete = false;					//ゲーム終了フラグ。
-	bool                    m_isSpriteFade = false;				    //スプライトフェードフラグ。
-	bool                    m_isGameBGM = false;					//ゲームBGM。
-	bool                    m_isGameClear = false;					//ゲームクリアフラグ。
-
+	//その他のフラグ。
+	bool					m_isCountDownEnd = false;			//カウントダウン終了かどうか。
+	bool					m_isOne = false;					//あと一秒かどうか。
+	bool					m_isTwo = false;					//あと二秒かどうか。
+	bool					m_isThree = false;					//あと三秒かどうか。
+	bool					m_isGameStart = false;				//ゲームスタートフラグ。
+	bool					m_isTimeLimit = false;				//タイムリミットかどうか。
+	bool                    m_isDeathPlayer = false;			//プレイヤーが死んだかどうか。
+	bool                    m_isInovate = false;                //
+	bool                    m_GameDelete = false;				//ゲーム終了フラグ。
+	bool                    m_isSpriteFade = false;				//スプライトフェードフラグ。
+	bool                    m_isGameBGM = false;				//ゲームBGM。
+	bool                    m_isGameClear = false;				//ゲームクリアフラグ。
 };
 
 

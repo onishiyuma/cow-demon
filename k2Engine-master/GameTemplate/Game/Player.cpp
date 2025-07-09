@@ -742,6 +742,7 @@ void Player::BossEnemyPoisonCollision()
 	{
 		return;
 	}
+
 	m_invincibleTime_BossPoison += g_gameTime->GetFrameDeltaTime();
 	if (m_invincibleTime_BossPoison >= m_invincibleTimeDuration)
 	{

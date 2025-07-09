@@ -13,8 +13,8 @@ private:
 	//メンバ変数。
 	FontRender		m_fontRenderer;			//フォントレンダー。
 	Vector3			m_position;				//位置。
-	float			m_scale=1.0f;	//スケール。
 	Vector3			m_color;				//色。
+	float			m_scale=1.0f;			//スケール。
 	float			m_timer;				//タイマー。
 };
 

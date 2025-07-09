@@ -16,9 +16,7 @@ public:
 	bool			m_isDelete = false;		//削除できるか。
 	int				m_useHeal = 0;			//回復回数。
 private:
-	Player*			m_player;				//プレイヤー。
-	SpriteRender	m_soulSprite1;			//魂の画像1。
-	SpriteRender	m_soulSprite2;			//魂の画像2。
-	SpriteRender	m_soulSprite3;			//魂の画像3。
+	Player*			m_player=nullptr;		//プレイヤー。
+	SpriteRender	m_soulSprites[3];		//画像を配列にする。
 };
 

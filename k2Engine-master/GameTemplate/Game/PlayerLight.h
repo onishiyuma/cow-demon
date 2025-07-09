@@ -19,6 +19,6 @@ private:
 	Player*			m_player;			//プレイヤー。
 	SpotLight		m_spotLight;		//スポットライト。
 	Vector3			m_position;			//ライトの座標。
-	Vector3			m_forward;		//ライトの向き。
+	Vector3			m_forward;			//ライトの向き。
 };
 

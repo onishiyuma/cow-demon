@@ -4,9 +4,9 @@
 namespace
 {
 	//画像の座標。
-	const Vector3 SPRITE_POSITION = Vector3(300.0f, -150.0f, 0.0f);
+	const Vector3 SPRITE_POSITION = { 300.0f, -150.0f, 0.0f };
 	//画像の大きさ。
-	const Vector3 SPRITE_SCALE = Vector3(1.0f, 1.0f, 1.0f);
+	const Vector3 SPRITE_SCALE = { 1.0f, 1.0f, 1.0f };
 }
 
 bool NoHeal::Start()

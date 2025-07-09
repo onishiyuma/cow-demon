@@ -5,7 +5,8 @@
 
 namespace
 {
-	Vector3 MODEL_SCALE{ 0.7f, 0.7f, 0.7f };
+	const float ROTATION_DEG_Y = 90.0f;
+	const Vector3 MODEL_SCALE = { 0.7f, 0.7f, 0.7f };
 }
 
 
@@ -21,7 +22,7 @@ bool RingBell::Start()
 	m_modelRender.SetScale(MODEL_SCALE);
 	//画像の座標を設定する。
 	m_arrowModel.SetPosition(m_arrwPosition);
-	m_rotation.SetRotationDegY(90);
+	m_rotation.SetRotationDegY(ROTATION_DEG_Y);
 	m_arrowModel.SetRotation(m_rotation);
 	//現在の座標に初期座標を代入。
 	m_currentPosition = m_arrwPosition;
@@ -62,7 +63,7 @@ void RingBell::CreateCollision()
 	m_collisionObject= NewGO<CollisionObject>(0);
 
 	//箱状のコリジョンを作成する。
-	m_collisionObject->CreateBox(m_position, Quaternion::Identity, {m_collisionScale});
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, m_collisionScale);
 
 	//コリジョンに名前をつける。
 	m_collisionObject->SetName("ringbell");

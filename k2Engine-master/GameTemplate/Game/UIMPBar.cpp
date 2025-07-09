@@ -6,17 +6,17 @@
 namespace 
 {
 	//MPバーの座標。
-	const Vector3 MP_POSITION(-240.0f, -500.0f, 0.0f);
+	const Vector3 MP_POSITION = { -240.0f, -500.0f, 0.0f };
 	//MPバーのスケール。
-	const Vector3 MP_SCALE(0.47f, 0.2f, 0.5f);
+	const Vector3 MP_SCALE = { 0.47f, 0.2f, 0.5f };
 	//MPゲージピボット。
-	const Vector2 MP_PIVOT(0.0f, 0.5f);
+	const Vector2 MP_PIVOT = { 0.0f, 0.5f };
 	//MPフレームの座標。
-	const Vector3 MP_FRAME_POSITION(0.0f, -500.0f, 0.0f);
+	const Vector3 MP_FRAME_POSITION = { 0.0f, -500.0f, 0.0f };
 	//MPフレームのスケール。
-	const Vector3 MP_FRAME_SCALE(0.5f, 0.3f, 0.5f);
+	const Vector3 MP_FRAME_SCALE = { 0.5f, 0.3f, 0.5f };
 	//MPバーの色。
-	const Vector4 LIGHT_BLUE(0.0f, 1.0f, 1.0f,1.0f);//水色	
+	const Vector4 LIGHT_BLUE = { 0.0f, 1.0f, 1.0f,1.0f };//水色	
 }
 
 UIMPBar::UIMPBar()

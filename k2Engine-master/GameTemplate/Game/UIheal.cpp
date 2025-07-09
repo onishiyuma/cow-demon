@@ -5,12 +5,16 @@
 
 namespace
 {
-	//回復回数1。
-	Vector3 SOUL_POSITION1(-600.0f, -450.0f, 0.0f);
-	//回復回数2。
-	Vector3 SOUL_POSITION2(-725.0f, -450.0f, 0.0f);
-	//回復回数3。
-	Vector3 SOUL_POSITION3(-850.0f, -450.0f, 0.0f);
+	//配列に座標を設定する。
+	const Vector3 SOUL_POSITIONS[3] =
+	{
+		Vector3(-660.0f,-450.0f,0.0f),
+		Vector3(-748.0f,-450.0f,0.0f),
+		Vector3(-850.0f,-450.0f,0.0f)
+	};
+	const char* SOUL_TEXTURE_PATH = "Assets/UI/gage.DDS";
+	const float SPRITE_SIZE = 150.0f;
+	const int MAX_HEAL = 3;
 }
 
 
@@ -29,50 +33,40 @@ bool UIheal::Start()
 	//インスタンスアドレスを検索。
 	m_player = FindGO<Player>("player");
 
-	//回復回数1
-	m_soulSprite1.Init("Assets/UI/gage.DDS", 150, 150);
-	m_soulSprite1.SetPosition(SOUL_POSITION1);
-	//回復回数2
-	m_soulSprite2.Init("Assets/UI/gage.DDS", 150, 150);
-	m_soulSprite2.SetPosition(SOUL_POSITION2);
-	//回復回数3
-	m_soulSprite3.Init("Assets/UI/gage.DDS", 150, 150);
-	m_soulSprite3.SetPosition(SOUL_POSITION3);
+	//画像を初期化。
+	for (int i = 0; i < MAX_HEAL; i++)
+	{
+		//画像を読み込む。
+		m_soulSprites[i].Init(SOUL_TEXTURE_PATH, SPRITE_SIZE, SPRITE_SIZE);
+		//座標を設定。
+		m_soulSprites[i].SetPosition(SOUL_POSITIONS[i]);
+	}
 
 	//回復回数を初期化。
-	m_useHeal = 3;
+	m_useHeal = MAX_HEAL;
 
 	return true;
 }
 
 void UIheal::Update()
 {
-	m_soulSprite1.Update();
-	m_soulSprite2.Update();
-	m_soulSprite3.Update();
+	for (int i = 0; i < MAX_HEAL; i++)
+	{
+		m_soulSprites[i].Update();
+	}
 }
 
 void UIheal::Render(RenderContext& rc)
 {
-	//回復回数を表示。
-	if (m_useHeal >= 3)
-	{
-		m_soulSprite1.Draw(rc);
-		m_soulSprite2.Draw(rc);
-		m_soulSprite3.Draw(rc);
-	}
-	if (m_useHeal ==2)
-	{
-		m_soulSprite2.Draw(rc);
-		m_soulSprite3.Draw(rc);
-	}
-	else if (m_useHeal == 1)
-	{
-		m_soulSprite3.Draw(rc);
-	}
-	else if (m_useHeal <= 0)
+	if (m_useHeal <= 0)
 	{
 		m_isDelete = true;
 		DeleteGO(this);
+		return;
+	}
+
+	for (int i = MAX_HEAL - m_useHeal; i < MAX_HEAL; i++)
+	{
+		m_soulSprites[i].Draw(rc);
 	}
 }

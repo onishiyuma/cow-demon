@@ -123,7 +123,7 @@ private:
 	AnimationClip		m_animationClips[enAnimationClip_Num];		//アニメーションクリップ。
 	EnEnemyState		m_enemyState = enEnemyState_Idle;           //現在のステート。
 	EffectEmitter*      m_effectEmitter = nullptr;                  //エフェクト参照。
-	SoundSource* m_die = nullptr;                             //サウンド参照。
+	SoundSource*		m_die = nullptr;                            //サウンド参照。
 	const Vector3		m_stopMove = Vector3::Zero;                 //移動できないようにする。
 	const int			m_bossEnemyMaxHP = m_BossEnemyHP;           //ボスの最大HP。
 	int					m_BossFangBoneID = -3;						//牙のボーンID。
