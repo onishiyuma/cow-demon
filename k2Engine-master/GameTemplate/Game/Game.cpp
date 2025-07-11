@@ -134,25 +134,10 @@ Game::~Game()
 
 	//火打石。
 	//オブジェクトがある場合削除
-	if (m_stone4 != nullptr) {
-		DeleteGO(m_stone4);
-		m_stone4 = nullptr;
-	}
-
-	if (m_stone5 != nullptr) {
-		DeleteGO(m_stone5);
-		m_stone5 = nullptr;
-	}
-
-	if (m_stone6 != nullptr) {
-		DeleteGO(m_stone6);
-		m_stone6 = nullptr;
-	}
-
-	if (m_stone7 != nullptr) {
-		DeleteGO(m_stone7);
-		m_stone7 = nullptr;
-	}
+	DeleteGO(m_stone4);
+	DeleteGO(m_stone5);
+	DeleteGO(m_stone6);
+	DeleteGO(m_stone7);
 
 	//灯籠。
 	DeleteGO(m_lantern1);
@@ -292,10 +277,6 @@ void Game::GameManager()
 		DeleteGO(m_clearBGM);
 		NewGO<GameClear>(0);
 		DeleteGO(this);
-		/*m_EndTimer += g_gameTime->GetFrameDeltaTime();
-		if (m_EndTimer >= 0.5f) {
-			
-		}*/
 	}
 	
 
@@ -305,10 +286,6 @@ void Game::GameManager()
 		m_isEndGame = true;
 		NewGO<GameOver>(0);
 		DeleteGO(this);
-		/*m_EndTimer += g_gameTime->GetFrameDeltaTime();
-		if (m_EndTimer >= 0.5f) {
-			DeleteGO(this);
-		}*/
 	}
 	
 	//呪いの抵抗値がなくなったら。
@@ -317,10 +294,6 @@ void Game::GameManager()
 		m_isEndGame = true;
 	    NewGO<GameOver>(0);
 		DeleteGO(this);
-		/*m_EndTimer += g_gameTime->GetFrameDeltaTime();
-		if (m_EndTimer >= 0.5f) {
-			DeleteGO(this);
-		}*/
 	}
 
 }
@@ -328,37 +301,7 @@ void Game::GameManager()
 //空の設定。
 void Game::SetSkyLight()
 {
-	//m_skyTimer += g_gameTime->GetFrameDeltaTime();
-	////4時になるまでの明るさ設定。
-	//if (m_timer < 240.0f) {
-	//	if (m_skyTimer >= 1.0f) {
-	//		//夜の明るさに設定。
-	//		m_luminance += m_luminanceNight;
-	//		//それぞれ夜の明るさに変更する。
-	//		m_skyLuminance = m_luminance;
-	//		m_skyAmbient = m_luminance;
-	//		//適用。
-	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
-	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
-	//		m_skyCube->SetLuminance(m_skyLuminance);
-	//		m_skyTimer = 0.0f;//夜の明るさに設定したら、タイマーをリセット。
-	//	}
-	//}
-	////４時以降の明るさ設定。
-	//else if (m_timer >= 240.0f) {
-	//	if (m_skyTimer >= 1.0f) {
-	//		//真夜中の明るさに設定。
-	//		m_luminance += m_luminanceNight;
-	//		//それぞれ真夜中の明るさに変更する。
-	//		m_skyLuminance = m_luminance;
-	//		m_skyAmbient = m_luminance;
-	//		//適用。
-	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
-	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
-	//		m_skyCube->SetLuminance(m_skyLuminance);
-	//		m_skyTimer = 0.0f;//真夜中の明るさに設定したら、タイマーをリセット。
-	//	}
-	//}
+	m_skyTimer += g_gameTime->GetFrameDeltaTime();
 	//完全な夜。
 	if (m_timer > m_phase1Start && m_timer < m_phase2Start) {
 		if (!m_isNight) {
@@ -389,21 +332,6 @@ void Game::SetSkyLight()
 			m_isMidNight1 = true;
 		}
 	}
-	////真夜中。
-	//else if (m_timer > m_phase3Start && m_timer < m_phase4Start) {
-	//	if (!m_isMidNight2) {
-	//		//真夜中の明るさに設定。
-	//		m_luminance = m_luminanceMidNight2;
-	//		//それぞれ真夜中の明るさに変更する。
-	//		m_skyLuminance = m_luminance;
-	//		m_skyAmbient = m_luminance;
-	//		//適用。
-	//		m_skyCube->SetLuminance(m_skyLuminance);
-	//		g_renderingEngine->SetAmbientByIBLTextureLuminance(m_skyAmbient);
-	//		g_renderingEngine->SetAmbientByIBLTexture(m_skyCube->GetTextureFilePath(), m_skyAmbient);
-	//		m_isMidNight2 = true;
-	//	}
-	//}
 	//日の出開始。
 	else if (m_timer > m_phase4Start && m_timer < m_phase5Start) {
 		if (!m_isSunrise) {

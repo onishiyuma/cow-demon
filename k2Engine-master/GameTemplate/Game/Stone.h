@@ -25,5 +25,6 @@ private:
 	Player*				m_player ;						//プレイヤー。
 	SpriteCollection*	m_spriteCollection;				//「A：採る」の画像。
 	bool				m_isNearCollection = false;		//火打石の近くにいるか。
+	bool                m_isGetStone = false;		//火打石を入手したか。
 };
 
