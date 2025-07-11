@@ -11,7 +11,7 @@ namespace
 	//エフェクトの大きさ。
 	const Vector3 EFFECT_SCALE = { 55.0f, 55.0f, 55.0f };
 	//削除までの時間。
-	const float Delete_MAXTIME= 0.28f
+	const float Delete_MAXTIME = 0.28f;
 }
 
 bool Purification::Start()

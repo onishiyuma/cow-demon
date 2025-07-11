@@ -54,20 +54,21 @@ void Stone::Update()
 	//ベクトルの長さが一定距離近ければ。
 	if (diff.Length() <= COLLECTION_DISTANCE)
 	{
-		if (!m_isNearCollection )
-		{
-			m_spriteCollection = NewGO<SpriteCollection>(0, "spriteCollection");
+		if(!m_isGetStone) {
+			if (!m_isNearCollection)
+			{
+				m_spriteCollection = NewGO<SpriteCollection>(0, "spriteCollection");
 
-			m_isNearCollection = true;
-		}
-		//Aボタンを押したら
-		if (g_pad[0]->IsTrigger(enButtonA))
-		{
-			//火打石のアイテムカウントを1増やす。
-			m_player->m_stoneCount += 1;
+				m_isNearCollection = true;
+			}
+			//Aボタンを押したら
+			if (g_pad[0]->IsTrigger(enButtonA))
+			{
+				//火打石のアイテムカウントを1増やす。
+				m_player->m_stoneCount += 1;
 
-			//自身を削除する。
-			DeleteGO(this);	
+				m_isGetStone = true;
+			}
 		}
 	}
 	else 
@@ -85,5 +86,8 @@ void Stone::Update()
 
 void Stone::Render(RenderContext& rc) 
 {
-	m_modelRender.Draw(rc);
+	if (!m_isGetStone) {
+		m_modelRender.Draw(rc);
+	}
+	
 }

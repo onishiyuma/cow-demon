@@ -8,7 +8,7 @@
 
 namespace
 {
-	const Vector3 EFFECT_SCAL = { 30.0f, 30.0f, 30.0f };
+	const Vector3 EFFECT_SCALE = { 30.0f, 30.0f, 30.0f };
 	const float MAT_TIMER = 2.0f;
 }
 
